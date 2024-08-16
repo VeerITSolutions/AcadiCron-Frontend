@@ -47,7 +47,15 @@ const menuGroups = [
         ),
         label: "Student Information",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [
+          { label: "Student Details", route: "/student_details" },
+          { label: "Student Admission", route: "/student_admission" },
+          { label: "Disabled Students", route: "/disabled_students" },
+          { label: "Multi Class Student", route: "/multi_class_student" },
+          { label: "Bulk Delete", route: "/bulk_delete" },
+          { label: "Student Categories", route: "/student_categories" },
+          { label: "Student House", route: "/student_house" },
+        ],
       },
       {
         icon: (
@@ -79,7 +87,17 @@ const menuGroups = [
         ),
         label: "Fees Collection",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [
+          { label: "Collect Fees", route: "/collect_fees" },
+          { label: "Search Fees Payment", route: "/search_fees_payment" },
+          { label: "Search Due Fees", route: "/search_due_fees" },
+          { label: "Fees Master", route: "/fees_master" },
+          { label: "Fees Group", route: "/fees_group" },
+          { label: "Fees Type", route: "/fees_type" },
+          { label: "Fees Discount", route: "/fees_discount" },
+          { label: "Fees Carry Forward", route: "/fees_carry_forward" },
+          { label: "Fees Reminder", route: "/fees_reminder" },
+        ],
       },
       {
         icon: (
@@ -111,7 +129,11 @@ const menuGroups = [
         ),
         label: "Attendance",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [
+          { label: "Student Attendance", route: "/student_attendance" },
+          { label: "Attendance By Date", route: "/attendance_by_date" },
+          { label: "Approve Leave", route: "/approve_leave" },
+        ],
       },
       {
         icon: (
@@ -143,7 +165,12 @@ const menuGroups = [
         ),
         label: "Lesson Plan",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [
+          { label: "Manage Lesson Plan", route: "/admin/syllabus" },
+          { label: "Manage Syllabus Status", route: "/admin/syllabus/status" },
+          { label: "Lesson", route: "/admin/lessonplan/lesson" },
+          { label: "Topic", route: "/admin/lessonplan/topic" },
+        ],
       },
       {
         icon: (
@@ -175,7 +202,22 @@ const menuGroups = [
         ),
         label: "Academics",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [
+          { label: "Class Timetable", route: "/admin/timetable/classreport" },
+          {
+            label: "Teachers Timetable",
+            route: "/admin/timetable/mytimetable",
+          },
+          {
+            label: "Assign Class Teacher",
+            route: "/admin/teacher/assign_class_teacher",
+          },
+          { label: "Promote Students", route: "/admin/stdtransfer" },
+          { label: "Subject Group", route: "/admin/subjectgroup" },
+          { label: "Subjects", route: "/admin/subject" },
+          { label: "Class", route: "/classes" },
+          { label: "Sections", route: "/sections" },
+        ],
       },
       {
         icon: (
@@ -207,7 +249,25 @@ const menuGroups = [
         ),
         label: "Human Resource",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [
+          { label: "Staff Directory", route: "/admin/staff" },
+          { label: "Staff Attendance", route: "/admin/staffattendance" },
+          { label: "Payroll", route: "/admin/payroll" },
+          {
+            label: "Approve Leave Request",
+            route: "/admin/leaverequest/leaverequest",
+          },
+          { label: "Apply Leave", route: "/admin/staff/leaverequest" },
+          { label: "Leave Type", route: "/admin/leavetypes" },
+          {
+            label: "Teachers Rating",
+            route: "/admin/staff/rating",
+            hidden: true,
+          }, // Added hidden property for display:none
+          { label: "Department", route: "/admin/department/department" },
+          { label: "Designation", route: "/admin/designation/designation" },
+          { label: "Disabled Staff", route: "/admin/staff/disablestafflist" },
+        ],
       },
       {
         icon: (
@@ -239,7 +299,7 @@ const menuGroups = [
         ),
         label: "Communicate",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [{ label: " Notice Board", route: "/notic_board" }],
       },
       {
         icon: (
@@ -271,7 +331,13 @@ const menuGroups = [
         ),
         label: "Download Center",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [
+          { label: "Upload Content", route: "/admin/content" },
+          { label: "Assignments", route: "/admin/content/assignment" },
+          { label: "Study Material", route: "/admin/content/studymaterial" },
+          { label: "Syllabus", route: "/admin/content/syllabus" },
+          { label: "Other Downloads", route: "/admin/content/other" },
+        ],
       },
       {
         icon: (
@@ -303,7 +369,7 @@ const menuGroups = [
         ),
         label: "Homework",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [{ label: " Add Homework", route: "/admin/add_homework" }],
       },
       {
         icon: (
@@ -335,7 +401,29 @@ const menuGroups = [
         ),
         label: "Certificate",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [
+          { label: "Student Certificate", route: "/admin/certificate" },
+          {
+            label: "Generate Certificate",
+            route: "/admin/generatecertificate",
+          },
+          {
+            label: "Student ID Card",
+            route: "/admin/studentidcard",
+            hidden: true,
+          }, // Added hidden property for display:none
+          {
+            label: "Generate ID Card",
+            route: "/admin/generateidcard/search",
+            hidden: true,
+          }, // Added hidden property for display:none
+          { label: "Staff ID Card", route: "/admin/staffidcard", hidden: true }, // Added hidden property for display:none
+          {
+            label: "Generate Staff ID Card",
+            route: "/admin/generatestaffidcard",
+            hidden: true,
+          }, // Added hidden property for display:none
+        ],
       },
     ],
   },
