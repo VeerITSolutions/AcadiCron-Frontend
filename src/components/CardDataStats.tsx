@@ -32,9 +32,10 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
         </div>
 
         <span
-          className={`flex items-center gap-1 text-sm font-medium ${
-            levelUp && "text-meta-3"
-          } ${levelDown && "text-meta-5"} `}
+          className={`${levelUp && "text-meta-3"} ${
+            levelDown && "text-meta-5"
+          } flex
+          items-center gap-1 text-sm font-medium `}
         >
           {rate}
 

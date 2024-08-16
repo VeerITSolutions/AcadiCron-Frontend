@@ -23,9 +23,9 @@ const SelectGroupOne: React.FC = () => {
             setSelectedOption(e.target.value);
             changeTextColor();
           }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
-            isOptionSelected ? "text-black dark:text-white" : ""
-          }`}
+          className={`${isOptionSelected ? "text-black dark:text-white" : ""} relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3
+            outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input
+          dark:focus:border-primary`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
             Select your subject

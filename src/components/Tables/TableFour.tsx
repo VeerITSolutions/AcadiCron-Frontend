@@ -52,7 +52,7 @@ const TableFour: React.FC = () => {
         <div className="mb-6 flex justify-between">
           <div>
             <h4 className="text-title-sm2 font-bold text-black dark:text-white">
-              Top Channels
+            August 12 – 18 2024
             </h4>
           </div>
           <DropdownDefault />
@@ -84,11 +84,12 @@ const TableFour: React.FC = () => {
 
           {brandData.map((brand, key) => (
             <div
-              className={`grid grid-cols-3 sm:grid-cols-4 ${
+              className={`${
                 key === brandData.length - 1
                   ? ""
-                  : "border-b border-stroke dark:border-strokedark"
-              }`}
+                  : "border-b dark:border-strokedark"
+              } grid grid-cols-3 border-stroke
+              sm:grid-cols-4`}
               key={key}
             >
               <div className="flex items-center gap-3 p-2.5 xl:p-5">

@@ -19,14 +19,14 @@ const CheckboxFour = () => {
             }}
           />
           <div
-            className={`mr-4 flex h-5 w-5 items-center justify-center rounded-full border ${
-              isChecked && "border-primary"
-            }`}
+            className={`${isChecked && "border-primary"} mr-4 flex h-5 w-5
+              items-center justify-center rounded-full
+            border`}
           >
             <span
-              className={`h-2.5 w-2.5 rounded-full bg-transparent ${
-                isChecked && "!bg-primary"
-              }`}
+              className={`${isChecked && "!bg-primary"}
+                h-2.5 w-2.5 rounded-full
+              bg-transparent`}
             >
               {" "}
             </span>
