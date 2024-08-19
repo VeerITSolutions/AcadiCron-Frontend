@@ -158,8 +158,8 @@ const menuGroups = [
           { label: "Promote Students", route: "/admin/stdtransfer" },
           { label: "Subject Group", route: "/admin/subjectgroup" },
           { label: "Subjects", route: "/admin/subject" },
-          { label: "Class", route: "/classes" },
-          { label: "Sections", route: "/sections" },
+          { label: "Class", route: "/admin/classes_section" },
+          { label: "Sections", route: "/admin/sections" },
         ],
       },
       {
