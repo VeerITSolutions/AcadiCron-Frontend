@@ -5,12 +5,17 @@ import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import User from "@/components/User/User";
 
 const student_admission = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  return <DefaultLayout>Student Admission</DefaultLayout>;
+  return (
+    <DefaultLayout>
+      <User />
+    </DefaultLayout>
+  );
 };
 
 export default student_admission;
