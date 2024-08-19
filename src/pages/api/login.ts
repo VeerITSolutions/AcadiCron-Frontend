@@ -6,7 +6,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const { email, password } = req.body;
 
     // Simulate authentication logic
-    if (email == 'pranay.l@veerit.com' && password == '12345') {
+    if (email === 'pranay.l@veerit.com' && password === '12345') {
       const token = 'dummy-token'; // Simulate a generated token
       return res.status(200).json({ token });
     }

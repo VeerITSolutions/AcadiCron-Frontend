@@ -214,9 +214,8 @@ const LoginPage = () => {
                     type="email"
                     placeholder="Enter your email"
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value="pranay.l@veerit.com"
+                    /* value="pranay.l@veerit.com" */
                     onChange={(e) => setEmail(e.target.value)}
-                    required
                   />
 
                   <span className="absolute right-4 top-4">
@@ -248,9 +247,8 @@ const LoginPage = () => {
                     type="password"
                     placeholder=""
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value={12345}
+                    /* value={12345} */
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                   />
                   {error && <p style={{ color: "red" }}>{error}</p>}
                   <span className="absolute right-4 top-4">
