@@ -221,7 +221,7 @@ const menuGroups = [
         ),
         label: "Communicate",
         route: "#",
-        children: [{ label: " Notice Board", route: "/notic_board" }],
+        children: [{ label: " Notice Board", route: "/admin/notic_board" }],
       },
       {
         icon: (
@@ -243,11 +243,14 @@ const menuGroups = [
         label: "Download Center",
         route: "#",
         children: [
-          { label: "Upload Content", route: "/admin/content" },
-          { label: "Assignments", route: "/admin/content/assignment" },
-          { label: "Study Material", route: "/admin/content/studymaterial" },
-          { label: "Syllabus", route: "/admin/content/syllabus" },
-          { label: "Other Downloads", route: "/admin/content/other" },
+          { label: "Upload Content", route: "/admin/content_section" },
+          { label: "Assignments", route: "/admin/content_section/assignment" },
+          {
+            label: "Study Material",
+            route: "/admin/content_section/studymaterial",
+          },
+          { label: "Syllabus", route: "/admin/content_section/syllabus" },
+          { label: "Other Downloads", route: "/admin/content_section/other_section" },
         ],
       },
       {
@@ -294,7 +297,7 @@ const menuGroups = [
         label: "Certificate",
         route: "#",
         children: [
-          { label: "Student Certificate", route: "/admin/certificate" },
+          { label: "Student Certificate", route: "/admin/certificate_section" },
           {
             label: "Generate Certificate",
             route: "/admin/generatecertificate",
