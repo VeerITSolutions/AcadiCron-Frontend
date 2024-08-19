@@ -1,5 +1,6 @@
 
 // components/LogoutButton.js
+"use client"; // Add this at the top of the file
 import { useRouter } from 'next/router';
 
 const LogoutButton = () => {
