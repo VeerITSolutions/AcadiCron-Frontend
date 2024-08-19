@@ -8,10 +8,7 @@ import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 /* import { Metadata } from "next"; */
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-/* export const metadata: Metadata = {
-  title: " SignIn Page ",
-  description: "SignIn Page",
-}; */
+import styles from "./page.module.css";
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -46,7 +43,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className={styles.loginContainer}>
       <div className="flex flex-wrap items-center">
         <div className=" w-full ">
           <div className="px-26 py-17.5 text-center">
