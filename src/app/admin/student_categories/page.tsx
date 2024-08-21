@@ -1,6 +1,8 @@
 "use client"; // Add this at the top of the file
-import { useState } from "react";
-import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+// This replaces `useRouter` from 'next/router' in the app directory
 import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 
@@ -9,9 +11,99 @@ import { TabTwoTone } from "@mui/icons-material";
 import TableOne from "@/components/Tables/TableOne";
 import TableOneDynamic from "@/components/Tables/TableOneDynamic";
 import MUIDataTable from "mui-datatables";
+import { fetchStudentData } from "@/services/studentService";
 const student_categories = () => {
   const [error, setError] = useState<string | null>(null);
+
+  /* here for fetch logic  */
+  const [data, setData] = useState<Array<Array<string>>>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
+  const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+
+  const token = localStorage.getItem("authToken") || "";
+
+  const formatStudentData = (students: any[]) => {
+    return students.map((student: any) => [
+      student.admission_no,
+      `${student.firstname.trim()} ${student.lastname.trim()}`,
+      student.class || "N/A",
+      student.category_id,
+      student.mobileno,
+      "View",
+    ]);
+  };
+
+  const fetchData = async (
+    currentPage: number,
+    rowsPerPage: number,
+    selectedClass?: string,
+    selectedSection?: string,
+    keyword?: string,
+  ) => {
+    try {
+      const result = await fetchStudentData(
+        currentPage + 1,
+        rowsPerPage,
+        selectedClass,
+        selectedSection,
+        keyword,
+      );
+      setTotalCount(result.totalCount);
+      const formattedData = formatStudentData(result.data);
+      setData(formattedData);
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
+    setPage(0);
+  };
+
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
+  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.target.value);
+  };
+
+  const handleSearch = () => {
+    setPage(0); // Reset to first page on search
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  /* here for fetch logic end  */
 
   const columns = ["Category", "Category Id", "Action"];
 
@@ -91,17 +183,17 @@ const student_categories = () => {
             ; */}
 
             <MUIDataTable
-              title={"Student List"}
+              title={"Category List"}
               data={brandData}
               columns={columns}
-              /*  options={{
+              options={{
                 ...options,
                 count: totalCount,
                 page: page,
                 rowsPerPage: rowsPerPage,
                 onChangePage: handlePageChange,
                 onChangeRowsPerPage: handleRowsPerPageChange,
-              }} */
+              }}
             />
           </div>
         </div>
