@@ -6,7 +6,7 @@ import apiClient from "./apiClient";
 
 export const createCategory = async (category: string): Promise<any> => {
   try {
-    const response = await apiClient.post("/categories", { category });
+    const response = await apiClient.post("/category", { category });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
