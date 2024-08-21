@@ -1,40 +1,26 @@
-"use client"; // Add this at the top of the file
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-// This replaces `useRouter` from 'next/router' in the app directory
-import LogoutButton from "@/components/LogoutButton";
-import React from "react";
-
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { TabTwoTone } from "@mui/icons-material";
-import TableOne from "@/components/Tables/TableOne";
-import TableOneDynamic from "@/components/Tables/TableOneDynamic";
 import MUIDataTable from "mui-datatables";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
+import { createCategory } from "@/services/categoryService"; // Import the service function
+
 const student_categories = () => {
   const [error, setError] = useState<string | null>(null);
-
-  /* here for fetch logic  */
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
-  );
-  const [keyword, setKeyword] = useState<string>("");
-  const router = useRouter();
+  const [category, setCategory] = useState<string>("");
 
   const token = localStorage.getItem("authToken") || "";
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.category || "N/A", // Access category from the individual student object
+      student.category || "N/A",
       student.id,
       "View",
     ]);
@@ -47,8 +33,7 @@ const student_categories = () => {
         rowsPerPage,
       );
       setTotalCount(result.totalCount);
-      const formattedData = formatStudentCategoryData(result.data);
-      setData(formattedData);
+      setData(formatStudentCategoryData(result.data));
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -60,6 +45,26 @@ const student_categories = () => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage, token]);
 
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCategory(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const result = await createCategory(category); // Call the imported service function
+      if (result.success) {
+        alert("Category saved successfully");
+        setCategory(""); // Clear the form field after saving
+        fetchData(page, rowsPerPage); // Optionally refresh the data
+      } else {
+        alert("Failed to save category");
+      }
+    } catch (error) {
+      console.error("An error occurred", error);
+    }
+  };
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -69,51 +74,31 @@ const student_categories = () => {
     setPage(0);
   };
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
-  };
-
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
-  const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage);
-  };
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
-  /* here for fetch logic end  */
-
   const columns = ["Category", "Category Id", "Action"];
-
   const options = {
     filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
+    count: totalCount,
+    page: page,
+    rowsPerPage: rowsPerPage,
+    onChangePage: handlePageChange,
+    onChangeRowsPerPage: handleRowsPerPageChange,
   };
 
   return (
     <DefaultLayout>
-      <>
-        {/* <Breadcrumb pageName="FormElements" /> */}
-
-        <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
-          <div className="flex flex-col gap-9">
-            {/* <!-- Input Fields --> */}
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Create Category
-                </h3>
+      <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+        <div className="flex flex-col gap-9">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Create Category
+              </h3>
+              <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -122,42 +107,29 @@ const student_categories = () => {
                     <input
                       name="category"
                       type="text"
-                      placeholder=""
+                      value={category}
+                      onChange={handleCategoryChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
                 </div>
                 <div>
-                  <button>Save</button>
+                  <button type="submit">Save</button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
-          <div className="flex flex-col gap-9">
-            {/* <TableOneDynamic
-              title="Category List
-"
-              headers={headers}
-              brandData={brandData}
-            />
-            ; */}
-
-            <MUIDataTable
-              title={"Category List"}
-              data={data}
-              columns={columns}
-              options={{
-                ...options,
-                count: totalCount,
-                page: page,
-                rowsPerPage: rowsPerPage,
-                onChangePage: handlePageChange,
-                onChangeRowsPerPage: handleRowsPerPageChange,
-              }}
-            />
-          </div>
         </div>
-      </>
+
+        <div className="flex flex-col gap-9">
+          <MUIDataTable
+            title={"Category List"}
+            data={data}
+            columns={columns}
+            options={options}
+          />
+        </div>
+      </div>
     </DefaultLayout>
   );
 };
