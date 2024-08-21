@@ -11,7 +11,7 @@ import { TabTwoTone } from "@mui/icons-material";
 import TableOne from "@/components/Tables/TableOne";
 import TableOneDynamic from "@/components/Tables/TableOneDynamic";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
+import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 const student_categories = () => {
   const [error, setError] = useState<string | null>(null);
 
@@ -32,34 +32,24 @@ const student_categories = () => {
 
   const token = localStorage.getItem("authToken") || "";
 
-  const formatStudentData = (students: any[]) => {
+  const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      student.id,
+      student.category || "N/A",
+      student.is_active,
+      student.created_at,
       "View",
     ]);
   };
 
-  const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
-  ) => {
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentData(
+      const result = await fetchStudentCategoryData(
         currentPage + 1,
         rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
       );
       setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
+      const formattedData = formatStudentCategoryData(result.data);
       setData(formattedData);
       setLoading(false);
     } catch (error: any) {
@@ -69,8 +59,8 @@ const student_categories = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage, token]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -184,7 +174,7 @@ const student_categories = () => {
 
             <MUIDataTable
               title={"Category List"}
-              data={brandData}
+              data={data}
               columns={columns}
               options={{
                 ...options,
