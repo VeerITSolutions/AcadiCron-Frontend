@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService"; // Import the updated service
+import { fetchStudentData } from "@/services/studentService";
 
 const columns = [
   "Admission No",
@@ -21,18 +21,18 @@ const options = {
   responsive: "standard",
 };
 
-const student_details = () => {
+const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(0); // Tracks current page
-  const [rowsPerPage, setRowsPerPage] = useState(10); // Tracks rows per page
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
   const router = useRouter();
 
-  const token = localStorage.getItem("authToken") || ""; // Token retrieval
+  const token = localStorage.getItem("authToken") || "";
 
-  const formatStudentData = (paginatedData: any) => {
-    const students = paginatedData.data || [];
+  const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
@@ -45,7 +45,8 @@ const student_details = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentData(currentPage + 1, rowsPerPage); // Adjust for 0-based index
+      const result = await fetchStudentData(currentPage + 1, rowsPerPage);
+      setTotalCount(result.totalCount); // Assuming result includes totalCount
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
       setLoading(false);
@@ -65,7 +66,7 @@ const student_details = () => {
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
-    setPage(0); // Reset to first page on rows per page change
+    setPage(0);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -79,7 +80,7 @@ const student_details = () => {
         columns={columns}
         options={{
           ...options,
-          count: 100, // Total number of records (can be dynamic)
+          count: totalCount, // Use dynamic total count
           page: page,
           rowsPerPage: rowsPerPage,
           onChangePage: handlePageChange,
@@ -90,4 +91,4 @@ const student_details = () => {
   );
 };
 
-export default student_details;
+export default StudentDetails;
