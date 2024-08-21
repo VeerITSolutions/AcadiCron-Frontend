@@ -8,10 +8,18 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { TabTwoTone } from "@mui/icons-material";
 import TableOne from "@/components/Tables/TableOne";
 import TableOneDynamic from "@/components/Tables/TableOneDynamic";
-
+import MUIDataTable from "mui-datatables";
 const student_categories = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  const columns = ["Category", "Category Id", "Action"];
+
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+    responsive: "standard",
+  };
 
   const brandData: BRAND[] = [
     {
@@ -40,8 +48,6 @@ const student_categories = () => {
       visitors: 3.5,
     },
   ];
-
-  const headers = ["Category", "Category Id", "Action"];
 
   return (
     <DefaultLayout>
@@ -76,13 +82,27 @@ const student_categories = () => {
             </div>
           </div>
           <div className="flex flex-col gap-9">
-            <TableOneDynamic
+            {/* <TableOneDynamic
               title="Category List
 "
               headers={headers}
               brandData={brandData}
             />
-            ;
+            ; */}
+
+            <MUIDataTable
+              title={"Student List"}
+              data={brandData}
+              columns={columns}
+              /*  options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }} */
+            />
           </div>
         </div>
       </>
