@@ -34,10 +34,8 @@ const student_categories = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
+      student.category || "N/A", // Access category from the individual student object
       student.id,
-      student.category || "N/A",
-      student.is_active,
-      student.created_at,
       "View",
     ]);
   };
@@ -87,7 +85,7 @@ const student_categories = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -102,34 +100,6 @@ const student_categories = () => {
     serverSide: true,
     responsive: "standard",
   };
-
-  const brandData: BRAND[] = [
-    {
-      logo: "/images/brand/brand-01.svg",
-      name: "Google",
-      visitors: 3.5,
-    },
-    {
-      logo: "/images/brand/brand-02.svg",
-      name: "Twitter",
-      visitors: 2.2,
-    },
-    {
-      logo: "/images/brand/brand-03.svg",
-      name: "Github",
-      visitors: 2.1,
-    },
-    {
-      logo: "/images/brand/brand-04.svg",
-      name: "Vimeo",
-      visitors: 1.5,
-    },
-    {
-      logo: "/images/brand/brand-05.svg",
-      name: "Facebook",
-      visitors: 3.5,
-    },
-  ];
 
   return (
     <DefaultLayout>
