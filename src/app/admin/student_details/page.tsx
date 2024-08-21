@@ -141,19 +141,22 @@ const StudentDetails = () => {
               {/* Add more section options here */}
             </select>
           </label>
+          <div className={styles.searchGroup}>
+            <input
+              type="text"
+              placeholder="Search By Keyword"
+              value={keyword}
+              onChange={handleKeywordChange}
+              className={styles.searchInput}
+            />
+            <button onClick={handleSearch} className={styles.searchButton}>
+              Search
+            </button>
+          </div>
         </div>
-        <div className={styles.searchGroup}>
-          <input
-            type="text"
-            placeholder="Search By Keyword"
-            value={keyword}
-            onChange={handleKeywordChange}
-            className={styles.searchInput}
-          />
-          <button onClick={handleSearch} className={styles.searchButton}>
-            Search
-          </button>
-        </div>
+        {/*  <div className={styles.searchGroup}>
+
+        </div> */}
       </div>
       <MUIDataTable
         title={"Student List"}
