@@ -14,6 +14,7 @@
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "apexcharts": "^3.45.2",
+    "axios": "^1.7.4",
     "flatpickr": "^4.6.13",
     "jsvectormap": "^1.6.0",
     "mui-datatables": "^4.3.0",
