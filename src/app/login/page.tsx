@@ -46,7 +46,7 @@ const LoginPage = () => {
     <div className={styles.loginContainer}>
       <div className="flex flex-wrap items-center">
         <div className=" w-full ">
-          <div className="px-26 py-17.5 text-center">
+          <div className=" py-17.5 text-center">
             <Link className="mb-5.5 inline-block" href="/">
               <Image
                 className="hidden dark:block"
@@ -68,7 +68,7 @@ const LoginPage = () => {
                 Admin Login
               </h2>
 
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} className={styles.login}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email

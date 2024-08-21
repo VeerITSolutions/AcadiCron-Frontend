@@ -12,3 +12,17 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.login {
+  padding: 50px;
+  background: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+@media (max-width:767px) {
+  .login {
+    padding: 50px 20px;
+  }
+}
