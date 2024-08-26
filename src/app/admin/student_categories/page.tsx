@@ -200,7 +200,9 @@ const StudentCategories = () => {
                   </div>
                 </div>
                 <div>
-                  <button type="submit">Save</button>
+                  <button type="submit" className="">
+                    Save
+                  </button>
                 </div>
               </form>
             </div>
