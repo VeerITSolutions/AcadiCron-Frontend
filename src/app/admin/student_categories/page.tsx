@@ -1,15 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
-import { createCategory } from "@/services/categoryService"; // Import the service function
+import { createCategory } from "@/services/categoryService";
+import { deleteStudentCategoryData } from "@/services/studentCategoryService";
+import { Edit, Delete } from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
+import { toast } from "react-toastify";
 
-const student_categories = () => {
+const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<Array<Array<string>>>([]);
+  const [data, setData] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -17,14 +20,6 @@ const student_categories = () => {
   const [category, setCategory] = useState<string>("");
 
   const token = localStorage.getItem("authToken") || "";
-
-  const formatStudentCategoryData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.category || "N/A",
-      student.id,
-      "View",
-    ]);
-  };
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -41,6 +36,39 @@ const student_categories = () => {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteStudentCategoryData(id);
+      toast.success("Delete successful");
+      // Refresh the data after deletion
+      fetchData(page, rowsPerPage);
+    } catch (error) {
+      console.error("Delete failed", error);
+    }
+  };
+
+  const handleEdit = (id: number) => {
+    console.log("Editing student category with ID:", id);
+  };
+
+  const formatStudentCategoryData = (students: any[]) => {
+    return students.map((student: any) => [
+      student.category || "N/A",
+      student.id,
+      <div key={student.id}>
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="edit">
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
+    ]);
+  };
+
   useEffect(() => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage, token]);
@@ -52,13 +80,13 @@ const student_categories = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await createCategory(category); // Call the imported service function
+      const result = await createCategory(category);
       if (result.success) {
-        alert("Category saved successfully");
-        setCategory(""); // Clear the form field after saving
-        fetchData(page, rowsPerPage); // Optionally refresh the data
+        toast.success("Category saved successfully");
+        setCategory("");
+        fetchData(page, rowsPerPage);
       } else {
-        alert("Failed to save category");
+        toast.success("Failed to save category");
       }
     } catch (error) {
       console.error("An error occurred", error);
@@ -77,7 +105,7 @@ const student_categories = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
-  const columns = ["Category", "Category Id", "Action"];
+  const columns = ["Category", "Category Id", "Actions"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -134,4 +162,4 @@ const student_categories = () => {
   );
 };
 
-export default student_categories;
+export default StudentCategories;

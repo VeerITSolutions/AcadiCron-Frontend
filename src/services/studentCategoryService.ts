@@ -9,3 +9,16 @@ export const fetchStudentCategoryData = async (page: number, perPage: number) =>
   });
   return response.data;
 };
+
+
+// Delete a student category by ID
+export const deleteStudentCategoryData = async (id: number) => {
+  const response = await apiClient.delete(`/category/${id}`);
+  return response.data;
+};
+
+// Edit a student category by ID
+export const editStudentCategoryData = async (id: number, data: object) => {
+  const response = await apiClient.put(`/category/${id}`, data);
+  return response.data;
+};
