@@ -6,7 +6,23 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
-
+import {
+  Edit,
+  Delete,
+  Visibility,
+  TextFields,
+  AttachMoney,
+} from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from "@mui/material";
+import { toast } from "react-toastify";
 const columns = [
   "Admission No",
   "Student Name",
@@ -47,7 +63,20 @@ const StudentDetails = () => {
       student.class || "N/A",
       student.category_id,
       student.mobileno,
-      "View",
+      <div key={student.id}>
+        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+          <Visibility />
+        </IconButton>
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleAddFees(student.id)}
+          aria-label="Add Fee"
+        >
+          <AttachMoney />
+        </IconButton>
+      </div>,
     ]);
   };
 
@@ -74,6 +103,17 @@ const StudentDetails = () => {
       setError(error.message);
       setLoading(false);
     }
+  };
+  const handleDelete = async (id: number) => {
+    // Assuming id is the student_id
+    router.push(`/admin/student/${id}`);
+  };
+
+  const handleEdit = (id: number) => {
+    router.push(`/admin/student/edit/${id}`);
+  };
+  const handleAddFees = (id: number) => {
+    router.push(`/admin/student/fees/${id}`);
   };
 
   useEffect(() => {
