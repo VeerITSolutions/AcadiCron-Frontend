@@ -4,8 +4,11 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
-import { createCategory, updateCategory } from "@/services/categoryService";
-import { deleteStudentCategoryData } from "@/services/studentCategoryService";
+import { createCategory } from "@/services/categoryService";
+import {
+  deleteStudentCategoryData,
+  editStudentCategoryData,
+} from "@/services/studentCategoryService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import {
@@ -100,7 +103,10 @@ const StudentCategories = () => {
     try {
       if (isEditing && editCategoryId !== null) {
         // Edit existing category
-        const result = await updateCategory(editCategoryId, category);
+        const result = await editStudentCategoryData(
+          editCategoryId,
+          categorynew,
+        );
         if (result.success) {
           toast.success("Category updated successfully");
         } else {
