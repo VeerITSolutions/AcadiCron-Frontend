@@ -101,6 +101,24 @@ const StudentCategories = () => {
 
   const handleSubmit = async () => {
     try {
+      const result = await createCategory(category);
+      if (result.success) {
+        toast.success("Category saved successfully");
+      } else {
+        toast.error("Failed to save category");
+      }
+      setCategory("");
+      setIsEditing(false);
+      setEditCategoryId(null);
+      setOpen(false); // Close the modal
+      fetchData(page, rowsPerPage); // Refresh data after submit
+    } catch (error) {
+      console.error("An error occurred", error);
+    }
+  };
+
+  const handleEditSubmit = async () => {
+    try {
       if (isEditing && editCategoryId !== null) {
         // Edit existing category
         const result = await editStudentCategoryData(
@@ -113,13 +131,6 @@ const StudentCategories = () => {
           toast.error("Failed to update category");
         }
       } else {
-        // Create new category
-        const result = await createCategory(category);
-        if (result.success) {
-          toast.success("Category saved successfully");
-        } else {
-          toast.error("Failed to save category");
-        }
       }
       setCategory("");
       setIsEditing(false);
@@ -222,9 +233,7 @@ const StudentCategories = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleSubmit}>
-            {isEditing ? "Update" : "Save"}
-          </Button>
+          <Button onClick={handleEditSubmit}>Update</Button>
         </DialogActions>
       </Dialog>
     </DefaultLayout>
