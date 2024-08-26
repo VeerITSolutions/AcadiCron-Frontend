@@ -4,10 +4,18 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
-import { createCategory } from "@/services/categoryService";
+import { createCategory, updateCategory } from "@/services/categoryService";
 import { deleteStudentCategoryData } from "@/services/studentCategoryService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from "@mui/material";
 import { toast } from "react-toastify";
 
 const StudentCategories = () => {
@@ -18,6 +26,12 @@ const StudentCategories = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [category, setCategory] = useState<string>("");
+  const [categorynew, setCategorynew] = useState<string>("");
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+
+  // State for modal visibility
+  const [open, setOpen] = useState<boolean>(false);
 
   const token = localStorage.getItem("authToken") || "";
 
@@ -40,15 +54,17 @@ const StudentCategories = () => {
     try {
       await deleteStudentCategoryData(id);
       toast.success("Delete successful");
-      // Refresh the data after deletion
       fetchData(page, rowsPerPage);
     } catch (error) {
       console.error("Delete failed", error);
     }
   };
 
-  const handleEdit = (id: number) => {
-    console.log("Editing student category with ID:", id);
+  const handleEdit = (id: number, categoryName: string) => {
+    setIsEditing(true);
+    setEditCategoryId(id);
+    setCategorynew(categoryName);
+    setOpen(true); // Open the modal
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -56,7 +72,10 @@ const StudentCategories = () => {
       student.category || "N/A",
       student.id,
       <div key={student.id}>
-        <IconButton onClick={() => handleEdit(student.id)} aria-label="edit">
+        <IconButton
+          onClick={() => handleEdit(student.id, student.category)}
+          aria-label="edit"
+        >
           <Edit />
         </IconButton>
         <IconButton
@@ -77,17 +96,30 @@ const StudentCategories = () => {
     setCategory(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
-      const result = await createCategory(category);
-      if (result.success) {
-        toast.success("Category saved successfully");
-        setCategory("");
-        fetchData(page, rowsPerPage);
+      if (isEditing && editCategoryId !== null) {
+        // Edit existing category
+        const result = await updateCategory(editCategoryId, category);
+        if (result.success) {
+          toast.success("Category updated successfully");
+        } else {
+          toast.error("Failed to update category");
+        }
       } else {
-        toast.success("Failed to save category");
+        // Create new category
+        const result = await createCategory(category);
+        if (result.success) {
+          toast.success("Category saved successfully");
+        } else {
+          toast.error("Failed to save category");
+        }
       }
+      setCategory("");
+      setIsEditing(false);
+      setEditCategoryId(null);
+      setOpen(false); // Close the modal
+      fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
     }
@@ -126,7 +158,12 @@ const StudentCategories = () => {
               <h3 className="font-medium text-black dark:text-white">
                 Create Category
               </h3>
-              <form onSubmit={handleSubmit}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}
+              >
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -158,6 +195,32 @@ const StudentCategories = () => {
           />
         </div>
       </div>
+
+      {/* Edit Category Modal */}
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>
+          {isEditing ? "Edit Category" : "Create Category"}
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="category"
+            label="Category"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={categorynew}
+            onChange={handleCategoryChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={handleSubmit}>
+            {isEditing ? "Update" : "Save"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </DefaultLayout>
   );
 };
