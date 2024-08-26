@@ -99,6 +99,10 @@ const StudentCategories = () => {
     setCategory(e.target.value);
   };
 
+  const handleEditCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCategorynew(e.target.value);
+  };
+
   const handleSubmit = async () => {
     try {
       const result = await createCategory(category);
@@ -228,7 +232,7 @@ const StudentCategories = () => {
             fullWidth
             variant="standard"
             value={categorynew}
-            onChange={handleCategoryChange}
+            onChange={handleEditCategoryChange}
           />
         </DialogContent>
         <DialogActions>
