@@ -17,12 +17,8 @@ import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 const User = () => {
   return (
     <>
-<<<<<<< HEAD
-      <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
-=======
       {/* <Breadcrumb pageName="FormElements" /> */}
       <div className="student_admission_form grid ">
->>>>>>> c6e1cf487161a39ec291c7fa40c167e6f3dbf6a2
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
