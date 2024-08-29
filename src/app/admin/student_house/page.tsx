@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentCategoryData } from "@/services/studentCategoryService";
-import { createCategory } from "@/services/categoryService";
 import {
-  deleteStudentCategoryData,
-  editStudentCategoryData,
-} from "@/services/studentCategoryService";
+  fetchStudentHouseData,
+  createStudentHouse,
+  deleteStudentHouseData,
+  editStudentHouseData,
+} from "@/services/studentHouseService";
+
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import {
@@ -44,10 +45,7 @@ const student_house = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentCategoryData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchStudentHouseData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -59,7 +57,7 @@ const student_house = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteStudentCategoryData(id);
+      await deleteStudentHouseData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -77,12 +75,13 @@ const student_house = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.category || "N/A",
+      student.house_name || "N/A",
+      student.description || "N/A",
       student.id,
       <div key={student.id}>
         <IconButton
           onClick={() =>
-            handleEdit(student.id, student.name, student.description)
+            handleEdit(student.id, student.house_name, student.description)
           }
           aria-label="edit"
         >
@@ -122,7 +121,7 @@ const student_house = () => {
 
   const handleSubmit = async () => {
     try {
-      const result = await createCategory(category);
+      const result = await createStudentHouse(category);
       if (result.success) {
         toast.success("Student House saved successfully");
       } else {
@@ -142,10 +141,7 @@ const student_house = () => {
     try {
       if (isEditing && editCategoryId !== null) {
         // Edit existing category
-        const result = await editStudentCategoryData(
-          editCategoryId,
-          categorynew,
-        );
+        const result = await editStudentHouseData(editCategoryId, categorynew);
         if (result.success) {
           toast.success("Student House updated successfully");
         } else {
