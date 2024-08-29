@@ -12,14 +12,6 @@ import {
 
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 
@@ -38,9 +30,6 @@ const FeesMaster = () => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-
-  // State for modal visibility
-  const [open, setOpen] = useState<boolean>(false);
 
   const token = localStorage.getItem("authToken") || "";
 
@@ -74,7 +63,6 @@ const FeesMaster = () => {
     setIsEditing(true);
     setEditCategoryId(id);
     setFormData({ name: namevalue, description: descriptionvalue });
-    setOpen(true); // Open the modal
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -106,38 +94,16 @@ const FeesMaster = () => {
   }, [page, rowsPerPage, token]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async () => {
     try {
-      const result = await createStudentHouse(
-        formData.name,
-        formData.description,
-      );
-      if (result.success) {
-        toast.success("Student House saved successfully");
-      } else {
-        toast.error("Failed to save category");
-      }
-
-      setFormData({ name: "", description: "" });
-      setIsEditing(false);
-      setEditCategoryId(null);
-      setOpen(false); // Close the modal
-      fetchData(page, rowsPerPage); // Refresh data after submit
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  };
-
-  const handleEditSubmit = async () => {
-    try {
       if (isEditing && editCategoryId !== null) {
-        // Edit existing category
         const result = await editStudentHouseData(
           editCategoryId,
           formData.name,
@@ -148,11 +114,21 @@ const FeesMaster = () => {
         } else {
           toast.error("Failed to update Student House");
         }
+      } else {
+        const result = await createStudentHouse(
+          formData.name,
+          formData.description,
+        );
+        if (result.success) {
+          toast.success("Student House saved successfully");
+        } else {
+          toast.error("Failed to save Student House");
+        }
       }
+
       setFormData({ name: "", description: "" });
       setIsEditing(false);
       setEditCategoryId(null);
-      setOpen(false); // Close the modal
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
@@ -190,7 +166,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Add Student House
+                {isEditing ? "Edit Student House" : "Add Student House"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -228,7 +204,7 @@ const FeesMaster = () => {
                 </div>
                 <div>
                   <button type="submit" className="">
-                    Save
+                    {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
               </form>
@@ -245,43 +221,6 @@ const FeesMaster = () => {
           />
         </div>
       </div>
-
-      {/* Edit Category Modal */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>
-          {isEditing ? "Edit Student House" : "Create Category"}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-            variant="standard"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="description"
-            label="Description"
-            type="text"
-            fullWidth
-            variant="standard"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleEditSubmit}>Update</Button>
-        </DialogActions>
-      </Dialog>
     </DefaultLayout>
   );
 };
