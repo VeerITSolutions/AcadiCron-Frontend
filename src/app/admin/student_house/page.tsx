@@ -65,11 +65,15 @@ const student_house = () => {
     }
   };
 
-  const handleEdit = (id: number, name: string, description: string) => {
+  const handleEdit = (
+    id: number,
+    namevalue: string,
+    descriptionvalue: string,
+  ) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setNamenew(name);
-    setDescriptionnew(description);
+    setNamenew(namevalue);
+    setDescriptionnew(descriptionvalue);
     setOpen(true); // Open the modal
   };
 
@@ -110,24 +114,26 @@ const student_house = () => {
   };
 
   const handleEditNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescriptionnew(e.target.value);
+    setNamenew(e.target.value);
   };
 
   const handleEditDescriptionChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setNamenew(e.target.value);
+    setDescriptionnew(e.target.value);
   };
 
   const handleSubmit = async () => {
     try {
-      const result = await createStudentHouse(category);
+      const result = await createStudentHouse(name, description);
       if (result.success) {
         toast.success("Student House saved successfully");
       } else {
         toast.error("Failed to save category");
       }
-      setCategory("");
+
+      setName("");
+      setDescription("");
       setIsEditing(false);
       setEditCategoryId(null);
       setOpen(false); // Close the modal
@@ -141,7 +147,11 @@ const student_house = () => {
     try {
       if (isEditing && editCategoryId !== null) {
         // Edit existing category
-        const result = await editStudentHouseData(editCategoryId, categorynew);
+        const result = await editStudentHouseData(
+          editCategoryId,
+          namenew,
+          descriptionnew,
+        );
         if (result.success) {
           toast.success("Student House updated successfully");
         } else {
