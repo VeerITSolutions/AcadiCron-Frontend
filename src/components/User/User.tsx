@@ -13,6 +13,7 @@ import DatePickerTwo from "@/components/FormElements/DatePicker/DatePickerTwo";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import MultiSelect from "@/components/FormElements/MultiSelect";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
+import styles from "./User.module.css";
 
 const User = () => {
   return (
@@ -232,7 +233,7 @@ const User = () => {
                   Student Photo
                 </label>
                 <input
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
                   type="file"
                   name="file"
                   id="file"
@@ -645,7 +646,7 @@ const User = () => {
                   Father Photo
                 </label>
                 <input
-                  className="w-full"
+                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
                   type="file"
                   name="father_pic"
                   id="file"
@@ -692,27 +693,43 @@ const User = () => {
                   Mother Photo
                 </label>
                 <input
-                  className="w-full"
+                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
                   type="file"
                   name="mother_pic"
                   id="file"
                 />
               </div>
               <div className="field">
-                <label>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   If Guardian Is<span className="required">*</span>
                   &nbsp;&nbsp;&nbsp;
                 </label>
-                <label className="radio-inline">
-                  <input type="radio" name="guardian_is" value="father" />{" "}
+                <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                  <input
+                    type="radio"
+                    className={` ${styles["radio"]}`}
+                    name="guardian_is"
+                    value="father"
+                  />{" "}
                   Father{" "}
                 </label>
-                <label className="radio-inline">
-                  <input type="radio" name="guardian_is" value="mother" />{" "}
+                <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                  <input
+                    type="radio"
+                    className={` ${styles["radio"]}`}
+                    name="guardian_is"
+                    value="mother"
+                  />{" "}
                   Mother{" "}
                 </label>
-                <label className="radio-inline">
-                  <input type="radio" name="guardian_is" value="other" /> Other{" "}
+                <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                  <input
+                    type="radio"
+                    className={` ${styles["radio"]}`}
+                    name="guardian_is"
+                    value="other"
+                  />{" "}
+                  Other{" "}
                 </label>
                 <span className="text-danger"></span>
               </div>
@@ -757,7 +774,7 @@ const User = () => {
                   Guardian Photo
                 </label>
                 <input
-                  className="w-full"
+                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
                   type="file"
                   name="guardian_pic"
                   id="file"
@@ -795,7 +812,7 @@ const User = () => {
                   id="guardian_address"
                   name="guardian_address"
                   placeholder=""
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 ></textarea>
               </div>
             </div>
@@ -809,13 +826,21 @@ const User = () => {
             <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  <input type="checkbox" id="autofill_current_address" />
+                  <input
+                    type="checkbox"
+                    className={`${styles["checkbox"]}`}
+                    id="autofill_current_address"
+                  />
                   If Guardian Address is Current Address
                 </label>
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  <input type="checkbox" id="autofill_address" />
+                  <input
+                    type="checkbox"
+                    className={`${styles["checkbox"]}`}
+                    id="autofill_address"
+                  />
                   If Permanent Address is Current Address
                 </label>
               </div>
@@ -827,7 +852,7 @@ const User = () => {
                   id="current_address"
                   name="current_address"
                   placeholder=""
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 ></textarea>
               </div>
               <div className="field">
@@ -838,7 +863,7 @@ const User = () => {
                   id="permanent_address"
                   name="permanent_address"
                   placeholder=""
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 ></textarea>
               </div>
             </div>
@@ -915,18 +940,18 @@ const User = () => {
                   RTE
                 </label>
                 <div className="radio">
-                  <label>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     <input
-                      className="radio-inline"
+                      className={`radio-inline ${styles["radio"]}`}
                       type="radio"
                       name="rte"
                       value="Yes"
                     />
                     Yes
                   </label>
-                  <label>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     <input
-                      className="radio-inline"
+                      className={`radio-inline ${styles["radio"]}`}
                       type="radio"
                       name="rte"
                       value="No"
@@ -940,7 +965,7 @@ const User = () => {
                   Previous School Details
                 </label>
                 <textarea
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                   placeholder=""
                   name="previous_school"
                 ></textarea>
@@ -950,7 +975,7 @@ const User = () => {
                   Note
                 </label>
                 <textarea
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                   placeholder=""
                   name="note"
                 ></textarea>
@@ -980,7 +1005,7 @@ const User = () => {
                   id="file1"
                   name="first_doc"
                   type="file"
-                  className="form-control mt-2"
+                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 />
               </div>
 
@@ -1000,7 +1025,7 @@ const User = () => {
                   id="file2"
                   name="second_doc"
                   type="file"
-                  className="form-control mt-2 w-full"
+                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 />
               </div>
 
@@ -1020,7 +1045,7 @@ const User = () => {
                   id="file3"
                   name="third_doc"
                   type="file"
-                  className="form-control mt-2 w-full"
+                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 />
               </div>
 
@@ -1040,7 +1065,7 @@ const User = () => {
                   id="file4"
                   name="fourth_doc"
                   type="file"
-                  className="form-control mt-2 w-full"
+                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 />
               </div>
             </div>
