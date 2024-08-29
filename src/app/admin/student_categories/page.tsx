@@ -20,6 +20,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import Loader from "@/components/common/Loader";
 
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
@@ -155,7 +156,7 @@ const StudentCategories = () => {
     setPage(0);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   const columns = ["Category", "Category Id", "Actions"];

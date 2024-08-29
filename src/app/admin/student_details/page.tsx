@@ -6,6 +6,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
+import Loader from "@/components/common/Loader";
 import {
   Edit,
   Delete,
@@ -148,7 +149,7 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (
@@ -199,7 +200,7 @@ const StudentDetails = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Student List"}
+        title={"Disabled Student"}
         data={data}
         columns={columns}
         options={{
