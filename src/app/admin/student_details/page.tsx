@@ -200,7 +200,7 @@ const StudentDetails = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Student List"}
+        title={"Disabled Student"}
         data={data}
         columns={columns}
         options={{
