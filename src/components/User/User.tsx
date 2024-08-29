@@ -18,12 +18,17 @@ const User = () => {
   return (
     <>
       {/* <Breadcrumb pageName="FormElements" /> */}
-      <div className="student_admission_form grid ">
+      <div className="student_admission_form ">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-title-md2 font-semibold text-black dark:text-white">
+            Student Admission
+          </h2>
+        </div>
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Student Admission
+                Student Details
               </h3>
             </div>
             <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
@@ -590,12 +595,15 @@ const User = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Parent Guardian Detail
-                </h3>
-              </div>
+            </div>
+          </div>
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Parent Guardian Detail
+              </h3>
+            </div>
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Father Name
@@ -637,7 +645,7 @@ const User = () => {
                   Father Photo
                 </label>
                 <input
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full"
                   type="file"
                   name="father_pic"
                   id="file"
@@ -684,7 +692,7 @@ const User = () => {
                   Mother Photo
                 </label>
                 <input
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full"
                   type="file"
                   name="mother_pic"
                   id="file"
@@ -749,7 +757,7 @@ const User = () => {
                   Guardian Photo
                 </label>
                 <input
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full"
                   type="file"
                   name="guardian_pic"
                   id="file"
@@ -790,12 +798,15 @@ const User = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 ></textarea>
               </div>
-
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Student Address Details
-                </h3>
-              </div>
+            </div>
+          </div>
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Student Address Details
+              </h3>
+            </div>
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   <input type="checkbox" id="autofill_current_address" />
@@ -830,12 +841,15 @@ const User = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 ></textarea>
               </div>
-
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Miscellaneous Details
-                </h3>
-              </div>
+            </div>
+          </div>
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Miscellaneous Details
+              </h3>
+            </div>
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Bank Account Number
@@ -941,12 +955,15 @@ const User = () => {
                   name="note"
                 ></textarea>
               </div>
-
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Miscellaneous Details
-                </h3>
-              </div>
+            </div>
+          </div>
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Miscellaneous Details
+              </h3>
+            </div>
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Title 1
@@ -983,7 +1000,7 @@ const User = () => {
                   id="file2"
                   name="second_doc"
                   type="file"
-                  className="form-control mt-2"
+                  className="form-control mt-2 w-full"
                 />
               </div>
 
@@ -1003,7 +1020,7 @@ const User = () => {
                   id="file3"
                   name="third_doc"
                   type="file"
-                  className="form-control mt-2"
+                  className="form-control mt-2 w-full"
                 />
               </div>
 
@@ -1023,10 +1040,15 @@ const User = () => {
                   id="file4"
                   name="fourth_doc"
                   type="file"
-                  className="form-control mt-2"
+                  className="form-control mt-2 w-full"
                 />
               </div>
             </div>
+          </div>
+          <div className="flex">
+            <button className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+              Save
+            </button>
           </div>
         </div>
       </div>
