@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import {
-  fetchStudentHouseData,
-  createStudentHouse,
-  deleteStudentHouseData,
-  editStudentHouseData,
-} from "@/services/studentHouseService";
 
+import {
+  createFeesMaster,
+  deleteFeesMasterData,
+  editFeesMasterData,
+  fetchStudentFeesMasterData,
+} from "@/services/studentFeesMasterService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -41,7 +41,10 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentHouseData(currentPage + 1, rowsPerPage);
+      const result = await fetchStudentFeesMasterData(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -53,7 +56,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteStudentHouseData(id);
+      await deleteFeesMasterData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -143,7 +146,7 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editStudentHouseData(
+        const result = await editFeesMasterData(
           editCategoryId,
 
           formData.id,
@@ -162,7 +165,7 @@ const FeesMaster = () => {
           toast.error("Failed to update Student House");
         }
       } else {
-        const result = await createStudentHouse(
+        const result = await createFeesMaster(
           formData.id,
           formData.fees_group,
           formData.fees_type,
