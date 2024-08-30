@@ -14,7 +14,7 @@ import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
-
+import styles from "./User.module.css";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -245,27 +245,57 @@ const FeesMaster = () => {
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Fees Group *
                     </label>
-                    <input
+
+                    <select
                       name="fees_group"
-                      type="text"
                       value={formData.fees_group}
-                      onChange={handleInputChange}
+                      /* onChange={handleInputChange} */
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
+                    >
+                      <option value="">Select</option>
+                      <option value="A+">A+</option>
+
+                      <option value="B+">B+</option>
+
+                      <option value="AB+">AB+</option>
+
+                      <option value="O-">O-</option>
+
+                      <option value="A-">A-</option>
+
+                      <option value="B-">B-</option>
+
+                      <option value="AB-">AB-</option>
+                    </select>
                   </div>
                 </div>
+
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Fees Type *
                     </label>
-                    <input
-                      name="fees_type"
-                      type="text"
-                      value={formData.fees_type}
-                      onChange={handleInputChange}
+                    <select
+                      name="fees_group"
+                      value={formData.fees_group}
+                      /* onChange={handleInputChange} */
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
+                    >
+                      <option value="">Select</option>
+                      <option value="A+">A+</option>
+
+                      <option value="B+">B+</option>
+
+                      <option value="AB+">AB+</option>
+
+                      <option value="O-">O-</option>
+
+                      <option value="A-">A-</option>
+
+                      <option value="B-">B-</option>
+
+                      <option value="AB-">AB-</option>
+                    </select>
                   </div>
                 </div>
                 <div className="flex flex-col gap-5.5 p-6.5">
@@ -275,7 +305,7 @@ const FeesMaster = () => {
                     </label>
                     <input
                       name="due_date"
-                      type="text"
+                      type="date"
                       value={formData.due_date}
                       onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -301,13 +331,33 @@ const FeesMaster = () => {
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Fine Type
                     </label>
-                    <input
-                      name="fine_type"
-                      type="text"
-                      value={formData.fine_type}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
+                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                      <input
+                        type="radio"
+                        className={` ${styles["radio"]}`}
+                        name="guardian_is"
+                        value="father"
+                      />{" "}
+                      Father{" "}
+                    </label>
+                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                      <input
+                        type="radio"
+                        className={` ${styles["radio"]}`}
+                        name="guardian_is"
+                        value="mother"
+                      />{" "}
+                      Mother{" "}
+                    </label>
+                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                      <input
+                        type="radio"
+                        className={` ${styles["radio"]}`}
+                        name="guardian_is"
+                        value="other"
+                      />{" "}
+                      Other{" "}
+                    </label>
                   </div>
                 </div>
                 <div className="flex flex-col gap-5.5 p-6.5">
