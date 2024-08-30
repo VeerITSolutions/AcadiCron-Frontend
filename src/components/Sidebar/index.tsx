@@ -302,12 +302,12 @@ const menuGroups = [
             label: "Generate Certificate",
             route: "/admin/generatecertificate",
           },
-          {
+         /*  {
             label: "Student ID Card",
             route: "/admin/studentidcard",
             hidden: true,
-          }, // Added hidden property for display:none
-          {
+          }, */ // Added hidden property for display:none
+        /*   {
             label: "Generate ID Card",
             route: "/admin/generateidcard/search",
             hidden: true,
@@ -317,7 +317,7 @@ const menuGroups = [
             label: "Generate Staff ID Card",
             route: "/admin/generatestaffidcard",
             hidden: true,
-          }, // Added hidden property for display:none
+          },  */// Added hidden property for display:none
         ],
       },
     ],
