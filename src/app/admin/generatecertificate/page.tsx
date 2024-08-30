@@ -167,25 +167,26 @@ const StudentDetails = () => {
               {/* Add more section options here */}
             </select>
           </label>
-          <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={styles.searchInput}
-            />
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-          </div>
+          <label className={styles.label}>
+            Certificate
+            <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
+              className={styles.select}
+            >
+              <option value="">TC</option>
+              <option value="SectionA">Sample TC</option>
+              <option value="SectionB">Bonafite</option>
+              {/* Add more section options here */}
+            </select>
+          </label>
         </div>
         {/*  <div className={styles.searchGroup}>
 
         </div> */}
       </div>
       <MUIDataTable
-        title={"Disabled Student"}
+        title={"Generate Certificates"}
         data={data}
         columns={columns}
         options={{
