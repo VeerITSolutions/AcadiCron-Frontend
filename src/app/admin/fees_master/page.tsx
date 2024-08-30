@@ -24,8 +24,14 @@ const FeesMaster = () => {
   const [totalCount, setTotalCount] = useState(0);
 
   const [formData, setFormData] = useState({
-    name: "",
+    fees_group: "",
+    fees_type: "",
+    due_date: "",
+    amount: "",
+    fine_type: "",
+    percentage: "",
     description: "",
+    fine_amount: "",
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -57,23 +63,56 @@ const FeesMaster = () => {
 
   const handleEdit = (
     id: number,
-    namevalue: string,
-    descriptionvalue: string,
+    fees_group_value: string,
+    fees_type_value: string,
+    due_date_value: string,
+    amount_value: string,
+    fine_type_value: string,
+    percentage_value: string,
+    description_value: string,
+    fine_amount_value: string,
   ) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setFormData({ name: namevalue, description: descriptionvalue });
+
+    setFormData({
+      fees_group: fees_group_value,
+      fees_type: fees_type_value,
+      due_date: due_date_value,
+      amount: amount_value,
+      fine_type: fine_type_value,
+      percentage: percentage_value,
+      description: description_value,
+      fine_amount: fine_amount_value,
+    });
   };
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.house_name || "N/A",
-      student.description || "N/A",
       student.id,
+      student.fees_group || "N/A",
+      student.fees_type || "N/A",
+      student.due_date || "N/A",
+      student.amount || "N/A",
+      student.fine_type || "N/A",
+      student.percentage || "N/A",
+      student.description || "N/A",
+      student.fine_amount || "N/A",
+
       <div key={student.id}>
         <IconButton
           onClick={() =>
-            handleEdit(student.id, student.house_name, student.description)
+            handleEdit(
+              student.id,
+              student.fees_group,
+              student.fees_type,
+              student.due_date,
+              student.amount,
+              student.fine_type,
+              student.percentage,
+              student.description,
+              student.fine_amount,
+            )
           }
           aria-label="edit"
         >
@@ -106,8 +145,16 @@ const FeesMaster = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editStudentHouseData(
           editCategoryId,
-          formData.name,
+
+          formData.id,
+          formData.fees_group,
+          formData.fees_type,
+          formData.due_date,
+          formData.amount,
+          formData.fine_type,
+          formData.percentage,
           formData.description,
+          formData.fine_amount,
         );
         if (result.success) {
           toast.success("Student House updated successfully");
@@ -116,8 +163,15 @@ const FeesMaster = () => {
         }
       } else {
         const result = await createStudentHouse(
-          formData.name,
+          formData.id,
+          formData.fees_group,
+          formData.fees_type,
+          formData.due_date,
+          formData.amount,
+          formData.fine_type,
+          formData.percentage,
           formData.description,
+          formData.fine_amount,
         );
         if (result.success) {
           toast.success("Student House saved successfully");
@@ -126,7 +180,17 @@ const FeesMaster = () => {
         }
       }
 
-      setFormData({ name: "", description: "" });
+      setFormData({
+        fees_group: "",
+        fees_type: "",
+        due_date: "",
+        amount: "",
+        fine_type: "",
+        percentage: "",
+        description: "",
+        fine_amount: "",
+      });
+
       setIsEditing(false);
       setEditCategoryId(null);
       fetchData(page, rowsPerPage); // Refresh data after submit
@@ -147,7 +211,7 @@ const FeesMaster = () => {
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
-  const columns = ["Name", "Description", "Student House Id", "Actions"];
+  const columns = ["Fees Group", "Fees Code", "Actions"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -166,7 +230,9 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Student House" : "Add Student House"}
+                {isEditing
+                  ? "Edit Add Fees Master : 2024-25"
+                  : "Add Fees Master : 2024-25"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -177,12 +243,12 @@ const FeesMaster = () => {
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Name
+                      Fees Group *
                     </label>
                     <input
-                      name="name"
+                      name="fees_group"
                       type="text"
-                      value={formData.name}
+                      value={formData.fees_group}
                       onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -191,17 +257,89 @@ const FeesMaster = () => {
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Description
+                      Fees Type *
                     </label>
                     <input
-                      name="description"
+                      name="fees_type"
                       type="text"
-                      value={formData.description}
+                      value={formData.fees_type}
                       onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
                 </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Due Date
+                    </label>
+                    <input
+                      name="due_date"
+                      type="text"
+                      value={formData.due_date}
+                      onChange={handleInputChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Amount *
+                    </label>
+                    <input
+                      name="amount"
+                      type="text"
+                      value={formData.amount}
+                      onChange={handleInputChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Fine Type
+                    </label>
+                    <input
+                      name="fine_type"
+                      type="text"
+                      value={formData.fine_type}
+                      onChange={handleInputChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Percentage *
+                    </label>
+                    <input
+                      name="percentage"
+                      type="text"
+                      value={formData.percentage}
+                      onChange={handleInputChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Fine Amount *
+                    </label>
+                    <input
+                      name="fine_amount"
+                      type="text"
+                      value={formData.fine_amount}
+                      onChange={handleInputChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <button type="submit" className="">
                     {isEditing ? "Update" : "Save"}
@@ -214,7 +352,7 @@ const FeesMaster = () => {
 
         <div className="flex flex-col gap-9">
           <MUIDataTable
-            title={"Student House List"}
+            title={"Add Fees Master : 2024-25"}
             data={data}
             columns={columns}
             options={options}
