@@ -5,6 +5,7 @@ import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import styles from "./MultiClass.module.css"; // Import CSS module
 
 import MUIDataTable from "mui-datatables";
 
@@ -65,6 +66,7 @@ const multi_class_student = () => {
     <DefaultLayout>
       <MUIDataTable
         title={"multi Class Student List"}
+        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         data={data}
         columns={columns}
         options={options}

@@ -188,6 +188,7 @@ const StudentDetails = () => {
         title={"Disabled Student"}
         data={data}
         columns={columns}
+        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         options={{
           ...options,
           count: totalCount,

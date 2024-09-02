@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
+import styles from "./StudentCategories.module.css"; // Import CSS module
 
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
@@ -214,6 +215,7 @@ const StudentCategories = () => {
           <MUIDataTable
             title={"Category List"}
             data={data}
+            className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
             columns={columns}
             options={options}
           />

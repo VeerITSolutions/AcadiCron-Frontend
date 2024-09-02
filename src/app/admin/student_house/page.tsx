@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
+import styles from "./StudentHouse.module.css"; // Import CSS module
 
 const student_house = () => {
   const [error, setError] = useState<string | null>(null);
@@ -251,6 +252,7 @@ const student_house = () => {
           <MUIDataTable
             title={"Student House List"}
             data={data}
+            className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
             columns={columns}
             options={options}
           />

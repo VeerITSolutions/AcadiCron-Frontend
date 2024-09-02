@@ -187,6 +187,7 @@ const StudentDetails = () => {
       <MUIDataTable
         title={"Disabled Student List"}
         data={data}
+        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         columns={columns}
         options={{
           ...options,
