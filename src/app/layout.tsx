@@ -3,6 +3,7 @@ import "jsvectormap/dist/jsvectormap.css";
 import "flatpickr/dist/flatpickr.min.css";
 import "@/css/satoshi.css";
 import "@/css/style.css";
+import "@/css/globals.css";
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 
