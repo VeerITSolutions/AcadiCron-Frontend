@@ -30,6 +30,7 @@ const columns = [
   "Class",
   "Category",
   "Mobile Number",
+  "Action",
 ];
 
 const options = {
@@ -63,6 +64,20 @@ const StudentDetails = () => {
       student.class || "N/A",
       student.category_id,
       student.mobileno,
+      <div key={student.id}>
+        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+          <Visibility />
+        </IconButton>
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleAddFees(student.id)}
+          aria-label="Add Fee"
+        >
+          <AttachMoney />
+        </IconButton>
+      </div>,
     ]);
   };
 
@@ -185,10 +200,9 @@ const StudentDetails = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Disabled Student"}
+        title={"Student Details"}
         data={data}
         columns={columns}
-        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         options={{
           ...options,
           count: totalCount,
