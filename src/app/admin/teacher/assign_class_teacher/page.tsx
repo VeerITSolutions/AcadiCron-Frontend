@@ -258,24 +258,24 @@ const FeesMaster = () => {
 
                     <div className="flex flex-col gap-5.5 p-6.5"><label className="mb-3 block text-sm font-medium text-black dark:text-white">Class Teacher<span className="required">*</span>&nbsp;&nbsp;&nbsp;</label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="father" name="guardian_is" /> Priya Ronghe (19001) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"><input className=" User_radio__Zd0k2" type="checkbox" value="mother" name="guardian_is" /> Harshalata Khante (19002) </label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="teacher" name="class_teacher" /> Priya Ronghe (19001) </label>
+<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"><input className=" User_radio__Zd0k2" type="checkbox" value="teacher" name="class_teacher" /> Harshalata Khante (19002) </label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Rushali Patil (19003) </label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Rushali Patil (19003) </label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Tabassum Firdous (19005)</label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Tabassum Firdous (19005)</label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Kalpana Kharabe (19006) </label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Kalpana Kharabe (19006) </label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Priyanka Rathod (19007) </label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Priyanka Rathod (19007) </label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Rucha Kale (19008) </label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Rucha Kale (19008) </label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Harsha Pande (19009) </label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Harsha Pande (19009) </label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Neha Gurao (19010) </label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Neha Gurao (19010) </label>
 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Rajrajeshvari Kuraskar (19011) </label>
+<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Rajrajeshvari Kuraskar (19011) </label>
 
 
 </div>

@@ -191,6 +191,9 @@ const StudentDetails = () => {
         }}
       />
     </DefaultLayout>
+
+
+
   );
 };
 
