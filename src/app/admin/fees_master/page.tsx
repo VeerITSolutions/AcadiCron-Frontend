@@ -10,6 +10,10 @@ import {
   editFeesMasterData,
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
+import { fetchStudentFeesGroupData } from "@/services/studentFeesGroupService";
+
+import { fetchStudentFeesTypeData } from "@/services/studentFeesTypeService";
+
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -18,6 +22,9 @@ import styles from "./User.module.css";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+  const [datafeesgroupdata, setFessGroupData] = useState<Array<Array<any>>>([]);
+  const [datafesstypedata, setFessTypeData] = useState<Array<Array<any>>>([]);
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -48,6 +55,30 @@ const FeesMaster = () => {
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+
+    try {
+      const result = await fetchStudentFeesGroupData(
+        currentPage + 1,
+        rowsPerPage,
+      );
+
+      setFessGroupData(result.data);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+
+    try {
+      const result = await fetchStudentFeesTypeData(
+        currentPage + 1,
+        rowsPerPage,
+      );
+
+      setFessTypeData(result.data);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -252,23 +283,15 @@ const FeesMaster = () => {
                     <select
                       name="fees_group"
                       value={formData.fees_group}
-                      /* onChange={handleInputChange} */
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="">Select</option>
-                      <option value="A+">A+</option>
-
-                      <option value="B+">B+</option>
-
-                      <option value="AB+">AB+</option>
-
-                      <option value="O-">O-</option>
-
-                      <option value="A-">A-</option>
-
-                      <option value="B-">B-</option>
-
-                      <option value="AB-">AB-</option>
+                      {datafeesgroupdata.map((group: any) => (
+                        <option key={group.id} value={group.id}>
+                          {group.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -281,23 +304,15 @@ const FeesMaster = () => {
                     <select
                       name="fees_group"
                       value={formData.fees_group}
-                      /* onChange={handleInputChange} */
+                      onChange={handleInputChange} // Re-enable onChange handler
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="">Select</option>
-                      <option value="A+">A+</option>
-
-                      <option value="B+">B+</option>
-
-                      <option value="AB+">AB+</option>
-
-                      <option value="O-">O-</option>
-
-                      <option value="A-">A-</option>
-
-                      <option value="B-">B-</option>
-
-                      <option value="AB-">AB-</option>
+                      {datafesstypedata.map((group: any) => (
+                        <option key={group.id} value={group.id}>
+                          {group.type}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
