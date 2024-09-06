@@ -23,6 +23,7 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -33,6 +34,7 @@ const FeesMaster = () => {
 
   const [formData, setFormData] = useState({
     fees_group: "",
+    section_name: "",
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -62,12 +64,18 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (id: number, fees_group_value: string) => {
+  const handleEdit = (
+    id: number,
+    fees_group_value: string,
+    section_name: string,
+  ) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
+    // Pre-fill the form with the selected section's data
     setFormData({
       fees_group: fees_group_value,
+      section_name: section_name,
     });
   };
 
@@ -77,7 +85,9 @@ const FeesMaster = () => {
 
       <div key={student.id}>
         <IconButton
-          onClick={() => handleEdit(student.id, student.fees_group)}
+          onClick={() =>
+            handleEdit(student.id, student.fees_group, student.section)
+          }
           aria-label="edit"
         >
           <Edit />
@@ -109,26 +119,29 @@ const FeesMaster = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editsection(
           editCategoryId,
-
-          formData.id,
+          formData.section_name,
           formData.fees_group,
         );
         if (result.success) {
-          toast.success("Sections updated successfully");
+          toast.success("Section updated successfully");
         } else {
-          toast.error("Failed to update Sections");
+          toast.error("Failed to update Section");
         }
       } else {
-        const result = await createsection(formData.id, formData.fees_group);
+        const result = await createsection(
+          formData.section_name,
+          formData.fees_group,
+        );
         if (result.success) {
-          toast.success("Sections saved successfully");
+          toast.success("Section saved successfully");
         } else {
-          toast.error("Failed to save Sections");
+          toast.error("Failed to save Section");
         }
       }
 
       setFormData({
         fees_group: "",
+        section_name: "",
       });
 
       setIsEditing(false);
@@ -171,7 +184,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Add Section" : "Add Section"}
+                {isEditing ? "Edit Section" : "Add Section"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -187,8 +200,9 @@ const FeesMaster = () => {
                     <input
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       type="text"
-                      value=""
+                      value={formData.section_name}
                       name="section_name"
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
