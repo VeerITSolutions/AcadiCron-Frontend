@@ -10,6 +10,8 @@ import {
   editFeesMasterData,
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
+import { fetchSubjectData } from "@/services/subjectsService";
+
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -41,10 +43,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchSubjectData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -92,8 +91,8 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.fees_group || "N/A",
+      student.name,
+      student.code || "N/A",
       student.fees_type || "N/A",
       student.due_date || "N/A",
       student.amount || "N/A",
@@ -233,9 +232,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing
-                  ? "Edit Add Subject"
-                  : "Add Subject"}
+                {isEditing ? "Edit Add Subject" : "Add Subject"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -243,22 +240,65 @@ const FeesMaster = () => {
                   handleSubmit();
                 }}
               >
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Subject Name<span className="required">*</span>
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      value=""
+                      name="subject_name"
+                    />
+                  </div>
+                </div>
 
-<div className="flex flex-col gap-5.5 p-6.5"><div>
-  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Subject Name<span className="required">*</span></label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" value="" name="subject_name" /></div>
-  </div>
+                <div className="flex flex-wrap items-center gap-5.5">
+                  <div>
+                    <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
+                      <input
+                        className="sr-only"
+                        id="Graphics"
+                        type="radio"
+                        name="roleSelect"
+                      />
+                      <span className="flex h-4 w-4 items-center justify-center rounded-full border border-body">
+                        <span className="hidden h-2.5 w-2.5 rounded-full bg-primary"></span>
+                      </span>
+                      Theory
+                    </label>
+                  </div>
+                  <div>
+                    <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
+                      <input
+                        className="sr-only"
+                        id="Graphics"
+                        type="radio"
+                        name="roleSelect"
+                      />
+                      <span className="flex h-4 w-4 items-center justify-center rounded-full border border-body">
+                        <span className="hidden h-2.5 w-2.5 rounded-full bg-primary"></span>
+                      </span>
+                      Practical
+                    </label>
+                  </div>
+                </div>
 
-           <div className="flex flex-wrap items-center gap-5.5">
-            <div>
-              <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white"><input className="sr-only" id="Graphics" type="radio" name="roleSelect" /><span className="flex h-4 w-4 items-center justify-center rounded-full border border-body"><span className="h-2.5 w-2.5 rounded-full bg-primary hidden"></span></span>Theory</label>
-              </div>
-             <div>
-            <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white"><input className="sr-only" id="Graphics" type="radio" name="roleSelect" /><span className="flex h-4 w-4 items-center justify-center rounded-full border border-body"><span className="h-2.5 w-2.5 rounded-full bg-primary hidden"></span></span>Practical</label>
-            </div>
-            </div>    
-                   
-<div className="flex flex-col gap-5.5 p-6.5"><div><label className="mb-3 block text-sm font-medium text-black dark:text-white">Subject Code</label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" value="" name="subject_code" /></div></div>     
- 
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Subject Code
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      value=""
+                      name="subject_code"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <button type="submit" className="">
                     {isEditing ? "Update" : "Save"}
