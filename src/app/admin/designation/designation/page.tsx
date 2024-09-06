@@ -246,7 +246,7 @@ const FeesMaster = () => {
               >
 
                       <div className="flex flex-col gap-5.5 p-6.5"><div>
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Name<span className="required">*</span></label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" value="" name="name" /></div>
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Name<span className="required">*</span></label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="name" /></div>
                       </div>
                
    

@@ -242,13 +242,13 @@ const FeesMaster = () => {
                     <input
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       type="text"
-                      value=""
                       name="subject_name"
                     />
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-5.5">
+              
+                <div className="flex flex-wrap flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
                       <input
@@ -287,7 +287,6 @@ const FeesMaster = () => {
                     <input
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       type="text"
-                      value=""
                       name="subject_code"
                     />
                   </div>
