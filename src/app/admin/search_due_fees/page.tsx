@@ -148,6 +148,19 @@ const StudentDetails = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
+          Fees Group:
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className={styles.select}
+            >
+              <option value="">Select</option>
+              <option value="Class1">at the time of Admission</option>
+              <option value="Class2">Before 30 Aug 2024</option>
+              {/* Add more class options here */}
+            </select>
+          </label>
+          <label className={styles.label}>
             Class:
             <select
               value={selectedClass || ""}
@@ -174,13 +187,6 @@ const StudentDetails = () => {
             </select>
           </label>
           <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={styles.searchInput}
-            />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
