@@ -10,6 +10,9 @@ import {
   editFeesMasterData,
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
+
+import { fetchsectionData } from "@/services/sectionsService";
+
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -34,10 +37,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchsectionData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -68,15 +68,7 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.fees_group || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
-      student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
+      student.section,
 
       <div key={student.id}>
         <IconButton
