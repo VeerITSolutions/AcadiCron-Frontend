@@ -11,7 +11,12 @@ import {
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
 
-import { fetchsectionData } from "@/services/sectionsService";
+import {
+  fetchsectionData,
+  createsection,
+  deletesection,
+  editsection,
+} from "@/services/sectionsService";
 
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
@@ -49,7 +54,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deletesection(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -102,7 +107,7 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
+        const result = await editsection(
           editCategoryId,
 
           formData.id,
@@ -114,7 +119,7 @@ const FeesMaster = () => {
           toast.error("Failed to update Sections");
         }
       } else {
-        const result = await createFeesMaster(formData.id, formData.fees_group);
+        const result = await createsection(formData.id, formData.fees_group);
         if (result.success) {
           toast.success("Sections saved successfully");
         } else {
