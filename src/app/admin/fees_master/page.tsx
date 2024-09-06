@@ -125,14 +125,7 @@ const FeesMaster = () => {
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
-      student.fees_group || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
-      student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
+      student.fee_groups_id || "N/A",
 
       <div key={student.id}>
         <IconButton
