@@ -13,6 +13,7 @@ import {
 import { fetchStudentFeesGroupData } from "@/services/studentFeesGroupService";
 
 import { fetchStudentFeesTypeData } from "@/services/studentFeesTypeService";
+import { fetchStudentFeesSeesionGroupData } from "@/services/studentFeesSessionGroupService";
 
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
@@ -48,7 +49,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
+      const result = await fetchStudentFeesSeesionGroupData(
         currentPage + 1,
         rowsPerPage,
       );
