@@ -125,7 +125,7 @@ const FeesMaster = () => {
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
-      student.fee_groups_id || "N/A",
+      student.fees_group_name || "N/A",
 
       <div key={student.id}>
         <IconButton
