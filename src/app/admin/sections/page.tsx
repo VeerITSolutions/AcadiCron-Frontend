@@ -25,13 +25,6 @@ const FeesMaster = () => {
 
   const [formData, setFormData] = useState({
     fees_group: "",
-    fees_type: "",
-    due_date: "",
-    amount: "",
-    fine_type: "",
-    percentage: "",
-    description: "",
-    fine_amount: "",
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -64,29 +57,12 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (
-    id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
-  ) => {
+  const handleEdit = (id: number, fees_group_value: string) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
       fees_group: fees_group_value,
-      fees_type: fees_type_value,
-      due_date: due_date_value,
-      amount: amount_value,
-      fine_type: fine_type_value,
-      percentage: percentage_value,
-      description: description_value,
-      fine_amount: fine_amount_value,
     });
   };
 
@@ -104,19 +80,7 @@ const FeesMaster = () => {
 
       <div key={student.id}>
         <IconButton
-          onClick={() =>
-            handleEdit(
-              student.id,
-              student.fees_group,
-              student.fees_type,
-              student.due_date,
-              student.amount,
-              student.fine_type,
-              student.percentage,
-              student.description,
-              student.fine_amount,
-            )
-          }
+          onClick={() => handleEdit(student.id, student.fees_group)}
           aria-label="edit"
         >
           <Edit />
@@ -151,47 +115,23 @@ const FeesMaster = () => {
 
           formData.id,
           formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
         );
         if (result.success) {
-          toast.success("Student House updated successfully");
+          toast.success("Sections updated successfully");
         } else {
-          toast.error("Failed to update Student House");
+          toast.error("Failed to update Sections");
         }
       } else {
-        const result = await createFeesMaster(
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
+        const result = await createFeesMaster(formData.id, formData.fees_group);
         if (result.success) {
-          toast.success("Student House saved successfully");
+          toast.success("Sections saved successfully");
         } else {
-          toast.error("Failed to save Student House");
+          toast.error("Failed to save Sections");
         }
       }
 
       setFormData({
         fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
       });
 
       setIsEditing(false);
@@ -234,9 +174,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing
-                  ? "Edit Add Section"
-                  : "Add Section"}
+                {isEditing ? "Edit Add Section" : "Add Section"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -244,12 +182,19 @@ const FeesMaster = () => {
                   handleSubmit();
                 }}
               >
-
-<div className="flex flex-col gap-5.5 p-6.5"><div>
-  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Section Name<span className="required">*</span></label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" value="" name="section_name" /></div>
-  </div>
-               
-             
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Section Name<span className="required">*</span>
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      value=""
+                      name="section_name"
+                    />
+                  </div>
+                </div>
 
                 <div>
                   <button type="submit" className="">
