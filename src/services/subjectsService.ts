@@ -11,9 +11,9 @@ export const fetchSubjectData = async (page: number, perPage: number) => {
 };
 
 
-export const createSubject = async (house_name: string, description: string): Promise<any> => {
+export const createSubject = async (name: string, code: string, type: string, is_active: string): Promise<any> => {
   try {
-    const response = await apiClient.post("/subjects", { house_name, description });
+    const response = await apiClient.post("/subjects", { name,code,type,is_active});
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -30,8 +30,8 @@ export const deleteSubject = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editSubject = async (id: number, house_name: string, description: string) => {
-  const data = { house_name, description }; // Create an object with the name field
+export const editSubject = async (id: number, name: string, code: string, type: string, is_active: string) => {
+  const data = { name, code, type, is_active }; // Create an object with the name field
   const response = await apiClient.put(`/subjects/${id}`, data);
   return response.data;
 };

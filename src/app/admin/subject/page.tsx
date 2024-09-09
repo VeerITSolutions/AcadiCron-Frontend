@@ -3,20 +3,18 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-
 import {
-  createFeesMaster,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
-import { fetchSubjectData } from "@/services/subjectsService";
-
+  fetchSubjectData,
+  createSubject,
+  deleteSubject,
+  editSubject,
+} from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -26,14 +24,10 @@ const FeesMaster = () => {
   const [totalCount, setTotalCount] = useState(0);
 
   const [formData, setFormData] = useState({
-    fees_group: "",
-    fees_type: "",
-    due_date: "",
-    amount: "",
-    fine_type: "",
-    percentage: "",
-    description: "",
-    fine_amount: "",
+    name: "",
+    code: "",
+    type: "Theory", // Default value
+    is_active: "1", // Active status
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -45,7 +39,7 @@ const FeesMaster = () => {
     try {
       const result = await fetchSubjectData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
-      setData(formatStudentCategoryData(result.data));
+      setData(formatSubjectData(result.data));
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -55,7 +49,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteSubject(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -65,49 +59,36 @@ const FeesMaster = () => {
 
   const handleEdit = (
     id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
+    name: string,
+    code: string,
+    type: string,
+    is_active: string,
   ) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      fees_group: fees_group_value,
-      fees_type: fees_type_value,
-      due_date: due_date_value,
-      amount: amount_value,
-      fine_type: fine_type_value,
-      percentage: percentage_value,
-      description: description_value,
-      fine_amount: fine_amount_value,
+      name,
+      code,
+      type,
+      is_active,
     });
   };
 
-  const formatStudentCategoryData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.name,
-      student.code || "N/A",
-      student.type || "N/A",
-
-      <div key={student.id}>
+  const formatSubjectData = (subjects: any[]) => {
+    return subjects.map((subject: any) => [
+      subject.name,
+      subject.code || "N/A",
+      subject.type || "N/A",
+      <div key={subject.id}>
         <IconButton
           onClick={() =>
             handleEdit(
-              student.id,
-              student.fees_group,
-              student.fees_type,
-              student.due_date,
-              student.amount,
-              student.fine_type,
-              student.percentage,
-              student.description,
-              student.fine_amount,
+              subject.id,
+              subject.name,
+              subject.code,
+              subject.type,
+              subject.is_active,
             )
           }
           aria-label="edit"
@@ -115,7 +96,7 @@ const FeesMaster = () => {
           <Edit />
         </IconButton>
         <IconButton
-          onClick={() => handleDelete(student.id)}
+          onClick={() => handleDelete(subject.id)}
           aria-label="delete"
         >
           <Delete />
@@ -139,52 +120,38 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
+        const result = await editSubject(
           editCategoryId,
-
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
+          formData.name,
+          formData.code,
+          formData.type,
+          formData.is_active,
         );
         if (result.success) {
-          toast.success("Student House updated successfully");
+          toast.success("Subject updated successfully");
         } else {
-          toast.error("Failed to update Student House");
+          toast.error("Failed to update subject");
         }
       } else {
-        const result = await createFeesMaster(
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
+        const result = await createSubject(
+          formData.name,
+          formData.code,
+          formData.type,
+          formData.is_active,
         );
         if (result.success) {
-          toast.success("Student House saved successfully");
+          toast.success("Subject created successfully");
         } else {
-          toast.error("Failed to save Student House");
+          toast.error("Failed to create subject");
         }
       }
 
+      // Reset form after successful action
       setFormData({
-        fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
+        name: "",
+        code: "",
+        type: "Theory",
+        is_active: "1",
       });
 
       setIsEditing(false);
@@ -207,7 +174,7 @@ const FeesMaster = () => {
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
-  const columns = ["Subject", "Subject Code ", "Subject Type", "Action"];
+  const columns = ["Subject", "Subject Code", "Subject Type", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -226,7 +193,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Add Subject" : "Add Subject"}
+                {isEditing ? "Edit Subject" : "Add Subject"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -242,44 +209,12 @@ const FeesMaster = () => {
                     <input
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       type="text"
-                      name="subject_name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
                     />
                   </div>
-                </div>
-
-              
-                <div className="flex flex-wrap flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
-                      <input
-                        className="sr-only"
-                        id="Graphics"
-                        type="radio"
-                        name="roleSelect"
-                      />
-                      <span className="flex h-4 w-4 items-center justify-center rounded-full border border-body">
-                        <span className="hidden h-2.5 w-2.5 rounded-full bg-primary"></span>
-                      </span>
-                      Theory
-                    </label>
-                  </div>
-                  <div>
-                    <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
-                      <input
-                        className="sr-only"
-                        id="Graphics"
-                        type="radio"
-                        name="roleSelect"
-                      />
-                      <span className="flex h-4 w-4 items-center justify-center rounded-full border border-body">
-                        <span className="hidden h-2.5 w-2.5 rounded-full bg-primary"></span>
-                      </span>
-                      Practical
-                    </label>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Subject Code
@@ -287,24 +222,64 @@ const FeesMaster = () => {
                     <input
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       type="text"
-                      name="subject_code"
+                      name="code"
+                      value={formData.code}
+                      onChange={handleInputChange}
                     />
                   </div>
-                </div>
-
-                <div>
-                  <button type="submit" className="">
-                    {isEditing ? "Update" : "Save"}
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Subject Type
+                    </label>
+                    <div className="flex gap-5">
+                      <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
+                        <input
+                          type="radio"
+                          name="type"
+                          value="Theory"
+                          checked={formData.type === "Theory"}
+                          onChange={handleInputChange}
+                        />
+                        Theory
+                      </label>
+                      <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
+                        <input
+                          type="radio"
+                          name="type"
+                          value="Practical"
+                          checked={formData.type === "Practical"}
+                          onChange={handleInputChange}
+                        />
+                        Practical
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Active Status
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="is_active"
+                      value={formData.is_active}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <button
+                    className="mt-5 rounded bg-primary px-5 py-2 text-white"
+                    type="submit"
+                  >
+                    {isEditing ? "Update" : "Create"}
                   </button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-
-        <div className="flex flex-col gap-9">
+        <div className={styles.container}>
           <MUIDataTable
-            title={"Subject List"}
+            title="Subjects"
             data={data}
             columns={columns}
             options={options}
