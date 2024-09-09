@@ -1,29 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import React from "react";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
+import { fetchtimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
 import { toast } from "react-toastify";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+
 const columns = [
   "Monday",
   "Tuesday",
@@ -33,7 +16,6 @@ const columns = [
   "Saturday",
   "Sunday",
 ];
-
 
 const options = {
   filter: false, // Disable filter
@@ -46,154 +28,79 @@ const options = {
   viewColumns: false, // Disable view columns button
   responsive: "standard", // Customize responsiveness if needed
 };
+
 const StudentDetails = () => {
-  const [data, setData] = useState<Array<Array<string>>>([]);
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
-  );
-  const [keyword, setKeyword] = useState<string>("");
-  const router = useRouter();
 
   const token = localStorage.getItem("authToken") || "";
 
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
-    ]);
+  // Format the data for the week-wise view
+  const formatTimetableData = (timetableData: any) => {
+    const daysOfWeek = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const rowData = [];
+
+    // Loop through the day-wise data
+    const maxSubjectsPerDay = Math.max(
+      ...daysOfWeek.map((day) => timetableData[day]?.length || 0),
+    );
+
+    // For each subject time slot (row) add the data for each day
+    for (let i = 0; i < maxSubjectsPerDay; i++) {
+      const row = daysOfWeek.map((day) => {
+        const dayData = timetableData[day]?.[i];
+        if (dayData) {
+          return `${dayData.time_from} - ${dayData.time_to} (Room ${dayData.room_no})`;
+        }
+        return "N/A";
+      });
+      rowData.push(row);
+    }
+    return rowData;
   };
 
-  const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
-  ) => {
+  const fetchData = async () => {
     try {
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
+      setLoading(true);
+      const result = await fetchtimeTableData(token); // Assuming token is passed for authorization
+      if (result && result.success) {
+        const formattedData = formatTimetableData(result.data);
+        setData(formattedData);
+      } else {
+        setError("Failed to load timetable data.");
+      }
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
-
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-    setPage(0);
-  };
-
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
-  };
-
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
-  const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  };
+    fetchData();
+  }, []);
 
   if (loading) return <Loader />;
-  if (error) return <p>{error}</p>;
+  if (error) return <div>{error}</div>;
 
   return (
     <DefaultLayout>
-      <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-          Teachers:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
-              <option value="">Select</option>
-              <option value="Class1">Priya Ronghe (19001)</option>
-              <option value="Class2">Harshalata Khante (19002)</option>
-              <option value="Class3">Rushali Patil (19003)</option>
-              <option value="Class4">Tabassum Firdous (19005)</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-         
-          <div className={styles.searchGroup}>
-            
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-          </div>
-        </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
-      </div>
       <MUIDataTable
-         title={" Teacher Time Table "}
+        title={"Weekly Timetable"}
         data={data}
-        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         columns={columns}
-        options={{
-          ...options,
-          count: totalCount,
-          page: page,
-          rowsPerPage: rowsPerPage,
-          onChangePage: handlePageChange,
-          onChangeRowsPerPage: handleRowsPerPageChange,
-        }}
+        options={options}
       />
     </DefaultLayout>
-
-
-
   );
 };
 
