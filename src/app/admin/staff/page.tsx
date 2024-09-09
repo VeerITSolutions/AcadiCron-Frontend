@@ -194,7 +194,15 @@ const StudentDetails = () => {
 
       <div className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
       {/* Tab Navigation */}
-      <div className="mb-6 flex flex-wrap gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
+      <div className="mb-6 flex flex-wrap gap-5 border-b border-stroke dark:border-strokedark sm:gap-10"> <a
+          className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
+            activeTab === 'list' ? 'text-primary border-primary' : 'border-transparent'
+          }`}
+          href="#"
+          onClick={() => setActiveTab('list')}
+        >
+          Card View
+        </a>
         <a
           className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
             activeTab === 'card' ? 'text-primary border-primary' : 'border-transparent'
@@ -202,29 +210,252 @@ const StudentDetails = () => {
           href="#"
           onClick={() => setActiveTab('card')}
         >
-          Card View
-        </a>
-        <a
-          className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
-            activeTab === 'list' ? 'text-primary border-primary' : 'border-transparent'
-          }`}
-          href="#"
-          onClick={() => setActiveTab('list')}
-        >
           List View
         </a>
+       
       </div>
 
       {/* Content Rendering Based on Active Tab */}
       <div>
-        {activeTab === 'card' && (
+        {activeTab === 'list' && (
           <div className="leading-relaxed">
             {/* Card view content goes here */}
-            <p>Card View Content. You can render your card components here.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-4 gap-4">
+ 
+  <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
+    <div className="flex items-center">
+      <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
+        <img alt="user" loading="lazy" width="80" height="80" className="rounded-full object-cover object-center" src="https://erp.erabesa.co.in/uploads/staff_images/1.png" />
+      </div>
+      <div>
+        <h4 className="text-base font-medium text-black dark:text-white">Rushali Patil</h4>
+        <p className="text-sm">19003</p>
+        <p className="text-sm">8446643818</p>
+      </div>
+    </div>
+    <div className="relative flex">
+      <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded">
+        {/* SVG Icon for three dots */}
+        <svg className="fill-current text-gray-600" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z" fill="currentColor"></path>
+          <path d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z" fill="currentColor"></path>
+          <path d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z" fill="currentColor"></path>
+        </svg>
+      </button>
+      {/* Edit/Delete Menu */}
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
+      </div>
+    </div>
+  </div>
+
+
+    <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
+    <div className="flex items-center">
+      <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
+        <img alt="user" loading="lazy" width="80" height="80" className="rounded-full object-cover object-center" src="https://erp.erabesa.co.in/uploads/staff_images/default_female.jpg" />
+      </div>
+      <div>
+        <h4 className="text-base font-medium text-black dark:text-white">Priya Ronghe</h4>
+        <p className="text-sm">19001</p>
+        <p className="text-sm">9130683314</p>
+      </div>
+    </div>
+    <div className="relative flex">
+      <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded">
+        {/* SVG Icon for three dots */}
+        <svg className="fill-current text-gray-600" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z" fill="currentColor"></path>
+          <path d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z" fill="currentColor"></path>
+          <path d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z" fill="currentColor"></path>
+        </svg>
+      </button>
+      {/* Edit/Delete Menu */}
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
+      </div>
+    </div>
+  </div>
+
+
+    <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
+    <div className="flex items-center">
+      <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
+        <img alt="user" loading="lazy" width="80" height="80" className="rounded-full object-cover object-center" src="https://erp.erabesa.co.in/uploads/staff_images/5.jpg" />
+      </div>
+      <div>
+        <h4 className="text-base font-medium text-black dark:text-white">Harshalata Khante</h4>
+        <p className="text-sm">19002</p>
+        <p className="text-sm">9623783502</p>
+      </div>
+    </div>
+    <div className="relative flex">
+      <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded">
+        {/* SVG Icon for three dots */}
+        <svg className="fill-current text-gray-600" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z" fill="currentColor"></path>
+          <path d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z" fill="currentColor"></path>
+          <path d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z" fill="currentColor"></path>
+        </svg>
+      </button>
+      {/* Edit/Delete Menu */}
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
+    <div className="flex items-center">
+      <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
+        <img alt="user" loading="lazy" width="80" height="80" className="rounded-full object-cover object-center"
+          src="https://erp.erabesa.co.in/uploads/staff_images/6.jpg" />
+      </div>
+      <div>
+        <h4 className="text-base font-medium text-black dark:text-white">Rushali Patil</h4>
+        <p className="text-sm">19003</p>
+        <p className="text-sm">8446643818</p>
+      </div>
+    </div>
+    <div className="relative flex">
+      <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded">
+        {/* SVG Icon for three dots */}
+        <svg className="fill-current text-gray-600" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z" fill="currentColor"></path>
+          <path d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z" fill="currentColor"></path>
+          <path d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z" fill="currentColor"></path>
+        </svg>
+      </button>
+      {/* Edit/Delete Menu */}
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
+    <div className="flex items-center">
+      <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
+        <img alt="user" loading="lazy" width="80" height="80" className="rounded-full object-cover object-center" src="https://erp.erabesa.co.in/uploads/staff_images/8.jpg" />
+      </div>
+      <div>
+        <h4 className="text-base font-medium text-black dark:text-white">Tabassum Firdous</h4>
+        <p className="text-sm">19005</p>
+        <p className="text-sm">7843079790</p>
+      </div>
+    </div>
+    <div className="relative flex">
+      <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded">
+        {/* SVG Icon for three dots */}
+        <svg className="fill-current text-gray-600" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z" fill="currentColor"></path>
+          <path d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z" fill="currentColor"></path>
+          <path d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z" fill="currentColor"></path>
+        </svg>
+      </button>
+      {/* Edit/Delete Menu */}
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
+    <div className="flex items-center">
+      <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
+        <img alt="user" loading="lazy" width="80" height="80" className="rounded-full object-cover object-center" src="https://erp.erabesa.co.in/uploads/staff_images/9.jpg" />
+      </div>
+      <div>
+        <h4 className="text-base font-medium text-black dark:text-white">Kalpana Kharabe</h4>
+        <p className="text-sm">19006</p>
+        <p className="text-sm">8317255143</p>
+      </div>
+    </div>
+    <div className="relative flex">
+      <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded">
+        {/* SVG Icon for three dots */}
+        <svg className="fill-current text-gray-600" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z" fill="currentColor"></path>
+          <path d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z" fill="currentColor"></path>
+          <path d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z" fill="currentColor"></path>
+        </svg>
+      </button>
+      {/* Edit/Delete Menu */}
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
+    <div className="flex items-center">
+      <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
+        <img alt="user" loading="lazy" width="80" height="80" className="rounded-full object-cover object-center" src="https://erp.erabesa.co.in/uploads/staff_images/10.jpg" />
+      </div>
+      <div>
+        <h4 className="text-base font-medium text-black dark:text-white">Priyanka Rathod</h4>
+        <p className="text-sm">19007</p>
+        <p className="text-sm">9730081571</p>
+      </div>
+    </div>
+    <div className="relative flex">
+      <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded">
+        {/* SVG Icon for three dots */}
+        <svg className="fill-current text-gray-600" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z" fill="currentColor"></path>
+          <path d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z" fill="currentColor"></path>
+          <path d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z" fill="currentColor"></path>
+        </svg>
+      </button>
+      {/* Edit/Delete Menu */}
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
+    <div className="flex items-center">
+      <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
+        <img alt="user" loading="lazy" width="80" height="80" className="rounded-full object-cover object-center" src="https://erp.erabesa.co.in/uploads/staff_images/11.jpg" />
+      </div>
+      <div>
+        <h4 className="text-base font-medium text-black dark:text-white">Rucha Kale</h4>
+        <p className="text-sm">19008</p>
+        <p className="text-sm">9730081571</p>
+      </div>
+    </div>
+    <div className="relative flex">
+      <button className="p-2 bg-gray-300 hover:bg-gray-400 rounded">
+        {/* SVG Icon for three dots */}
+        <svg className="fill-current text-gray-600" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z" fill="currentColor"></path>
+          <path d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z" fill="currentColor"></path>
+          <path d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z" fill="currentColor"></path>
+        </svg>
+      </button>
+      {/* Edit/Delete Menu */}
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
+        <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div>
           </div>
         )}
 
-        {activeTab === 'list' && (
+        {activeTab === 'card' && (
           <div className="leading-relaxed">
             {/* List view with MUIDataTable */}
             <MUIDataTable
