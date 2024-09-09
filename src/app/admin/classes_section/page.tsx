@@ -107,29 +107,9 @@ const FeesMaster = () => {
     return students.map((student: any) => [
       student.class_id,
       student.section_id || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
-      student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
-
       <div key={student.id}>
         <IconButton
-          onClick={() =>
-            handleEdit(
-              student.id,
-              student.fees_group,
-              student.fees_type,
-              student.due_date,
-              student.amount,
-              student.fine_type,
-              student.percentage,
-              student.description,
-              student.fine_amount,
-            )
-          }
+          onClick={() => handleEdit(student.id, student.category)}
           aria-label="edit"
         >
           <Edit />
