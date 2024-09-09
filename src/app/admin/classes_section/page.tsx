@@ -15,6 +15,9 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
+import { fetchclassesSectionData } from "@/services/classesSectionService"; // Import your section API service
+
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -22,6 +25,7 @@ const FeesMaster = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [sections, setSections] = useState<Array<any>>([]); // To hold section data from API
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -41,7 +45,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
+      const result = await fetchclassesSectionData(
         currentPage + 1,
         rowsPerPage,
       );
@@ -50,6 +54,15 @@ const FeesMaster = () => {
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
+      setLoading(false);
+    }
+
+    try {
+      const result = await fetchsectionData(currentPage + 1, rowsPerPage); // Fetch the section data from API
+      setSections(result.data); // Assuming your API returns section data as an array
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch sections", error);
       setLoading(false);
     }
   };
@@ -92,31 +105,11 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.fees_group || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
-      student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
-
+      student.class_name,
+      student.section_name || "N/A",
       <div key={student.id}>
         <IconButton
-          onClick={() =>
-            handleEdit(
-              student.id,
-              student.fees_group,
-              student.fees_type,
-              student.due_date,
-              student.amount,
-              student.fine_type,
-              student.percentage,
-              student.description,
-              student.fine_amount,
-            )
-          }
+          onClick={() => handleEdit(student.id, student.category)}
           aria-label="edit"
         >
           <Edit />
@@ -234,9 +227,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing
-                  ? "Edit Add Class"
-                  : "Add Class"}
+                {isEditing ? "Edit Add Class" : "Add Class"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -244,21 +235,44 @@ const FeesMaster = () => {
                   handleSubmit();
                 }}
               >
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Class<span className="required">*</span>
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="class_id"
+                    />
+                  </div>
+                </div>
 
-<div className="flex flex-col gap-5.5 p-6.5"><div>
-  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Class<span className="required">*</span></label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="name" /></div>
-  </div>
-               
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Sections<span className="required">*</span>
+                  </label>
 
-                    <div className="flex flex-col gap-5.5 p-6.5"><label className="mb-3 block text-sm font-medium text-black dark:text-white">Sections<span className="required">*</span>&nbsp;&nbsp;&nbsp;</label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"><input className=" User_radio__Zd0k2" type="checkbox" value="teacher" name="class_teacher" /> Bright </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Brilliant </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Brainy</label>
-</div>
-    
- 
+                  {sections.length > 0 ? (
+                    sections.map((section) => (
+                      <label
+                        key={section.id}
+                        className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"
+                      >
+                        <input
+                          type="radio"
+                          value={section.id}
+                          name="section_id"
+                          onChange={handleInputChange}
+                        />{" "}
+                        {section.section}
+                      </label>
+                    ))
+                  ) : (
+                    <p>No sections available</p>
+                  )}
+                </div>
+
                 <div>
                   <button type="submit" className="">
                     {isEditing ? "Update" : "Save"}
