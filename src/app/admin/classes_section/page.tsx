@@ -105,8 +105,8 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.class_id,
-      student.section_id || "N/A",
+      student.class_name,
+      student.section_name || "N/A",
       <div key={student.id}>
         <IconButton
           onClick={() => handleEdit(student.id, student.category)}
