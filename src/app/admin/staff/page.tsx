@@ -444,7 +444,7 @@ const StudentDetails = () => {
         </svg>
       </button>
       {/* Edit/Delete Menu */}
-      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2 hidden">
+      <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
         <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Edit</button>
         <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">Delete</button>
       </div>
