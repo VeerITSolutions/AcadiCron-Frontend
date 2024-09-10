@@ -75,15 +75,12 @@ const StudentDetails = () => {
       student.contact_no || "N/A",
       student.status || "N/A",
       <div key={student.id}>
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
-          <Visibility />
-        </IconButton>
+        
         <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
           <Edit />
         </IconButton>
       
-      </div>,
-      <div>Generate payroll</div>
+      </div>
     ]);
   };
 
@@ -117,11 +114,9 @@ const StudentDetails = () => {
   };
 
   const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
+    router.push(`/admin/payroll/create/${id}/${id}/${id}`);
   };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
+ 
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
