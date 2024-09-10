@@ -24,13 +24,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
-const columns = [
-  "Admission No",
-  "Student Name",
-  "Class",
-  "Category",
-  "Mobile Number",
-];
+const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
 
 const options = {
   filterType: "checkbox",
@@ -185,7 +179,7 @@ const StudentDetails = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Disabled Student"}
+        title={"Assignment List"}
         data={data}
         columns={columns}
         options={{
