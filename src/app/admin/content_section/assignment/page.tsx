@@ -24,18 +24,14 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
-const columns = [
-  "Admission No",
-  "Student Name",
-  "Class",
-  "Category",
-  "Mobile Number",
-];
+const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
 
 const options = {
-  filterType: "checkbox",
+  filterType: false,
   serverSide: true,
   responsive: "standard",
+
+  selectableRows: "none", // Disable row selection
 };
 
 const StudentDetails = () => {
@@ -139,53 +135,8 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-      <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
-              <option value="">All Classes</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={styles.select}
-            >
-              <option value="">All Sections</option>
-              <option value="SectionA">Section A</option>
-              <option value="SectionB">Section B</option>
-              {/* Add more section options here */}
-            </select>
-          </label>
-          <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={styles.searchInput}
-            />
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-          </div>
-        </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
-      </div>
       <MUIDataTable
-        title={"Disabled Student"}
+        title={"Assignment List"}
         data={data}
         columns={columns}
         options={{
