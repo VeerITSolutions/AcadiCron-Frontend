@@ -14,8 +14,70 @@ import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import MultiSelect from "@/components/FormElements/MultiSelect";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 import styles from "./User.module.css";
+import { useState } from "react";
 
 const StaffPayroll = () => {
+    // State to manage form data
+    const [earnings, setEarnings] = useState([{ type: '', amount: 0 }]);
+    const [deductions, setDeductions] = useState([{ type: '', amount: 0 }]);
+    const [basicSalary, setBasicSalary] = useState(13060);
+    const [totalAllowance, setTotalAllowance] = useState(0);
+    const [totalDeduction, setTotalDeduction] = useState(0);
+    const [grossSalary, setGrossSalary] = useState(0);
+    const [tax, setTax] = useState(0);
+    const [netSalary, setNetSalary] = useState(0);
+  
+    // Add new earning field
+    const addMoreEarnings = () => {
+      setEarnings([...earnings, { type: '', amount: 0 }]);
+    };
+  
+    // Remove an earning field
+    const removeEarning = (index) => {
+      const newEarnings = earnings.filter((_, i) => i !== index);
+      setEarnings(newEarnings);
+    };
+  
+    // Add new deduction field
+    const addMoreDeductions = () => {
+      setDeductions([...deductions, { type: '', amount: 0 }]);
+    };
+  
+    // Remove a deduction field
+    const removeDeduction = (index) => {
+      const newDeductions = deductions.filter((_, i) => i !== index);
+      setDeductions(newDeductions);
+    };
+  
+    // Update earnings and deductions
+    const handleEarningChange = (index, field, value) => {
+      const newEarnings = earnings.map((earning, i) =>
+        i === index ? { ...earning, [field]: value } : earning
+      );
+      setEarnings(newEarnings);
+    };
+  
+    const handleDeductionChange = (index, field, value) => {
+      const newDeductions = deductions.map((deduction, i) =>
+        i === index ? { ...deduction, [field]: value } : deduction
+      );
+      setDeductions(newDeductions);
+    };
+  
+    // Calculate Payroll
+    const calculatePayroll = () => {
+      const totalEarnings = earnings.reduce((sum, item) => sum + Number(item.amount), 0);
+      const totalDeductions = deductions.reduce((sum, item) => sum + Number(item.amount), 0);
+  
+      setTotalAllowance(totalEarnings);
+      setTotalDeduction(totalDeductions);
+  
+      const calculatedGrossSalary = basicSalary + totalEarnings - totalDeductions;
+      setGrossSalary(calculatedGrossSalary);
+  
+      const calculatedNetSalary = calculatedGrossSalary - tax;
+      setNetSalary(calculatedNetSalary);
+    };
   return (
     <>
       {/* <Breadcrumb pageName="FormElements" /> */}
@@ -27,7 +89,7 @@ const StaffPayroll = () => {
               <h3 className="text-lg font-semibold">Staff Details</h3>
             </div>
             <div className="flex">
-              <a href="https://erp.erabesa.co.in/admin/payroll" className="btn btn-primary text-xs text-white bg-blue-500 hover:bg-blue-600 px-2 py-1 rounded-md">
+              <a href="https://erp.erabesa.co.in/admin/payroll" className="text-xs text-white bg-blue-500 hover:bg-blue-600 px-2 py-1 rounded-md">
                 <i className="fa fa-arrow-left"></i>
               </a>
             </div>
@@ -117,58 +179,84 @@ const StaffPayroll = () => {
           </div>
 
           <hr className="my-4" />
+          </div>
 
-          <form className="grid grid-cols-1 md:grid-cols-3 gap-4" action="https://erp.erabesa.co.in/admin/payroll/payslip" method="POST">
-            {/* Earning */}
+        <div className="p-4">
+          {/* Earnings */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <h3 className="text-lg font-semibold mb-2">Earning</h3>
               <button
                 type="button"
-                onClick={() => addMoreEarnings()}
-                className="text-blue-500 hover:text-blue-700"
+                onClick={addMoreEarnings}
+                className="text-blue-500 hover:text-blue-700 mb-2"
               >
                 <i className="fa fa-plus"></i> Add
               </button>
-              <div className="space-y-2 mt-2">
-                <input
-                  type="text"
-                  name="allowance_type[]"
-                  className="w-full border px-2 py-1 rounded"
-                  placeholder="Type"
-                />
-                <input
-                  type="text"
-                  name="allowance_amount[]"
-                  className="w-full border px-2 py-1 rounded"
-                  value="0"
-                />
-              </div>
+
+              {earnings.map((earning, index) => (
+                <div key={index} className="flex space-x-2 mb-2">
+                  <input
+                    type="text"
+                    value={earning.type}
+                    onChange={(e) => handleEarningChange(index, 'type', e.target.value)}
+                    className="w-full border px-2 py-1 rounded"
+                    placeholder="Type"
+                  />
+                  <input
+                    type="number"
+                    value={earning.amount}
+                    onChange={(e) => handleEarningChange(index, 'amount', e.target.value)}
+                    className="w-full border px-2 py-1 rounded"
+                    placeholder="Amount"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeEarning(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <i className="fa fa-trash"></i>
+                  </button>
+                </div>
+              ))}
             </div>
 
-            {/* Deduction */}
+            {/* Deductions */}
             <div>
               <h3 className="text-lg font-semibold mb-2">Deduction</h3>
               <button
                 type="button"
-                onClick={() => addMoreDeductions()}
-                className="text-blue-500 hover:text-blue-700"
+                onClick={addMoreDeductions}
+                className="text-blue-500 hover:text-blue-700 mb-2"
               >
                 <i className="fa fa-plus"></i> Add
               </button>
-              <div className="space-y-2 mt-2">
-                <input
-                  type="text"
-                  name="deduction_type[]"
-                  className="w-full border px-2 py-1 rounded"
-                  placeholder="Type"
-                />
-                <input
-                  type="text"
-                  name="deduction_amount[]"
-                  className="w-full border px-2 py-1 rounded"
-                  value="0"
-                />
-              </div>
+
+              {deductions.map((deduction, index) => (
+                <div key={index} className="flex space-x-2 mb-2">
+                  <input
+                    type="text"
+                    value={deduction.type}
+                    onChange={(e) => handleDeductionChange(index, 'type', e.target.value)}
+                    className="w-full border px-2 py-1 rounded"
+                    placeholder="Type"
+                  />
+                  <input
+                    type="number"
+                    value={deduction.amount}
+                    onChange={(e) => handleDeductionChange(index, 'amount', e.target.value)}
+                    className="w-full border px-2 py-1 rounded"
+                    placeholder="Amount"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeDeduction(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <i className="fa fa-trash"></i>
+                  </button>
+                </div>
+              ))}
             </div>
 
             {/* Payroll Summary */}
@@ -176,58 +264,70 @@ const StaffPayroll = () => {
               <h3 className="text-lg font-semibold mb-2">Payroll Summary (₹)</h3>
               <button
                 type="button"
-                onClick={() => calculatePayroll()}
-                className="text-green-500 hover:text-green-700"
+                onClick={calculatePayroll}
+                className="text-green-500 hover:text-green-700 mb-2"
               >
                 <i className="fa fa-calculator"></i> Calculate
               </button>
+
               <div className="space-y-2 mt-2">
                 <div>
                   <label className="block text-sm">Basic Salary</label>
                   <input
-                    type="text"
-                    name="basic"
+                    type="number"
+                    value={basicSalary}
+                    onChange={(e) => setBasicSalary(Number(e.target.value))}
                     className="w-full border px-2 py-1 rounded"
-                    value="13060"
                   />
                 </div>
                 <div>
                   <label className="block text-sm">Earning</label>
                   <input
-                    type="text"
-                    name="total_allowance"
+                    type="number"
+                    value={totalAllowance}
+                    readOnly
                     className="w-full border px-2 py-1 rounded"
                   />
                 </div>
                 <div>
                   <label className="block text-sm">Deduction</label>
                   <input
-                    type="text"
-                    name="total_deduction"
+                    type="number"
+                    value={totalDeduction}
+                    readOnly
                     className="w-full border px-2 py-1 rounded text-red-500"
                   />
                 </div>
                 <div>
                   <label className="block text-sm">Gross Salary</label>
                   <input
-                    type="text"
-                    name="gross_salary"
+                    type="number"
+                    value={grossSalary}
+                    readOnly
                     className="w-full border px-2 py-1 rounded"
-                    value="0"
                   />
                 </div>
                 <div>
                   <label className="block text-sm">Tax</label>
                   <input
-                    type="text"
-                    name="tax"
+                    type="number"
+                    value={tax}
+                    onChange={(e) => setTax(Number(e.target.value))}
                     className="w-full border px-2 py-1 rounded text-red-500"
-                    value="0"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm">Net Salary</label>
+                  <input
+                    type="number"
+                    value={netSalary}
+                    readOnly
+                    className="w-full border px-2 py-1 rounded text-green-500"
                   />
                 </div>
               </div>
             </div>
-          </form>
+          </div>
 
           <div className="mt-4 text-right">
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
