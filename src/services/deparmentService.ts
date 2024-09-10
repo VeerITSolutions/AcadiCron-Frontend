@@ -11,9 +11,9 @@ export const fetchdeparmentData = async (page: number, perPage: number) => {
 };
 
 
-export const createdeparment = async (name: string): Promise<any> => {
+export const createdeparment = async (department_name: string): Promise<any> => {
   try {
-    const response = await apiClient.post("/department", { name });
+    const response = await apiClient.post("/department", { department_name });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -30,8 +30,8 @@ export const deletedeparment = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editdeparment = async (id: number, deparment: string) => {
-  const data = { deparment }; // Create an object with the name field
+export const editdeparment = async (id: number, department_name: string) => {
+  const data = { department_name }; // Create an object with the name field
   const response = await apiClient.put(`/department/${id}`, data);
   return response.data;
 };
