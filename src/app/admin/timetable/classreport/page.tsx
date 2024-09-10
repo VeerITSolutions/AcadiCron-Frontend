@@ -5,6 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { fetchtimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
 import { toast } from "react-toastify";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 const columns = [
   "Monday",
@@ -92,12 +93,14 @@ const StudentDetails = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <MUIDataTable
-      title={"Weekly Timetable"}
-      data={data}
-      columns={columns}
-      options={options}
-    />
+    <DefaultLayout>
+      <MUIDataTable
+        title={"Weekly Timetable"}
+        data={data}
+        columns={columns}
+        options={options}
+      />
+    </DefaultLayout>
   );
 };
 
