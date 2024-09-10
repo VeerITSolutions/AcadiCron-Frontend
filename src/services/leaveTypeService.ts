@@ -11,9 +11,9 @@ export const fetchLeaveTypeData = async (page: number, perPage: number) => {
 };
 
 
-export const createLeaveType = async (house_name: string, description: string): Promise<any> => {
+export const createLeaveType = async (type: string): Promise<any> => {
   try {
-    const response = await apiClient.post("/leave-type", { house_name, description });
+    const response = await apiClient.post("/leave-type", { type });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -30,8 +30,8 @@ export const deleteLeaveTypeData = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editLeaveTypeData = async (id: number, house_name: string, description: string) => {
-  const data = { house_name, description }; // Create an object with the name field
+export const editLeaveTypeData = async (id: number, type: string) => {
+  const data = { type }; // Create an object with the name field
   const response = await apiClient.put(`/leave-type/${id}`, data);
   return response.data;
 };

@@ -320,7 +320,7 @@ Mother Name
               Payroll
               </h3>
             </div>
-            <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-3">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 EPF No
@@ -400,127 +400,204 @@ Mother Name
             
             </div>
           </div>
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-              Leaves
-              </h3>
-            </div>
-            <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
-            <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Medical
-                </label>
-                <input
-                  id="medical"
-                  name="medical"
-                  placeholder="Number of leaves"
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Personal
-                </label>
-                <input
-                  id="personal"
-                  name="personal"
-                  placeholder="Number of leaves"
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Maternity
-                </label>
-                <input
-                  id="maternity"
-                  name="maternity"
-                  placeholder="Number of leaves"
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-            
-            </div>
-          </div>
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-              Bank Account Details
-              </h3>
-            </div>
-            <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
-            <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Account Title
-                </label>
-                <input
-                  id="account_title"
-                  name="account_title"
-                  placeholder=""
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Bank Account Number
-                </label>
-                <input
-                  id="bank_account_no"
-                  name="bank_account_no"
-                  placeholder=""
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Bank Name
-                </label>
-                <input
-                  id="bank_name"
-                  name="bank_name"
-                  placeholder=""
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  IFSC Code
-                </label>
-                <input
-                  id="ifsc_code"
-                  name="ifsc_code"
-                  placeholder=""
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Bank Branch Name
-                </label>
-                <input
-                  id="branch_name"
-                  name="branch_name"
-                  placeholder=""
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
 
-            </div>
-          </div>
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+      Leaves
+    </h3>
+  </div>
+  
+  <div className="grid gap-5.5 p-6.5 sm:grid-cols-3"> 
+    
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Medical
+      </label>
+      <input
+        id="medical"
+        name="medical"
+        placeholder="Number of leaves"
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Personal
+      </label>
+      <input
+        id="personal"
+        name="personal"
+        placeholder="Number of leaves"
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Maternity
+      </label>
+      <input
+        id="maternity"
+        name="maternity"
+        placeholder="Number of leaves"
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+  </div>
+</div>
+
+<div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+      Bank Account Details
+    </h3>
+  </div>
+  <div className="grid gap-5.5 p-6.5 sm:grid-cols-3">
+    
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Account Title
+      </label>
+      <input
+        id="account_title"
+        name="account_title"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Bank Account Number
+      </label>
+      <input
+        id="bank_account_no"
+        name="bank_account_no"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Bank Name
+      </label>
+      <input
+        id="bank_name"
+        name="bank_name"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        IFSC Code
+      </label>
+      <input
+        id="ifsc_code"
+        name="ifsc_code"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Bank Branch Name
+      </label>
+      <input
+        id="branch_name"
+        name="branch_name"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+  </div>
+</div>
+
+<div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+    Social Media Link
+    </h3>
+  </div>
+  <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
+    
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Facebook URL
+      </label>
+      <input
+        id="facebookurl"
+        name="facebookurl"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">   
+Twitter URL
+      </label>
+      <input
+        id="twitterurl"
+        name="twitterurl"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Linkedin URL
+      </label>
+      <input
+        id="linkedinurl"
+        name="linkedinurl"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">     
+Instagram URL
+      </label>
+      <input
+        id="instagramurl"
+        name="instagramurl"
+        placeholder=""
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+  </div>
+</div>
+
+
+
+
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Miscellaneous Details
+              Upload Documents
               </h3>
             </div>
             <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
