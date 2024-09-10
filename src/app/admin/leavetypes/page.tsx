@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 
+
 import {
-  createFeesMaster,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
+  createLeaveType,
+  deleteLeaveTypeData,
+  editLeaveTypeData,
+  fetchLeaveTypeData,
+} from "@/services/leaveTypeService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -41,7 +42,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
+      const result = await fetchLeaveTypeData(
         currentPage + 1,
         rowsPerPage,
       );
@@ -56,7 +57,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteLeaveTypeData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -92,15 +93,8 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.fees_group || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
-      student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
+      student.type,
+    
 
       <div key={student.id}>
         <IconButton
@@ -146,7 +140,7 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
+        const result = await editLeaveTypeData(
           editCategoryId,
 
           formData.id,
@@ -165,7 +159,7 @@ const FeesMaster = () => {
           toast.error("Failed to update Student House");
         }
       } else {
-        const result = await createFeesMaster(
+        const result = await createLeaveType(
           formData.id,
           formData.fees_group,
           formData.fees_type,
