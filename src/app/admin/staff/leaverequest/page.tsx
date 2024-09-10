@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
+import { fetchLeaveData, createLeave, deleteLeaveData, editLeaveData } from "@/services/leaveService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -63,11 +63,18 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+     
+     
+      student.name || "N/A",
+      student.leave_type_id || "N/A",
+      student.leave_from +'-'+ student.leave_to  || "N/A",
+      student.leave_days || "N/A",
+      student.date || "N/A",
+      student.status || "N/A",
+     "ACTION"
+      
+
+
     ]);
   };
 
@@ -79,7 +86,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
+      const result = await fetchLeaveData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,

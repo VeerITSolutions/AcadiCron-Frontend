@@ -3,20 +3,13 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-
-import {
-  createFeesMaster,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
-import { fetchdeparmentData } from "@/services/deparmentService";
-
+import { fetchdeparmentData, createdeparment, deletedeparment, editdeparment } from "@/services/deparmentService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -38,7 +31,7 @@ const FeesMaster = () => {
     try {
       const result = await fetchdeparmentData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
-      setData(formatStudentCategoryData(result.data));
+      setData(formatDepartmentData(result.data));
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -48,10 +41,11 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deletedeparment(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
+      toast.error("Delete failed");
       console.error("Delete failed", error);
     }
   };
@@ -59,25 +53,23 @@ const FeesMaster = () => {
   const handleEdit = (id: number, department_name_value: string) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
     setFormData({
       department_name: department_name_value,
     });
   };
 
-  const formatStudentCategoryData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.department_name || "N/A",
-
-      <div key={student.id}>
+  const formatDepartmentData = (departments: any[]) => {
+    return departments.map((department: any) => [
+      department.department_name || "N/A",
+      <div key={department.id}>
         <IconButton
-          onClick={() => handleEdit(student.id, student.department_name)}
+          onClick={() => handleEdit(department.id, department.department_name)}
           aria-label="edit"
         >
           <Edit />
         </IconButton>
         <IconButton
-          onClick={() => handleDelete(student.id)}
+          onClick={() => handleDelete(department.id)}
           aria-label="delete"
         >
           <Delete />
@@ -101,58 +93,28 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
-          editCategoryId,
-
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
+        const result = await editdeparment(editCategoryId, formData.department_name);
         if (result.success) {
-          toast.success("Student House updated successfully");
+          toast.success("Department updated successfully");
         } else {
-          toast.error("Failed to update Student House");
+          toast.error("Failed to update Department");
         }
       } else {
-        const result = await createFeesMaster(
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
+        const result = await createdeparment(formData.department_name);
         if (result.success) {
-          toast.success("Student House saved successfully");
+          toast.success("Department saved successfully");
         } else {
-          toast.error("Failed to save Student House");
+          toast.error("Failed to save Department");
         }
       }
 
-      setFormData({
-        fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
-      });
-
+      // Reset form and state
+      setFormData({ department_name: "" });
       setIsEditing(false);
       setEditCategoryId(null);
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
+      toast.error("An error occurred");
       console.error("An error occurred", error);
     }
   };
@@ -169,7 +131,7 @@ const FeesMaster = () => {
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
-  const columns = ["Name", "Action"];
+  const columns = ["Department Name", "Action"];
   const options = {
     filterType: false,
     serverSide: true,
@@ -189,7 +151,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Add Department" : "Add Department"}
+                {isEditing ? "Edit Department" : "Add Department"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -197,12 +159,20 @@ const FeesMaster = () => {
                   handleSubmit();
                 }}
               >
-
-                      <div className="flex flex-col gap-5.5 p-6.5"><div>
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Name<span className="required">*</span></label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" value="" name="name" /></div>
-                      </div>
-
-
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Name<span className="required">*</span>
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="department_name"
+                      value={formData.department_name}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
 
                 <div>
                   <button type="submit" className="">
