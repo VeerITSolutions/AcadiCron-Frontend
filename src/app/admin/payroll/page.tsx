@@ -24,6 +24,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { fetchPayrollData, createPayroll, deletePayroll, editpayroll } from "@/services/payrollServices";
 const columns = [
   "Staff ID",
   "Name",
@@ -64,11 +65,25 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      student.employee_id,
+      
+
+      student.name || "N/A",
+      student.name || "N/A",
+      student.department || "N/A",
+      student.designation || "N/A",
+      student.contact_no || "N/A",
+      student.status || "N/A",
+      <div key={student.id}>
+        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+          <Visibility />
+        </IconButton>
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+          <Edit />
+        </IconButton>
+      
+      </div>,
+      <div>Generate payroll</div>
     ]);
   };
 
@@ -80,7 +95,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
+      const result = await fetchPayrollData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
