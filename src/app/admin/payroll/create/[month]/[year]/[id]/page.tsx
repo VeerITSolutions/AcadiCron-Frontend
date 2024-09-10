@@ -6,6 +6,7 @@ import React from "react";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
+import StaffPayroll from "@/components/User/StaffPayroll";
 
 const student_admission = () => {
   const [error, setError] = useState<string | null>(null);
@@ -13,7 +14,7 @@ const student_admission = () => {
 
   return (
     <DefaultLayout>
-      <div>hello</div>
+      <StaffPayroll />
     </DefaultLayout>
   );
 };
