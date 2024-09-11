@@ -11,9 +11,9 @@ export const fetchCertificateData = async (page: number, perPage: number) => {
 };
 
 
-export const createCertificate = async (house_name: string, description: string): Promise<any> => {
+export const createCertificate = async (certificate_name: string): Promise<any> => {
   try {
-    const response = await apiClient.post("/certificate", { house_name, description });
+    const response = await apiClient.post("/certificate", { certificate_name });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -30,8 +30,8 @@ export const deleteCertificateData = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editCertificateData = async (id: number, house_name: string, description: string) => {
-  const data = { house_name, description }; // Create an object with the name field
+export const editCertificateData = async (id: number, certificate_name: string) => {
+  const data = { certificate_name }; // Create an object with the name field
   const response = await apiClient.put(`/certificate/${id}`, data);
   return response.data;
 };

@@ -3,13 +3,6 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentCategoryData } from "@/services/studentCategoryService";
-import {
-  createCategory,
-  editStudentCategoryData,
-} from "@/services/categoryService";
-import { deleteStudentCategoryData } from "@/services/studentCategoryService";
-
 import {
   fetchCertificateData,
   createCertificate,
@@ -51,7 +44,7 @@ const StudentCategories = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteStudentCategoryData(id);
+      await deleteCertificateData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -106,17 +99,20 @@ const StudentCategories = () => {
     try {
       if (isEditing && editCategoryId !== null) {
         // If editing an existing category
-        const result = await editStudentCategoryData(editCategoryId, category);
+        const result = await editCertificateData(
+          editCategoryId,
+          certificate_name,
+        );
         if (result.success) {
-          toast.success("Category updated successfully");
+          toast.success("Certificated updated successfully");
         } else {
-          toast.error("Failed to update category");
+          toast.error("Failed to update certificated");
         }
       } else {
         // Creating a new category
-        const result = await createCategory(category);
+        const result = await createCertificate(certificate_name);
         if (result.success) {
-          toast.success("Category saved successfully");
+          toast.success("certificated added successfully");
         } else {
           toast.error("Failed to save category");
         }
