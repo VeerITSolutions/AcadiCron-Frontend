@@ -140,6 +140,8 @@ const StudentCategories = () => {
 
   const columns = ["Certificate Name", "Background Image", "Actions"];
   const options = {
+    filter: false, // Disable filter,
+    viewColumns: false, // Disable view columns button
     filterType: false,
     serverSide: true,
     responsive: "standard",
