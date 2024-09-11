@@ -36,6 +36,8 @@ const options = {
   filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
+  filter: false, // Disable filter,
+  viewColumns: false, // Disable view columns button
 };
 
 const StudentDetails = () => {

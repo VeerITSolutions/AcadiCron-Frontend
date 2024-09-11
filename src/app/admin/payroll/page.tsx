@@ -43,6 +43,8 @@ const options = {
   responsive: "standard",
  
   selectableRows: "none", // Disable row selection
+  filter: false, // Disable filter,
+  viewColumns: false, // Disable view columns button
 
 };
 const StudentDetails = () => {

@@ -170,6 +170,8 @@ const StudentCategories = () => {
     rowsPerPage: rowsPerPage,
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
+    filter: false, // Disable filter,
+    viewColumns: false, // Disable view columns button
   };
 
   return (

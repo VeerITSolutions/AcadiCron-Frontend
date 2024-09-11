@@ -27,6 +27,7 @@ const options = {
   print: false, // Disable print button
   viewColumns: false, // Disable view columns button
   responsive: "standard", // Customize responsiveness if needed
+  
 };
 
 const StudentDetails = () => {

@@ -30,8 +30,11 @@ const options = {
   filterType: false,
   serverSide: true,
   responsive: "standard",
+  filter: false, // Disable filter,
+  viewColumns: false, // Disable view columns button
 
   selectableRows: "none", // Disable row selection
+  
 };
 
 const StudentDetails = () => {

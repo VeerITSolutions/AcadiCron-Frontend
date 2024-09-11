@@ -57,6 +57,8 @@ const data = [
 
 const options = {
   filterType: "checkbox",
+  filter: false, // Disable filter,
+  viewColumns: false, // Disable view columns button
 };
 const multi_class_student = () => {
   const [error, setError] = useState<string | null>(null);
