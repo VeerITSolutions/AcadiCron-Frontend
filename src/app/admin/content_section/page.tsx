@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
-import styles from "./StudentCategories.module.css"; // Import CSS module
+import styles from "./StudentDetails.module.css"; // Import CSS module
 
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
