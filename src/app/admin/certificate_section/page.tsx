@@ -9,6 +9,14 @@ import {
   deleteStudentCategoryData,
   editStudentCategoryData,
 } from "@/services/studentCategoryService";
+
+import {
+  fetchCertificateData,
+  createCertificate,
+  deleteCertificateData,
+  editCertificateData,
+} from "@/services/certificateService";
+
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import {
@@ -41,10 +49,7 @@ const StudentCategories = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentCategoryData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchCertificateData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -73,11 +78,19 @@ const StudentCategories = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.category || "N/A",
-      student.id,
+      student.certificate_name || "N/A",
+      student.background_image ? (
+        <img
+          src={`https://erp.erabesa.co.in/uploads/certificate/${student.background_image}`}
+          width="40"
+          alt={student.certificate_name || "Certificate Image"}
+        />
+      ) : (
+        "N/A"
+      ),
       <div key={student.id}>
         <IconButton
-          onClick={() => handleEdit(student.id, student.category)}
+          onClick={() => handleEdit(student.id, student.certificate_name)}
           aria-label="edit"
         >
           <Edit />
@@ -159,11 +172,14 @@ const StudentCategories = () => {
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
-  const columns = ["Category", "Category Id", "Actions"];
+  const columns = ["Certificate Name", "Background Image", "Actions"];
   const options = {
-    filterType: "checkbox",
+    filterType: false,
     serverSide: true,
     responsive: "standard",
+
+    selectableRows: "none", // Disable row selection
+
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
@@ -178,7 +194,7 @@ const StudentCategories = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Create Category
+                Add Student Certificate
               </h3>
               <form
                 onSubmit={(e) => {
@@ -189,7 +205,7 @@ const StudentCategories = () => {
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Category
+                      Student Certificate
                     </label>
                     <input
                       name="category"
@@ -212,7 +228,7 @@ const StudentCategories = () => {
 
         <div className="flex flex-col gap-9">
           <MUIDataTable
-            title={"Category List"}
+            title={"Student Certificate List"}
             data={data}
             columns={columns}
             options={options}
@@ -223,7 +239,7 @@ const StudentCategories = () => {
       {/* Edit Category Modal */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>
-          {isEditing ? "Edit Category" : "Create Category"}
+          {isEditing ? "Edit Student Certificate" : "Student Certificate "}
         </DialogTitle>
         <DialogContent>
           <TextField
