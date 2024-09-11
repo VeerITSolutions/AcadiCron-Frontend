@@ -10,7 +10,9 @@ import {
   editFeesMasterData,
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
+
 import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
+import { fetchclassesSectionData } from "@/services/classesSectionService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your section API service
 import {
   createStaff,
@@ -54,7 +56,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
+      const result = await fetchclassesSectionData(
         currentPage + 1,
         rowsPerPage,
       );
@@ -134,23 +136,17 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.fees_group || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
-      student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
+      student.class_name,
+      student.section_name || "N/A",
+      student.id || "N/A",
 
       <div key={student.id}>
         <IconButton
           onClick={() =>
             handleEdit(
               student.id,
-              student.fees_group,
-              student.fees_type,
+              student.class_name,
+              student.section_name,
               student.due_date,
               student.amount,
               student.fine_type,
@@ -263,6 +259,7 @@ const FeesMaster = () => {
     responsive: "standard",
     count: totalCount,
     page: page,
+    selectableRows: "none", // Disable row selection
     rowsPerPage: rowsPerPage,
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
