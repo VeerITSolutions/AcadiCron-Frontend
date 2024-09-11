@@ -10,6 +10,14 @@ import {
   editFeesMasterData,
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
+
+import {
+  createStaff,
+  deleteStaff,
+  fetchStaffData,
+  editStaffData,
+  getStaffbyrole,
+} from "@/services/staffService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -18,6 +26,7 @@ import styles from "./User.module.css";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+  const [teacher, setTeacherData] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -47,6 +56,16 @@ const FeesMaster = () => {
       );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+
+    try {
+      const result = await getStaffbyrole(currentPage + 1, rowsPerPage);
+      setTotalCount(result.totalCount);
+      setTeacherData(result.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -245,45 +264,71 @@ const FeesMaster = () => {
                   handleSubmit();
                 }}
               >
-               
-               <div className="flex flex-col gap-5.5 p-6.5">
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Class <span className="required">*</span></label>
-                  <select id="class_id" name="class_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Nursery</option><option value="12">K.G.-I</option><option value="13">K.G. - II</option></select>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Class <span className="required">*</span>
+                    </label>
+                    <select
+                      id="class_id"
+                      name="class_id"
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    >
+                      <option value="">Select</option>
+                      <option value="1">Class 1</option>
+                      <option value="2">Class 2</option>
+                      <option value="3">Class 3</option>
+                      <option value="4">Class 4</option>
+                      <option value="5">Class 5</option>
+                      <option value="6">Class 6</option>
+                      <option value="7">Class 7</option>
+                      <option value="8">Class 8</option>
+                      <option value="9">Class 9</option>
+                      <option value="10">Class 10</option>
+                      <option value="11">Nursery</option>
+                      <option value="12">K.G.-I</option>
+                      <option value="13">K.G. - II</option>
+                    </select>
                   </div>
-                  </div>
+                </div>
 
-                  <div className="flex flex-col gap-5.5 p-6.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">Section <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option><option value="1">Bright</option><option value="2">Brilliant</option><option value="3">Brainy</option></select>
-                    </div>
-                   
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Section <span className="required">*</span>
+                  </label>
+                  <select
+                    id="section_id"
+                    name="section_id"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    <option value="1">Bright</option>
+                    <option value="2">Brilliant</option>
+                    <option value="3">Brainy</option>
+                  </select>
+                </div>
 
-                    <div className="flex flex-col gap-5.5 p-6.5"><label className="mb-3 block text-sm font-medium text-black dark:text-white">Class Teacher<span className="required">*</span>&nbsp;&nbsp;&nbsp;</label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="teacher" name="class_teacher" /> Priya Ronghe (19001) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"><input className=" User_radio__Zd0k2" type="checkbox" value="teacher" name="class_teacher" /> Harshalata Khante (19002) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Rushali Patil (19003) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Tabassum Firdous (19005)</label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Kalpana Kharabe (19006) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Priyanka Rathod (19007) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Rucha Kale (19008) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Harsha Pande (19009) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Neha Gurao (19010) </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Rajrajeshvari Kuraskar (19011) </label>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Class Teacher<span className="required">*</span>
+                    &nbsp;&nbsp;&nbsp;
+                  </label>
+                  {teacher.map((teachers) => (
+                    <label
+                      key={teachers.id}
+                      className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"
+                    >
+                      <input
+                        className="User_radio__Zd0k2"
+                        type="checkbox"
+                        value={teachers.id}
+                        name="class_teacher"
+                      />{" "}
+                      {`${teachers.name} ${teachers.surname} (${teachers.id})`}
+                    </label>
+                  ))}
+                </div>
 
-
-</div>
-                   
-               
- 
                 <div>
                   <button type="submit" className="">
                     {isEditing ? "Update" : "Save"}
