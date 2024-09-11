@@ -99,13 +99,13 @@ const NoticeForm = () => {
       Message To<span className="required">*</span>&nbsp;&nbsp;&nbsp;
     </label>
     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-      <input className="User_radio__Zd0k2" type="checkbox" value="father" name="guardian_is" /> Student
+      <input className="User_radio__Zd0k2" type="checkbox" value="student" name="student" /> Student
     </label>
     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-      <input className="User_radio__Zd0k2" type="checkbox" value="mother" name="guardian_is" /> Parent
+      <input className="User_radio__Zd0k2" type="checkbox" value="parent" name="parent" /> Parent
     </label>
     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-      <input className="User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Admin
+      <input className="User_radio__Zd0k2" type="checkbox" value="admin" name="admin" /> Admin
     </label>
     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
       <input className="User_radio__Zd0k2" type="checkbox" value="teacher" name="teacher" /> Teacher
@@ -119,16 +119,16 @@ const NoticeForm = () => {
       Multiple Select<span className="required">*</span>&nbsp;&nbsp;&nbsp;
     </label>
     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-      <input className="User_radio__Zd0k2" type="checkbox" value="father" name="guardian_is" /> Class 1 to 2
+      <input className="User_radio__Zd0k2" type="checkbox" value="class1" name="class1" /> Class 1 to 2
     </label>
     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-      <input className="User_radio__Zd0k2" type="checkbox" value="mother" name="guardian_is" /> Class 3 to 4
+      <input className="User_radio__Zd0k2" type="checkbox" value="class2" name="class2" /> Class 3 to 4
     </label>
     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-      <input className="User_radio__Zd0k2" type="checkbox" value="other" name="guardian_is" /> Class 5 to 7
+      <input className="User_radio__Zd0k2" type="checkbox" value="class3" name="class3" /> Class 5 to 7
     </label>
     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-      <input className="User_radio__Zd0k2" type="checkbox" value="teacher" name="teacher" /> Class 8 to 9
+      <input className="User_radio__Zd0k2" type="checkbox" value="class4" name="class4" /> Class 8 to 9
     </label>
     <span className="text-danger"></span>
   </div>
