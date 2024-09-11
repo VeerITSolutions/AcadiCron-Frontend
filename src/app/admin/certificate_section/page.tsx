@@ -4,31 +4,24 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
-import { createCategory } from "@/services/categoryService";
 import {
-  deleteStudentCategoryData,
+  createCategory,
   editStudentCategoryData,
-} from "@/services/studentCategoryService";
+} from "@/services/categoryService";
+import { deleteStudentCategoryData } from "@/services/studentCategoryService";
 
 import {
   fetchCertificateData,
   createCertificate,
-  deleteCertificateData,
   editCertificateData,
+  deleteCertificateData,
 } from "@/services/certificateService";
 
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
+import SwitcherTwo from "@/components/Switchers/SwitcherTwo";
 
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
@@ -38,13 +31,10 @@ const StudentCategories = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [category, setCategory] = useState<string>("");
-  const [categorynew, setCategorynew] = useState<string>("");
+  const [certificate_name, setCertificateName] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-
-  // State for modal visibility
-  const [open, setOpen] = useState<boolean>(false);
-
+  const [enabled, setEnabled] = useState(false);
   const token = localStorage.getItem("authToken") || "";
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
@@ -72,8 +62,7 @@ const StudentCategories = () => {
   const handleEdit = (id: number, categoryName: string) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setCategorynew(categoryName);
-    setOpen(true); // Open the modal
+    setCertificateName(categoryName);
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -110,50 +99,31 @@ const StudentCategories = () => {
   }, [page, rowsPerPage, token]);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
-  };
-
-  const handleEditCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategorynew(e.target.value);
+    setCertificateName(e.target.value);
   };
 
   const handleSubmit = async () => {
     try {
-      const result = await createCategory(category);
-      if (result.success) {
-        toast.success("Category saved successfully");
-      } else {
-        toast.error("Failed to save category");
-      }
-      setCategory("");
-      setIsEditing(false);
-      setEditCategoryId(null);
-      setOpen(false); // Close the modal
-      fetchData(page, rowsPerPage); // Refresh data after submit
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  };
-
-  const handleEditSubmit = async () => {
-    try {
       if (isEditing && editCategoryId !== null) {
-        // Edit existing category
-        const result = await editStudentCategoryData(
-          editCategoryId,
-          categorynew,
-        );
+        // If editing an existing category
+        const result = await editStudentCategoryData(editCategoryId, category);
         if (result.success) {
           toast.success("Category updated successfully");
         } else {
           toast.error("Failed to update category");
         }
       } else {
+        // Creating a new category
+        const result = await createCategory(category);
+        if (result.success) {
+          toast.success("Category saved successfully");
+        } else {
+          toast.error("Failed to save category");
+        }
       }
-      setCategory("");
+      setCertificateName("");
       setIsEditing(false);
       setEditCategoryId(null);
-      setOpen(false); // Close the modal
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
@@ -177,9 +147,7 @@ const StudentCategories = () => {
     filterType: false,
     serverSide: true,
     responsive: "standard",
-
     selectableRows: "none", // Disable row selection
-
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
@@ -194,7 +162,9 @@ const StudentCategories = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Add Student Certificate
+                {isEditing
+                  ? "Edit Student Certificate"
+                  : "Add Student Certificate"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -205,20 +175,162 @@ const StudentCategories = () => {
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Student Certificate
+                      Certificate Name
                     </label>
                     <input
-                      name="category"
+                      name="certificate_name"
                       type="text"
-                      value={category}
+                      value={certificate_name}
                       onChange={handleCategoryChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Header Left Text
+                    </label>
+                    <input
+                      name="header_left_text"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Header Center Text
+                    </label>
+                    <input
+                      name="certificate_name"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Header Right Text
+                    </label>
+                    <input
+                      name="certificate_name"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Body Text *
+                    </label>
+                    <input
+                      name="certificate_name"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Footer Left Text
+                    </label>
+                    <input
+                      name="certificate_name"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Footer Center Text
+                    </label>
+                    <input
+                      name="certificate_name"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Footer Right Text
+                    </label>
+                    <input
+                      name="certificate_name"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Certificate Design
+                    </label>
+                    <input
+                      name="certificate_name"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Student Photo
+                    </label>
+                    <div x-data="{ switcherToggle: false }">
+                      <label
+                        htmlFor="toggle2"
+                        className="flex cursor-pointer select-none items-center"
+                      >
+                        <div className="relative">
+                          <input
+                            id="toggle2"
+                            type="checkbox"
+                            className="sr-only"
+                            onChange={() => {
+                              setEnabled(!enabled);
+                            }}
+                          />
+                          <div className="h-5 w-14 rounded-full bg-meta-9 shadow-inner dark:bg-[#5A616B]"></div>
+                          <div
+                            className={`dot ${enabled && "!right-0 dark:!bg-white"} absolute -top-1 left-0 h-7
+              w-7 !translate-x-full rounded-full !bg-primary bg-white shadow-switch-1
+            transition`}
+                          ></div>
+                        </div>
+                      </label>
+                    </div>
+                    {/* <input
+                      name="certificate_name"
+                      type="text"
+                      value={certificate_name}
+                      onChange={handleCategoryChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    /> */}
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Background Image
+                    </label>
+                    <input
+                      type="file"
+                      className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                     />
                   </div>
                 </div>
                 <div>
                   <button type="submit" className="">
-                    Save
+                    {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
               </form>
@@ -235,30 +347,6 @@ const StudentCategories = () => {
           />
         </div>
       </div>
-
-      {/* Edit Category Modal */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>
-          {isEditing ? "Edit Student Certificate" : "Student Certificate "}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="category"
-            label="Category"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={categorynew}
-            onChange={handleEditCategoryChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleEditSubmit}>Update</Button>
-        </DialogActions>
-      </Dialog>
     </DefaultLayout>
   );
 };
