@@ -4,7 +4,13 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
+
+import {
+  fetchHomeWorkData,
+  createHomeWork,
+  deleteHomeWorkData,
+  editHomeWorkData,
+} from "@/services/homeworkServices";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -25,17 +31,22 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 const columns = [
-  "Admission No",
-  "Student Name",
   "Class",
-  "Category",
-  "Mobile Number",
+  "Section",
+  "Section Group",
+  "Subject",
+  "Homework Date",
+  "Submission Date",
+  "Evaluation Date",
+  "Created By",
+  "Action",
 ];
 
 const options = {
-  filterType: "checkbox",
+  filterType: false,
   serverSide: true,
   responsive: "standard",
+  selectableRows: "none", // Disable row selection
 };
 
 const StudentDetails = () => {
@@ -58,11 +69,16 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      student.class_id || "N/A",
+      student.section_id || "N/A",
+      student.subject_group_subject_id || "N/A",
+      student.subject_id || "N/A",
+
+      student.homework_date || "N/A",
+      student.submit_date || "N/A",
+      student.evaluation_date || "N/A",
+      student.created_by || "N/A",
+      "Action",
     ]);
   };
 
@@ -74,7 +90,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
+      const result = await fetchHomeWorkData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
@@ -185,7 +201,7 @@ const StudentDetails = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Disabled Student"}
+        title={"Homework List"}
         data={data}
         columns={columns}
         options={{
