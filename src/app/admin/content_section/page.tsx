@@ -291,7 +291,7 @@ const StudentCategories = () => {
 
         <div className="flex flex-col gap-9">
           <MUIDataTable
-            title={"Category List"}
+            title={"Content List"}
             data={data}
             className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
             columns={columns}
