@@ -11,7 +11,7 @@ import {
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
 import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
-import { fetchclassesSectionData } from "@/services/classesSectionService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your section API service
 import {
   createStaff,
   deleteStaff,
@@ -28,7 +28,8 @@ const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const [teacher, setTeacherData] = useState<Array<Array<any>>>([]);
-  /*   const [class, setClasssSectionData] = useState<Array<Array<any>>>([]); */
+  const [classes, setClassessData] = useState<Array<Array<any>>>([]);
+
   const [section, setSections] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -75,18 +76,15 @@ const FeesMaster = () => {
       setLoading(false);
     }
 
-    /*  try {
-      const result = await fetchclassesSectionData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+    try {
+      const result = await getClasses(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
-      setClasssSectionData(result.data);
+      setClassessData(result.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
-    } */
+    }
 
     try {
       const result = await fetchsectionData(currentPage + 1, rowsPerPage); // Fetch the section data from API
@@ -300,19 +298,11 @@ const FeesMaster = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="">Select</option>
-                      <option value="1">Class 1</option>
-                      <option value="2">Class 2</option>
-                      <option value="3">Class 3</option>
-                      <option value="4">Class 4</option>
-                      <option value="5">Class 5</option>
-                      <option value="6">Class 6</option>
-                      <option value="7">Class 7</option>
-                      <option value="8">Class 8</option>
-                      <option value="9">Class 9</option>
-                      <option value="10">Class 10</option>
-                      <option value="11">Nursery</option>
-                      <option value="12">K.G.-I</option>
-                      <option value="13">K.G. - II</option>
+                      {classes.map((section) => (
+                        <option key={section.id} value={section.id}>
+                          {section.class}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
