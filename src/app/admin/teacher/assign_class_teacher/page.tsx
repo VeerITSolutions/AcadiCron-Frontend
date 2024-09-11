@@ -12,7 +12,7 @@ import {
 } from "@/services/studentFeesMasterService";
 
 import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
-import { fetchclassesSectionData } from "@/services/classesSectionService"; // Import your section API service
+import { fetchClassAssingTeacherData } from "@/services/classesAssingTeacherService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your section API service
 import {
   createStaff,
@@ -56,7 +56,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchclassesSectionData(
+      const result = await fetchClassAssingTeacherData(
         currentPage + 1,
         rowsPerPage,
       );
@@ -136,17 +136,17 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.class_name,
-      student.section_name || "N/A",
-      student.id || "N/A",
+      student.class,
+      student.section || "N/A",
+      student.name || "N/A",
 
       <div key={student.id}>
         <IconButton
           onClick={() =>
             handleEdit(
               student.id,
-              student.class_name,
-              student.section_name,
+              student.class,
+              student.section,
               student.due_date,
               student.amount,
               student.fine_type,
