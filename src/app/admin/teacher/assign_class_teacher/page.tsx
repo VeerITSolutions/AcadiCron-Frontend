@@ -10,7 +10,8 @@ import {
   editFeesMasterData,
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
-
+import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
+import { fetchclassesSectionData } from "@/services/classesSectionService"; // Import your section API service
 import {
   createStaff,
   deleteStaff,
@@ -27,6 +28,8 @@ const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const [teacher, setTeacherData] = useState<Array<Array<any>>>([]);
+  /*   const [class, setClasssSectionData] = useState<Array<Array<any>>>([]); */
+  const [section, setSections] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -69,6 +72,28 @@ const FeesMaster = () => {
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
+      setLoading(false);
+    }
+
+    /*  try {
+      const result = await fetchclassesSectionData(
+        currentPage + 1,
+        rowsPerPage,
+      );
+      setTotalCount(result.totalCount);
+      setClasssSectionData(result.data);
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    } */
+
+    try {
+      const result = await fetchsectionData(currentPage + 1, rowsPerPage); // Fetch the section data from API
+      setSections(result.data); // Assuming your API returns section data as an array
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch sections", error);
       setLoading(false);
     }
   };
@@ -302,9 +327,11 @@ const FeesMaster = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    <option value="1">Bright</option>
-                    <option value="2">Brilliant</option>
-                    <option value="3">Brainy</option>
+                    {section.map((section) => (
+                      <option key={section.id} value={section.id}>
+                        {section.section}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
