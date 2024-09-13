@@ -184,6 +184,11 @@ const StudentDetails = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
@@ -233,6 +238,9 @@ const StudentDetails = () => {
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
+            </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
             </button>
           </div>
         </div>
