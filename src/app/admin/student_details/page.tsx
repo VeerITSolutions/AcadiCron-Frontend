@@ -7,6 +7,9 @@ import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
+import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your section API service
+
 import {
   Edit,
   Delete,
@@ -48,6 +51,9 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [classes, setClassessData] = useState<Array<Array<any>>>([]);
+
+  const [section, setSections] = useState<Array<Array<any>>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -104,6 +110,24 @@ const StudentDetails = () => {
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
+      setLoading(false);
+    }
+
+    try {
+      const result = await getClasses(currentPage + 1, rowsPerPage);
+
+      setClassessData(result.data);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+
+    try {
+      const result = await fetchsectionData(currentPage + 1, rowsPerPage); // Fetch the section data from API
+      setSections(result.data); // Assuming your API returns section data as an array
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch sections", error);
       setLoading(false);
     }
   };
@@ -165,9 +189,14 @@ const StudentDetails = () => {
               onChange={handleClassChange}
               className={styles.select}
             >
-              <option value="">All Classes</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
+              <option value="">Select</option>
+
+              {classes.map((section) => (
+                <option key={section.id} value={section.id}>
+                  {section.class}
+                </option>
+              ))}
+
               {/* Add more class options here */}
             </select>
           </label>
@@ -178,9 +207,13 @@ const StudentDetails = () => {
               onChange={handleSectionChange}
               className={styles.select}
             >
-              <option value="">All Sections</option>
-              <option value="SectionA">Section A</option>
-              <option value="SectionB">Section B</option>
+              <option value="">Select</option>
+              {section.map((section) => (
+                <option key={section.id} value={section.id}>
+                  {section.section}
+                </option>
+              ))}
+
               {/* Add more section options here */}
             </select>
           </label>
