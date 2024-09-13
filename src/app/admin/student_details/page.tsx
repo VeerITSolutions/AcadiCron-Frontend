@@ -100,6 +100,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
+      // Pass selectedClass and selectedSection as parameters to filter data
       const result = await fetchStudentData(
         currentPage + 1,
         rowsPerPage,
