@@ -10,6 +10,15 @@ export const fetchsectionData = async (page: number, perPage: number) => {
   return response.data;
 };
 
+export const fetchsectionByClassData = async (selectedClass: number) => {
+  const response = await apiClient.get(`/sections-by-class`, {
+    params: {
+      selectedClass
+    },
+  });
+  return response.data;
+};
+
 
 export const createsection = async (name: string): Promise<any> => {
   try {

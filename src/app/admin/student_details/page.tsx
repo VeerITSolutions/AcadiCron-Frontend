@@ -7,8 +7,11 @@ import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
-import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your section API service
+import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your classes API service
 
 import {
   Edit,
@@ -27,6 +30,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+
 const columns = [
   "Admission No",
   "Student Name",
@@ -51,9 +55,8 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [classes, setClassessData] = useState<Array<Array<any>>>([]);
-
-  const [section, setSections] = useState<Array<Array<any>>>([]);
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -112,25 +115,26 @@ const StudentDetails = () => {
       setError(error.message);
       setLoading(false);
     }
+  };
 
+  const fetchClassesAndSections = async () => {
     try {
-      const result = await getClasses(currentPage + 1, rowsPerPage);
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
 
-      setClassessData(result.data);
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
-
-    try {
-      const result = await fetchsectionData(currentPage + 1, rowsPerPage); // Fetch the section data from API
-      setSections(result.data); // Assuming your API returns section data as an array
-      setLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch sections", error);
-      setLoading(false);
-    }
   };
+
   const handleDelete = async (id: number) => {
     // Assuming id is the student_id
     router.push(`/admin/student/${id}`);
@@ -139,13 +143,18 @@ const StudentDetails = () => {
   const handleEdit = (id: number) => {
     router.push(`/admin/student/edit/${id}`);
   };
+
   const handleAddFees = (id: number) => {
     router.push(`/admin/student/fees/${id}`);
   };
 
   useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+
+  useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
+  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -190,14 +199,11 @@ const StudentDetails = () => {
               className={styles.select}
             >
               <option value="">Select</option>
-
-              {classes.map((section) => (
-                <option key={section.id} value={section.id}>
-                  {section.class}
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
                 </option>
               ))}
-
-              {/* Add more class options here */}
             </select>
           </label>
           <label className={styles.label}>
@@ -206,15 +212,14 @@ const StudentDetails = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={styles.select}
+              disabled={!selectedClass} // Disable section dropdown if no class is selected
             >
               <option value="">Select</option>
-              {section.map((section) => (
-                <option key={section.id} value={section.id}>
-                  {section.section}
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
                 </option>
               ))}
-
-              {/* Add more section options here */}
             </select>
           </label>
           <div className={styles.searchGroup}>
@@ -230,9 +235,6 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
       <MUIDataTable
         title={"Student Details"}
