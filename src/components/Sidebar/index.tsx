@@ -379,6 +379,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
             {/* Sidebar Menu */}
             <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
+              <button
+                className="     text-white"
+                onClick={() => setModalOpen(true)}
+              >
+                Current Session: 2024-25
+              </button>
+              <hr />
               {menuGroups.map((group, groupIndex) => (
                 <div key={groupIndex}>
                   <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
@@ -404,19 +411,31 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       </ClickOutside>
 
       {/* Button to open modal */}
-      <button
-        className="fixed bottom-5 right-5 z-50 rounded bg-blue-500 p-2 text-white"
-        onClick={() => setModalOpen(true)}
-      >
-        Open Modal
-      </button>
 
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50">
           <div className="rounded-lg bg-white p-5 shadow-lg">
-            <h2 className="mb-4 text-xl">Modal Title</h2>
-            <p>This is the modal content. It floats over the sidebar.</p>
+            <h2 className="mb-4 text-xl">Session</h2>
+
+            <select>
+              <option value="7">2016-17</option>
+              <option value="11">2017-18</option>
+              <option value="13">2018-19</option>
+              <option value="14">2019-20</option>
+              <option value="15">2020-21</option>
+              <option value="16">2021-22</option>
+              <option value="18">2022-23</option>
+              <option value="19">2023-24</option>
+              <option value="20">2024-25</option>
+              <option value="21">2025-26</option>
+              <option value="22">2026-27</option>
+              <option value="23">2027-28</option>
+              <option value="24">2028-29</option>
+              <option value="25">2029-30</option>
+              {/* Add more section options here */}
+            </select>
+
             <button
               className="bg-red-500 mt-4 rounded p-2 text-black"
               onClick={() => setModalOpen(false)}
