@@ -72,7 +72,7 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
+      student.class_name || "N/A",
       student.category_id,
       student.mobileno,
       <div key={student.id}>
