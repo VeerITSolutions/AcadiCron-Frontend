@@ -39,8 +39,13 @@ export const deleteLeaveData = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editLeaveData = async (id: number, house_name: string, description: string) => {
-  const data = { house_name, description }; // Create an object with the name field
+export const editLeaveData = async (id: number,date: string,
+  leave_type_id: string,
+  leave_from: string,
+  leave_to: string,
+  reason: string,
+  document_file: string) => {
+  const data = { date, leave_type_id, leave_from, leave_to, reason, document_file }; // Create an object with the name field
   const response = await apiClient.put(`/leave-request/${id}`, data);
   return response.data;
 };

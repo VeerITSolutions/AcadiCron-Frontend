@@ -64,6 +64,8 @@ const StudentDetails = () => {
     reason: "",
     document_file: null,
   });
+  const [editing, setEditing] = useState(false); // Add state for editing
+  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -76,17 +78,23 @@ const StudentDetails = () => {
       fetchData(page, rowsPerPage);
     } catch (error) {
       console.error("Delete failed", error);
+      toast.error("Delete failed");
     }
   };
 
-
-  const handleEdit = (id: number, categoryName: string) => {
-    setIsEditing(true);
-    setEditCategoryId(id);
-    setCategorynew(categoryName);
+  const handleEdit = (id: number, leaveData: any) => {
+    setEditing(true);
+    setCurrentLeaveId(id);
+    setFormData({
+      date: leaveData.date || "",
+      leave_type_id: leaveData.leave_type_id || "",
+      leave_from: leaveData.leave_from || "",
+      leave_to: leaveData.leave_to || "",
+      reason: leaveData.reason || "",
+      document_file: null,
+    });
     setOpen(true); // Open the modal
   };
-
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
@@ -97,19 +105,19 @@ const StudentDetails = () => {
       student.date || "N/A",
       student.status || "N/A",
       <div key={student.id}>
-      <IconButton
-        onClick={() => handleEdit(student.id, student.category)}
-        aria-label="edit"
-      >
-        <Edit />
-      </IconButton>
-      <IconButton
-        onClick={() => handleDelete(student.id)}
-        aria-label="delete"
-      >
-        <Delete />
-      </IconButton>
-    </div>,
+        <IconButton
+          onClick={() => handleEdit(student.id, student)}
+          aria-label="edit"
+        >
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
     ]);
   };
 
@@ -147,16 +155,29 @@ const StudentDetails = () => {
 
   const handleSubmit = async () => {
     try {
-      const result = await createLeave(
-        formData.date,
-        formData.leave_type_id,
-        formData.leave_from,
-        formData.leave_to,
-        formData.reason,
-        formData.document_file
-      );
+      let result;
+      if (editing) {
+        result = await editLeaveData(
+          currentLeaveId!,
+          formData.date,
+          formData.leave_type_id,
+          formData.leave_from,
+          formData.leave_to,
+          formData.reason,
+          formData.document_file
+        );
+      } else {
+        result = await createLeave(
+          formData.date,
+          formData.leave_type_id,
+          formData.leave_from,
+          formData.leave_to,
+          formData.reason,
+          formData.document_file
+        );
+      }
       if (result.success) {
-        toast.success("Leave applied successfully");
+        toast.success(editing ? "Leave updated successfully" : "Leave applied successfully");
         setFormData({
           date: "",
           leave_type_id: "",
@@ -166,13 +187,14 @@ const StudentDetails = () => {
           document_file: null,
         });
         setOpen(false); // Close the modal
+        setEditing(false); // Reset editing state
         fetchData(page, rowsPerPage); // Refresh data after submit
       } else {
-        toast.error("Failed to apply leave");
+        toast.error("Failed to save leave");
       }
     } catch (error) {
       console.error("An error occurred", error);
-      toast.error("An error occurred while applying leave");
+      toast.error("An error occurred while saving leave");
     }
   };
 
@@ -222,6 +244,7 @@ const StudentDetails = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setEditing(false); // Reset editing state
   };
 
   if (loading) return <Loader />;
@@ -243,7 +266,7 @@ const StudentDetails = () => {
             className="inline-flex rounded bg-white px-3 py-1 font-medium text-white hover:bg-black hover:text-black sm:px-6 sm:py-2.5"
             onClick={handleClickOpen}
           >
-            Apply Leave
+            {editing ? "Edit Leave" : "Apply Leave"}
           </Button>
         </div>
 
@@ -264,7 +287,9 @@ const StudentDetails = () => {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">Apply Leave</h3>
+              <h3 className="font-medium text-black dark:text-white">
+                {editing ? "Edit Leave" : "Apply Leave"}
+              </h3>
             </div>
           </DialogTitle>
           <DialogContent>
@@ -357,7 +382,7 @@ const StudentDetails = () => {
               Cancel
             </Button>
             <Button onClick={handleSubmit} variant="contained" color="primary">
-              Save
+              {editing ? "Update" : "Save"}
             </Button>
           </DialogActions>
         </Dialog>
