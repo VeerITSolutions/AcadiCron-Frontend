@@ -143,7 +143,7 @@ const StudentDetails = () => {
   return (
     <DefaultLayout>
       <div className={styles.filters}>
-      <div><h1>Select Criteria</h1></div>
+      <div><h6 className="MuiTypography-root MuiTypography-h6 tss-hj53wm-MUIDataTableToolbar-titleText css-2ulfj5-MuiTypography-root"> Select Criteria </h6></div> 
         <div className={styles.filterGroup}>
           <label className={styles.label}>
             Class:
@@ -178,7 +178,8 @@ const StudentDetails = () => {
         </div> */}
       </div>
       <div className={styles.filters}>
-      <div><h1>Promote Students In Next Session</h1></div>
+     <div><h6 className="MuiTypography-root MuiTypography-h6 tss-hj53wm-MUIDataTableToolbar-titleText css-2ulfj5-MuiTypography-root"> Promote Students In Next Session </h6></div> 
+      
         <div className={styles.filterGroup}>
        
         <label className={styles.label}>

@@ -330,7 +330,7 @@ const FeesMaster = () => {
                   {teacher.map((teachers) => (
                     <label
                       key={teachers.id}
-                      className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"
+                      className="radio-inline block text-sm font-medium text-black dark:text-white"
                     >
                       <input
                         className="User_radio__Zd0k2"
