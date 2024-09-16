@@ -10,7 +10,7 @@ import {
   deleteLeaveData,
   editLeaveData,
 } from "@/services/leaveService";
-import { fetchLeaveTypeData } from "@/services/leaveTypeService";
+
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -20,8 +20,11 @@ import {
   DialogTitle,
   Button,
   TextField,
+  IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { Delete, Edit } from "@mui/icons-material";
+import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 
 const columns = [
   "Staff",
@@ -66,6 +69,25 @@ const StudentDetails = () => {
 
   const token = localStorage.getItem("authToken") || "";
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteLeaveData(id);
+      toast.success("Delete successful");
+      fetchData(page, rowsPerPage);
+    } catch (error) {
+      console.error("Delete failed", error);
+    }
+  };
+
+
+  const handleEdit = (id: number, categoryName: string) => {
+    setIsEditing(true);
+    setEditCategoryId(id);
+    setCategorynew(categoryName);
+    setOpen(true); // Open the modal
+  };
+
+
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.name || "N/A",
@@ -74,7 +96,20 @@ const StudentDetails = () => {
       student.leave_days || "N/A",
       student.date || "N/A",
       student.status || "N/A",
-      "ACTION",
+      <div key={student.id}>
+      <IconButton
+        onClick={() => handleEdit(student.id, student.category)}
+        aria-label="edit"
+      >
+        <Edit />
+      </IconButton>
+      <IconButton
+        onClick={() => handleDelete(student.id)}
+        aria-label="delete"
+      >
+        <Delete />
+      </IconButton>
+    </div>,
     ]);
   };
 
