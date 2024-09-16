@@ -11,9 +11,18 @@ export const fetchLeaveData = async (page: number, perPage: number) => {
 };
 
 
-export const createLeave = async (house_name: string, description: string): Promise<any> => {
+
+
+
+
+export const createLeave = async (date: string,
+  leave_type_id: string,
+  leave_from: string,
+  leave_to: string,
+  reason: string,
+  document_file: string): Promise<any> => {
   try {
-    const response = await apiClient.post("/leave-request", { house_name, description });
+    const response = await apiClient.post("/leave-request", { date, leave_type_id, leave_from, leave_to, reason, document_file });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);

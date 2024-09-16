@@ -10,18 +10,9 @@ import {
   deleteLeaveData,
   editLeaveData,
 } from "@/services/leaveService";
-
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
 import {
   Dialog,
   DialogActions,
@@ -31,6 +22,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+
 const columns = [
   "Staff",
   "Leave Type",
@@ -45,26 +37,31 @@ const options = {
   filterType: false,
   serverSide: true,
   responsive: "standard",
-
-  selectableRows: "none", // Disable row selection
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
+  selectableRows: "none",
+  filter: false,
+  viewColumns: false,
 };
+
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
-  const [dataleavetype, setLeaveTypeData] = useState<Array<Array<string>>>([]);
+  const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
   const [keyword, setKeyword] = useState<string>("");
+  const [formData, setFormData] = useState({
+    date: "",
+    leave_type_id: "",
+    leave_from: "",
+    leave_to: "",
+    reason: "",
+    document_file: null,
+  });
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const token = localStorage.getItem("authToken") || "";
@@ -106,34 +103,51 @@ const StudentDetails = () => {
     }
 
     try {
-      const result = await fetchLeaveTypeData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-      );
-
+      const result = await fetchLeaveTypeData();
       setLeaveTypeData(result.data);
     } catch (error: any) {
       setError(error.message);
     }
   };
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
+
+  const handleSubmit = async () => {
+    try {
+      const result = await createLeave(
+        formData.date,
+        formData.leave_type_id,
+        formData.leave_from,
+        formData.leave_to,
+        formData.reason,
+        formData.document_file
+      );
+      if (result.success) {
+        toast.success("Leave applied successfully");
+        setFormData({
+          date: "",
+          leave_type_id: "",
+          leave_from: "",
+          leave_to: "",
+          reason: "",
+          document_file: null,
+        });
+        setOpen(false); // Close the modal
+        fetchData(page, rowsPerPage); // Refresh data after submit
+      } else {
+        toast.error("Failed to apply leave");
+      }
+    } catch (error) {
+      console.error("An error occurred", error);
+      toast.error("An error occurred while applying leave");
+    }
   };
 
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type, files } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === "file" ? files?.[0] : value,
+    }));
   };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
-
-  useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -163,7 +177,10 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
-  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -211,11 +228,8 @@ const StudentDetails = () => {
         />
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>
-            {" "}
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                Student Details
-              </h3>
+              <h3 className="font-medium text-black dark:text-white">Apply Leave</h3>
             </div>
           </DialogTitle>
           <DialogContent>
@@ -224,13 +238,13 @@ const StudentDetails = () => {
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Apply Date
                 </label>
-                <input
-                  id="publishon"
-                  name="publishon"
-                  placeholder=""
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  value="23-08-2024"
+                <TextField
+                  name="date"
+                  type="date"
+                  className="w-full"
+                  value={formData.date}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
                 />
               </div>
               <div className="field">
@@ -238,53 +252,55 @@ const StudentDetails = () => {
                   Available Leave <span className="required">*</span>
                 </label>
                 <select
-                  id="available_Leave"
-                  name="available_Leave"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  name="leave_type_id"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  value={formData.leave_type_id}
+                  onChange={handleChange}
                 >
-                  <option value="select1">Select</option>
-                  {dataleavetype.map((sec) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.type}
+                  <option value="">Select</option>
+                  {dataleavetype.map((type) => (
+                    <option key={type.id} value={type.id}>
+                      {type.type}
                     </option>
                   ))}
                 </select>
               </div>
-
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Leave From Date <span className="required">*</span>
                 </label>
-                <input
-                  id="leavefromdate"
-                  name="leavefromdate"
-                  placeholder=""
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                <TextField
+                  name="leave_from"
+                  type="date"
+                  className="w-full"
+                  value={formData.leave_from}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
                 />
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Leave To Date <span className="required">*</span>
                 </label>
-                <input
-                  id="leavetodate"
-                  name="leavetodate"
-                  placeholder=""
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                <TextField
+                  name="leave_to"
+                  type="date"
+                  className="w-full"
+                  value={formData.leave_to}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
                 />
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Reason
                 </label>
-                <input
-                  id="reason"
+                <TextField
                   name="reason"
-                  placeholder=""
                   type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full"
+                  value={formData.reason}
+                  onChange={handleChange}
                 />
               </div>
               <div className="field">
@@ -294,30 +310,20 @@ const StudentDetails = () => {
                 <input
                   className={`form-control mt-2 w-full ${styles["f-13"]}`}
                   type="file"
-                  name="file"
-                  id="file"
+                  name="document_file"
+                  id="document_file"
+                  onChange={handleChange}
                 />
               </div>
             </div>
           </DialogContent>
           <DialogActions>
-            <div className="flex">
-              <button
-                onClick={handleClose}
-                className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-              >
-                Cancel
-              </button>
-            </div>
-
-            <div className="flex">
-              <button
-                onClick={handleClose}
-                className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-              >
-                Save
-              </button>
-            </div>
+            <Button onClick={handleClose} variant="contained" color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} variant="contained" color="primary">
+              Save
+            </Button>
           </DialogActions>
         </Dialog>
       </div>
