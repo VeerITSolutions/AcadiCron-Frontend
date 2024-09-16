@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentCategoryData } from "@/services/studentCategoryService";
-import { createCategory } from "@/services/categoryService";
+import { fetchContentForUploadData } from "@/services/contentForUploadService";
+import { createContentForUpload } from "@/services/contentForUploadService";
 import {
-  deleteStudentCategoryData,
-  editStudentCategoryData,
-} from "@/services/studentCategoryService";
+  deleteConetentForUpload,
+  editConententForUpload,
+} from "@/services/contentForUploadService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import {
@@ -42,7 +42,7 @@ const StudentCategories = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentCategoryData(
+      const result = await fetchContentForUploadData(
         currentPage + 1,
         rowsPerPage,
       );
@@ -57,7 +57,7 @@ const StudentCategories = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteStudentCategoryData(id);
+      await deleteConetentForUpload(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -107,11 +107,11 @@ const StudentCategories = () => {
 
   const handleSubmit = async () => {
     try {
-      const result = await createCategory(category);
+      const result = await createContentForUpload(category, category);
       if (result.success) {
-        toast.success("Category saved successfully");
+        toast.success("Content for upload  successfully");
       } else {
-        toast.error("Failed to save category");
+        toast.error("Failed to save Content for upload");
       }
       setCategory("");
       setIsEditing(false);
@@ -127,7 +127,7 @@ const StudentCategories = () => {
     try {
       if (isEditing && editCategoryId !== null) {
         // Edit existing category
-        const result = await editStudentCategoryData(
+        const result = await editConententForUpload(
           editCategoryId,
           categorynew,
         );
@@ -160,7 +160,14 @@ const StudentCategories = () => {
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
-  const columns = ["Content Title", "Type", "Date", "Available For", "Class", "Action"];
+  const columns = [
+    "Content Title",
+    "Type",
+    "Date",
+    "Available For",
+    "Class",
+    "Action",
+  ];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -192,7 +199,7 @@ const StudentCategories = () => {
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Content Title *
+                      Content Title *
                     </label>
                     <input
                       name="content_title"
@@ -206,7 +213,7 @@ const StudentCategories = () => {
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Content Type *
+                      Content Type *
                     </label>
                     <select
                       name="fees_group"
@@ -222,17 +229,43 @@ const StudentCategories = () => {
                 </div>
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">Available For * </label>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Available For *{" "}
+                    </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input className=" User_radio__EmAK7" type="checkbox" value="superadmin" name="superadmin" /> All Super Admin </label>
-                      <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"><input className=" User_radio__EmAK7" type="checkbox" value="add_student" name="add_student" /> All Student </label>
-                      <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"><input className=" User_radio__EmAK7" type="checkbox" value="allclasses" name="allclasses" /> Available For All Classes  </label>
-                      </div></div>
+                      <input
+                        className=" User_radio__EmAK7"
+                        type="checkbox"
+                        value="superadmin"
+                        name="superadmin"
+                      />{" "}
+                      All Super Admin{" "}
+                    </label>
+                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                      <input
+                        className=" User_radio__EmAK7"
+                        type="checkbox"
+                        value="add_student"
+                        name="add_student"
+                      />{" "}
+                      All Student{" "}
+                    </label>
+                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                      <input
+                        className=" User_radio__EmAK7"
+                        type="checkbox"
+                        value="allclasses"
+                        name="allclasses"
+                      />{" "}
+                      Available For All Classes{" "}
+                    </label>
+                  </div>
+                </div>
 
-                      <div className="flex flex-col gap-5.5 p-6.5">
+                <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Class *
+                      Class *
                     </label>
                     <select
                       name="fees_group"
@@ -246,28 +279,40 @@ const StudentCategories = () => {
                     </select>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Section *
+                      Section *
                     </label>
                     <select
                       name="section"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="">Select</option>
-                     
                     </select>
                   </div>
                 </div>
                 <div className="flex flex-col gap-5.5 p-6.5">
-                <div><label className="mb-3 block text-sm font-medium text-black dark:text-white">Upload Date</label><input id="admission_date" placeholder="" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" value="23-08-2024" name="upload_date" /></div></div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Upload Date
+                    </label>
+                    <input
+                      id="admission_date"
+                      placeholder=""
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      value="23-08-2024"
+                      name="upload_date"
+                    />
+                  </div>
+                </div>
 
                 <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Description
+                      Description
                     </label>
                     <input
                       name="description"
@@ -279,7 +324,18 @@ const StudentCategories = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-5.5 p-6.5">
-                  <div><label className="mb-3 block text-sm font-medium text-black dark:text-white">Student Photo</label><input className="form-control mt-2 w-full User_f-13__35loD" id="file" type="file" name="file" /></div></div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Student Photo
+                    </label>
+                    <input
+                      className="form-control User_f-13__35loD mt-2 w-full"
+                      id="file"
+                      type="file"
+                      name="file"
+                    />
+                  </div>
+                </div>
 
                 <div>
                   <button type="submit" className="">

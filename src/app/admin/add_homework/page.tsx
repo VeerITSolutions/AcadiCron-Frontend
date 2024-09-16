@@ -71,10 +71,10 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.class_id || "N/A",
-      student.section_id || "N/A",
+      student.class_name || "N/A",
+      student.section_name || "N/A",
       student.subject_group_subject_id || "N/A",
-      student.subject_id || "N/A",
+      student.subject_name || "N/A",
 
       student.homework_date || "N/A",
       student.submit_date || "N/A",
