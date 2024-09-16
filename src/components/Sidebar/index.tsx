@@ -414,34 +414,70 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       {/* Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="rounded-lg bg-white p-5 shadow-lg">
-            <h2 className="mb-4 text-xl">Session</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl md:max-w-2xl">
+            <div className="mb-6 flex items-center justify-between border-b pb-4">
+              <h2 className="text-gray-800 text-2xl font-bold">
+                Select Session
+              </h2>
+              <button
+                className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                onClick={() => setModalOpen(false)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
 
-            <select>
-              <option value="7">2016-17</option>
-              <option value="11">2017-18</option>
-              <option value="13">2018-19</option>
-              <option value="14">2019-20</option>
-              <option value="15">2020-21</option>
-              <option value="16">2021-22</option>
-              <option value="18">2022-23</option>
-              <option value="19">2023-24</option>
-              <option value="20">2024-25</option>
-              <option value="21">2025-26</option>
-              <option value="22">2026-27</option>
-              <option value="23">2027-28</option>
-              <option value="24">2028-29</option>
-              <option value="25">2029-30</option>
-              {/* Add more section options here */}
-            </select>
+            <div className="mb-6">
+              <label
+                className="text-gray-700 mb-2 block text-lg font-medium"
+                htmlFor="session"
+              >
+                Choose a Session
+              </label>
+              <select
+                id="session"
+                className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
+              >
+                <option value="7">2016-17</option>
+                <option value="11">2017-18</option>
+                <option value="13">2018-19</option>
+                <option value="14">2019-20</option>
+                <option value="15">2020-21</option>
+                <option value="16">2021-22</option>
+                <option value="18">2022-23</option>
+                <option value="19">2023-24</option>
+                <option value="20">2024-25</option>
+                <option value="21">2025-26</option>
+                <option value="22">2026-27</option>
+                <option value="23">2027-28</option>
+                <option value="24">2028-29</option>
+                <option value="25">2029-30</option>
+                {/* Add more section options here */}
+              </select>
+            </div>
 
-            <button
-              className="bg-red-500 mt-4 rounded p-2 text-black"
-              onClick={() => setModalOpen(false)}
-            >
-              Close Modal
-            </button>
+            <div className="flex justify-end">
+              <button
+                className="bg-red-500 hover:bg-red-600 rounded-lg px-6 py-3 font-medium text-white transition"
+                onClick={() => setModalOpen(false)}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
