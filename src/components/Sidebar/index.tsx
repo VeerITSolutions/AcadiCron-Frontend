@@ -332,6 +332,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
+  const [savedSessionstate, setSavedSession] = useState(false);
+
+  const handleSessionChange = (value) => {
+    localStorage.setItem("selectedSession", value); // Store session in localStorage
+    console.log(`Session ${value} stored in localStorage`);
+  };
+
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSession");
+    if (savedSession) {
+      setSavedSession(savedSession);
+
+      // Use this value in your logic
+    }
+  }, []);
   return (
     <>
       <ClickOutside onClick={() => setSidebarOpen(false)}>
@@ -383,7 +398,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 className="     text-white"
                 onClick={() => setModalOpen(true)}
               >
-                Current Session: 2024-25
+                Current Session: {savedSessionstate}
               </button>
               <hr />
               {menuGroups.map((group, groupIndex) => (
@@ -451,22 +466,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
+                onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
-                <option value="7">2016-17</option>
-                <option value="11">2017-18</option>
-                <option value="13">2018-19</option>
-                <option value="14">2019-20</option>
-                <option value="15">2020-21</option>
-                <option value="16">2021-22</option>
-                <option value="18">2022-23</option>
-                <option value="19">2023-24</option>
-                <option value="20">2024-25</option>
-                <option value="21">2025-26</option>
-                <option value="22">2026-27</option>
-                <option value="23">2027-28</option>
-                <option value="24">2028-29</option>
-                <option value="25">2029-30</option>
-                {/* Add more section options here */}
+                <option value="2016-17">2016-17</option>
+                <option value="2017-18">2017-18</option>
+                <option value="2018-19">2018-19</option>
+                <option value="2019-20">2019-20</option>
+                <option value="2020-21">2020-21</option>
+                <option value="2021-22">2021-22</option>
+                <option value="2022-23">2022-23</option>
+                <option value="2023-24">2023-24</option>
+                <option value="2024-25">2024-25</option>
+                <option value="2025-26">2025-26</option>
+                <option value="2026-27">2026-27</option>
+                <option value="2027-28">2027-28</option>
+                <option value="2028-29">2028-29</option>
+                <option value="2029-30">2029-30</option>
               </select>
             </div>
 
