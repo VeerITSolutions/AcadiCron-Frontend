@@ -15,7 +15,57 @@ import MultiSelect from "@/components/FormElements/MultiSelect";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 import styles from "./User.module.css";
 
+import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your section API service
+import { useEffect, useState } from "react";
+
 const User = () => {
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+
   return (
     <>
       {/* <Breadcrumb pageName="FormElements" /> */}
@@ -54,39 +104,39 @@ const User = () => {
                 />
               </div>
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Class <span className="required">*</span>
+                <label className={styles.label}>
+                  Class:
+                  <select
+                    value={selectedClass || ""}
+                    onChange={handleClassChange}
+                    className={styles.select}
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
                 </label>
-                <select
-                  id="class_id"
-                  name="class_id"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  <option value="1">Class 1</option>
-                  <option value="2">Class 2</option>
-                  <option value="3">Class 3</option>
-                  <option value="4">Class 4</option>
-                  <option value="5">Class 5</option>
-                  <option value="6">Class 6</option>
-                  <option value="7">Class 7</option>
-                  <option value="8">Class 8</option>
-                  <option value="9">Class 9</option>
-                  <option value="10">Class 10</option>
-                  <option value="11">Nursery</option>
-                  <option value="12">K.G.-I</option>
-                  <option value="13">K.G. - II</option>
-                </select>
               </div>
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Section <span className="required">*</span>
+                <label className={styles.label}>
+                  Section:
+                  <select
+                    value={selectedSection || ""}
+                    onChange={handleSectionChange}
+                    className={styles.select}
+                    disabled={!selectedClass} // Disable section dropdown if no class is selected
+                  >
+                    <option value="">Select</option>
+                    {section.map((sec) => (
+                      <option key={sec.section_id} value={sec.section_id}>
+                        {sec.section_name}
+                      </option>
+                    ))}
+                  </select>
                 </label>
-                <select
-                  id="section_id"
-                  name="section_id"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                ></select>
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
