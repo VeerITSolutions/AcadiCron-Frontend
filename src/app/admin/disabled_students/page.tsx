@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
+import { fetchStudentDisabledData } from "@/services/studentDisabledService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -76,7 +76,7 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class_name || "N/A",
+      student.class || "N/A",
       student.father_name || "N/A",
       "N/A" || "N/A",
       student.gender || "N/A",
@@ -108,7 +108,7 @@ const StudentDetails = () => {
   ) => {
     try {
       // Pass selectedClass and selectedSection as parameters to filter data
-      const result = await fetchStudentData(
+      const result = await fetchStudentDisabledData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
