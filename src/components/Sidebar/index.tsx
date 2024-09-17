@@ -336,7 +336,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const handleSessionChange = (value) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
-    console.log(`Session ${value} stored in localStorage`);
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -466,6 +466,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
+                value={savedSessionstate} // Set the value of the select input to the selected session
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
                 <option value="2016-17">2016-17</option>
