@@ -29,7 +29,7 @@ const student = () => {
         <div className="bg-white p-4 rounded-lg shadow-lg">
           <div className="text-center">
                 <img 
-            src="https://erp.erabesa.co.in/uploads/student_images/no_image.png" 
+            src="https://erp.erabesa.co.in/uploads/student_images/default_female.jpg" 
             alt="User Profile" 
             className="w-24 h-24 rounded-full mx-auto" 
           />
