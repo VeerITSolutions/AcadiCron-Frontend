@@ -252,7 +252,7 @@ const StudentDetails = () => {
         </div>
       </div>
       <MUIDataTable
-        title={"Student Details"}
+        title={"Bulk Delete"}
         data={data}
         columns={columns}
         options={{
