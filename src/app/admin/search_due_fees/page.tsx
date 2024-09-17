@@ -5,6 +5,7 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
+import { fetchStudentFeesSeesionGroupData } from "@/services/studentFeesSessionGroupService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -25,17 +26,17 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 const columns = [
- "Admission No",
-"Roll Number",
-"Student Name",
-"Date of Birth",
-"Due Date",
-"Amount",
-"Deposit",
-"Discount (₹)",
-"Fine (₹)",
-"Balance (₹)",
-"Action",
+  "Admission No",
+  "Roll Number",
+  "Student Name",
+  "Date of Birth",
+  "Due Date",
+  "Amount",
+  "Deposit",
+  "Discount (₹)",
+  "Fine (₹)",
+  "Balance (₹)",
+  "Action",
 ];
 
 const options = {
@@ -48,6 +49,9 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const [feessessiongroupdata, setfeessessiongroupdataData] = useState<
+    Array<Array<string>>
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -96,6 +100,20 @@ const StudentDetails = () => {
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
+    }
+
+    try {
+      const result = await fetchStudentFeesSeesionGroupData(
+        currentPage + 1,
+        rowsPerPage,
+        selectedClass,
+        selectedSection,
+        keyword,
+      );
+
+      setfeessessiongroupdataData(result.data);
+    } catch (error: any) {
+      setError(error.message);
     }
   };
   const handleDelete = async (id: number) => {
@@ -150,16 +168,19 @@ const StudentDetails = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-          Fees Group:
+            Fees Group:
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
               className={styles.select}
             >
               <option value="">Select</option>
-              <option value="Class1">at the time of Admission</option>
-              <option value="Class2">Before 30 Aug 2024</option>
-              {/* Add more class options here */}
+
+              {feessessiongroupdata.map((section) => (
+                <option key={section.id} value={section.id}>
+                  {section.fees_group_name}
+                </option>
+              ))}
             </select>
           </label>
           <label className={styles.label}>
