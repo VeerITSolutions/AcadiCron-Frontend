@@ -8,6 +8,12 @@ import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your classes API service
+
+import {
   Edit,
   Delete,
   Visibility,
@@ -24,18 +30,24 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+
 const columns = [
+  "Class",
+  "Section",
   "Admission No",
   "Student Name",
-  "Class",
-  "Category",
-  "Mobile Number",
+  "Father Name",
+  "Date Of Birth",
+  "Phone",
+  "Action",
 ];
 
 const options = {
   filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
+  selectableRows: "none", // Disable row selection
+
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
@@ -47,6 +59,8 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -62,9 +76,23 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
+      student.class_name || "N/A",
       student.category_id,
       student.mobileno,
+      <div key={student.id}>
+        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+          <Visibility />
+        </IconButton>
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleAddFees(student.id)}
+          aria-label="Add Fee"
+        >
+          <AttachMoney />
+        </IconButton>
+      </div>,
     ]);
   };
 
@@ -76,6 +104,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
+      // Pass selectedClass and selectedSection as parameters to filter data
       const result = await fetchStudentData(
         currentPage + 1,
         rowsPerPage,
@@ -92,6 +121,25 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
+
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
   const handleDelete = async (id: number) => {
     // Assuming id is the student_id
     router.push(`/admin/student/${id}`);
@@ -100,13 +148,18 @@ const StudentDetails = () => {
   const handleEdit = (id: number) => {
     router.push(`/admin/student/edit/${id}`);
   };
+
   const handleAddFees = (id: number) => {
     router.push(`/admin/student/fees/${id}`);
   };
 
   useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+
+  useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
+  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -135,6 +188,11 @@ const StudentDetails = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
@@ -150,10 +208,12 @@ const StudentDetails = () => {
               onChange={handleClassChange}
               className={styles.select}
             >
-              <option value="">All Classes</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
-              {/* Add more class options here */}
+              <option value="">Select</option>
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
             </select>
           </label>
           <label className={styles.label}>
@@ -162,34 +222,39 @@ const StudentDetails = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={styles.select}
+              disabled={!selectedClass} // Disable section dropdown if no class is selected
             >
-              <option value="">All Sections</option>
-              <option value="SectionA">Section A</option>
-              <option value="SectionB">Section B</option>
-              {/* Add more section options here */}
+              <option value="">Select</option>
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
             </select>
           </label>
           <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={styles.searchInput}
-            />
+            <label className={styles.label}>
+              Search By Keyword
+              <input
+                type="text"
+                placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc."
+                value={keyword}
+                onChange={handleKeywordChange}
+                className={styles.searchInput}
+              />
+            </label>
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
+            </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
       <MUIDataTable
-        title={"Collection Fees"}
+        title={"Student Details"}
         data={data}
-        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         columns={columns}
         options={{
           ...options,
