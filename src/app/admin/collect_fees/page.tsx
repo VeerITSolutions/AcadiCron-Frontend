@@ -74,23 +74,20 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
+      student.class_name,
+      student.section_name,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class_name || "N/A",
-      student.category_id,
+      student.father_name || "N/A",
+      student.dob || "N/A",
+
       student.mobileno,
       <div key={student.id}>
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
-          <Visibility />
-        </IconButton>
-        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
-          <Edit />
-        </IconButton>
         <IconButton
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
         >
-          <AttachMoney />
+          Collect Fees
         </IconButton>
       </div>,
     ]);
