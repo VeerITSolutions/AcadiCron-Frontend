@@ -377,14 +377,24 @@ const StudentDetails = () => {
               </div>
             </div>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} variant="contained" color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleSubmit} variant="contained" color="primary">
-              {editing ? "Update" : "Save"}
-            </Button>
-          </DialogActions>
+        <DialogActions>
+        <Button 
+          onClick={handleClose} 
+          variant="contained" 
+          className="inline-flex rounded bg-black px-3 py-1 font-medium text-white hover:bg-gray-700 hover:text-white sm:px-6 sm:py-2.5"
+        >
+          Cancel
+        </Button>
+
+        <Button 
+          onClick={handleSubmit} 
+          variant="contained" 
+          className="inline-flex rounded bg-black px-3 py-1 font-medium text-white hover:bg-gray-700 hover:text-white sm:px-6 sm:py-2.5"
+        >
+          {editing ? "Update" : "Save"}
+        </Button>
+      </DialogActions>
+
         </Dialog>
       </div>
     </DefaultLayout>
