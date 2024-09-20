@@ -99,6 +99,20 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setKeyword(event.target.value);
   };
 
+  const handleSave = (day: string) => {
+    const timetableData = {
+      classId: selectedClass,
+      sectionId: selectedSection,
+      day,
+      rows: rows[day],
+    };
+
+    // Store in local storage
+    localStorage.setItem(`timetable_${day}`, JSON.stringify(timetableData));
+
+    console.log(`Saving data for ${day}:`, timetableData);
+    toast.success(`Data for ${day} saved successfully!`);
+  };
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
@@ -207,7 +221,7 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 </div>
 </div>
 
-      <TabContext value={value}>
+<TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="Timetable Tabs" variant="scrollable" scrollButtons="auto">
             {columns.map((day) => (
@@ -303,6 +317,14 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
                   ))}
                 </tbody>
               </table>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => handleSave(day)}
+                sx={{ mt: 2 }}
+              >
+                Save
+              </Button>
             </div>
           </TabPanel>
         ))}

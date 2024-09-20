@@ -6,6 +6,13 @@ import { fetchtimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
 import { toast } from "react-toastify";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your classes API service
+import styles from "./StudentDetails.module.css"; // Import CSS module
+import { Button } from '@mui/material';
 
 const columns = [
   "Monday",
@@ -35,6 +42,16 @@ const StudentDetails = () => {
   const [error, setError] = useState<string | null>(null);
 
   const token = localStorage.getItem("authToken") || "";
+
+
+const [classes, setClassessData] = useState<Array<any>>([]);
+const [section, setSections] = useState<Array<any>>([]);
+const [selectedClass, setSelectedClass] = useState<string | undefined>(
+  undefined,
+);
+const [selectedSection, setSelectedSection] = useState<string | undefined>(
+  undefined,
+);
 
   // Format the data for the week-wise view
   const formatTimetableData = (timetableData: any) => {
@@ -85,6 +102,54 @@ const StudentDetails = () => {
     }
   };
 
+
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+  
+const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+
+const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
+  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.target.value);
+  };
+
+  const handleSearch = () => {
+    setPage(0); // Reset to first page on search
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  };
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -92,15 +157,73 @@ const StudentDetails = () => {
   if (loading) return <Loader />;
   if (error) return <div>{error}</div>;
 
+  const CustomHeader = () => (
+    <div className="flex justify-between items-center">
+      <h2>Weekly Timetable</h2>
+      <div className="flex ml-auto">
+        <a
+          href="/admin/timetable/create"
+          className="StudentDetails_searchButton__bCORU"
+        >
+          Add
+        </a>
+      </div>
+    </div>
+  );
+
   return (
     <DefaultLayout>
-      <div className="flex">
-              <a href="/admin/timetable/create" className="text-xs text-white bg-blue-500 hover:bg-blue-600 px-2 py-1 rounded-md">
-                <i className="fa fa-arrow-left"></i>
-              </a>
-            </div>
+
+
+<div className={styles.filters}>
+<div className={styles.filterGroup}>
+  <label className={styles.label}>
+    Class:
+    <select
+      value={selectedClass || ""}
+      onChange={handleClassChange}
+      className={styles.select}
+    >
+      <option value="">Select</option>
+      {classes.map((cls) => (
+        <option key={cls.id} value={cls.id}>
+          {cls.class}
+        </option>
+      ))}
+    </select>
+  </label>
+  <label className={styles.label}>
+    Section:
+    <select
+      value={selectedSection || ""}
+      onChange={handleSectionChange}
+      className={styles.select}
+      disabled={!selectedClass} // Disable section dropdown if no class is selected
+    >
+      <option value="">Select</option>
+      {section.map((sec) => (
+        <option key={sec.section_id} value={sec.section_id}>
+          {sec.section_name}
+        </option>
+      ))}
+    </select>
+  </label>
+  <div className={styles.searchGroup}>
+  
+    <button onClick={handleSearch} className={styles.searchButton}>
+      Search
+    </button>
+    <button onClick={handleRefresh} className={styles.searchButton}>
+      Reset
+    </button>
+  </div>
+</div>
+</div>
+
+
+
       <MUIDataTable
-        title={"Weekly Timetable"}
+         title={<CustomHeader />}
         data={data}
         columns={columns}
         options={options}
