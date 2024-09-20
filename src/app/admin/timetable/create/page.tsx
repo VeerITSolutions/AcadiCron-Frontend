@@ -317,14 +317,14 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
                   ))}
                 </tbody>
               </table>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => handleSave(day)}
-                sx={{ mt: 2 }}
-              >
-                Save
-              </Button>
+              <Button className="StudentDetails_searchButton__8ePmi"
+  variant="contained"
+  onClick={() => handleSave(day)}
+  sx={{ mt: 2 }}
+  disabled={!selectedClass || !selectedSection} // Disable if class or section is not selected
+>
+  Save
+</Button>
             </div>
           </TabPanel>
         ))}
