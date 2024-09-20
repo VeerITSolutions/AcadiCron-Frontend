@@ -14,6 +14,12 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TextField } from "@mui/material";
+import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your classes API service
+import styles from "./StudentDetails.module.css"; // Import CSS module
 
 const columns = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -34,6 +40,18 @@ const StudentDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [value, setValue] = useState("Monday");
+
+
+  
+const [classes, setClassessData] = useState<Array<any>>([]);
+const [section, setSections] = useState<Array<any>>([]);
+const [selectedClass, setSelectedClass] = useState<string | undefined>(
+  undefined,
+);
+const [selectedSection, setSelectedSection] = useState<string | undefined>(
+  undefined,);
+
+
   const [rows, setRows] = useState<{ [key: string]: any[] }>({
     Monday: [],
     Tuesday: [],
@@ -44,7 +62,54 @@ const StudentDetails = () => {
     Sunday: [],
   });
 
-  const token = localStorage.getItem("authToken") || "";
+useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+  
+const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+ const token = localStorage.getItem("authToken") || "";
+
+const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
+  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.target.value);
+  };
+
+  const handleSearch = () => {
+    setPage(0); // Reset to first page on search
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  };
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
+
+
 
   const addRow = (day: string) => {
     setRows({
@@ -97,6 +162,51 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
+      <div className={styles.filters}>
+<div className={styles.filterGroup}>
+  <label className={styles.label}>
+    Class:
+    <select
+      value={selectedClass || ""}
+      onChange={handleClassChange}
+      className={styles.select}
+    >
+      <option value="">Select</option>
+      {classes.map((cls) => (
+        <option key={cls.id} value={cls.id}>
+          {cls.class}
+        </option>
+      ))}
+    </select>
+  </label>
+  <label className={styles.label}>
+    Section:
+    <select
+      value={selectedSection || ""}
+      onChange={handleSectionChange}
+      className={styles.select}
+      disabled={!selectedClass} // Disable section dropdown if no class is selected
+    >
+      <option value="">Select</option>
+      {section.map((sec) => (
+        <option key={sec.section_id} value={sec.section_id}>
+          {sec.section_name}
+        </option>
+      ))}
+    </select>
+  </label>
+  <div className={styles.searchGroup}>
+  
+    <button onClick={handleSearch} className={styles.searchButton}>
+      Search
+    </button>
+    <button onClick={handleRefresh} className={styles.searchButton}>
+      Reset
+    </button>
+  </div>
+</div>
+</div>
+
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="Timetable Tabs" variant="scrollable" scrollButtons="auto">
