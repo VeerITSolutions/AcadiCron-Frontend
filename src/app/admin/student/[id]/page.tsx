@@ -751,7 +751,7 @@ const student = () => {
             <h2 className="text-lg font-semibold mb-4">Upload Documents</h2>
             <div className="mb-4">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">Title:</label>
-              <input aria-invalid="false" id=":rh:" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" value="" name="title" />
+              <input aria-invalid="false" id=":rh:" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="title" />
             </div>
             <div className="mb-4">
             <div className="field"><label className="mb-3 block text-sm font-medium text-black dark:text-white">Document</label><input className="form-control mt-2 w-full undefined" id="document_file" type="file" name="document_file" />

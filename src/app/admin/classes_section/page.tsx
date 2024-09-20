@@ -251,7 +251,7 @@ const FeesMaster = () => {
                 </div>
 
                 <div className="flex flex-col gap-5.5 p-6.5">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  <label className="block text-sm font-medium text-black dark:text-white">
                     Sections<span className="required">*</span>
                   </label>
 
@@ -259,7 +259,7 @@ const FeesMaster = () => {
                     sections.map((section) => (
                       <label
                         key={section.id}
-                        className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"
+                        className="radio-inline block text-sm font-medium text-black dark:text-white"
                       >
                         <input
                           type="radio"
@@ -276,7 +276,7 @@ const FeesMaster = () => {
                 </div>
 
                 <div>
-                  <button type="submit" className="">
+                  <button type="submit" className="inline-flex rounded-full bg-primary px-3 py-1 text-sm font-medium text-white hover:bg-opacity-90">
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>

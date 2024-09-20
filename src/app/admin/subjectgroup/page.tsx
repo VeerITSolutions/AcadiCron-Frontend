@@ -258,22 +258,24 @@ const FeesMaster = () => {
                   </div>
 
                   <div className="flex flex-col gap-5.5 p-6.5">
+                  <div className="field">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">Section <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option><option value="1">Bright</option><option value="2">Brilliant</option><option value="3">Brainy</option></select>
+                    </div>
                     </div>
                    
 
-                    <div className="flex flex-col gap-5.5 p-6.5"><label className="mb-3 block text-sm font-medium text-black dark:text-white">Subject<span className="required">*</span>&nbsp;&nbsp;&nbsp;</label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"><input className=" User_radio__Zd0k2" type="checkbox" value="teacher" name="class_teacher" /> Maths </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                    <div className="flex flex-col gap-5.5 p-6.5"><label className="block text-sm font-medium text-black dark:text-white">Subject<span className="required">*</span>&nbsp;&nbsp;&nbsp;</label>
+<label className="radio-inline block text-sm font-medium text-black dark:text-white"><input className=" User_radio__Zd0k2" type="checkbox" value="teacher" name="class_teacher" /> Maths </label>
+<label className="radio-inline block text-sm font-medium text-black dark:text-white">
 <input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> English </label>
-<label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+<label className="radio-inline block text-sm font-medium text-black dark:text-white">
 <input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Hindi</label>
 </div>
                    
 <div className="flex flex-col gap-5.5 p-6.5"><div><label className="mb-3 block text-sm font-medium text-black dark:text-white">Description</label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="description" /></div></div>     
  
                 <div>
-                  <button type="submit" className="">
+                  <button type="submit" className="inline-flex rounded-full bg-primary px-3 py-1 text-sm font-medium text-white hover:bg-opacity-90">
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
