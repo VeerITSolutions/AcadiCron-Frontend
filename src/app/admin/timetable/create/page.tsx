@@ -233,9 +233,8 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         {columns.map((day) => (
           <TabPanel key={day} value={day}>
             <div className="container mx-auto mt-8">
-              <Button
+              <Button className="StudentDetails_searchButton__8ePmi"
                 variant="contained"
-                color="primary"
                 onClick={() => addRow(day)}
                 sx={{ mb: 2 }}
               >

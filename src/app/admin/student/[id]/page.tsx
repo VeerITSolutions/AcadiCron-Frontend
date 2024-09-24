@@ -21,6 +21,7 @@ const student = () => {
     setIsFormVisible(!isFormVisible);
   };
 
+
   return (
     <DefaultLayout>
        <div className="flex flex-wrap">
@@ -731,171 +732,226 @@ const student = () => {
             <div>
               
               <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                 <div className="tab-pane active flex flex-col gap-9"  id="activity">
-                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                 <div className="p-6">
-    
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={handleButtonClick}
-          className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
-        >
-          {isFormVisible ? 'Close Form' : 'Upload Documents'}
-        </button>
-      </div>
-
-    
-      {isFormVisible && (
-        <div className="mb-6">
-          <form className="bg-white p-4 rounded-md shadow-md border border-stroke">
-            <h2 className="text-lg font-semibold mb-4">Upload Documents</h2>
-            <div className="mb-4">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">Title:</label>
-              <input aria-invalid="false" id=":rh:" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="title" />
-            </div>
-            <div className="mb-4">
-            <div className="field"><label className="mb-3 block text-sm font-medium text-black dark:text-white">Document</label><input className="form-control mt-2 w-full undefined" id="document_file" type="file" name="document_file" />
-            </div>
-            </div>
-            
-            <div className="flex justify-end">
+      <div className="tab-pane active flex flex-col gap-9" id="activity">
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="p-6">
+            <div className="flex justify-end mb-4">
               <button
-                type="submit"
-                className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
+                onClick={handleButtonClick}
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600"
               >
-                Submit
+                {isFormVisible ? 'Close Form' : 'Upload Documents'}
               </button>
             </div>
-          </form>
-        </div>
-      )}
 
-      {/* Table */}
-      <table className="min-w-full bg-white border-b border-stroke">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-left border-b border-stroke">Title</th>
-            <th className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-left border-b border-stroke">Name</th>
-            <th className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-right border-b border-stroke">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="text-center py-4 text-red-600">No Record Found</td>
-          </tr>
-        </tbody>
-      </table>
+            {/* Modal */}
+            {isFormVisible && (
+              <>
+                {/* Modal Overlay */}
+                <div className="fixed inset-0 z-40 bg-black bg-opacity-50" onClick={handleButtonClick}></div>
+
+                {/* Modal Content */}
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+                    {/* Close Button */}
+                    <button
+                      onClick={handleButtonClick}
+                      className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl"
+                    >
+                      &times;
+                    </button>
+
+                    {/* Form Content */}
+                    <h2 className="text-lg font-semibold mb-4">Upload Documents</h2>
+                    <form className="bg-white p-4 rounded-md shadow-md border border-stroke">
+                      <div className="mb-4">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">Title:</label>
+                        <input
+                          aria-invalid="false"
+                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="title"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">Document:</label>
+                        <input
+                          className="form-control mt-2 w-full"
+                          type="file"
+                          name="document_file"
+                        />
+                      </div>
+                      <div className="flex justify-end">
+                        <button
+                          type="submit"
+                          className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Table */}
+            <table className="min-w-full bg-white border-b border-stroke">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke">Title</th>
+                  <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke">Name</th>
+                  <th className="px-4 py-2 text-sm font-medium text-right border-b border-stroke">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="text-center py-4 text-red-600" colSpan={3}>
+                    No Record Found
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-                  </div>
-                  </div>
-              </div>
               
             </div>
           )}
           {activeTab === 'timelineh' && (
             <div>
-              {/* <h2 className="text-xl font-semibold">Timeline</h2> */}
-              <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                 <div className="tab-pane active flex flex-col gap-9"  id="activity">
-                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                 <div className="p-6">
-    
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={handleButtonClick}
-          className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
-        >
-          {isFormVisible ? 'Close Form' : 'Add'}
-        </button>
-      </div>
+        
+        <div className="tab-content mx-auto max-w-screen-2xl p-4">
+      <div className="tab-pane active flex flex-col gap-9" id="activity">
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="p-6">
+            <div className="flex justify-end mb-4">
+              <button
+                onClick={handleButtonClick}
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600"
+              >
+                {isFormVisible ? 'Close Form' : 'Add'}
+              </button>
+            </div>
 
-    
-      {isFormVisible && (
-        <div className="mb-6 ">
-         <form className="bg-white p-4 rounded-md shadow-md border border-stroke">
-  <h2 className="text-lg font-semibold mb-4">Add Timeline</h2>
-  
- 
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Title:</label>
-      <input
-        aria-invalid="false"
-        id="title"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        type="text"
-        name="title"
-      />
-    </div>
+            {/* Modal Popup */}
+            {isFormVisible && (
+              <>
+                {/* Modal Overlay */}
+                <div
+                  className="fixed inset-0 z-40 bg-black bg-opacity-50"
+                  onClick={handleButtonClick} // Closes modal when clicking outside
+                ></div>
 
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Date <span className="required">*</span></label>
-      <input
-        id="date"
-        placeholder=""
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        type="text"
-        name="dob"
-      />
-    </div>
+                {/* Modal Content */}
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+                    {/* Close Button */}
+                    <button
+                      onClick={handleButtonClick}
+                      className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl"
+                    >
+                      &times;
+                    </button>
 
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Description:</label>
-      <input
-        aria-invalid="false"
-        id="description"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        type="text"
-        name="description"
-      />
-    </div>
+                    {/* Form Content */}
+                    <h2 className="text-lg font-semibold mb-4">Add Timeline</h2>
+                    <form className="bg-white p-4 rounded-md shadow-md border border-stroke">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="field">
+                          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                            Title:
+                          </label>
+                          <input
+                            aria-invalid="false"
+                            id="title"
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            type="text"
+                            name="title"
+                          />
+                        </div>
 
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Document:</label>
-      <input
-        className="form-control mt-2 w-full"
-        id="document_file"
-        type="file"
-        name="document_file"
-      />
-    </div>
-  </div>
+                        <div className="field">
+                          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                            Date <span className="required">*</span>
+                          </label>
+                          <input
+                            id="date"
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            type="text"
+                            name="dob"
+                          />
+                        </div>
 
+                        <div className="field">
+                          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                            Description:
+                          </label>
+                          <input
+                            aria-invalid="false"
+                            id="description"
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            type="text"
+                            name="description"
+                          />
+                        </div>
 
-  <div className="flex justify-end mt-4">
-    <button
-      type="submit"
-      className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
-    >
-      Submit
-    </button>
-  </div>
-</form>
+                        <div className="field">
+                          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                            Document:
+                          </label>
+                          <input
+                            className="form-control mt-2 w-full"
+                            id="document_file"
+                            type="file"
+                            name="document_file"
+                          />
+                        </div>
+                      </div>
 
+                      <div className="flex justify-end mt-4">
+                        <button
+                          type="submit"
+                          className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Table */}
+            <table className="min-w-full bg-white border-b border-stroke mt-6">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke">
+                    Title
+                  </th>
+                  <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke">
+                    Name
+                  </th>
+                  <th className="px-4 py-2 text-sm font-medium text-right border-b border-stroke">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="text-center py-4 text-red-600" colSpan={3}>
+                    No Record Found
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      )}
-
-      {/* Table */}
-      <table className="min-w-full bg-white border-b border-stroke">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-left border-b border-stroke">Title</th>
-            <th className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-left border-b border-stroke">Name</th>
-            <th className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-right border-b border-stroke">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="text-center py-4 text-red-600">No Record Found</td>
-          </tr>
-        </tbody>
-      </table>
+      </div>
     </div>
-                  </div>
-                  </div>
-              </div>
-              
-              {/* Add timeline content here */}
+           
             </div>
           )}
         </div>
