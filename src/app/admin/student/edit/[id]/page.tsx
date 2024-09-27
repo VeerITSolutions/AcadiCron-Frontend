@@ -5,7 +5,7 @@ import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 import { useParams } from "next/navigation";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import User from "@/components/User/User";
+import StudentEdit from "@/components/User/StudentEdit";
 
 const Edit = () => {
   const router = useRouter();
@@ -13,7 +13,7 @@ const Edit = () => {
 
   return (
     <DefaultLayout>
-      <div>Edit ID: {id}</div>
+       <StudentEdit />
     </DefaultLayout>
   );
 };
