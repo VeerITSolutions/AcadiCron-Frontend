@@ -33,6 +33,7 @@ const search_fees_payment = () => {
   };
 
   return <DefaultLayout>
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 <div className="p-6.5">
       <form onSubmit={handleSubmit}>
       <h1>Search Fees Payment</h1>
@@ -59,6 +60,7 @@ const search_fees_payment = () => {
           Search
         </button>
       </form>
+    </div>
     </div>
   </DefaultLayout>;
 };
