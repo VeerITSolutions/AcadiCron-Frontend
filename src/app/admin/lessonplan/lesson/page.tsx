@@ -217,7 +217,11 @@ const FeesMaster = () => {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
-
+  const handleRowsPerPageChange = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
+    setPage(0);
+  };
+  
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
     setPage(0);
@@ -228,10 +232,7 @@ const FeesMaster = () => {
     setPage(0);
   };
 
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-    setPage(0);
-  };
+ 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
