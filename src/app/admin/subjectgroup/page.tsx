@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { getClasses } from "@/services/classesService";
+import { fetchsectionByClassData } from "@/services/sectionsService";
+
 
 import {
   createFeesMaster,
@@ -36,6 +39,16 @@ const FeesMaster = () => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+  
+const [classes, setClassessData] = useState<Array<any>>([]);
+const [section, setSections] = useState<Array<any>>([]);
+const [selectedClass, setSelectedClass] = useState<string | undefined>(
+  undefined,
+);
+const [selectedSection, setSelectedSection] = useState<string | undefined>(
+  undefined,
+);
+
 
   const token = localStorage.getItem("authToken") || "";
 
@@ -211,6 +224,39 @@ const FeesMaster = () => {
     setPage(0);
   };
 
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
+ 
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+  
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
@@ -250,18 +296,47 @@ const FeesMaster = () => {
   <label className="mb-3 block text-sm font-medium text-black dark:text-white">Name</label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="name" /></div>
   </div>
                
-               <div className="flex flex-col gap-5.5 p-6.5">
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Class <span className="required">*</span></label>
-                  <select id="class_id" name="class_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option><option value="1">Class 1</option><option value="2">Class 2</option><option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Nursery</option><option value="12">K.G.-I</option><option value="13">K.G. - II</option></select>
-                  </div>
+  <div className="flex flex-col gap-5.5 p-6.5">
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Class:
+                      </label>
+                      <select
+                        value={selectedClass || ""}
+                        onChange={handleClassChange}
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="">Select</option>
+                        {classes.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-5.5 p-6.5">
-                  <div className="field">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">Section <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option><option value="1">Bright</option><option value="2">Brilliant</option><option value="3">Brainy</option></select>
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Section:
+                      </label>
+                      <select
+                        value={selectedSection || ""}
+                        onChange={handleSectionChange}
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        disabled={!selectedClass} // Disable section dropdown if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {section.map((sec) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    </div>
+                  </div>
+
                    
 
                     <div className="flex flex-col gap-5.5 p-6.5"><label className="block text-sm font-medium text-black dark:text-white">Subject<span className="required">*</span>&nbsp;&nbsp;&nbsp;</label>

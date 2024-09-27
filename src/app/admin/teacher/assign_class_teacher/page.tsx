@@ -26,17 +26,26 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { fetchsectionByClassData } from "@/services/sectionsService";
+
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const [teacher, setTeacherData] = useState<Array<Array<any>>>([]);
-  const [classes, setClassessData] = useState<Array<Array<any>>>([]);
-
-  const [section, setSections] = useState<Array<Array<any>>>([]);
+ 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
+ 
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -249,6 +258,39 @@ const FeesMaster = () => {
     setPage(0);
   };
 
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
+ 
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+  
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
@@ -285,45 +327,48 @@ const FeesMaster = () => {
                 }}
               >
                 <div className="flex flex-col gap-5.5 p-6.5">
-                  <div className="field">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Class <span className="required">*</span>
-                    </label>
-                    <select
-                      id="class_id"
-                      name="class_id"
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    >
-                      <option value="">Select</option>
-                      {classes.map((section) => (
-                        <option key={section.id} value={section.id}>
-                          {section.class}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Class:
+                      </label>
+                      <select
+                        value={selectedClass || ""}
+                        onChange={handleClassChange}
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="">Select</option>
+                        {classes.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
+
+                  <div className="flex flex-col gap-5.5 p-6.5">
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Section:
+                      </label>
+                      <select
+                        value={selectedSection || ""}
+                        onChange={handleSectionChange}
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        disabled={!selectedClass} // Disable section dropdown if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {section.map((sec) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
 
                 <div className="flex flex-col gap-5.5 p-6.5">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Section <span className="required">*</span>
-                  </label>
-                  <select
-                    id="section_id"
-                    name="section_id"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {section.map((section) => (
-                      <option key={section.id} value={section.id}>
-                        {section.section}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  <label className="block text-sm font-medium text-black dark:text-white">
                     Class Teacher<span className="required">*</span>
                     &nbsp;&nbsp;&nbsp;
                   </label>
