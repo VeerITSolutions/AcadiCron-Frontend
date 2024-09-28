@@ -104,12 +104,13 @@ const User = () => {
                 />
               </div>
               <div className="field">
-                <label className={styles.label}>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Class:
+                  </label>
                   <select
                     value={selectedClass || ""}
                     onChange={handleClassChange}
-                    className={styles.select}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
                     {classes.map((cls) => (
@@ -118,15 +119,16 @@ const User = () => {
                       </option>
                     ))}
                   </select>
-                </label>
+               
               </div>
               <div className="field">
-                <label className={styles.label}>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Section:
+                  </label>
                   <select
                     value={selectedSection || ""}
                     onChange={handleSectionChange}
-                    className={styles.select}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     disabled={!selectedClass} // Disable section dropdown if no class is selected
                   >
                     <option value="">Select</option>
@@ -136,7 +138,7 @@ const User = () => {
                       </option>
                     ))}
                   </select>
-                </label>
+               
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -173,17 +175,7 @@ const User = () => {
                   <option value="">Select</option>
                 </select>
               </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Gender <span className="required">*</span>
-                </label>
-                <select
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  name="gender"
-                >
-                  <option value="">Select</option>
-                </select>
-              </div>
+             
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Date of Birth <span className="required">*</span>
