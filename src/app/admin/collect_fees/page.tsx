@@ -86,6 +86,7 @@ const StudentDetails = () => {
         <IconButton
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
+          className="btn btn primary"
         >
           Collect Fees
         </IconButton>
