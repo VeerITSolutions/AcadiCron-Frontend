@@ -351,7 +351,7 @@ const StudentDetails = () => {
             </div>
           </DialogTitle>
           <DialogContent>
-            <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
+            <div className="grid gap-5.5 p-6.5">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Date
@@ -443,23 +443,24 @@ const StudentDetails = () => {
              
             </div>
           </DialogContent>
-        <DialogActions>
-        <Button 
-          onClick={handleClose} 
-          variant="contained" 
-          className="inline-flex rounded bg-black px-3 py-1 font-medium text-white hover:bg-gray-700 hover:text-white sm:px-6 sm:py-2.5"
-        >
-          Cancel
-        </Button>
+          <DialogActions>
+          <Button 
+            onClick={handleClose} 
+            variant="contained" 
+            className="inline-flex rounded bg-black px-3 py-1 font-medium text-white hover:bg-gray-700 hover:text-white sm:px-6 sm:py-2.5"
+          >
+            Cancel
+          </Button>
 
-        <Button 
-          onClick={handleSubmit} 
-          variant="contained" 
-          className="inline-flex rounded bg-black px-3 py-1 font-medium text-white hover:bg-gray-700 hover:text-white sm:px-6 sm:py-2.5"
-        >
-          {editing ? "Update" : "Save"}
-        </Button>
-      </DialogActions>
+          <Button 
+            onClick={handleSubmit} 
+            variant="contained" 
+            className="inline-flex rounded bg-black px-3 py-1 font-medium text-white hover:bg-gray-700 hover:text-white sm:px-6 sm:py-2.5"
+          >
+            {editing ? "Update" : "Save"}
+          </Button>
+        </DialogActions>
+
 
         </Dialog>
       </div>

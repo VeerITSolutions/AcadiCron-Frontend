@@ -11,27 +11,27 @@ export const fetchStudentFeesTypeData = async (page: number, perPage: number) =>
 };
 
 
-export const createFeesMaster = async (house_name: string, description: string): Promise<any> => {
+export const createFeesType = async (type: string, code: string, description: string, is_active: string): Promise<any> => {
   try {
-    const response = await apiClient.post("/fees-master", { house_name, description });
+    const response = await apiClient.post("/fees-type", { type, code, description, is_active });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
-    throw new Error("Failed to create student house");
+    throw new Error("Failed to create fees type");
   }
 };
 
 
 
 // Delete a student category by ID
-export const deleteFeesMasterData = async (id: number) => {
-  const response = await apiClient.delete(`/fees-master/${id}`);
+export const deleteFeesTypeData = async (id: number) => {
+  const response = await apiClient.delete(`/fees-type/${id}`);
   return response.data;
 };
 
 // Edit a student category by ID
-export const editFeesMasterData = async (id: number, house_name: string, description: string) => {
-  const data = { house_name, description }; // Create an object with the name field
-  const response = await apiClient.put(`/fees-master/${id}`, data);
+export const editFeesTypeData = async (id: number, type: string, code: string, description: string, is_active: string) => {
+  const data = { type, code, description, is_active }; // Create an object with the name field
+  const response = await apiClient.put(`/fees-type/${id}`, data);
   return response.data;
 };
