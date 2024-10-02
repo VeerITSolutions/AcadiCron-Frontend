@@ -11,9 +11,9 @@ export const fetchStudentFeesGroupData = async (page: number, perPage: number) =
 };
 
 
-export const createFeesGroup = async (type: string, description: string): Promise<any> => {
+export const createFeesGroup = async (name: string, description: string): Promise<any> => {
   try {
-    const response = await apiClient.post("/fees-group", { type, description });
+    const response = await apiClient.post("/fees-group", { name, description });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);

@@ -232,16 +232,13 @@ const StudentDetails = () => {
             </select>
           </label>
           <div className={styles.searchGroup}>
-            <label className={styles.label}>
-              Search By Keyword
-              <input
-                type="text"
-                placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc."
-                value={keyword}
-                onChange={handleKeywordChange}
-                className={styles.searchInput}
-              />
-            </label>
+            <input
+              type="text"
+              placeholder="Search By Keyword"
+              value={keyword}
+              onChange={handleKeywordChange}
+              className={styles.searchInput}
+            />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>

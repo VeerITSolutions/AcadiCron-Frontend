@@ -5,11 +5,12 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 
 import {
-  createFeesMaster,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
+  createFeesDiscount,
+  deleteFeesDiscountData,
+  editFeesDiscountData,
+  fetchStudentFeesDiscountData,
+
+} from "@/services/studentFeesDiscountService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -24,15 +25,13 @@ const FeesMaster = () => {
   const [totalCount, setTotalCount] = useState(0);
 
   const [formData, setFormData] = useState({
-    fees_group: "",
-    fees_type: "",
-    due_date: "",
+    name: "",
+    code: "",
     amount: "",
-    fine_type: "",
-    percentage: "",
     description: "",
-    fine_amount: "",
+    is_active: "no",
   });
+
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
@@ -41,7 +40,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
+      const result = await fetchStudentFeesDiscountData(
         currentPage + 1,
         rowsPerPage,
       );
@@ -56,7 +55,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteFeesDiscountData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -66,55 +65,41 @@ const FeesMaster = () => {
 
   const handleEdit = (
     id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
+    name: string,
+    code: string,
+    amount: string,
+    description: string,
+    is_active: string,
   ) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      fees_group: fees_group_value,
-      fees_type: fees_type_value,
-      due_date: due_date_value,
-      amount: amount_value,
-      fine_type: fine_type_value,
-      percentage: percentage_value,
-      description: description_value,
-      fine_amount: fine_amount_value,
+      name,
+      code,
+      amount,
+      description,
+      is_active,
     });
   };
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.fees_group || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
+      student.name || "N/A",
+      student.code || "N/A",
       student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
+     
 
       <div key={student.id}>
         <IconButton
           onClick={() =>
             handleEdit(
               student.id,
-              student.fees_group,
-              student.fees_type,
-              student.due_date,
+              student.name,
+              student.code,
               student.amount,
-              student.fine_type,
-              student.percentage,
               student.description,
-              student.fine_amount,
+              student.is_active,
             )
           }
           aria-label="edit"
@@ -145,62 +130,69 @@ const FeesMaster = () => {
 
   const handleSubmit = async () => {
     try {
+      let result;
+  
+      // Check if we are editing an existing category
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
+        result = await editFeesDiscountData(
           editCategoryId,
-
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
+          formData.name,
+          formData.code,
           formData.amount,
-          formData.fine_type,
-          formData.percentage,
           formData.description,
-          formData.fine_amount,
+          formData.is_active
         );
-        if (result.success) {
-          toast.success("Student House updated successfully");
-        } else {
-          toast.error("Failed to update Student House");
-        }
       } else {
-        const result = await createFeesMaster(
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
+        result = await createFeesDiscount(
+          formData.name,
+          formData.code,
           formData.amount,
-          formData.fine_type,
-          formData.percentage,
           formData.description,
-          formData.fine_amount,
+          formData.is_active
         );
-        if (result.success) {
-          toast.success("Student House saved successfully");
-        } else {
-          toast.error("Failed to save Student House");
+      }
+  
+      // Handle the API response
+      if (result.success) {
+        toast.success(isEditing ? "Student House updated successfully" : "Student House saved successfully");
+        // Reset form data
+        setFormData({
+          name: "",
+          code: "",
+          amount: "",
+          description: "",
+          is_active: "",
+        });
+        setIsEditing(false);
+        setEditCategoryId(null);
+        fetchData(page, rowsPerPage); // Refresh data after submit
+      } else {
+        // Handle errors
+        const errorMessage = result.message || "An error occurred";
+        const errors = result.errors || {};
+  
+        toast.error(errorMessage); // Show the main error message
+  
+        // Optionally display individual field errors
+        if (errors.name) {
+          toast.error(`Name: ${errors.name.join(", ")}`);
+        }
+        if (errors.code) {
+          toast.error(`Code: ${errors.code.join(", ")}`);
+        }
+        if (errors.amount) {
+          toast.error(`Amount: ${errors.amount.join(", ")}`);
+        }
+        if (errors.description) {
+          toast.error(`Description: ${errors.description.join(", ")}`);
         }
       }
-
-      setFormData({
-        fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
-      });
-
-      setIsEditing(false);
-      setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
+  
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -219,6 +211,7 @@ const FeesMaster = () => {
     filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
+    selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
@@ -253,6 +246,8 @@ const FeesMaster = () => {
                     <input
                       name="name"
                       type="text"
+                      value={formData.name}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -263,8 +258,10 @@ const FeesMaster = () => {
                     Discount Code
                     </label>
                     <input
-                      name="discount_code"
+                      name="code"
                       type="text"
+                      value={formData.code}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -277,6 +274,8 @@ const FeesMaster = () => {
                     <input
                       name="amount"
                       type="text"
+                      value={formData.amount}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -289,6 +288,8 @@ const FeesMaster = () => {
                     <input
                       name="description"
                       type="text"
+                      value={formData.description}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -304,14 +305,17 @@ const FeesMaster = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-9">
-          <MUIDataTable
-            title={"Fees Discount List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
-        </div>
+       <div className="flex flex-col gap-9 dark:border-strokedark dark:bg-boxdark dark:text-white">
+  <MUIDataTable
+    title={"Fees Discount List"}
+    data={data}
+    columns={columns}
+    options={options}
+    className="dark:border-strokedark dark:bg-boxdark dark:text-white"
+  />
+  
+</div>
+
       </div>
     </DefaultLayout>
   );

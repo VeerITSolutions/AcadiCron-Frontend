@@ -244,6 +244,7 @@ const FeesMaster = () => {
     filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
+    selectableRows: "none",
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,

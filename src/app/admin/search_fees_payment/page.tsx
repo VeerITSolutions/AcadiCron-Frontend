@@ -72,34 +72,37 @@ const SearchFeesPayment = () => {
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
           Search Fees Payment
         </h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {/* Payment ID Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                Payment Id
-              </label>
-              <input
-                name="firstName"
-                className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2 text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                type="text"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                placeholder="Enter Payment Id"
-              />
-            </div>
-          </div>
+        <form onSubmit={handleSubmit}>
+  <div className="flex items-center space-x-4">
+    {/* Payment ID Field */}
+    <div className="flex-grow">
+      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+        Payment Id
+      </label>
+      <input
+        name="firstName"
+        className="w-full mt-2 rounded-md border border-gray-300 bg-transparent px-4 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white transition-shadow duration-300 ease-in-out shadow-sm"
+        type="text"
+        value={formData.firstName}
+        onChange={handleInputChange}
+        placeholder="Enter Payment Id"
+      />
+    </div>
 
-          {/* Search Button */}
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="px-6 py-3 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-all duration-300"
-            >
-              Search
-            </button>
-          </div>
-        </form>
+    {/* Search Button */}
+    <div className="flex-shrink-0">
+      <button
+        type="submit"
+        className="px-6 py-3 mt-6 rounded-md bg-blue-600 text-white font-medium shadow-md hover:bg-blue-700"
+      >
+        Search
+      </button>
+    </div>
+  </div>
+</form>
+
+
+        </div>
 
         {/* MUI Data Table */}
         <div className="mt-12">
@@ -117,7 +120,7 @@ const SearchFeesPayment = () => {
             }}
           />
         </div>
-      </div>
+    
     </DefaultLayout>
   );
 };
