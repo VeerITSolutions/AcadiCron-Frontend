@@ -7,6 +7,8 @@ import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
+import { getClasses } from "@/services/classesService";
+import { fetchsectionByClassData } from "@/services/sectionsService";
 import {
   Edit,
   Delete,
@@ -37,6 +39,7 @@ const options = {
   filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
+  
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
@@ -54,6 +57,8 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -136,7 +141,34 @@ const StudentDetails = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
 
+ 
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+  
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
@@ -145,32 +177,39 @@ const StudentDetails = () => {
       <div className={styles.filters}>
       <div><h6 className="MuiTypography-root MuiTypography-h6 tss-hj53wm-MUIDataTableToolbar-titleText css-2ulfj5-MuiTypography-root"> Select Criteria </h6></div> 
         <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
-              <option value="">All Classes</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={styles.select}
-            >
-              <option value="">All Sections</option>
-              <option value="SectionA">Section A</option>
-              <option value="SectionB">Section B</option>
-              {/* Add more section options here */}
-            </select>
-          </label>
+        <label className={styles.label}>
+                        Class:
+                     
+                      <select
+                        value={selectedClass || ""}
+                        onChange={handleClassChange}
+                        className={styles.select}
+                      >
+                        <option value="">Select</option>
+                        {classes.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+                      </label>
+        <label className={styles.label}>
+                        Section:
+                    
+                      <select
+                        value={selectedSection || ""}
+                        onChange={handleSectionChange}
+                        className={styles.select}
+                        disabled={!selectedClass} // Disable section dropdown if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {section.map((sec) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
+                      </label>
           
         </div>
         {/*  <div className={styles.searchGroup}>
@@ -195,37 +234,50 @@ const StudentDetails = () => {
               {/* Add more class options here */}
             </select>
           </label>
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
-              <option value="">All Classes</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={styles.select}
-            >
-              <option value="">All Sections</option>
-              <option value="SectionA">Section A</option>
-              <option value="SectionB">Section B</option>
-              {/* Add more section options here */}
-            </select>
-          </label>
+      
+        <label className={styles.label}>
+                        Class:
+                     
+                      <select
+                        value={selectedClass || ""}
+                        onChange={handleClassChange}
+                        className={styles.select}
+                      >
+                        <option value="">Select</option>
+                        {classes.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+                      </label>
+        <label className={styles.label}>
+                        Section:
+                    
+                      <select
+                        value={selectedSection || ""}
+                        onChange={handleSectionChange}
+                        className={styles.select}
+                        disabled={!selectedClass} // Disable section dropdown if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {section.map((sec) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
+                      </label>
+     
           <div className={styles.searchGroup}>
           
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
+            </button>
+
           </div>
         </div>
         {/*  <div className={styles.searchGroup}>

@@ -95,13 +95,46 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
+       <div className="max-w-7xl mx-auto mt-8 p-6 bg-white dark:bg-boxdark rounded-lg shadow-lg">
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
+        Teacher Time Table
+        </h1>
+      
+        <div className="flex items-center space-x-4 mb-4"> 
+  <div className="field">
+    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Teachers <span class="required">*</span>
+    </label>
+    <select
+      id="teachers"
+      name="teachers"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+    >
+      <option value="">Select</option>
+      <option value="1">Priya Ronghe (19001)</option>
+      <option value="2">Harshalata Khante (19002)</option>
+      <option value="3">Rushali Patil (19003)</option>
+    </select>
+  </div>
+  <div className="flex-shrink-0">
+    <button
+      type="submit"
+      className="px-6 py-3 mt-6 rounded-md bg-blue-600 text-white font-medium shadow-md hover:bg-blue-700"
+    >
+      Search
+    </button>
+  </div>
+</div>
+
       <MUIDataTable
-        title={"Weekly Timetable"}
+        title={""}
         data={data}
         columns={columns}
         options={options}
       />
+       </div>
     </DefaultLayout>
+   
   );
 };
 

@@ -72,7 +72,7 @@ const SearchFeesPayment = () => {
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
           Search Fees Payment
         </h1>
-        <form onSubmit={handleSubmit}>
+       
   <div className="flex items-center space-x-4">
     {/* Payment ID Field */}
     <div className="flex-grow">
@@ -98,8 +98,8 @@ const SearchFeesPayment = () => {
         Search
       </button>
     </div>
-  </div>
-</form>
+
+
 
 
         </div>
@@ -107,7 +107,7 @@ const SearchFeesPayment = () => {
         {/* MUI Data Table */}
         <div className="mt-12">
           <MUIDataTable
-            title={"Payment Details"}
+            title={"Payment Id Detail"}
             data={data}
             columns={columns}
             options={{
@@ -119,6 +119,7 @@ const SearchFeesPayment = () => {
               onChangeRowsPerPage: handleRowsPerPageChange,
             }}
           />
+        </div>
         </div>
     
     </DefaultLayout>
