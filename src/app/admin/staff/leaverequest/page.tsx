@@ -358,7 +358,7 @@ const StudentDetails = () => {
                 <TextField
                   name="reason"
                   type="text"
-                  className="w-full"
+                 className="w-full"
                   value={formData.reason}
                   onChange={handleChange}
                 />
@@ -381,7 +381,7 @@ const StudentDetails = () => {
         <Button 
           onClick={handleClose} 
           variant="contained" 
-          className="inline-flex rounded bg-black px-3 py-1 font-medium text-white hover:bg-gray-700 hover:text-white sm:px-6 sm:py-2.5"
+          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
         >
           Cancel
         </Button>
@@ -389,7 +389,7 @@ const StudentDetails = () => {
         <Button 
           onClick={handleSubmit} 
           variant="contained" 
-          className="inline-flex rounded bg-black px-3 py-1 font-medium text-white hover:bg-gray-700 hover:text-white sm:px-6 sm:py-2.5"
+          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
         >
           {editing ? "Update" : "Save"}
         </Button>
