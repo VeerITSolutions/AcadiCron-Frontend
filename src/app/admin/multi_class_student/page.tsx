@@ -67,7 +67,7 @@ const multi_class_student = () => {
   return (
     <DefaultLayout>
       <MUIDataTable
-        title={"multi Class Student List"}
+        title={"Multi Class Student List"}
         className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         data={data}
         columns={columns}

@@ -204,48 +204,47 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
-              <option value="">Select</option>
-              {classes.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.class}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={styles.select}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
-            >
-              <option value="">Select</option>
-              {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
-                  {sec.section_name}
-                </option>
-              ))}
-            </select>
-          </label>
+        <label className={styles.label}>
+                        Class:
+                     
+                      <select
+                        value={selectedClass || ""}
+                        onChange={handleClassChange}
+                        className={styles.select}
+                      >
+                        <option value="">Select</option>
+                        {classes.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+                      </label>
+                     <label className={styles.label}>
+                        Section:
+                     
+                      <select
+                        value={selectedSection || ""}
+                        onChange={handleSectionChange}
+                        className={styles.select}
+                        disabled={!selectedClass} // Disable section dropdown if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {section.map((sec) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
+                      </label>
           <div className={styles.searchGroup}>
-            <label className={styles.label}>
-              Search By Keyword
-              <input
-                type="text"
-                placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc."
-                value={keyword}
-                onChange={handleKeywordChange}
-                className={styles.searchInput}
-              />
-            </label>
+            <input
+              type="text"
+              placeholder="Search By Keyword"
+              value={keyword}
+              onChange={handleKeywordChange}
+              className={styles.searchInput}
+            />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
@@ -254,6 +253,9 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
+        {/*  <div className={styles.searchGroup}>
+
+        </div> */}
       </div>
       <MUIDataTable
         title={"Student Details"}

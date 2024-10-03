@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { getClasses } from "@/services/classesService";
+import { fetchsectionByClassData } from "@/services/sectionsService";
 
 import {
   fetchHomeWorkData,
@@ -64,6 +66,10 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+ 
+ 
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -147,9 +153,40 @@ const StudentDetails = () => {
     setKeyword(event.target.value);
   };
 
+
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  };
+
+
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
+
+ 
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+  
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
   };
 
   if (loading) return <Loader />;
@@ -159,32 +196,39 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
-              <option value="">All Classes</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={styles.select}
-            >
-              <option value="">All Sections</option>
-              <option value="SectionA">Section A</option>
-              <option value="SectionB">Section B</option>
-              {/* Add more section options here */}
-            </select>
-          </label>
+        <label className={styles.label}>
+                        Class:
+                     
+                      <select
+                        value={selectedClass || ""}
+                        onChange={handleClassChange}
+                        className={styles.select}
+                      >
+                        <option value="">Select</option>
+                        {classes.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+                      </label>
+                     <label className={styles.label}>
+                        Section:
+                     
+                      <select
+                        value={selectedSection || ""}
+                        onChange={handleSectionChange}
+                        className={styles.select}
+                        disabled={!selectedClass} // Disable section dropdown if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {section.map((sec) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
+                      </label>
           <div className={styles.searchGroup}>
             <input
               type="text"
@@ -195,6 +239,9 @@ const StudentDetails = () => {
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
+            </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
             </button>
           </div>
         </div>
