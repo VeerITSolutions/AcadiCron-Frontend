@@ -259,7 +259,7 @@ const StudentDetails = () => {
   return (
     <DefaultLayout>
       <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark">
-      <div className="border-b p-4 border-stroke">
+      <div className="border-b p-4 border-stroke dark:bg-boxdark dark:drop-shadow-none">
   <div className="flex items-start">
   <div className="w-1/5 flex items-center justify-center">
       <img
@@ -275,29 +275,29 @@ const StudentDetails = () => {
       <table className="table-auto w-full border-collapse">
         <tbody>
           <tr>
-            <th className="border-b py-2 text-left px-4 font-semibold border-b p-4 border-stroke">Name</th>
-            <td className="border-b py-2 px-4 border-stroke">Aarohi Dani</td>
-            <th className="border-b py-2 text-left px-4 font-semibold border-stroke">Class Section</th>
-            <td className="border-b py-2 px-4 border-stroke">Class 2 (Bright)</td>
+            <th className="border-b py-2 text-left px-4 font-semibold border-b p-4 border-stroke dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">Name</th>
+            <td className="border-b py-2 px-4 border-stroke dark:text-white dark:border-strokedark">Aarohi Dani</td>
+            <th className="border-b py-2 text-left px-4 font-semibold border-stroke dark:text-white dark:border-strokedark">Class Section</th>
+            <td className="border-b py-2 px-4 border-stroke dark:text-white dark:border-strokedark">Class 2 (Bright)</td>
           </tr>
           <tr>
-            <th className="border-b py-2 text-left px-4 font-semibold border-stroke">Father Name</th>
-            <td className="border-b py-2 px-4 border-stroke">Sameer Dani</td>
-            <th className="border-b py-2 text-left px-4 font-semibold border-stroke">Admission No</th>
-            <td className="border-b py-2 px-4 border-stroke">0698</td>
+            <th className="border-b py-2 text-left px-4 font-semibold border-stroke dark:text-white dark:border-strokedark">Father Name</th>
+            <td className="border-b py-2 px-4 border-stroke dark:text-white dark:border-strokedark">Sameer Dani</td>
+            <th className="border-b py-2 text-left px-4 font-semibold border-stroke dark:text-white dark:border-strokedark">Admission No</th>
+            <td className="border-b py-2 px-4 border-stroke dark:text-white dark:border-strokedark">0698</td>
           </tr>
           <tr>
-            <th className="border-b py-2 text-left px-4 font-semibold border-stroke">Mobile Number</th>
-            <td className="border-b py-2 px-4 border-stroke">9970521533</td>
-            <th className="border-b py-2 text-left px-4 font-semibold border-stroke">Roll Number</th>
-            <td className="border-b py-2 px-4 border-stroke"></td>
+            <th className="border-b py-2 text-left px-4 font-semibold border-stroke dark:text-white dark:border-strokedark">Mobile Number</th>
+            <td className="border-b py-2 px-4 border-stroke dark:text-white dark:border-strokedark">9970521533</td>
+            <th className="border-b py-2 text-left px-4 font-semibold border-stroke dark:text-white dark:border-strokedark">Roll Number</th>
+            <td className="border-b py-2 px-4 border-stroke dark:text-white dark:border-strokedark"></td>
           </tr>
           <tr>
-            <th className="border-b py-2 text-left px-4 font-semibold border-stroke">Category</th>
-            <td className="border-b py-2 px-4 border-stroke">Open</td>
-            <th className="border-b py-2 text-left px-4 font-semibold border-stroke">RTE</th>
-            <td className="border-b py-2 px-4 border-stroke">
-              <span className="text-red-500 font-bold">No</span>
+            <th className="border-b py-2 text-left px-4 font-semibold border-stroke dark:text-white dark:border-strokedark">Category</th>
+            <td className="border-b py-2 px-4 border-stroke dark:text-white dark:border-strokedark">Open</td>
+            <th className="border-b py-2 text-left px-4 font-semibold border-stroke dark:text-white dark:border-strokedark">RTE</th>
+            <td className="border-b py-2 px-4 border-stroke dark:text-white dark:border-strokedark">
+              <span className="text-red-500 font-bold dark:text-white">No</span>
             </td>
           </tr>
         </tbody>
@@ -307,17 +307,18 @@ const StudentDetails = () => {
 </div>
 
 
-      <div className="mb-4 pl-4 pt-4 text-right">
+      <div className="pl-4 pt-4 pb-4 text-right dark:bg-boxdark dark:drop-shadow-none
+">
   <div className="flex space-x-4">
     <Button
       variant="contained"
-      className="inline-flex rounded-lg bg-white px-3 py-1 font-medium text-white hover:bg-black hover:text-black sm:px-6 sm:py-2.5 lowercase" style={{ textTransform: 'capitalize' }}
+      className="inline-flex rounded-lg bg-white px-3 py-1 font-medium text-white sm:px-6 sm:py-2.5 lowercase" style={{ textTransform: 'capitalize' }}
     >
       Print Selected
     </Button>
     <Button
       variant="contained"
-      className="inline-flex rounded-lg bg-white px-3 py-1 font-medium text-white hover:bg-black hover:text-black sm:px-6 sm:py-2.5 lowercase"
+      className="inline-flex rounded-lg bg-white px-3 py-1 font-medium text-white sm:px-6 sm:py-2.5 lowercase"
       onClick={handleClickOpen}
       style={{ textTransform: 'capitalize' }}
     >
@@ -331,7 +332,7 @@ const StudentDetails = () => {
         <MUIDataTable
           title={""}
           data={data}
-          className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
+          className={`${styles["miui-box-shadow"]}`}
           columns={columns}
           options={{
             ...options,
@@ -343,69 +344,69 @@ const StudentDetails = () => {
           }}
         />
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+          <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
               <h3 className="font-medium text-black dark:text-white">
                 {editing ? "Edit Leave" : "Collect Fees"}
               </h3>
             </div>
           </DialogTitle>
-          <DialogContent>
-            <div className="grid gap-5.5 p-6.5">
+          <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="grid gap-5.5 p-6.5 dark:bg-boxdark dark:drop-shadow-none">
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                <label className="mb-3 block text-sm font-medium dark:text-white">
                   Date
                 </label>
                 <TextField
                   name="date"
                   type="date"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition active:border-primary dark:border-form-strokedark dark:text-white"
           
                 />
               </div>
 
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white"> Payment Mode</label>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white dark:border-strokedark"> Payment Mode</label>
                 <label className="inline-flex items-center mr-4">
             <input
               type="radio"
               name="payment_mode_fee"
               value="Cash"
-              className="form-radio"
+              className="form-radio dark:text-white"
             />
-            <span className="ml-2"> Cash</span>
+            <span className="ml-2 dark:text-white"> Cash</span>
           </label>
-          <label className="inline-flex items-center mr-4">
+          <label className="inline-flex items-center mr-4 dark:text-white">
             <input
               type="radio"
               name="payment_mode_fee"
               value="Cheque"
               
-              className="form-radio"
+              className="form-radio dark:text-white"
             />
             <span className="ml-2">Cheque</span>
           </label>
-          <label className="inline-flex items-center mr-4">
+          <label className="inline-flex items-center mr-4 dark:text-white">
             <input
               type="radio"
               name="payment_mode_fee"
               value="DD"
               
-              className="form-radio"
+              className="form-radio dark:text-white"
             />
             <span className="ml-2">DD</span>
           </label>
-          <label className="inline-flex items-center mr-4">
+          <label className="inline-flex items-center mr-4 dark:text-white">
             <input
               type="radio"
               name="payment_mode_fee"
               value="bank_transfer"
             
-              className="form-radio"
+              className="form-radio dark:text-white"
             />
             <span className="ml-2">Bank Transfer</span>
           </label>
-          <label className="inline-flex items-center mr-4">
+          <label className="inline-flex items-center mr-4 dark:text-white">
             <input
               type="radio"
               name="payment_mode_fee"
@@ -413,29 +414,29 @@ const StudentDetails = () => {
              
               className="form-radio"
             />
-            <span className="ml-2">UPI</span>
+            <span className="ml-2 dark:text-white">UPI</span>
           </label>
-          <label className="inline-flex items-center mr-4">
+          <label className="inline-flex items-center mr-4 dark:text-white">
             <input
               type="radio"
               name="payment_mode_fee"
               value="card"
             
-              className="form-radio"
+              className="form-radio dark:text-white"
             />
-            <span className="ml-2">Card</span>
+            <span className="ml-2 dark:text-white">Card</span>
           </label>
               </div>
 
 
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white dark:border-strokedark">
                 Note
                 </label>
                 <TextField
                   name="note"
                   type="text"
-                  className="w-full"
+                  className="w-full dark:text-white"
                   value={formData.reason}
                   onChange={handleChange}
                 />
@@ -443,7 +444,7 @@ const StudentDetails = () => {
              
             </div>
           </DialogContent>
-          <DialogActions>
+          <DialogActions className="dark:bg-boxdark dark:drop-shadow-none">
           <Button 
             onClick={handleClose} 
             variant="contained" 

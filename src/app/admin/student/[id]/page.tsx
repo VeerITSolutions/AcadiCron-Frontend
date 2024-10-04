@@ -27,7 +27,7 @@ const student = () => {
        <div className="flex flex-wrap">
       {/* Profile Sidebar */}
       <div className="w-full md:w-1/4 p-2">
-        <div className="bg-white p-4 rounded-lg shadow-lg">
+        <div className="bg-white p-4 rounded-lg shadow-lg dark:bg-boxdark dark:drop-shadow-none">
           <div className="text-center">
                 <img 
             src="https://erp.erabesa.co.in/uploads/student_images/default_female.jpg" 
@@ -38,23 +38,23 @@ const student = () => {
 
           </div>
 
-          <ul className="list-none p-0 mt-4 border-stroke">
-            <li className="flex justify-between border-b py-2 border-stroke">
+          <ul className="list-none p-0 mt-4 border-stroke dark:border-strokedark">
+            <li className="flex justify-between border-b py-3 border-stroke dark:border-strokedark">
               <b>Admission No</b> <span className="text-aqua">0698</span>
             </li>
-            <li className="flex justify-between border-b py-2 border-stroke">
+            <li className="flex justify-between border-b py-3 border-stroke dark:border-strokedark">
               <b>Roll Number</b> <span className="text-aqua"></span>
             </li>
-            <li className="flex justify-between border-b py-2 border-stroke">
+            <li className="flex justify-between border-b py-3 border-stroke dark:border-strokedark">
               <b>Class</b> <span className="text-aqua">Class 2 (2024-25)</span>
             </li>
-            <li className="flex justify-between border-b py-2 border-stroke">
+            <li className="flex justify-between border-b py-3 border-stroke dark:border-strokedark">
               <b>Section</b> <span className="text-aqua">Bright</span>
             </li>
-            <li className="flex justify-between border-b py-2 border-stroke">
+            <li className="flex justify-between border-b py-3 border-stroke dark:border-strokedark">
               <b>RTE</b> <span className="text-aqua">No</span>
             </li>
-            <li className="flex justify-between border-b py-2 border-stroke">
+            <li className="flex justify-between border-b py-3 border-stroke dark:border-strokedark">
               <b>Gender</b> <span className="text-aqua">Female</span>
             </li>
           </ul>
@@ -63,8 +63,8 @@ const student = () => {
 
       {/* Profile Content */}
       <div className="w-full md:w-3/4 p-2">
-        <div className="bg-white p-4 rounded-lg shadow-lg">
-        <ul className="flex border-b mb-4 border-stroke">
+        <div className="bg-white p-4 rounded-lg shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+        <ul className="flex border-b mb-4 border-stroke dark:border-strokedark">
   <li
     className={`mr-6 px-4 py-2 cursor-pointer ${activeTab === 'activity' ? 'border-b-2 border-blue-500' : ''}`}
     onClick={() => setActiveTab('activity')}
@@ -108,194 +108,92 @@ const student = () => {
   <div className="tshadow mb25 bozero rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
 
   <div className="overflow-x-auto">
-      <table className="min-w-full bg-white">
+      <table className="min-w-full bg-white dark:bg-boxdark dark:drop-shadow-none">
         <tbody>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4">
               Admission Date
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white col-md-5">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white col-md-5">
               05-06-2023
             </td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Date of Birth
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
               23-11-2017
             </td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Category
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
               Open
             </td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Mobile Number
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
               9970521533
             </td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Caste
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
               Brahmin
             </td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Religion
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white">
               Hindu
             </td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Email
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Place of Birth
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Nationality
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               Mother Tongue
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               TC Number
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
+          <tr className="border-b border-stroke dark:border-strokedark">
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
               StudentID CBSE
             </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Student Aadhar
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Last School Attended
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Date of Admission in School Class
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Class in which Pupil Last Studied
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Subject Studied
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Whether Qualified
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Promoted to Class
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Month Upto Pupil Paid Fees
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Total Working Days
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Total Present Days
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Whether NCC Scout
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Games Played Other Activity
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              General Conduct
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Certificate Issue Date
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Reason for Leaving School
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Any Other Remarks
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
-          <tr className="border-b border-stroke">
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white">
-              Note
-            </td>
-            <td className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
-          </tr>
+            <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm text-black dark:text-white"></td>
+          </tr> 
         </tbody>
       </table>
     </div>
@@ -320,7 +218,7 @@ const student = () => {
           </tr>
         </thead> */}
         <tbody>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Current Address
             </td>
@@ -328,7 +226,7 @@ const student = () => {
               Bhagwan Nagar, Nagpur
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Permanent Address
             </td>
@@ -346,9 +244,9 @@ const student = () => {
       </div>
       <div className="grid gap-5.5">
       <div className="overflow-x-auto">
-      <table className="min-w-full bg-white dark:bg-boxdark">
+      <table className="min-w-full bg-white dark:bg-boxdark dark:drop-shadow-none">
         <tbody>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Father Name
             </td>
@@ -363,7 +261,7 @@ const student = () => {
               />
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Father Phone
             </td>
@@ -371,13 +269,13 @@ const student = () => {
               9970521533
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Father Occupation
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Mother Name
             </td>
@@ -392,7 +290,7 @@ const student = () => {
               />
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Mother Phone
             </td>
@@ -400,13 +298,13 @@ const student = () => {
               9922964043
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Mother Occupation
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Guardian Name
             </td>
@@ -421,13 +319,13 @@ const student = () => {
               />
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Guardian Email
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Guardian Relation
             </td>
@@ -435,7 +333,7 @@ const student = () => {
               Father
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Guardian Phone
             </td>
@@ -443,13 +341,13 @@ const student = () => {
               9970521533
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Guardian Occupation
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
               Guardian Address
             </td>
@@ -467,33 +365,33 @@ const student = () => {
       </div>
       <div className="grid gap-5.5">
       <div className="overflow-x-auto">
-      <table className="min-w-full bg-white">
+      <table className="min-w-full bg-white dark:bg-boxdark dark:drop-shadow-none">
         <tbody>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Blood Group
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Student House
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Height
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Weight
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               As on Date
             </td>
@@ -501,37 +399,37 @@ const student = () => {
               05-07-2023
             </td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Previous School Details
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               National Identification Number
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Local Identification Number
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Bank Account Number
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               Bank Name
             </td>
             <td className="px-6 py-4 text-sm text-black dark:text-white col-md-5"></td>
           </tr>
-          <tr className="border-b border-stroke">
+          <tr className="border-b border-stroke dark:border-strokedark">
             <td className="px-6 py-4 text-sm font-medium text-black dark:text-white col-md-4">
               IFSC Code
             </td>
@@ -556,7 +454,7 @@ const student = () => {
                   
                   <div className="grid gap-5.5">
                   <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border-separate border-spacing-0">
+      <table className="min-w-full bg-white border-separate border-spacing-0 dark:bg-boxdark dark:drop-shadow-none">
         <thead>
           <tr className="bg-gray-100 text-left">
             <th className="px-4 py-2 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 text-sm font-medium text-black dark:text-white col-md-4 border-b border-stroke">Fees Group</th>
@@ -752,7 +650,7 @@ const student = () => {
 
                 {/* Modal Content */}
                 <div className="fixed inset-0 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+                  <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative dark:bg-boxdark dark:drop-shadow-none">
                     {/* Close Button */}
                     <button
                       onClick={handleButtonClick}
@@ -763,12 +661,12 @@ const student = () => {
 
                     {/* Form Content */}
                     <h2 className="text-lg font-semibold mb-4">Upload Documents</h2>
-                    <form className="bg-white p-4 rounded-md shadow-md border border-stroke">
+                    <form className="bg-white p-4 rounded-md shadow-md border border-stroke dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark">
                       <div className="mb-4">
                         <label className="mb-3 block text-sm font-medium text-black dark:text-white">Title:</label>
                         <input
                           aria-invalid="false"
-                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                           type="text"
                           name="title"
                         />
@@ -796,12 +694,12 @@ const student = () => {
             )}
 
             {/* Table */}
-            <table className="min-w-full bg-white border-b border-stroke">
+            <table className="min-w-full bg-white border-b border-stroke dark:bg-boxdark dark:drop-shadow-none">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke">Title</th>
-                  <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke">Name</th>
-                  <th className="px-4 py-2 text-sm font-medium text-right border-b border-stroke">Action</th>
+                  <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke dark:border-strokedark">Title</th>
+                  <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke dark:border-strokedark">Name</th>
+                  <th className="px-4 py-2 text-sm font-medium text-right border-b border-stroke dark:border-strokedark">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -846,7 +744,7 @@ const student = () => {
 
                 {/* Modal Content */}
                 <div className="fixed inset-0 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+                  <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative dark:bg-boxdark dark:drop-shadow-none">
                     {/* Close Button */}
                     <button
                       onClick={handleButtonClick}
@@ -857,7 +755,7 @@ const student = () => {
 
                     {/* Form Content */}
                     <h2 className="text-lg font-semibold mb-4">Add Timeline</h2>
-                    <form className="bg-white p-4 rounded-md shadow-md border border-stroke">
+                    <form className="bg-white p-4 rounded-md shadow-md border border-stroke dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="field">
                           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -866,7 +764,7 @@ const student = () => {
                           <input
                             aria-invalid="false"
                             id="title"
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                             type="text"
                             name="title"
                           />
@@ -878,7 +776,7 @@ const student = () => {
                           </label>
                           <input
                             id="date"
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                             type="text"
                             name="dob"
                           />
@@ -891,7 +789,7 @@ const student = () => {
                           <input
                             aria-invalid="false"
                             id="description"
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                             type="text"
                             name="description"
                           />
@@ -925,7 +823,7 @@ const student = () => {
             )}
 
             {/* Table */}
-            <table className="min-w-full bg-white border-b border-stroke mt-6">
+            <table className="min-w-full bg-white border-b border-stroke mt-6 dark:bg-boxdark dark:drop-shadow-none">
               <thead className="bg-gray-100">
                 <tr>
                   <th className="px-4 py-2 text-sm font-medium text-left border-b border-stroke">
