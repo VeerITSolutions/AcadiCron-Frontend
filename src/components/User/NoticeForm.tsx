@@ -14,7 +14,7 @@ const NoticeForm = () => {
   const [formData, setFormData] = useState({
     title: "",
     publish_date: "",
-    noticedate: "",
+    date: "",
     message: "",
     message_to: [],
     path: null,
@@ -55,10 +55,10 @@ const NoticeForm = () => {
   };
 
   // Handle edit action
-  const handleEdit = (id: number, title_value: string, publish_date: string, message: string, send_notification_id:string ) => {
+  const handleEdit = (id: number, title_value: string, publish_date: string, message: string, date:string ) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setFormData({ ...formData, title: title_value, publish_date: publish_date, message: message, noticedate: noticedate});
+    setFormData({ ...formData, title: title_value, publish_date: publish_date, message: message, date: date});
   };
 
   // Handle form submission
@@ -69,12 +69,9 @@ const NoticeForm = () => {
 
     formDataToSend.append("title", formData.title);
     formDataToSend.append("publish_date", formData.publish_date);
-    formDataToSend.append("date", formData.noticedate);  // Assuming noticedate is the date
+    formDataToSend.append("date", formData.date); 
     formDataToSend.append("message", value);
-
-   
-
-    
+ 
     if (formData.file) {
       formDataToSend.append("path", formData.file); // File path
     }
@@ -101,8 +98,8 @@ const NoticeForm = () => {
       setFormData({
         title: "",
         publish_date: "",
-        noticedate: "",
-        message_to: [],
+        date: "",
+        message: "",
 
         file: null,
       });
@@ -125,7 +122,7 @@ const NoticeForm = () => {
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">Student Details</h3>
             </div>
-            <div className="grid grid-cols-3 gap-6 p-6.5">
+            <div className="grid grid-cols-3 gap-6 pt-6 pr-6 pl-6">
               {/* First Column */}
               <div className="col-span-2">
                 <div className="field mb-6">
@@ -134,8 +131,8 @@ const NoticeForm = () => {
                   </label>
                   <input
                     type="text"
-                    name="department_name"
-                    value={formData.department_name}
+                    name="title"
+                    value={formData.title}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
@@ -154,31 +151,34 @@ const NoticeForm = () => {
 
               {/* Second Column */}
               <div className="col-span-1">
-                <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Notice Date <span className="required">*</span>
-                  </label>
-                  <input
-                    id="noticedate"
-                    name="noticedate"
-                    value={formData.noticedate}
-                    onChange={handleInputChange}
-                    type="text"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                </div>
+              <div className="field mb-6">
+  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+    Notice Date <span className="required">*</span>
+  </label>
+  <input
+    id="date"
+    name="date"
+    value={formData.date}
+    onChange={handleInputChange}
+    type="date" // Changed from 'text' to 'date'
+    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+  />
+</div>
 
-                <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Publish On</label>
-                  <input
-                    id="publishon"
-                    name="publishon"
-                    value={formData.publishon}
-                    onChange={handleInputChange}
-                    type="text"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                </div>
+<div className="field mb-6">
+  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+    Publish On
+  </label>
+  <input
+    id="publish_date"
+    name="publish_date"
+    value={formData.publish_date}
+    onChange={handleInputChange}
+    type="date" // Changed from 'text' to 'date'
+    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+  />
+</div>
+
 
                 <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">Message To</label>
@@ -232,7 +232,7 @@ const NoticeForm = () => {
 
             <div className="px-6.5 py-4">
               <button onClick={handleSubmit} className="flex justify-center rounded bg-primary p-2 font-semibold text-gray">
-                Save
+                Send
               </button>
             </div>
           </div>

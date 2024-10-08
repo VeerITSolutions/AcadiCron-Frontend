@@ -363,7 +363,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <Image
                 width={176}
                 height={32}
-                src={"/images/logo/logo.svg"}
+                src={"/images/logo/logo1.png"}
                 alt="Logo"
                 priority
               />
@@ -393,13 +393,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
           <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
             {/* Sidebar Menu */}
-            <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
-              <button
-                className="     text-white"
-                onClick={() => setModalOpen(true)}
-              >
-                Current Session: {savedSessionstate}
-              </button>
+            <nav className="mt-5 px-4 lg:px-6">
+            <button
+              className="text-white mb-4" // Adjust mb-4 to your desired spacing value
+              onClick={() => setModalOpen(true)}
+            >
+              Current Session: {savedSessionstate}
+            </button>
+
               <hr />
               {menuGroups.map((group, groupIndex) => (
                 <div key={groupIndex}>

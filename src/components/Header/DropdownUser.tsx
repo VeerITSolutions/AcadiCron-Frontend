@@ -21,18 +21,19 @@ const DropdownUser = () => {
           <span className="block text-xs">Super Admin</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <Image
-            width={112}
-            height={112}
-            src={"/images/user/user-01.png"}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-          />
-        </span>
+        <span className="h-12 w-12 rounded-full pt-4">
+        <Image
+          width={112}
+          height={112}
+          src={"/images/user/user-01.png"}
+          style={{
+            width: "auto",
+            height: "auto",
+          }}
+          alt="User"
+        />
+      </span>
+
 
         <svg
           className="hidden fill-current sm:block"
