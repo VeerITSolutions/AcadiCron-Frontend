@@ -8,6 +8,8 @@ import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 /* import { Metadata } from "next"; */
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+
+import { checkLogin } from "@/services/loginService";
 import styles from "./page.module.css";
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -19,27 +21,7 @@ const LoginPage = () => {
     e.preventDefault();
     setError(null);
 
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        // Save token and redirect to dashboard
-        localStorage.setItem("token", data.token);
-        router.push("/");
-      } else {
-        setError(data.message || "Login failed");
-      }
-    } catch (err) {
-      setError("An error occurred");
-    }
+    const data = await checkLogin(email, password);
   };
 
   return (
