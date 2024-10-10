@@ -26,6 +26,19 @@ const LoginPage = () => {
     if (data.token) {
       // Save token and redirect to dashboard
       localStorage.setItem("token", data.token);
+
+      localStorage.setItem("username", data.users.name);
+      localStorage.setItem("surname", data.users.surname);
+
+      // Access the first role in the roles array
+      const role = data.users.roles[0];
+
+      if (role) {
+        localStorage.setItem("role_id", role.id);
+        localStorage.setItem("role_name", role.name);
+        localStorage.setItem("is_superadmin", role.is_superadmin);
+      }
+
       router.push("/");
     } else {
       setError(data.message || "Login failed");
