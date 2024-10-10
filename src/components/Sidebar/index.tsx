@@ -657,7 +657,8 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
+              <path d="M4 20c0-2.21 1.79-4 4-4h8c2.21 0 4 1.79 4 4" />
             </svg>
           ),
           label: "My Profile",
@@ -676,7 +677,7 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M9 11h6M12 8v6M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
             </svg>
           ),
           label: "Fees",
@@ -695,7 +696,9 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <path d="M16 2v4M8 2v4M3 10h18" />
+              <path d="M8 14h2v2H8zM14 14h2v2h-2zM8 18h2v2H8zM14 18h2v2h-2z" />
             </svg>
           ),
           label: "Class Timetable",
@@ -714,7 +717,8 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M9 2h6a2 2 0 0 1 2 2v1H7V4a2 2 0 0 1 2-2z" />
+              <path d="M9 12l2 2 4-4M9 20h6M9 16h6M5 6h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
             </svg>
           ),
           label: "Lesson Plan",
@@ -733,7 +737,8 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+              <path d="M8 10h8M8 14h6M9 18l2-2 4 4M8 6h8" />
             </svg>
           ),
           label: "Syllabus Status",
@@ -752,7 +757,8 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M12 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
             </svg>
           ),
           label: "Homework",
@@ -771,7 +777,8 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <path d="M16 2v4M8 2v4M3 10h18M9 15l2 2 4-4" />
             </svg>
           ),
           label: "Apply Leave",
@@ -790,7 +797,9 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M4 17h16v2H4z" />
+              <path d="M12 3v15M9 12l3 3 3-3" />
+              <path d="M5 17a7 7 0 0 1 14 0" />
             </svg>
           ),
           label: "Download Center",
@@ -809,7 +818,9 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M12 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+              <path d="M16 20l-4-4 4-4" />
             </svg>
           ),
           label: "Assignments",
@@ -828,7 +839,8 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M4 4h16v2H4zM4 9h16v2H4zM4 14h16v2H4zM4 19h16v2H4z" />
+              <path d="M2 4v16a2 2 0 0 0 2 2h16" />
             </svg>
           ),
           label: "Study Material",
@@ -847,7 +859,8 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+              <path d="M8 6h8M8 10h6M8 14h6M8 18h6" />
             </svg>
           ),
           label: "Syllabus",
@@ -866,7 +879,11 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M12 3v15M9 12l3 3 3-3" />
+              <path d="M20 17h-5v2h5a2 2 0 0 0 2-2v-5h-2v5z" />
+              <path d="M4 17h5v2H4a2 2 0 0 1-2-2v-5h2v5z" />
+              <path d="M20 4h-5V2h5a2 2 0 0 1 2 2v5h-2V4z" />
+              <path d="M4 4h5V2H4a2 2 0 0 0-2 2v5h2V4z" />
             </svg>
           ),
           label: "Other Downloads",
@@ -885,7 +902,10 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M3 3h18v18H3z" />
+              <path d="M9 7h6M9 11h6M9 15h6" />
+              <path d="M7 7H5v2h2V7zM7 11H5v2h2v-2zM7 15H5v2h2v-2z" />
+              <circle cx="12" cy="3" r="1" />
             </svg>
           ),
           label: "Attendance",
@@ -904,7 +924,9 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <rect x="2" y="3" width="20" height="18" rx="2" ry="2" />
+              <path d="M4 7h16M4 11h16M4 15h16" />
+              <path d="M4 7l1 1M20 7l-1 1M4 11l1 1M20 11l-1 1M4 15l1 1M20 15l-1 1" />
             </svg>
           ),
           label: "Notice Board",
@@ -923,7 +945,11 @@ if (roleId === "10") {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <path d="M21 12V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8" />
+              <path d="M16 4l-4 4-4-4M12 14h1.5M10.5 14H12" />
+              <path d="M9 19l-2-2 2-2" />
+              <path d="M20 16l-2-2-2 2" />
             </svg>
           ),
           label: "Teachers Reviews",
