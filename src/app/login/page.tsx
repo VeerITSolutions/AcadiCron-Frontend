@@ -22,6 +22,14 @@ const LoginPage = () => {
     setError(null);
 
     const data = await checkLogin(email, password);
+
+    if (data.token) {
+      // Save token and redirect to dashboard
+      localStorage.setItem("token", data.token);
+      router.push("/");
+    } else {
+      setError(data.message || "Login failed");
+    }
   };
 
   return (
