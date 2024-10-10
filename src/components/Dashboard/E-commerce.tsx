@@ -32,7 +32,7 @@ const ECommerce: React.FC = () => {
   const surname = localStorage.getItem("surname");
   return (
     <>
-      {roleId === "2" && (
+      {roleId != "7" && (
         <div>
           <h1>
             {" "}
