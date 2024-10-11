@@ -366,7 +366,7 @@ if (roleId === "2") {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
             </svg>
           ),
-          label: "My Profile",
+          label: "Student Information",
           route: "/student/my_profile",
         },
         {
@@ -385,28 +385,10 @@ if (roleId === "2") {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
             </svg>
           ),
-          label: "Fees",
+          label: "Attendance",
           route: "/student/fees",
         },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
-            </svg>
-          ),
-          label: "Class Timetable",
-          route: "/student/class_timetable",
-        },
+
         {
           icon: (
             <svg
@@ -442,7 +424,7 @@ if (roleId === "2") {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
             </svg>
           ),
-          label: "Syllabus Status",
+          label: "Academics",
           route: "/student/syllabus_status",
         },
         {
@@ -461,7 +443,7 @@ if (roleId === "2") {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
             </svg>
           ),
-          label: "Homework",
+          label: "Human Resource",
           route: "/student/homework",
         },
         {
@@ -480,7 +462,7 @@ if (roleId === "2") {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
             </svg>
           ),
-          label: "Apply Leave",
+          label: "Communicate",
           route: "/student/apply_leave",
         },
         {
@@ -502,6 +484,7 @@ if (roleId === "2") {
           label: "Download Center",
           route: "/student/download_center",
         },
+
         {
           icon: (
             <svg
@@ -518,122 +501,8 @@ if (roleId === "2") {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
             </svg>
           ),
-          label: "Assignments",
-          route: "/student/assignments",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
-            </svg>
-          ),
-          label: "Study Material",
-          route: "/student/study_material",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
-            </svg>
-          ),
-          label: "Syllabus",
-          route: "/student/syllabus",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
-            </svg>
-          ),
-          label: "Other Downloads",
-          route: "/student/other_downloads",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
-            </svg>
-          ),
-          label: "Attendance",
-          route: "/student/attendance",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
-            </svg>
-          ),
-          label: "Notice Board",
-          route: "/student/notice_board",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
-            </svg>
-          ),
-          label: "Teachers Reviews",
-          route: "/student/teachers_reviews",
+          label: "Homework",
+          route: "/student/download_center",
         },
       ],
     },
