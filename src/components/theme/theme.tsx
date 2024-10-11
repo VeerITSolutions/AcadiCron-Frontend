@@ -39,14 +39,14 @@ export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#90caf9", // Customize your primary color here
+      main: "#24303F", // Customize your primary color here
     },
     secondary: {
-      main: "#f48fb1", // Customize your secondary color here
+      main: "#24303F", // Customize your secondary color here
     },
     background: {
-      default: "#121212",
-      paper: "#424242",
+      default: "#24303F",
+      paper: "#24303F",
     },
     text: {
       primary: "#ffffff",
