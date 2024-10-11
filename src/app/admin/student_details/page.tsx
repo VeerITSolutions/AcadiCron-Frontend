@@ -12,7 +12,7 @@ import {
   fetchsectionData,
 } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
-
+import useColorMode from "@/hooks/useColorMode";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import {
@@ -98,8 +98,8 @@ const StudentDetails = () => {
     palette: {
       mode: "dark",
       background: {
-        default: "#121212",
-        paper: "#424242",
+        default: "#24303F", // Update background color here
+        paper: "#24303F", // Update paper background color here
       },
       text: {
         primary: "#ffffff",
@@ -118,7 +118,7 @@ const StudentDetails = () => {
             color: "#ffffff",
           },
           head: {
-            backgroundColor: "#333",
+            backgroundColor: "#1A242E", // Optional: Set header row background color
             color: "#ffffff",
           },
         },
@@ -126,7 +126,7 @@ const StudentDetails = () => {
       MuiPaper: {
         styleOverrides: {
           root: {
-            backgroundColor: "#424242",
+            backgroundColor: "#24303F", // Update root paper color here
           },
         },
       },
