@@ -12,8 +12,10 @@ import {
   fetchsectionData,
 } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
+
+import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 import {
   Edit,
@@ -51,6 +53,7 @@ const options = {
 };
 
 const StudentDetails = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -93,45 +96,6 @@ const StudentDetails = () => {
       </div>,
     ]);
   };
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: "dark",
-      background: {
-        default: "#24303F", // Update background color here
-        paper: "#24303F", // Update paper background color here
-      },
-      text: {
-        primary: "#ffffff",
-        secondary: "#bdbdbd",
-      },
-      action: {
-        hover: "rgba(255, 255, 255, 0.08)",
-        selected: "rgba(255, 255, 255, 0.16)",
-      },
-      divider: "rgba(255, 255, 255, 0.12)",
-    },
-    components: {
-      MuiTableCell: {
-        styleOverrides: {
-          root: {
-            color: "#ffffff",
-          },
-          head: {
-            backgroundColor: "#1A242E", // Optional: Set header row background color
-            color: "#ffffff",
-          },
-        },
-      },
-      MuiPaper: {
-        styleOverrides: {
-          root: {
-            backgroundColor: "#24303F", // Update root paper color here
-          },
-        },
-      },
-    },
-  });
 
   const fetchData = async (
     currentPage: number,
@@ -287,7 +251,7 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Student Details"}
           data={data}
