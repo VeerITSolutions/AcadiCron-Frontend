@@ -8,6 +8,8 @@ import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 /* import { Metadata } from "next"; */
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+
+import { checkLogin } from "@/services/loginService";
 import styles from "./page.module.css";
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -19,26 +21,27 @@ const LoginPage = () => {
     e.preventDefault();
     setError(null);
 
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+    const data = await checkLogin(email, password);
 
-      const data = await res.json();
+    if (data.token) {
+      // Save token and redirect to dashboard
+      localStorage.setItem("token", data.token);
 
-      if (res.ok) {
-        // Save token and redirect to dashboard
-        localStorage.setItem("token", data.token);
-        router.push("/");
-      } else {
-        setError(data.message || "Login failed");
+      localStorage.setItem("username", data.users.name);
+      localStorage.setItem("surname", data.users.surname);
+
+      // Access the first role in the roles array
+      const role = data.users.roles[0];
+
+      if (role) {
+        localStorage.setItem("role_id", role.id);
+        localStorage.setItem("role_name", role.name);
+        localStorage.setItem("is_superadmin", role.is_superadmin);
       }
-    } catch (err) {
-      setError("An error occurred");
+
+      router.push("/");
+    } else {
+      setError(data.message || "Login failed");
     }
   };
 
@@ -75,8 +78,8 @@ const LoginPage = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
-                      placeholder="Enter your email"
+                      type="text"
+                      placeholder="Enter your email Or Username"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       /* value="pranay.l@veerit.com" */
                       onChange={(e) => setEmail(e.target.value)}

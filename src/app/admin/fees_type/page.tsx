@@ -38,7 +38,10 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesTypeData(currentPage + 1, rowsPerPage);
+      const result = await fetchStudentFeesTypeData(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -58,7 +61,13 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (id: number, type: string, code: string, description: string, is_active: string) => {
+  const handleEdit = (
+    id: number,
+    type: string,
+    code: string,
+    description: string,
+    is_active: string,
+  ) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
@@ -76,10 +85,24 @@ const FeesMaster = () => {
       student.code || "N/A",
 
       <div key={student.id}>
-        <IconButton onClick={() => handleEdit(student.id, student.type, student.code, student.description, student.is_active)} aria-label="Edit">
+        <IconButton
+          onClick={() =>
+            handleEdit(
+              student.id,
+              student.type,
+              student.code,
+              student.description,
+              student.is_active,
+            )
+          }
+          aria-label="Edit"
+        >
           <Edit />
         </IconButton>
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="delete">
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
           <Delete />
         </IconButton>
       </div>,
@@ -101,26 +124,30 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       let result;
-  
+
       if (isEditing && editCategoryId !== null) {
         result = await editFeesTypeData(
           editCategoryId,
           formData.type,
           formData.code,
           formData.description,
-          formData.is_active
+          formData.is_active,
         );
       } else {
         result = await createFeesType(
           formData.type,
           formData.code,
           formData.description,
-          formData.is_active
+          formData.is_active,
         );
       }
-  
+
       if (result.success) {
-        toast.success(isEditing ? "Fees type updated successfully" : "Fees type saved successfully");
+        toast.success(
+          isEditing
+            ? "Fees type updated successfully"
+            : "Fees type saved successfully",
+        );
         setFormData({
           type: "",
           code: "",
@@ -134,9 +161,9 @@ const FeesMaster = () => {
         // If the API response includes error messages, display them using toast
         const errorMessage = result.message || "An error occurred";
         const errors = result.errors || {};
-  
+
         toast.error(errorMessage); // Show the main error message
-  
+
         // Display individual field errors (optional)
         if (errors.type) {
           toast.error(`Type: ${errors.type.join(", ")}`);
@@ -153,7 +180,6 @@ const FeesMaster = () => {
       toast.error("An unexpected error occurred. Please try again.");
     }
   };
-  
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -249,7 +275,10 @@ const FeesMaster = () => {
                   </div>
                 </div>
                 <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>

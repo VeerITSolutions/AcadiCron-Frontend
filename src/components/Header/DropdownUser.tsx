@@ -7,6 +7,12 @@ import LogoutButton from "../LogoutButton";
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const username = localStorage.getItem("username");
+  const surname = localStorage.getItem("surname");
+  const roleId = localStorage.getItem("role_id");
+  const roleName = localStorage.getItem("role_name");
+  const isSuperAdmin = localStorage.getItem("is_superadmin");
+
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
@@ -16,24 +22,23 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Rashmi Shrivastav
+            {username ? username : ""} {surname ? surname : ""}
           </span>
-          <span className="block text-xs">Super Admin</span>
+          <span className="block text-xs">{roleName || ""}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full pt-4">
-        <Image
-          width={112}
-          height={112}
-          src={"/images/user/user-01.png"}
-          style={{
-            width: "auto",
-            height: "auto",
-          }}
-          alt="User"
-        />
-      </span>
-
+          <Image
+            width={112}
+            height={112}
+            src={"/images/user/user-01.png"}
+            style={{
+              width: "auto",
+              height: "auto",
+            }}
+            alt="User"
+          />
+        </span>
 
         <svg
           className="hidden fill-current sm:block"
