@@ -46,16 +46,19 @@ const NoticeForm = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
+
+  
   
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
   
-  // Handling file input change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFormData({ ...formData, file: e.target.files[0] });
-    }
-  };
+ 
+    // Handling file input change
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files.length > 0) {
+        setFormData({ ...formData, file: e.target.files[0] });
+      }
+    };
 
 
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +74,7 @@ const NoticeForm = () => {
     date: "",
     message: "",
     message_to: [],
-    path: null,
+    file: null,
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
@@ -111,9 +114,8 @@ const NoticeForm = () => {
     return students.map((student: any) => [
       student.title || "N/A",
       student.publish_date || "N/A",
-     
 
-    
+     
 
       <div key={student.id}>
         <IconButton onClick={() => handleEdit(student.title, student.publish_date, student.date, student.message, student.message_to)} aria-label="Edit">
@@ -167,7 +169,8 @@ const NoticeForm = () => {
           formData.class_id,
           formData.secid,
           formData.send_notification_id,
-          formData.roles
+          formData.roles,
+          formData.file
         );
       } else {
         // Otherwise, call the create function
@@ -182,7 +185,8 @@ const NoticeForm = () => {
           formData.class_id,
           formData.secid,
           formData.send_notification_id,
-          formData.roles
+          formData.roles,
+          formData.file
         );
       }
   
@@ -194,7 +198,7 @@ const NoticeForm = () => {
           date: "",
           message: "",
           message_to: [],
-          path: null,
+          file: null,
         });
         setIsEditing(false);
         setEditCategoryId(null);

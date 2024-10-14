@@ -3,22 +3,15 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchContentForUploadData } from "@/services/contentForUploadService";
-import { createContentForUpload } from "@/services/contentForUploadService";
 import {
-  deleteConetentForUpload,
-  editConententForUpload,
-} from "@/services/contentForUploadService";
+  fetchContentSectionData,
+  createContentSectionForUpload,
+  deleteContentSectionForUpload,
+  editContentSectionForUpload,
+
+} from "@/services/ContentSectionService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./StudentDetails.module.css"; // Import CSS module
@@ -37,6 +30,7 @@ const StudentCategories = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   
+  
 const [classes, setClassessData] = useState<Array<any>>([]);
 const [section, setSections] = useState<Array<any>>([]);
 const [selectedClass, setSelectedClass] = useState<string | undefined>(
@@ -47,6 +41,19 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
 );
 
 
+const [formData, setFormData] = useState({
+  title: "",
+  type: "",
+  date:"",
+  cls_sec_id: "",
+  class_id: "",
+  role: "",
+  note: "",
+  file:""
+});
+
+
+
   // State for modal visibility
   const [open, setOpen] = useState<boolean>(false);
 
@@ -54,22 +61,27 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchContentForUploadData(
-        currentPage + 1,
-        rowsPerPage,
-      );
-      setTotalCount(result.totalCount);
-      setData(formatStudentCategoryData(result.data));
-      setLoading(false);
+        const result = await fetchContentSectionData(currentPage + 1, rowsPerPage);
+        setTotalCount(result.totalCount);
+        
+        // Check if result.data is defined and is an array
+        if (Array.isArray(result.data)) {
+            setData(formatStudentCategoryData(result.data));
+        } else {
+            setData([]); // Fallback to an empty array
+        }
+
+        setLoading(false);
     } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
+        setError(error.message);
+        setLoading(false);
     }
-  };
+};
+
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteConetentForUpload(id);
+      await deleteContentSectionForUpload(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -77,88 +89,136 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
     }
   };
 
-  const handleEdit = (id: number, categoryName: string) => {
+  const handleEdit = (id: number, title: string, type: string, date: string,  class_id: string, cls_sec_id: string, role:string, note:string) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setCategorynew(categoryName);
+    setCategorynew(title, type, date, class_id, cls_sec_id, role, note);
     setOpen(true); // Open the modal
   };
 
   const formatStudentCategoryData = (students: any[]) => {
+    if (!Array.isArray(students)) return []; // Fallback to an empty array if not an array
+    
     return students.map((student: any) => [
-      student.category || "N/A",
-      student.id,
-      <div key={student.id}>
-        <IconButton
-          onClick={() => handleEdit(student.id, student.category)}
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
+        student.title || "N/A",
+        student.type || "N/A",
+        student.date || "N/A",
+        student.class || "N/A",
+        
+        <div key={student.id}>
+            <IconButton
+                onClick={() => handleEdit(student.id, student.title, student.type, student.class, student.date)}
+                aria-label="edit"
+            >
+                <Edit />
+            </IconButton>
+            <IconButton
+                onClick={() => handleDelete(student.id)}
+                aria-label="delete"
+            >
+                <Delete />
+            </IconButton>
+        </div>,
     ]);
+};
+
+
+ 
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCategory(e.target.value);
   };
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage, token]);
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+    if (type === "file") {
+      setFormData((prevData) => ({
+        ...prevData,
+        file: (e.target as HTMLInputElement).files![0],
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
-  const handleEditCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategorynew(e.target.value);
-  };
 
   const handleSubmit = async () => {
     try {
-      const result = await createContentForUpload(category, category);
-      if (result.success) {
-        toast.success("Content for upload  successfully");
-      } else {
-        toast.error("Failed to save Content for upload");
-      }
-      setCategory("");
-      setIsEditing(false);
-      setEditCategoryId(null);
-      setOpen(false); // Close the modal
-      fetchData(page, rowsPerPage); // Refresh data after submit
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  };
-
-  const handleEditSubmit = async () => {
-    try {
+      let result;
+  
       if (isEditing && editCategoryId !== null) {
-        // Edit existing category
-        const result = await editConententForUpload(
+        result = await editContentSectionForUpload(
           editCategoryId,
-          categorynew,
+          formData.title,
+          formData.type,
+          formData.date,
+          formData.class_id,
+          formData.cls_sec_id,
+        
+          formData. role,
+          formData. note
         );
-        if (result.success) {
-          toast.success("Category updated successfully");
-        } else {
-          toast.error("Failed to update category");
-        }
       } else {
+        result = await createContentSectionForUpload(
+          formData.title,
+          formData.type,
+          formData.date,
+          formData.class_id,
+          formData.cls_sec_id,
+          formData.role,
+          formData. note
+
+        );
       }
-      setCategory("");
-      setIsEditing(false);
-      setEditCategoryId(null);
-      setOpen(false); // Close the modal
-      fetchData(page, rowsPerPage); // Refresh data after submit
+  
+      if (result.success) {
+        toast.success(isEditing ? "Fees type updated successfully" : "Fees type saved successfully");
+        setFormData({
+          type: "",
+          title: "",
+          date: "",
+          class_id: "",
+          cls_sec_id: "",
+        
+          role: "",
+          note: ""
+        });
+        setIsEditing(false);
+        setEditCategoryId(null);
+        fetchData(page, rowsPerPage); // Refresh data after submit
+      } else {
+        // If the API response includes error messages, display them using toast
+        const errorMessage = result.message || "An error occurred";
+        const errors = result.errors || {};
+  
+        toast.error(errorMessage); // Show the main error message
+  
+        // Display individual field errors (optional)
+        if (errors.type) {
+          toast.error(`Type: ${errors.type.join(", ")}`);
+        }
+        if (errors.code) {
+          toast.error(`Code: ${errors.code.join(", ")}`);
+        }
+        if (errors.description) {
+          toast.error(`Description: ${errors.description.join(", ")}`);
+        }
+      }
     } catch (error) {
       console.error("An error occurred", error);
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
+  
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -215,6 +275,7 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
     filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
+    selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
@@ -230,8 +291,8 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                Upload Content
+            <h3 className="font-medium text-black dark:text-white">
+                {isEditing ? "Edit Upload Content" : "Add Upload Content"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -245,10 +306,10 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                       Content Title *
                     </label>
                     <input
-                      name="content_title"
+                      name="title"
                       type="text"
-                      value={category}
-                      onChange={handleCategoryChange}
+                      value={formData.title}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -259,7 +320,9 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                       Content Type *
                     </label>
                     <select
-                      name="fees_group"
+                      name="type"
+                      value={formData.type}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="">Select</option>
@@ -279,8 +342,9 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                       <input
                         className=" User_radio__EmAK7"
                         type="checkbox"
-                        value="superadmin"
-                        name="superadmin"
+                        name="role"
+                        value={formData.role}
+                      onChange={handleInputChange}
                       />{" "}
                       All Super Admin{" "}
                     </label>
@@ -352,12 +416,13 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                       Upload Date
                     </label>
                     <input
-                      id="admission_date"
-                      placeholder=""
+                      id="date"
+                      name= "date"
+                      value={formData.date}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       type="text"
-                      value="23-08-2024"
-                      name="upload_date"
+                     
                     />
                   </div>
                 </div>
@@ -368,10 +433,10 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                       Description
                     </label>
                     <input
-                      name="description"
+                      name="note"
                       type="text"
-                      value={category}
-                      onChange={handleCategoryChange}
+                      value={formData.note}
+                      onChange={handleInputChange}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -383,16 +448,16 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                     </label>
                     <input
                       className="form-control User_f-13__35loD mt-2 w-full"
-                      id="file"
-                      type="file"
                       name="file"
+                      type="file"
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-                    Save
+                <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+                    {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
               </form>
@@ -411,29 +476,7 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
         </div>
       </div>
 
-      {/* Edit Category Modal */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>
-          {isEditing ? "Edit Category" : "Create Category"}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="category"
-            label="Category"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={categorynew}
-            onChange={handleEditCategoryChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleEditSubmit}>Update</Button>
-        </DialogActions>
-      </Dialog>
+     
     </DefaultLayout>
   );
 };

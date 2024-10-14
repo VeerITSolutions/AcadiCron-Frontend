@@ -163,6 +163,15 @@ const FeesMaster = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;

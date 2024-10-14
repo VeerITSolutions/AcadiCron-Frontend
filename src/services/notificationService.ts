@@ -11,9 +11,9 @@ export const fetchNotificationData = async (page: number, perPage: number) => {
 };
 
 
-export const createNotification = async (title: string, publish_date: string, date: string, message: string, message_to: string): Promise<any> => {
+export const createNotification = async (title: string, publish_date: string, date: string, message: string, message_to: string, file: File | null): Promise<any> => {
   try {
-    const response = await apiClient.post("/notification", { title, publish_date, date, message,  message_to});
+    const response = await apiClient.post("/notification", { title, publish_date, date, message,  message_to, file});
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
