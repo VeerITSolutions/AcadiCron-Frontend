@@ -12,7 +12,9 @@ import {
   fetchsectionData,
 } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
-
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   Edit,
   Delete,
@@ -53,6 +55,7 @@ const options = {
 };
 
 const StudentDetails = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -250,19 +253,21 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-      <MUIDataTable
-        title={"Student Details"}
-        data={data}
-        columns={columns}
-        options={{
-          ...options,
-          count: totalCount,
-          page: page,
-          rowsPerPage: rowsPerPage,
-          onChangePage: handlePageChange,
-          onChangeRowsPerPage: handleRowsPerPageChange,
-        }}
-      />
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+        <MUIDataTable
+          title={"Student Details"}
+          data={data}
+          columns={columns}
+          options={{
+            ...options,
+            count: totalCount,
+            page: page,
+            rowsPerPage: rowsPerPage,
+            onChangePage: handlePageChange,
+            onChangeRowsPerPage: handleRowsPerPageChange,
+          }}
+        />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };

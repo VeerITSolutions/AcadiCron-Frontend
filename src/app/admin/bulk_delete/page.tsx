@@ -12,7 +12,9 @@ import {
   fetchsectionData,
 } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
-
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   Edit,
   Delete,
@@ -50,6 +52,7 @@ const options = {
 };
 
 const StudentDetails = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -200,39 +203,37 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-        <label className={styles.label}>
-                        Class:
-                     
-                      <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className={styles.select}
-                      >
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-                      </label>
-                     <label className={styles.label}>
-                        Section:
-                     
-                      <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
-                        className={styles.select}
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {section.map((sec) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-                      </label>
+          <label className={styles.label}>
+            Class:
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className={styles.select}
+            >
+              <option value="">Select</option>
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+            Section:
+            <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
+              className={styles.select}
+              disabled={!selectedClass} // Disable section dropdown if no class is selected
+            >
+              <option value="">Select</option>
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
+            </select>
+          </label>
           <div className={styles.searchGroup}>
             <input
               type="text"
@@ -253,19 +254,22 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
-      <MUIDataTable
-        title={"Bulk Delete"}
-        data={data}
-        columns={columns}
-        options={{
-          ...options,
-          count: totalCount,
-          page: page,
-          rowsPerPage: rowsPerPage,
-          onChangePage: handlePageChange,
-          onChangeRowsPerPage: handleRowsPerPageChange,
-        }}
-      />
+
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+        <MUIDataTable
+          title={"Bulk Delete"}
+          data={data}
+          columns={columns}
+          options={{
+            ...options,
+            count: totalCount,
+            page: page,
+            rowsPerPage: rowsPerPage,
+            onChangePage: handlePageChange,
+            onChangeRowsPerPage: handleRowsPerPageChange,
+          }}
+        />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };

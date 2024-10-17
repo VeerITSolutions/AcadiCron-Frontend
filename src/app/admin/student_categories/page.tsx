@@ -11,6 +11,11 @@ import {
 } from "@/services/studentCategoryService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
+
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
+
 import {
   Dialog,
   DialogActions,
@@ -24,6 +29,7 @@ import Loader from "@/components/common/Loader";
 import styles from "./StudentCategories.module.css"; // Import CSS module
 
 const StudentCategories = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
@@ -214,13 +220,14 @@ const StudentCategories = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <MUIDataTable
-            title={"Category List"}
-            data={data}
-            className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Category List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </ThemeProvider>
         </div>
       </div>
 

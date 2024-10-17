@@ -6,7 +6,12 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
+
 const SearchFeesPayment = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -68,60 +73,57 @@ const SearchFeesPayment = () => {
 
   return (
     <DefaultLayout>
-      <div className="max-w-7xl mx-auto mt-8 p-6 bg-white dark:bg-boxdark rounded-lg shadow-lg">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
+      <div className="mx-auto mt-8 max-w-7xl rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark">
+        <h1 className="text-gray-900 mb-8 text-2xl font-semibold dark:text-white">
           Search Fees Payment
         </h1>
-       
-  <div className="flex items-center space-x-4">
-    {/* Payment ID Field */}
-    <div className="flex-grow">
-      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
-        Payment Id
-      </label>
-      <input
-        name="firstName"
-        className="w-full mt-2 rounded-md border border-gray-300 bg-transparent px-4 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white transition-shadow duration-300 ease-in-out shadow-sm"
-        type="text"
-        value={formData.firstName}
-        onChange={handleInputChange}
-        placeholder="Enter Payment Id"
-      />
-    </div>
 
-    {/* Search Button */}
-    <div className="flex-shrink-0">
-      <button
-        type="submit"
-        className="px-6 py-3 mt-6 rounded-md bg-blue-600 text-white font-medium shadow-md hover:bg-blue-700"
-      >
-        Search
-      </button>
-    </div>
+        <div className="flex items-center space-x-4">
+          {/* Payment ID Field */}
+          <div className="flex-grow">
+            <label className="text-gray-700 dark:text-gray-200 block text-sm font-semibold">
+              Payment Id
+            </label>
+            <input
+              name="firstName"
+              className="border-gray-300 text-gray-900 dark:border-gray-600 dark:bg-gray-700 mt-2 w-full rounded-md border bg-transparent px-4 py-3 text-sm shadow-sm transition-shadow duration-300 ease-in-out focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:text-white"
+              type="text"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              placeholder="Enter Payment Id"
+            />
+          </div>
 
-
-
-
+          {/* Search Button */}
+          <div className="flex-shrink-0">
+            <button
+              type="submit"
+              className="mt-6 rounded-md bg-blue-600 px-6 py-3 font-medium text-white shadow-md hover:bg-blue-700"
+            >
+              Search
+            </button>
+          </div>
         </div>
 
         {/* MUI Data Table */}
         <div className="mt-12">
-          <MUIDataTable
-            title={"Payment Id Detail"}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Payment Id Detail"}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }}
+            />
+          </ThemeProvider>
         </div>
-        </div>
-    
+      </div>
     </DefaultLayout>
   );
 };
