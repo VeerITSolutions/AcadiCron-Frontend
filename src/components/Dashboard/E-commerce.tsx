@@ -19,6 +19,12 @@ const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
 const ECommerce: React.FC = () => {
   const router = useRouter();
 
+  const roleId = localStorage.getItem("role_id");
+  const previous_role_id = localStorage.getItem("previous_role_id");
+
+  const username = localStorage.getItem("username");
+  const surname = localStorage.getItem("surname");
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -26,10 +32,15 @@ const ECommerce: React.FC = () => {
       // If no token, redirect to login page
       router.push("/login");
     }
+
+    if (roleId) {
+      if (roleId != previous_role_id) {
+        localStorage.setItem("previous_role_id", roleId);
+        window.location.reload();
+      }
+    }
   }, [router]);
-  const roleId = localStorage.getItem("role_id");
-  const username = localStorage.getItem("username");
-  const surname = localStorage.getItem("surname");
+
   return (
     <>
       {roleId != "7" && (

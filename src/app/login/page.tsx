@@ -35,6 +35,7 @@ const LoginPage = () => {
 
       if (role) {
         localStorage.setItem("role_id", role.id);
+
         localStorage.setItem("role_name", role.name);
         localStorage.setItem("is_superadmin", role.is_superadmin);
       }
