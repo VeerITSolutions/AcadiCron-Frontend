@@ -16,6 +16,7 @@ const DarkModeSwitcher = () => {
           onChange={() => {
             if (typeof setColorMode === "function") {
               setColorMode(colorMode === "light" ? "dark" : "light");
+              window.location.reload(); // Reload the page
             }
           }}
           className="dur absolute top-0 z-50 m-0 h-full w-full cursor-pointer opacity-0"
