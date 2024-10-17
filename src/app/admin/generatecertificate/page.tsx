@@ -9,6 +9,9 @@ import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   Edit,
   Delete,
@@ -55,6 +58,7 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [colorMode, setColorMode] = useColorMode();
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
  
@@ -234,6 +238,7 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
       <MUIDataTable
         title={"Generate Certificates"}
         data={data}
@@ -247,6 +252,7 @@ const StudentDetails = () => {
           onChangeRowsPerPage: handleRowsPerPageChange,
         }}
       />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };

@@ -15,6 +15,9 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import SwitcherTwo from "@/components/Switchers/SwitcherTwo";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +32,7 @@ const StudentCategories = () => {
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [enabled, setEnabled] = useState(false);
   const token = localStorage.getItem("authToken") || "";
+  const [colorMode, setColorMode] = useColorMode();
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -337,12 +341,14 @@ const StudentCategories = () => {
         </div>
 
         <div className="flex flex-col gap-9">
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Student Certificate List"}
             data={data}
             columns={columns}
             options={options}
           />
+          </ThemeProvider>
         </div>
       </div>
     </DefaultLayout>

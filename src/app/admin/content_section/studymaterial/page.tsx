@@ -7,6 +7,9 @@ import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   Edit,
   Delete,
@@ -49,6 +52,7 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -137,6 +141,7 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
       <MUIDataTable
         title={"Study Material List"}
         data={data}
@@ -150,6 +155,7 @@ const StudentDetails = () => {
           onChangeRowsPerPage: handleRowsPerPageChange,
         }}
       />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };

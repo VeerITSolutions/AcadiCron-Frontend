@@ -6,6 +6,9 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 import {
   fetchHomeWorkData,
@@ -66,6 +69,7 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [colorMode, setColorMode] = useColorMode();
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
  
@@ -249,6 +253,7 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
       <MUIDataTable
         title={"Homework List"}
         data={data}
@@ -262,6 +267,7 @@ const StudentDetails = () => {
           onChangeRowsPerPage: handleRowsPerPageChange,
         }}
       />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };
