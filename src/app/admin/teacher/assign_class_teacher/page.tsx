@@ -27,6 +27,9 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { fetchsectionByClassData } from "@/services/sectionsService";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
@@ -45,7 +48,7 @@ const FeesMaster = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
- 
+  const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -399,12 +402,14 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Class Teacher List"}
             data={data}
             columns={columns}
             options={options}
           />
+          </ThemeProvider>
         </div>
       </div>
     </DefaultLayout>

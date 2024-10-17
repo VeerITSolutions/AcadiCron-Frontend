@@ -13,6 +13,9 @@ import {
 import { getClasses } from "@/services/classesService"; // Import your classes API service
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import { Button } from '@mui/material';
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const columns = [
   "Monday",
@@ -52,6 +55,7 @@ const [selectedClass, setSelectedClass] = useState<string | undefined>(
 const [selectedSection, setSelectedSection] = useState<string | undefined>(
   undefined,
 );
+const [colorMode, setColorMode] = useColorMode();
 
   // Format the data for the week-wise view
   const formatTimetableData = (timetableData: any) => {
@@ -220,7 +224,7 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 </div>
 </div>
 
-
+<ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
 
       <MUIDataTable
          title={<CustomHeader />}
@@ -228,6 +232,7 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         columns={columns}
         options={options}
       />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };

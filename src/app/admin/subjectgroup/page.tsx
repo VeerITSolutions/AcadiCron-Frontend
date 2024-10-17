@@ -5,6 +5,9 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 
 import {
@@ -25,6 +28,7 @@ const FeesMaster = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -360,12 +364,14 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
         </div>
 
         <div className="flex flex-col gap-9">
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Subject Group List"}
             data={data}
             columns={columns}
             options={options}
           />
+          </ThemeProvider>
         </div>
       </div>
     </DefaultLayout>

@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   fetchLeaveData,
   createLeave,
@@ -56,6 +59,7 @@ const StudentDetails = () => {
   const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
   const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
   const [keyword, setKeyword] = useState<string>("");
+  const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
     date: "",
     leave_type_id: "",
@@ -269,7 +273,7 @@ const StudentDetails = () => {
             {editing ? "Edit Leave" : "Apply Leave"}
           </Button>
         </div>
-
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Leaves"}
           data={data}
@@ -284,9 +288,10 @@ const StudentDetails = () => {
             onChangeRowsPerPage: handleRowsPerPageChange,
           }}
         />
-        <Dialog open={open} onClose={handleClose}>
+        </ThemeProvider>
+        <Dialog open={open} onClose={handleClose} className="dark:bg-boxdark dark:drop-shadow-none">
           <DialogTitle>
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
               <h3 className="font-medium text-black dark:text-white">
                 {editing ? "Edit Leave" : "Apply Leave"}
               </h3>

@@ -6,6 +6,9 @@ import { fetchtimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
 import { toast } from "react-toastify";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const columns = [
   "Monday",
@@ -34,6 +37,7 @@ const StudentDetails = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [colorMode, setColorMode] = useColorMode();
 
   const token = localStorage.getItem("authToken") || "";
 
@@ -125,14 +129,16 @@ const StudentDetails = () => {
     </button>
   </div>
 </div>
-
+<ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
       <MUIDataTable
         title={""}
         data={data}
         columns={columns}
         options={options}
       />
+      </ThemeProvider>
        </div>
+       
     </DefaultLayout>
    
   );
