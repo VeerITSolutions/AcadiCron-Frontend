@@ -7,6 +7,10 @@ import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
+
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   Edit,
   Delete,
@@ -44,6 +48,7 @@ const options = {
 };
 
 const StudentDetails = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -147,7 +152,7 @@ const StudentDetails = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-          Teachers:
+            Teachers:
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
@@ -159,7 +164,7 @@ const StudentDetails = () => {
               {/* Add more class options here */}
             </select>
           </label>
-         
+
           <div className={styles.searchGroup}>
             <input
               type="text"
@@ -177,20 +182,21 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
-      <MUIDataTable
-        title={" Manage Lesson Plan "}
-        data={data}
-        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
-        columns={columns}
-        options={{
-          ...options,
-          count: totalCount,
-          page: page,
-          rowsPerPage: rowsPerPage,
-          onChangePage: handlePageChange,
-          onChangeRowsPerPage: handleRowsPerPageChange,
-        }}
-      />
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+        <MUIDataTable
+          title={" Manage Lesson Plan "}
+          data={data}
+          columns={columns}
+          options={{
+            ...options,
+            count: totalCount,
+            page: page,
+            rowsPerPage: rowsPerPage,
+            onChangePage: handlePageChange,
+            onChangeRowsPerPage: handleRowsPerPageChange,
+          }}
+        />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };

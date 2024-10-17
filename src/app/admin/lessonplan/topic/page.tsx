@@ -3,7 +3,9 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   createFeesMaster,
   deleteFeesMasterData,
@@ -18,6 +20,7 @@ import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
 import styles from "./User.module.css";
 const FeesMaster = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +35,6 @@ const FeesMaster = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
- 
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -232,11 +234,10 @@ const FeesMaster = () => {
     setPage(0);
   };
 
- 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
-  
+
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -255,11 +256,18 @@ const FeesMaster = () => {
     }
   };
 
-
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
-  const columns = ["Class", "Section", "Subject Group", "Subject", "Lesson", "Topic", "Action"];
+  const columns = [
+    "Class",
+    "Section",
+    "Subject Group",
+    "Subject",
+    "Lesson",
+    "Topic",
+    "Action",
+  ];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -280,9 +288,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing
-                  ? "Edit Add Topic"
-                  : "Add Topic"}
+                {isEditing ? "Edit Add Topic" : "Add Topic"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -290,66 +296,101 @@ const FeesMaster = () => {
                   handleSubmit();
                 }}
               >
-               
-               <div className="flex flex-col gap-5.5 p-6.5">
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Class:
-                      </label>
-                      <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Class:
+                    </label>
+                    <select
+                      value={selectedClass || ""}
+                      onChange={handleClassChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    >
+                      <option value="">Select</option>
+                      {classes.map((cls) => (
+                        <option key={cls.id} value={cls.id}>
+                          {cls.class}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+                </div>
 
-                  <div className="flex flex-col gap-5.5 p-6.5">
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Section:
-                      </label>
-                      <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {section.map((sec) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Section:
+                    </label>
+                    <select
+                      value={selectedSection || ""}
+                      onChange={handleSectionChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      disabled={!selectedClass} // Disable section dropdown if no class is selected
+                    >
+                      <option value="">Select</option>
+                      {section.map((sec) => (
+                        <option key={sec.section_id} value={sec.section_id}>
+                          {sec.section_name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+                </div>
 
-                   
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Subject Group <span className="required">*</span>
+                  </label>
+                  <select
+                    id="section_id"
+                    name="section_id"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                  </select>
+                </div>
 
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    {" "}
+                    Subject <span className="required">*</span>
+                  </label>
+                  <select
+                    id="section_id"
+                    name="section_id"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                  </select>
+                </div>
 
-                    <div className="flex flex-col gap-5.5 p-6.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">Subject Group <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option></select>
-                    </div>
-               
-                    <div className="flex flex-col gap-5.5 p-6.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white"> Subject <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option></select>
-                    </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    {" "}
+                    Lesson <span className="required">*</span>
+                  </label>
+                  <select
+                    id="section_id"
+                    name="section_id"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                  </select>
+                </div>
 
-                    
-                    <div className="flex flex-col gap-5.5 p-6.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white"> Lesson <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option></select>
-                    </div>
-               
-                    <div className="flex flex-col gap-5.5 p-6.5"><div><label className="mb-3 block text-sm font-medium text-black dark:text-white">Topic Name<span className="required">*</span></label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="topic_name" /></div></div>
-              
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Topic Name<span className="required">*</span>
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="topic_name"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <button type="submit" className="">
                     {isEditing ? "Update" : "Save"}
@@ -361,12 +402,14 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <MUIDataTable
-            title={"Topic List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Topic List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </ThemeProvider>
         </div>
       </div>
     </DefaultLayout>
