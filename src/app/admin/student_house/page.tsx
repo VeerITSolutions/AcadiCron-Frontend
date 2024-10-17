@@ -23,6 +23,10 @@ import {
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./StudentHouse.module.css"; // Import CSS module
+import { ThemeProvider } from "@emotion/react";
+
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const student_house = () => {
   const [error, setError] = useState<string | null>(null);
@@ -36,6 +40,7 @@ const student_house = () => {
   const [description, setDescription] = useState<string>("");
   const [namenew, setNamenew] = useState<string>("");
   const [descriptionnew, setDescriptionnew] = useState<string>("");
+  const [colorMode, setColorMode] = useColorMode();
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
@@ -252,13 +257,14 @@ const student_house = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <MUIDataTable
-            title={"Student House List"}
-            data={data}
-            className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Student House List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </ThemeProvider>
         </div>
       </div>
 
