@@ -9,6 +9,9 @@ import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   Edit,
   Delete,
@@ -59,6 +62,7 @@ const StudentDetails = () => {
   const router = useRouter();
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [colorMode, setColorMode] = useColorMode();
   
 
   const token = localStorage.getItem("authToken") || "";
@@ -232,10 +236,10 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
       <MUIDataTable
         title={" Student List "}
         data={data}
-        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         columns={columns}
         options={{
           ...options,
@@ -246,6 +250,7 @@ const StudentDetails = () => {
           onChangeRowsPerPage: handleRowsPerPageChange,
         }}
       />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };

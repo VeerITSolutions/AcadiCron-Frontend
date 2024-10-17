@@ -60,7 +60,7 @@ const fees_reminder = () => {
       <div className="student_admission_form ">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"></div>
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 Fees Reminder
@@ -82,7 +82,7 @@ const fees_reminder = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-gray-200 divide-y bg-white">
+                  <tbody className="divide-gray-200 divide-y ">
                     {data.map((section) => (
                       <tr>
                         <td className="whitespace-nowrap px-6 py-4">

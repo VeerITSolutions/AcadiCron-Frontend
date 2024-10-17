@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 import {
   createFeesMaster,
@@ -30,6 +33,7 @@ const FeesMaster = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -406,7 +410,7 @@ const FeesMaster = () => {
                 </div>
 
                 <div>
-                  <button type="submit" className="">
+                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-8">
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
@@ -416,12 +420,14 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Add Fees Master : 2024-25"}
             data={data}
             columns={columns}
             options={options}
           />
+          </ThemeProvider>
         </div>
       </div>
     </DefaultLayout>

@@ -14,6 +14,9 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const GroupMaster = () => {
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +25,7 @@ const GroupMaster = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
     type: "",
@@ -231,12 +235,14 @@ const GroupMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Fees Group List"}
             data={data}
             columns={columns}
             options={options}
           />
+          </ThemeProvider>
         </div>
       </div>
     </DefaultLayout>

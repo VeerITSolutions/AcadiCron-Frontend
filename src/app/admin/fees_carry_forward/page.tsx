@@ -12,6 +12,9 @@ import {
   fetchsectionData,
 } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 import {
   Edit,
@@ -63,6 +66,7 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -250,6 +254,7 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
       <MUIDataTable
         title={"Previous Session Balance Fees"}
         data={data}
@@ -263,6 +268,8 @@ const StudentDetails = () => {
           onChangeRowsPerPage: handleRowsPerPageChange,
         }}
       />
+      </ThemeProvider>
+      
     </DefaultLayout>
   );
 };
