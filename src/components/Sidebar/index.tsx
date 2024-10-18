@@ -670,89 +670,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Apply Leave",
-          route: "/student/apply_leave",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 17h16v2H4z" />
-              <path d="M12 3v15M9 12l3 3 3-3" />
-              <path d="M5 17a7 7 0 0 1 14 0" />
-            </svg>
-          ),
-          label: "Download Center",
-          route: "/student/download_center",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
-              <path d="M16 20l-4-4 4-4" />
-            </svg>
-          ),
-          label: "Assignments",
-          route: "/student/assignments",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 4h16v2H4zM4 9h16v2H4zM4 14h16v2H4zM4 19h16v2H4z" />
-              <path d="M2 4v16a2 2 0 0 0 2 2h16" />
-            </svg>
-          ),
-          label: "Study Material",
-          route: "/student/study_material",
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
-              <path d="M8 6h8M8 10h6M8 14h6M8 18h6" />
-            </svg>
-          ),
-          label: "Syllabus",
-          route: "/student/syllabus",
+          route: "/parent/apply_leave",
         },
         {
           icon: (
@@ -774,8 +692,17 @@ if (roleId === "10" || roleId === "11") {
               <path d="M4 4h5V2H4a2 2 0 0 0-2 2v5h2V4z" />
             </svg>
           ),
-          label: "Other Downloads",
-          route: "/student/other_downloads",
+          label: "Download Center",
+          route: "#",
+          children: [
+            { label: "Assignments", route: "/parent/content/assignment" },
+            { label: "Study Material", route: "/parent/content/studymaterial" },
+            { label: "Syllabus", route: "/parent/content/syllabus" },
+            {
+              label: " Other Downloads",
+              route: "/parent/content/other",
+            },
+          ],
         },
         {
           icon: (
