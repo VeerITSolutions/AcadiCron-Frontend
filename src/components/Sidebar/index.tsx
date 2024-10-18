@@ -367,7 +367,7 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Student Information",
-          route: "/student/my_profile",
+          route: "/teacher/student/search",
         },
         {
           icon: (
@@ -389,7 +389,19 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Attendance",
-          route: "/student/fees",
+          route: "#",
+          children: [
+            { label: "Student Attendance", route: "/teacher/admin/stuattendence" },
+            {
+              label: "Attendance By Date",
+              route: "/teacher/admin/stuattendence/attendencereport",
+            },
+            {
+              label: "Approve Leave",
+              route: "/teacher/admin/approve_leave",
+            },
+            
+          ],
         },
 
         {
@@ -414,7 +426,23 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Lesson Plan",
-          route: "/student/lesson_plan",
+          route: "#",
+          children: [
+            { label: "Manage Lesson Plan", route: "/admin/syllabus" },
+            {
+              label: "Manage Syllabus Status",
+              route: "/admin/syllabus/status",
+            },
+            {
+              label: " Lesson",
+              route: "/admin/lessonplan/lesson",
+            },
+            {
+              label: "  Topic",
+              route: "/admin/lessonplan/topic",
+            },
+            
+          ],
         },
         {
           icon: (
