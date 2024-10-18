@@ -724,7 +724,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Attendance",
-          route: "/student/attendance",
+          route: "/parent/attendance",
         },
         {
           icon: (
@@ -745,7 +745,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Notice Board",
-          route: "/student/notice_board",
+          route: "/parent/notification",
         },
         {
           icon: (
@@ -768,7 +768,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Teachers Reviews",
-          route: "/student/teachers_reviews",
+          route: "/parent/teacher",
         },
       ],
     },
