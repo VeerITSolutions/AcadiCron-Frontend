@@ -550,7 +550,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "My Profile",
-          route: "/student/my_profile",
+          route: "parent/user/user/dashboard/1",
         },
         {
           icon: (
@@ -569,7 +569,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Fees",
-          route: "/student/fees",
+          route: "/parent/user/getfees/1",
         },
         {
           icon: (
@@ -590,7 +590,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Class Timetable",
-          route: "/student/class_timetable",
+          route: "/parent/timetable",
         },
         {
           icon: (
@@ -610,7 +610,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Lesson Plan",
-          route: "/student/lesson_plan",
+          route: "/parent/syllabus",
         },
         {
           icon: (
@@ -630,7 +630,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Syllabus Status",
-          route: "/student/syllabus_status",
+          route: "/parent/syllabus/status",
         },
         {
           icon: (
@@ -650,7 +650,7 @@ if (roleId === "10" || roleId === "11") {
             </svg>
           ),
           label: "Homework",
-          route: "/student/homework",
+          route: "/parent/homework",
         },
         {
           icon: (

@@ -7,8 +7,10 @@ import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
-import { getClasses } from "@/services/classesService";
-import { fetchsectionByClassData } from "@/services/sectionsService";
+
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   Edit,
   Delete,
@@ -27,23 +29,28 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 const columns = [
-  "#",
-  "Lesson - Topic",
-  "Topic Completion Date",
-  "Status",
-  "Action",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 ];
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const options = {
-  filterType: false,
+  filterType: "checkbox",
   serverSide: true,
-  selectableRows: "none",
   responsive: "standard",
+  selectableRows: "none", // Disable row selection
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
 
 const StudentDetails = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,10 +63,6 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [classes, setClassessData] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
- 
- 
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -143,130 +146,80 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
-  const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
-    setKeyword("");
-  };
- 
-
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
-  
-  const fetchClassesAndSections = async () => {
-    try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]); // Clear sections if no class is selected
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
-
+  const subjectsData = [
+    { subject: "Maths", id: 1, percentage: 33 },
+    { subject: "English", id: 2, percentage: 0 },
+    { subject: "Hindi", id: 3, percentage: 0 },
+    { subject: "Arts & Craft", id: 5, percentage: 0 },
+    { subject: "EVS", id: 6, percentage: 0 },
+    { subject: "General Knowledge", id: 7, percentage: 0 },
+    { subject: "Computer", id: 8, percentage: 0 },
+    { subject: "Marathi", id: 9, percentage: 0 },
+    { subject: "Sanskrit", id: 10, percentage: 0 },
+    { subject: "SST", id: 11, percentage: 0 },
+    { subject: "Science", id: 12, percentage: 0 },
+  ];
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (
     <DefaultLayout>
-      <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-        <label className={styles.label}>
-                        Class:
-                     
-                      <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className={styles.select}
-                      >
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-                      </label>
-                     <label className={styles.label}>
-                        Section:
-                     
-                      <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
-                        className={styles.select}
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {section.map((sec) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-                      </label>
-          <label className={styles.label}>
-          Subject Group:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
-              <option value="">Select</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-          <label className={styles.label}>
-          Subject:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
-              <option value="">Select</option>
-              <option value="Class1">Math</option>
-              <option value="Class2">Hindi</option>
-              <option value="Class2">English</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-          <div className={styles.searchGroup}>
-           
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
-          </div>
-        </div>
-        {/*  <div className={styles.searchGroup}>
+     
 
-        </div> */}
+
+    <div className="container mx-auto py-8">
+      <h2 className="text-2xl font-bold text-center mb-6">Syllabus Status</h2>
+      <div className="grid grid-cols-3 gap-6 md:grid-cols-6 lg:grid-cols-6">
+        {subjectsData.map((subject) => (
+          <div key={subject.id} className="flex flex-col items-center">
+            <div className="w-20 h-20">
+              <CircularProgressbar
+                value={subject.percentage}
+                text={`${subject.percentage}%`}
+                styles={{
+                  path: { stroke: subject.percentage > 0 ? "green" : "#d6d6d6" },
+                  text: { fill: subject.percentage > 0 ? "green" : "#000000" },
+                }}
+              />
+            </div>
+            <p className="mt-2 text-center text-lg">{subject.subject}</p>
+            <p className="text-sm text-center text-black font-bold">
+              Complete {subject.percentage} %
+            </p>
+          </div>
+        ))}
       </div>
-      <MUIDataTable
-        title={" Syllabus Status For: Maths (1) "}
-        data={data}
-        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
-        columns={columns}
-        options={{
-          ...options,
-          count: totalCount,
-          page: page,
-          rowsPerPage: rowsPerPage,
-          onChangePage: handlePageChange,
-          onChangeRowsPerPage: handleRowsPerPageChange,
-        }}
-      />
+      <div className="mt-4 text-center text-lg">
+        <p>33% Complete</p>
+      </div>
+    </div>
+
+    <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4">Subject - Lesson - Topic Status</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full border border-gray-200">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border px-4 py-2">Subject</th>
+                <th className="border px-4 py-2">Total Lessons</th>
+                <th className="border px-4 py-2">Completed Lessons</th>
+                <th className="border px-4 py-2">Completion %</th>
+              </tr>
+            </thead>
+            <tbody>
+              {subjectsData.map((subject) => (
+                <tr key={subject.id} className="text-center">
+                  <td className="border px-4 py-2">{subject.subject}</td>
+                  <td className="border px-4 py-2">{subject.lessons}</td>
+                  <td className="border px-4 py-2">{subject.completed}</td>
+                  <td className="border px-4 py-2">{subject.percentage}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </DefaultLayout>
   );
 };

@@ -4,13 +4,20 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
-import Loader from "@/components/common/Loader";
-
+import { getClasses } from "@/services/classesService";
+import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+
+import {
+  fetchHomeWorkData,
+  createHomeWork,
+  deleteHomeWorkData,
+  editHomeWorkData,
+} from "@/services/homeworkServices";
+import styles from "./StudentDetails.module.css"; // Import CSS module
+import Loader from "@/components/common/Loader";
 import {
   Edit,
   Delete,
@@ -29,17 +36,19 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 const columns = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+  "Class",
+  "Section",
+  "Section Group",
+  "Subject",
+  "Homework Date",
+  "Submission Date",
+  "Evaluation Date",
+  "Created By",
+  "Action",
 ];
 
 const options = {
-  filterType: "checkbox",
+  filterType: false,
   serverSide: true,
   responsive: "standard",
   selectableRows: "none", // Disable row selection
@@ -48,7 +57,6 @@ const options = {
 };
 
 const StudentDetails = () => {
-  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +69,11 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [colorMode, setColorMode] = useColorMode();
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+ 
+ 
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -68,11 +81,16 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      student.class_name || "N/A",
+      student.section_name || "N/A",
+      student.subject_group_subject_id || "N/A",
+      student.subject_name || "N/A",
+
+      student.homework_date || "N/A",
+      student.submit_date || "N/A",
+      student.evaluation_date || "N/A",
+      student.created_by || "N/A",
+      "Action",
     ]);
   };
 
@@ -84,7 +102,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
+      const result = await fetchHomeWorkData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
@@ -139,9 +157,40 @@ const StudentDetails = () => {
     setKeyword(event.target.value);
   };
 
+
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  };
+
+
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
+
+ 
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+  
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
   };
 
   if (loading) return <Loader />;
@@ -149,22 +198,39 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-      <div className={styles.filters}>
+     <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-            Teachers:
+            Class:
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
               className={styles.select}
             >
               <option value="">Select</option>
-              <option value="Class1">Priya Ronghe (19001)</option>
-              <option value="Class2">Harshalata Khante (19002)</option>
-              {/* Add more class options here */}
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
             </select>
           </label>
-
+          <label className={styles.label}>
+            Section:
+            <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
+              className={styles.select}
+              disabled={!selectedClass} // Disable section dropdown if no class is selected
+            >
+              <option value="">Select</option>
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
+            </select>
+          </label>
           <div className={styles.searchGroup}>
             <input
               type="text"
@@ -176,6 +242,9 @@ const StudentDetails = () => {
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
+            </button>
           </div>
         </div>
         {/*  <div className={styles.searchGroup}>
@@ -183,19 +252,19 @@ const StudentDetails = () => {
         </div> */}
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-        <MUIDataTable
-          title={" Manage Lesson Plan "}
-          data={data}
-          columns={columns}
-          options={{
-            ...options,
-            count: totalCount,
-            page: page,
-            rowsPerPage: rowsPerPage,
-            onChangePage: handlePageChange,
-            onChangeRowsPerPage: handleRowsPerPageChange,
-          }}
-        />
+      <MUIDataTable
+        title={"Homework"}
+        data={data}
+        columns={columns}
+        options={{
+          ...options,
+          count: totalCount,
+          page: page,
+          rowsPerPage: rowsPerPage,
+          onChangePage: handlePageChange,
+          onChangeRowsPerPage: handleRowsPerPageChange,
+        }}
+      />
       </ThemeProvider>
     </DefaultLayout>
   );
