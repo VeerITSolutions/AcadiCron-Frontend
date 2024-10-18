@@ -464,7 +464,16 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Academics",
-          route: "/student/syllabus_status",
+          route: "#",
+          children: [
+            { label: "Class Timetable", route: "/admin/timetable/classreport" },
+            {
+              label: "Teachers Timetable",
+              route: "/admin/timetable/mytimetable",
+            },
+            
+            
+          ],
         },
         {
           icon: (
