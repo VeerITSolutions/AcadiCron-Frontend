@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
+import { fetchStudentDisabledData } from "@/services/studentDisabledService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -12,11 +12,9 @@ import {
   fetchsectionData,
 } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
-
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-
 import {
   Edit,
   Delete,
@@ -40,14 +38,8 @@ const columns = [
   "Student Name",
   "Class",
   "Father Name",
-  "Mother Name",
-  "Caste",
-  "Address",
-  "Religion",
-  "Adhar No",
-  "Place of Birth",
+  "Disable Reason",
   "Gender",
-  "Category",
   "Mobile Number",
   "Action",
 ];
@@ -56,6 +48,8 @@ const options = {
   filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
+  selectableRows: "none", // Disable row selection
+
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
@@ -85,14 +79,17 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class_name || "N/A",
-      student.category_id,
+      student.class || "N/A",
+      student.father_name || "N/A",
+      "N/A" || "N/A",
+      student.gender || "N/A",
       student.mobileno,
+
       <div key={student.id}>
         <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
           <Visibility />
         </IconButton>
-        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+        {/*  <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
           <Edit />
         </IconButton>
         <IconButton
@@ -100,7 +97,7 @@ const StudentDetails = () => {
           aria-label="Add Fee"
         >
           <AttachMoney />
-        </IconButton>
+        </IconButton> */}
       </div>,
     ]);
   };
@@ -114,7 +111,7 @@ const StudentDetails = () => {
   ) => {
     try {
       // Pass selectedClass and selectedSection as parameters to filter data
-      const result = await fetchStudentData(
+      const result = await fetchStudentDisabledData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
@@ -257,8 +254,10 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-      </div>
+        {/*  <div className={styles.searchGroup}>
 
+        </div> */}
+      </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Student Details"}
