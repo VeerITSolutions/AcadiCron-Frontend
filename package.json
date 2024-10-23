@@ -17,6 +17,7 @@
     "apexcharts": "^3.45.2",
     "axios": "^1.7.4",
     "flatpickr": "^4.6.13",
+    "flowbite-react": "^0.10.2",
     "jsvectormap": "^1.6.0",
     "mui-datatables": "^4.3.0",
     "next": "^14.2.4",
