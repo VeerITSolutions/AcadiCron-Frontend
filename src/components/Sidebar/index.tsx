@@ -828,18 +828,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const fetchClassesAndSections = async () => {
     try {
-      const classesResult = await fetchSchSetting();
-      setDefaultSession(classesResult.data.session_id);
-    } catch (error: any) {}
-
-    try {
       const classesResult = await fetchSession();
-      setAllSession(classesResult.data.session_id);
+      setAllSession(classesResult.data);
+    } catch (error: any) {}
+    try {
+      const classesResult = await fetchSchSetting();
     } catch (error: any) {}
   };
 
   const handleSessionChange = (value) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
+    setDefaultSession(value);
     window.location.reload();
   };
 
@@ -974,8 +973,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 value={savedSessionstate} // Set the value of the select input to the selected session
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
-                {allSession?.map((group, groupIndex) => (
-                  <option value="2016-17">2016-17</option>
+                {allSession?.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.session}
+                  </option>
                 ))}
               </select>
             </div>
