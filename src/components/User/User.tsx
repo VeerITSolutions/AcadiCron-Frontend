@@ -106,39 +106,37 @@ const User = () => {
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Class:
-                  </label>
-                  <select
-                    value={selectedClass || ""}
-                    onChange={handleClassChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
-                  </select>
-
+                </label>
+                <select
+                  value={selectedClass || ""}
+                  onChange={handleClassChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  {classes.map((cls) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.class}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Section:
-                  </label>
-                  <select
-                    value={selectedSection || ""}
-                    onChange={handleSectionChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={!selectedClass} // Disable section dropdown if no class is selected
-                  >
-                    <option value="">Select</option>
-                    {section.map((sec) => (
-                      <option key={sec.section_id} value={sec.section_id}>
-                        {sec.section_name}
-                      </option>
-                    ))}
-                  </select>
-
+                </label>
+                <select
+                  value={selectedSection || ""}
+                  onChange={handleSectionChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  disabled={!selectedClass} // Disable section dropdown if no class is selected
+                >
+                  <option value="">Select</option>
+                  {section.map((sec) => (
+                    <option key={sec.section_id} value={sec.section_id}>
+                      {sec.section_name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -173,8 +171,9 @@ const User = () => {
                   name="gender"
                 >
                   <option value="">Select</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </select>
               </div>
 
