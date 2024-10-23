@@ -21,7 +21,7 @@ import {
 } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your section API service
 import { useEffect, useState } from "react";
-
+import FileUpload from "@/components/FileUpload";
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
@@ -34,6 +34,11 @@ const User = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileChange = (file: File) => {
+    setFile(file);
+  };
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -275,11 +280,10 @@ const User = () => {
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Student Photo
                 </label>
-                <input
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
-                  type="file"
-                  name="file"
-                  id="file"
+                <FileUpload
+                  label="Upload Photo/Video"
+                  accept="image/*,video/*"
+                  onFileChange={handleFileChange}
                 />
               </div>
               <div className="field">
