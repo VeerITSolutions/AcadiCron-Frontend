@@ -7,7 +7,8 @@ import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
-
+import { fetchSchSetting } from "@/services/schSetting";
+import { fetchSession } from "@/services/session";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -391,7 +392,10 @@ if (roleId === "2") {
           label: "Attendance",
           route: "#",
           children: [
-            { label: "Student Attendance", route: "/teacher/admin/stuattendence" },
+            {
+              label: "Student Attendance",
+              route: "/teacher/admin/stuattendence",
+            },
             {
               label: "Attendance By Date",
               route: "/teacher/admin/stuattendence/attendencereport",
@@ -400,7 +404,6 @@ if (roleId === "2") {
               label: "Approve Leave",
               route: "/teacher/admin/approve_leave",
             },
-            
           ],
         },
 
@@ -441,7 +444,6 @@ if (roleId === "2") {
               label: "  Topic",
               route: "/admin/lessonplan/topic",
             },
-            
           ],
         },
         {
@@ -471,8 +473,6 @@ if (roleId === "2") {
               label: "Teachers Timetable",
               route: "/admin/timetable/mytimetable",
             },
-            
-            
           ],
         },
         {
@@ -815,9 +815,28 @@ if (roleId === "10" || roleId === "11") {
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  const [defaultSession, setDefaultSession] = useState(false);
+  const [allSession, setAllSession] = useState([]);
+
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
   const [savedSessionstate, setSavedSession] = useState(false);
+
+  useEffect(() => {
+    fetchClassesAndSections();
+  }, []);
+
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await fetchSchSetting();
+      setDefaultSession(classesResult.data.session_id);
+    } catch (error: any) {}
+
+    try {
+      const classesResult = await fetchSession();
+      setAllSession(classesResult.data.session_id);
+    } catch (error: any) {}
+  };
 
   const handleSessionChange = (value) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
@@ -955,20 +974,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 value={savedSessionstate} // Set the value of the select input to the selected session
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
-                <option value="2016-17">2016-17</option>
-                <option value="2017-18">2017-18</option>
-                <option value="2018-19">2018-19</option>
-                <option value="2019-20">2019-20</option>
-                <option value="2020-21">2020-21</option>
-                <option value="2021-22">2021-22</option>
-                <option value="2022-23">2022-23</option>
-                <option value="2023-24">2023-24</option>
-                <option value="2024-25">2024-25</option>
-                <option value="2025-26">2025-26</option>
-                <option value="2026-27">2026-27</option>
-                <option value="2027-28">2027-28</option>
-                <option value="2028-29">2028-29</option>
-                <option value="2029-30">2029-30</option>
+                {allSession?.map((group, groupIndex) => (
+                  <option value="2016-17">2016-17</option>
+                ))}
               </select>
             </div>
 
