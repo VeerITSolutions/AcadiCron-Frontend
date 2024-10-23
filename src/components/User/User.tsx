@@ -119,7 +119,7 @@ const User = () => {
                       </option>
                     ))}
                   </select>
-               
+
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -138,7 +138,7 @@ const User = () => {
                       </option>
                     ))}
                   </select>
-               
+
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -173,9 +173,11 @@ const User = () => {
                   name="gender"
                 >
                   <option value="">Select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </div>
-             
+
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Date of Birth <span className="required">*</span>
