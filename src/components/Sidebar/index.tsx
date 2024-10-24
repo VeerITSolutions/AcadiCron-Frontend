@@ -834,6 +834,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       const classesResult2 = await fetchSchSetting();
       setDefaultSession(classesResult2.data.session_id);
       setSavedSession(classesResult2.data.session_id);
+      localStorage.setItem("selectedSession", classesResult2.data.session_id);
 
       const savedSession = localStorage.getItem("selectedSession");
       if (!savedSession) {
