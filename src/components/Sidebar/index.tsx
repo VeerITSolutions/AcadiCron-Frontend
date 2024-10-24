@@ -827,6 +827,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       // Use this value in your logic
     }
+
     fetchClassesAndSections();
   }, []);
 
@@ -835,6 +836,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       const classesResult = await fetchSession();
       setAllSession(classesResult.data);
     } catch (error: any) {}
+
     try {
       const classesResult2 = await fetchSchSetting();
       setDefaultSession(classesResult2.data.session_id);
@@ -847,6 +849,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const handleSessionChange = (value) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
     setDefaultSession(value);
+    setSavedSession(value);
     window.location.reload();
   };
 
