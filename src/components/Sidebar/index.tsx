@@ -368,7 +368,14 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Student Information",
-          route: "/teacher/student/search",
+          route: "#",
+          children: [
+            {
+              label: "Student Details",
+              route: "/teacher/student/search",
+            },
+            
+          ],
         },
         {
           icon: (
@@ -495,7 +502,14 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Human Resource",
-          route: "/student/homework",
+          route: "#",
+          children: [
+            {
+              label: "Apply Leave",
+              route: "/admin/staff/leaverequest",
+            },
+          
+          ],
         },
         {
           icon: (
@@ -515,7 +529,14 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Communicate",
-          route: "/student/apply_leave",
+          route: "#",
+          children: [
+            {
+              label: "Notice Board",
+              route: "/admin/notic_board",
+            },
+            
+          ],
         },
         {
           icon: (
@@ -535,7 +556,29 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Download Center",
-          route: "/student/download_center",
+          route: "#",
+          children: [
+            {
+              label: "Upload Content",
+              route: "/admin/content_section",
+            },
+            {
+              label: "Assignments",
+              route: "/admin/content_section/assignment",
+            },
+            {
+              label: "Study Material",
+              route: "/admin/content_section/studymaterial",
+            },
+            {
+              label: "Syllabus",
+              route: "/admin/content_section/syllabus",
+            },
+            {
+              label: "Other Downloads",
+              route: "/admin/content_section/other_section",
+            },
+          ],
         },
 
         {
@@ -558,8 +601,40 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Homework",
-          route: "/student/download_center",
+          route: "#",
+          children: [
+            {
+              label: "Add Homework",
+              route: "/teacher/homework",
+            },
+            
+          ],
         },
+        {
+          icon: (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 21v-2a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2" />
+              <rect x="8" y="3" width="8" height="12" rx="2" />
+              <path d="M12 7v4" />
+              <path d="M10 9h4" />
+              <path d="M12 16l1.5 3H10.5L12 16z" />
+            </svg>
+          ),
+          label: "Certificate",
+          route: "#",
+         
+        }
+        
       ],
     },
   ];
