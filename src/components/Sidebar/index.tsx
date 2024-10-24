@@ -821,13 +821,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [savedSessionstate, setSavedSession] = useState(false);
 
   useEffect(() => {
-    const savedSession = localStorage.getItem("selectedSession");
-    if (!savedSession) {
-      setSavedSession(savedSession);
-
-      // Use this value in your logic
-    }
-
     fetchClassesAndSections();
   }, []);
 
@@ -840,8 +833,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     try {
       const classesResult2 = await fetchSchSetting();
       setDefaultSession(classesResult2.data.session_id);
-      if (!savedSessionstate) {
+      setSavedSession(classesResult2.data.session_id);
+
+      const savedSession = localStorage.getItem("selectedSession");
+      if (!savedSession) {
         setSavedSession(classesResult2.data.session_id);
+
+        // Use this value in your logic
       }
     } catch (error: any) {}
   };
@@ -850,7 +848,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
     setDefaultSession(value);
     setSavedSession(value);
-    window.location.reload();
+    /* window.location.reload(); */
   };
 
   return (
