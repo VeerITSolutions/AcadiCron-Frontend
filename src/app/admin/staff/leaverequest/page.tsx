@@ -266,13 +266,14 @@ const StudentDetails = () => {
             alignItems: "center",
           }}
         >
-          <Button
-            variant="contained"
-            className="inline-flex rounded px-3 py-1 font-medium sm:px-6 sm:py-2.5"
-            onClick={handleClickOpen}
-          >
-            {editing ? "Edit Leave" : "Apply Leave"}
-          </Button>
+          
+          <button
+        type="submit"
+        className="flex rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
+        onClick={handleClickOpen}
+      >
+      {editing ? "Edit Leave" : "Apply Leave"}
+      </button>
         </div>
         <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
