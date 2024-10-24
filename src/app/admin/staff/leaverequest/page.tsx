@@ -7,6 +7,7 @@ import MUIDataTable from "mui-datatables";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import Close from '@mui/icons-material/Close'; // Import the Close icon
 import {
   fetchLeaveData,
   createLeave,
@@ -255,8 +256,8 @@ const StudentDetails = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <DefaultLayout>
-      <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark">
+    <DefaultLayout className="dark:bg-boxdark dark:drop-shadow-none">
+      <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
         <div
           className="mb-4 pl-4 pt-4 text-right sm:w-3/12 xl:w-2/12"
           style={{
@@ -267,7 +268,7 @@ const StudentDetails = () => {
         >
           <Button
             variant="contained"
-            className="inline-flex rounded bg-white px-3 py-1 font-medium text-white hover:bg-black hover:text-black sm:px-6 sm:py-2.5"
+            className="inline-flex rounded px-3 py-1 font-medium sm:px-6 sm:py-2.5"
             onClick={handleClickOpen}
           >
             {editing ? "Edit Leave" : "Apply Leave"}
@@ -290,129 +291,113 @@ const StudentDetails = () => {
         />
         </ThemeProvider>
         <Dialog open={open} onClose={handleClose} className="dark:bg-boxdark dark:drop-shadow-none">
-          <DialogTitle>
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
-              <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Leave" : "Apply Leave"}
-              </h3>
-            </div>
-          </DialogTitle>
-          <DialogContent>
-           <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
-  {/* Apply Date */}
-  <div className="field">
-    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Apply Date
-    </label>
-    <input
-      name="date"
-      type="date"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      value={formData.date}
-      onChange={handleChange}
-    />
-  </div>
+      <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
+        <div className="flex justify-between items-center">
+          <h3 className="font-medium text-black dark:text-white">
+            {editing ? "Edit Leave" : "Apply Leave"}
+          </h3>
+          <IconButton onClick={handleClose} className="text-black dark:text-white">
+            <Close />
+          </IconButton>
+        </div>
+      </DialogTitle>
+      <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
+    
+    {/* Apply Date */}
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Apply Date</label>
+      <input
+        name="date"
+        type="date"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        value={formData.date}
+        onChange={handleChange}
+      />
+    </div>
 
-  {/* Available Leave Type */}
-  <div className="field">
-    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Available Leave <span className="required">*</span>
-    </label>
-    <select
-      name="leave_type_id"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      value={formData.leave_type_id}
-      onChange={handleChange}
-    >
-      <option value="">Select</option>
-      {dataleavetype.map((type) => (
-        <option key={type.id} value={type.id}>
-          {type.type}
-        </option>
-      ))}
-    </select>
-  </div>
+    {/* Available Leave Type */}
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Available Leave <span className="required">*</span></label>
+      <select
+        name="leave_type_id"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        value={formData.leave_type_id}
+        onChange={handleChange}
+      >
+        <option value="">Select</option>
+        {dataleavetype.map((type) => (
+          <option key={type.id} value={type.id}>
+            {type.type}
+          </option>
+        ))}
+      </select>
+    </div>
 
-  {/* Leave From Date */}
-  <div className="field">
-    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Leave From Date <span className="required">*</span>
-    </label>
-    <input
-      name="leave_from"
-      type="date"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      value={formData.leave_from}
-      onChange={handleChange}
-      InputLabelProps={{ shrink: true }}
-    />
-  </div>
+    {/* Leave From Date */}
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Leave From Date <span className="required">*</span></label>
+      <input
+        name="leave_from"
+        type="date"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        value={formData.leave_from}
+        onChange={handleChange}
+      />
+    </div>
 
-  {/* Leave To Date */}
-  <div className="field">
-    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Leave To Date <span className="required">*</span>
-    </label>
-    <input
-      name="leave_to"
-      type="date"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      value={formData.leave_to}
-      onChange={handleChange}
-      InputLabelProps={{ shrink: true }}
-    />
-  </div>
+    {/* Leave To Date */}
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Leave To Date <span className="required">*</span></label>
+      <input
+        name="leave_to"
+        type="date"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        value={formData.leave_to}
+        onChange={handleChange}
+      />
+    </div>
 
-  {/* Reason */}
-  <div className="field">
-    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Reason
-    </label>
-    <input
-      name="reason"
-      type="text"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      value={formData.reason}
-      onChange={handleChange}
-    />
-  </div>
+    {/* Reason */}
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Reason</label>
+      <input
+        name="reason"
+        type="text"
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        value={formData.reason}
+        onChange={handleChange}
+      />
+    </div>
 
+    {/* Attach Document */}
+    <div className="field">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">Attach Document</label>
+      <input
+        className="form-control mt-2 w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        type="file"
+        name="document_file"
+        id="document_file"
+        onChange={handleChange}
+      />
+    </div>
 
-  {/* Attach Document */}
-  <div className="field">
-    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Attach Document
-    </label>
-    <input
-      className="form-control mt-2 w-full f-13"
-      type="file"
-      name="document_file"
-      id="document_file"
-      onChange={handleChange}
-    />
+    {/* Send Message Button */}
+    <div className="col-span-full">
+      <button
+        type="submit"
+        className="flex rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+      >
+       Save
+      </button>
+    </div>
   </div>
 </div>
 
-          </DialogContent>
-        <DialogActions>
-        <Button 
-          onClick={handleClose} 
-          variant="contained" 
-          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-        >
-          Cancel
-        </Button>
+      </DialogContent>
+    </Dialog>
 
-        <Button 
-          onClick={handleSubmit} 
-          variant="contained" 
-          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-        >
-          {editing ? "Update" : "Save"}
-        </Button>
-      </DialogActions>
-
-        </Dialog>
       </div>
     </DefaultLayout>
   );
