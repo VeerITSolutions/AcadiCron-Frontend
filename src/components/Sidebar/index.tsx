@@ -892,8 +892,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const [defaultSession, setDefaultSession] = useState(false);
   const [allSession, setAllSession] = useState([]);
-
-  /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
   const [savedSessionstate, setSavedSession] = useState(false);
 
@@ -906,25 +904,29 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       const classesResult = await fetchSession();
       setAllSession(classesResult.data);
     } catch (error: any) {}
+
     try {
-      const classesResult = await fetchSchSetting();
+      const classesResult2 = await fetchSchSetting();
+      setDefaultSession(classesResult2.data.session_id);
+      setSavedSession(classesResult2.data.session_id);
+      localStorage.setItem("selectedSession", classesResult2.data.session_id);
+
+      const savedSession = localStorage.getItem("selectedSession");
+      if (!savedSession) {
+        setSavedSession(classesResult2.data.session_id);
+
+        // Use this value in your logic
+      }
     } catch (error: any) {}
   };
 
   const handleSessionChange = (value) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
     setDefaultSession(value);
-    window.location.reload();
+    setSavedSession(value);
+    /* window.location.reload(); */
   };
 
-  useEffect(() => {
-    const savedSession = localStorage.getItem("selectedSession");
-    if (savedSession) {
-      setSavedSession(savedSession);
-
-      // Use this value in your logic
-    }
-  }, []);
   return (
     <>
       <ClickOutside onClick={() => setSidebarOpen(false)}>
