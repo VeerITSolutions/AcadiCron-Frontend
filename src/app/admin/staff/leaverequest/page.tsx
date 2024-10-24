@@ -298,89 +298,101 @@ const StudentDetails = () => {
             </div>
           </DialogTitle>
           <DialogContent>
-            <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Apply Date
-                </label>
-                <TextField
-                  name="date"
-                  type="date"
-                  className="w-full"
-                  value={formData.date}
-                  onChange={handleChange}
-                  InputLabelProps={{ shrink: true }}
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Available Leave <span className="required">*</span>
-                </label>
-                <select
-                  name="leave_type_id"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  value={formData.leave_type_id}
-                  onChange={handleChange}
-                >
-                  <option value="">Select</option>
-                  {dataleavetype.map((type) => (
-                    <option key={type.id} value={type.id}>
-                      {type.type}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Leave From Date <span className="required">*</span>
-                </label>
-                <TextField
-                  name="leave_from"
-                  type="date"
-                  className="w-full"
-                  value={formData.leave_from}
-                  onChange={handleChange}
-                  InputLabelProps={{ shrink: true }}
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Leave To Date <span className="required">*</span>
-                </label>
-                <TextField
-                  name="leave_to"
-                  type="date"
-                  className="w-full"
-                  value={formData.leave_to}
-                  onChange={handleChange}
-                  InputLabelProps={{ shrink: true }}
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Reason
-                </label>
-                <TextField
-                  name="reason"
-                  type="text"
-                 className="w-full"
-                  value={formData.reason}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Attach Document
-                </label>
-                <input
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
-                  type="file"
-                  name="document_file"
-                  id="document_file"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
+           <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
+  {/* Apply Date */}
+  <div className="field">
+    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Apply Date
+    </label>
+    <input
+      name="date"
+      type="date"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      value={formData.date}
+      onChange={handleChange}
+    />
+  </div>
+
+  {/* Available Leave Type */}
+  <div className="field">
+    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Available Leave <span className="required">*</span>
+    </label>
+    <select
+      name="leave_type_id"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      value={formData.leave_type_id}
+      onChange={handleChange}
+    >
+      <option value="">Select</option>
+      {dataleavetype.map((type) => (
+        <option key={type.id} value={type.id}>
+          {type.type}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  {/* Leave From Date */}
+  <div className="field">
+    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Leave From Date <span className="required">*</span>
+    </label>
+    <input
+      name="leave_from"
+      type="date"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      value={formData.leave_from}
+      onChange={handleChange}
+      InputLabelProps={{ shrink: true }}
+    />
+  </div>
+
+  {/* Leave To Date */}
+  <div className="field">
+    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Leave To Date <span className="required">*</span>
+    </label>
+    <input
+      name="leave_to"
+      type="date"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      value={formData.leave_to}
+      onChange={handleChange}
+      InputLabelProps={{ shrink: true }}
+    />
+  </div>
+
+  {/* Reason */}
+  <div className="field">
+    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Reason
+    </label>
+    <input
+      name="reason"
+      type="text"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      value={formData.reason}
+      onChange={handleChange}
+    />
+  </div>
+
+
+  {/* Attach Document */}
+  <div className="field">
+    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Attach Document
+    </label>
+    <input
+      className="form-control mt-2 w-full f-13"
+      type="file"
+      name="document_file"
+      id="document_file"
+      onChange={handleChange}
+    />
+  </div>
+</div>
+
           </DialogContent>
         <DialogActions>
         <Button 

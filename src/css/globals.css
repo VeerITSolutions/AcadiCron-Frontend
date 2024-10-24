@@ -28,7 +28,7 @@ thead.MuiTableHead-root {
     font-size: 1rem !important;
     line-height: 1.5rem !important;
     font-weight: 500 !important;
-    color: rgb(100 116 139) !important;
+    color: rgb(100 116 139);
     text-transform: capitalize;
 }
 
