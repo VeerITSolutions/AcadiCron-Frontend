@@ -234,117 +234,107 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         <TabPanel key={day} value={day}>
         <div className="container mx-auto mt-8">
           {/* Add Row Button */}
-          <Button
-            variant="contained"
+          <button
             onClick={() => addRow(day)}
-            sx={{
-              mb: 2,
-              backgroundColor: '#1976D2', // Green background
-              '&:hover': { backgroundColor: '#1976D2' }, // Darker hover effect
-            }}
+           className="inline-flex items-center justify-center gap-1 rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-white hover:bg-opacity-90 lg:px-3 xl:px-4"
           >
             Add Row
-          </Button>
+          </button>
       
           {/* Timetable */}
-          <table className="min-w-full table-auto border-collapse shadow-lg">
-            <thead className="bg-gray-200 text-gray-700">
-              <tr>
-                <th className="px-4 py-4 text-left font-semibold">Subject</th>
-                <th className="px-4 py-4 text-left font-semibold">Teacher</th>
-                <th className="px-4 py-4 text-left font-semibold">Time From</th>
-                <th className="px-4 py-4 text-left font-semibold">Time To</th>
-                <th className="px-4 py-4 text-left font-semibold">Room No</th>
-                <th className="px-4 py-4 text-left font-semibold">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows[day].map((row, index) => (
-                <tr
-                  key={index}
-                  className="hover:bg-gray-100 transition duration-200 ease-in-out"
-                >
-                  {/* Subject */}
-                  <td className="px-4 py-3">
-                    <TextField
-                      variant="outlined"
-                      size="small"
-                      name="subject"
-                      value={row.subject}
-                      onChange={(e) => handleInputChange(day, index, e)}
-                      fullWidth
-                    />
-                  </td>
-                  {/* Teacher */}
-                  <td className="px-4 py-3">
-                    <TextField
-                      variant="outlined"
-                      size="small"
-                      name="teacher"
-                      value={row.teacher}
-                      onChange={(e) => handleInputChange(day, index, e)}
-                      fullWidth
-                    />
-                  </td>
-                  {/* Time From */}
-                  <td className="px-4 py-3">
-                    <TextField
-                      variant="outlined"
-                      type="time"
-                      size="small"
-                      name="timeFrom"
-                      value={row.timeFrom}
-                      onChange={(e) => handleInputChange(day, index, e)}
-                      fullWidth
-                    />
-                  </td>
-                  {/* Time To */}
-                  <td className="px-4 py-3">
-                    <TextField
-                      variant="outlined"
-                      type="time"
-                      size="small"
-                      name="timeTo"
-                      value={row.timeTo}
-                      onChange={(e) => handleInputChange(day, index, e)}
-                      fullWidth
-                    />
-                  </td>
-                  {/* Room No */}
-                  <td className="px-4 py-3">
-                    <TextField
-                      variant="outlined"
-                      size="small"
-                      name="roomNo"
-                      value={row.roomNo}
-                      onChange={(e) => handleInputChange(day, index, e)}
-                      fullWidth
-                    />
-                  </td>
-                  {/* Action */}
-                  <td className="px-4 py-3">
-                    <IconButton color="error" onClick={() => removeRow(day, index)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+         <table className="min-w-full table-auto border-collapse shadow-lg mt-4 mb-4 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
+  <thead className="bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-white">
+    <tr>
+      <th className="px-4 py-4 text-left font-semibold">Subject</th>
+      <th className="px-4 py-4 text-left font-semibold">Teacher</th>
+      <th className="px-4 py-4 text-left font-semibold">Time From</th>
+      <th className="px-4 py-4 text-left font-semibold">Time To</th>
+      <th className="px-4 py-4 text-left font-semibold">Room No</th>
+      <th className="px-4 py-4 text-left font-semibold">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {rows[day].map((row, index) => (
+      <tr
+        key={index}
+        className="hover:bg-gray-100 transition duration-200 ease-in-out dark:hover:bg-gray-600"
+      >
+        {/* Subject */}
+        <td className="px-4 py-3">
+          <TextField
+            variant="outlined"
+            size="small"
+            name="subject"
+            value={row.subject}
+            onChange={(e) => handleInputChange(day, index, e)}
+            fullWidth
+          />
+        </td>
+        {/* Teacher */}
+        <td className="px-4 py-3">
+          <TextField
+            variant="outlined"
+            size="small"
+            name="teacher"
+            value={row.teacher}
+            onChange={(e) => handleInputChange(day, index, e)}
+            fullWidth
+          />
+        </td>
+        {/* Time From */}
+        <td className="px-4 py-3">
+          <TextField
+            variant="outlined"
+            type="time"
+            size="small"
+            name="timeFrom"
+            value={row.timeFrom}
+            onChange={(e) => handleInputChange(day, index, e)}
+            fullWidth
+          />
+        </td>
+        {/* Time To */}
+        <td className="px-4 py-3">
+          <TextField
+            variant="outlined"
+            type="time"
+            size="small"
+            name="timeTo"
+            value={row.timeTo}
+            onChange={(e) => handleInputChange(day, index, e)}
+            fullWidth
+          />
+        </td>
+        {/* Room No */}
+        <td className="px-4 py-3">
+          <TextField
+            variant="outlined"
+            size="small"
+            name="roomNo"
+            value={row.roomNo}
+            onChange={(e) => handleInputChange(day, index, e)}
+            fullWidth
+          />
+        </td>
+        {/* Action */}
+        <td className="px-4 py-3">
+          <IconButton color="error" onClick={() => removeRow(day, index)}>
+            <DeleteIcon />
+          </IconButton>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
       
           {/* Save Button */}
-          <Button
-            variant="contained"
+          <button
             onClick={() => handleSave(day)}
-            sx={{
-              mt: 2,
-              backgroundColor: '#1976D2', // Blue background
-              '&:hover': { backgroundColor: '#1565C0' }, // Darker blue on hover
-            }}
+           className="inline-flex items-center justify-center gap-1 rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-white hover:bg-opacity-90 lg:px-3 xl:px-4"
             disabled={!selectedClass || !selectedSection}
           >
             Save
-          </Button>
+          </button>
         </div>
       </TabPanel>
       

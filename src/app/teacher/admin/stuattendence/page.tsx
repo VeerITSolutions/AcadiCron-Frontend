@@ -12,6 +12,7 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { CalendarToday, Save } from "@mui/icons-material";
 import {
   Edit,
   Delete,
@@ -30,6 +31,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 const columns = [
+  "#",
   "Admission No",
   "Roll Number",
   "Name",
@@ -38,11 +40,15 @@ const columns = [
 ];
 
 const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  responsive: "standard",
-  filter: false, // Disable filter,
+  filter: false, // Disable filter
+  search: false, // Disable search
+  pagination: false, // Disable pagination
+  sort: false, // Disable sorting
+  selectableRows: "none", // Disable row selection
+  download: false, // Disable download button
+  print: false, // Disable print button
   viewColumns: false, // Disable view columns button
+  responsive: "standard", // Customize responsiveness if needed
 };
 
 const StudentDetails = () => {
@@ -243,21 +249,42 @@ const StudentDetails = () => {
   </div>
 </div>
 
-      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-      <MUIDataTable
-        title={"Select Criteria"}
-        data={data}
-        columns={columns}
-        options={{
-          ...options,
-          count: totalCount,
-          page: page,
-          rowsPerPage: rowsPerPage,
-          onChangePage: handlePageChange,
-          onChangeRowsPerPage: handleRowsPerPageChange,
-        }}
-      />
-      </ThemeProvider>
+<ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+  <div>
+    <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
+      <div>
+        <button className="inline-flex items-center justify-center gap-1 rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-white hover:bg-opacity-90 lg:px-3 xl:px-4">
+          <CalendarToday style={{ fontSize: '16px' }} />
+          Mark As Holiday
+        </button>
+      </div>
+
+      <div style={{ marginLeft: "8px" }}> {/* Add margin for spacing between buttons */}
+        <button className="inline-flex items-center justify-center gap-1 rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-white hover:bg-opacity-90 lg:px-3 xl:px-4">
+          <Save style={{ fontSize: '16px' }} />
+          Save Attendance
+        </button>
+      </div>
+    </div>
+
+    <MUIDataTable
+      title={"Student List"}
+      data={data}
+      columns={columns}
+      options={{
+        ...options,
+        count: totalCount,
+        page: page,
+        rowsPerPage: rowsPerPage,
+        onChangePage: handlePageChange,
+        onChangeRowsPerPage: handleRowsPerPageChange,
+      }}
+    />
+  </div>
+</ThemeProvider>
+
+
+
     </DefaultLayout>
   );
 };

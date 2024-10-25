@@ -38,11 +38,15 @@ const columns = [
 ];
 
 const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  responsive: "standard",
-  filter: false, // Disable filter,
+  filter: false, // Disable filter
+  search: false, // Disable search
+  pagination: false, // Disable pagination
+  sort: false, // Disable sorting
+  selectableRows: "none", // Disable row selection
+  download: false, // Disable download button
+  print: false, // Disable print button
   viewColumns: false, // Disable view columns button
+  responsive: "standard", // Customize responsiveness if needed
 };
 
 const StudentDetails = () => {
@@ -245,7 +249,7 @@ const StudentDetails = () => {
 
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
       <MUIDataTable
-        title={" Select Criteria "}
+        title={" Attendance List "}
         data={data}
         columns={columns}
         options={{

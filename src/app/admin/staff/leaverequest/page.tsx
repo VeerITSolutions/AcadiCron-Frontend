@@ -437,12 +437,12 @@ const StudentDetails = () => {
 
     {/* Send Message Button */}
     <div className="col-span-full">
-      <button
-        type="submit"
-        className="flex rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
-      >
-       Save
-      </button>
+    <button
+            type="submit"
+            className="bg-[#1976D2] text-white py-2 px-4 rounded hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+        >
+            Save
+        </button>
     </div>
   </div>
 </div>

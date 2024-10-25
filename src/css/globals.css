@@ -81,3 +81,7 @@ thead.MuiTableHead-root {
   .css-1d6zwhm-MuiButtonBase-root-MuiTab-root.Mui-selected {
     color: #8db0dd !important;
 }
+
+.css-hyum1k-MuiToolbar-root {
+    padding-left: 12px !important;
+}
