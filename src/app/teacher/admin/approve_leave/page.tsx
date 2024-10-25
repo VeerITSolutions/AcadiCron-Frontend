@@ -36,15 +36,14 @@ const columns = [
 ];
 
 const options = {
-  filter: false,
-  search: false,
-  pagination: false,
-  sort: false,
-  selectableRows: "none",
-  download: false,
-  print: false,
-  viewColumns: false,
+  filterType: false,
+  serverSide: true,
   responsive: "standard",
+ 
+  selectableRows: "none", // Disable row selection
+  filter: false, // Disable filter,
+  viewColumns: false, // Disable view columns button
+
 };
 
 const StudentDetails = () => {
@@ -235,21 +234,11 @@ const StudentDetails = () => {
       <div className="dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark bg-[#F8F8F8]" style={{
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '20px 14px',
- 
- 
+  justifyContent: 'flex-end', // Aligns content to the right
+  padding: '10px 14px',
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-}} >
- <h6 style={{
-  margin: 0,
-  fontSize: '1.25rem',
-  lineHeight: '1.75rem',
-  fontFamily: 'Satoshi',
-  fontWeight: 600,
+  borderBottom: '1px solid rgba(224, 224, 224, 1)',
 }}>
-  Approve Leave List
-</h6>
 
   <button onClick={handleAddStudent} className="StudentDetails_searchButton__UQjAD">
     Add
@@ -257,9 +246,10 @@ const StudentDetails = () => {
 </div>
 
 
+
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
-          title={""} // You can leave this empty since you have a custom title above
+          title={"Approve Leave List"} // You can leave this empty since you have a custom title above
           data={data}
           columns={columns}
           options={{
