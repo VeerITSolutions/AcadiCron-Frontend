@@ -270,9 +270,11 @@ const NoticeForm = () => {
                   />
                 </div>
 
+        
+
                 <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">Message</label>
-                  <ReactQuill value={value} onChange={setValue} modules={modules} style={{ height: "300px" }} />
+                  <ReactQuill value={value} onChange={setValue} modules={modules} style={{ height: "300px", border: "0px !important"}} />
                 </div>
 
                 <div className="field mb-6 pt-9">
