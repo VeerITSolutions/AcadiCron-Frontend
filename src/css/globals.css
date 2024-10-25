@@ -49,3 +49,65 @@ thead.MuiTableHead-root {
 .MuiTableRow-root:hover {
     background-color: unset !important;
 }
+
+
+
+.dark .quill-dark .ql-container.ql-snow {
+
+    color: #ffffff;
+    border-color: #4b5563; 
+  }
+  
+  .dark .quill-dark .ql-editor {
+    color: #ffffff;
+  }
+  
+
+.dark .quill-dark .ql-toolbar.ql-snow {
+    border-color: #4b5563; 
+    color: #ffffff; 
+  }
+  
+  .dark .quill-dark .ql-toolbar .ql-picker-label,
+  .dark .quill-dark .ql-toolbar .ql-picker-item,
+  .dark .quill-dark .ql-toolbar button {
+    color: #ffffff; 
+  }
+  
+.dark .quill-dark .ql-toolbar .ql-stroke {
+    stroke: #ffffff; 
+  }
+  
+
+  /* Add to your global CSS file */
+
+  .nb .custom-checkbox {
+    appearance: none;
+    height: 16px;
+    width: 16px;
+    border: 1px solid #4b5563;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+}
+  .nb .dark .custom-checkbox {
+    border-color: #ffffff; /* Border color for dark mode */
+  }
+  
+  .nb .custom-checkbox:checked {
+    border-color: #1976D2; /* Border color when checked */
+  }
+  
+  .nb .custom-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: #1976D2; /* Custom check color */
+    border-radius: 2px;
+    transform: translate(-50%, -50%);
+  }
+  

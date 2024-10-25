@@ -109,7 +109,7 @@ console.log(data);
               </Link>
             </div>
 
-            <div className="p-4">
+            <div className="p-4 dark:bg-boxdark dark:drop-shadow-none">
               {data.map((notice, index) => (
            
                 <div key={notice.id} className="mb-4 rounded-lg border">

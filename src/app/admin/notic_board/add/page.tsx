@@ -237,9 +237,7 @@ const NoticeForm = () => {
       toast.error("An unexpected error occurred. Please try again.");
     }
   };
-  
-  
-
+ 
 
 
   return (
@@ -271,11 +269,21 @@ const NoticeForm = () => {
                 </div>
 
         
-
                 <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Message</label>
-                  <ReactQuill value={value} onChange={setValue} modules={modules} style={{ height: "300px", border: "0px !important"}} />
-                </div>
+  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+    Message
+  </label>
+  <ReactQuill
+    value={value}
+    onChange={setValue}
+    modules={modules}
+    className="quill-dark dark:drop-shadow-none"
+    style={{ height: "300px" }}
+  />
+</div>
+
+
+
 
                 <div className="field mb-6 pt-9">
                   <label className="block text-sm font-medium text-black dark:text-white">Upload File</label>
@@ -318,8 +326,7 @@ const NoticeForm = () => {
       </label>
       <div className="relative">
         <Flatpickr
-          value={formData.date}
-          onChange={handleDateChange}
+         
           options={{
             dateFormat: "m/d/Y", // Customize date format if necessary
           }}
@@ -338,29 +345,58 @@ const NoticeForm = () => {
     </div>
 
 
-                <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Message To</label>
-                  <div>
-                    <label className="radio-inline">
-                      <input type="checkbox" value="student" name="message_to" onChange={handleInputChange} /> Student
-                    </label>
-                  </div>
-                  <div>
-                    <label className="radio-inline">
-                      <input type="checkbox" value="parent" name="message_to" onChange={handleInputChange} /> Parent
-                    </label>
-                  </div>
-                  <div>
-                    <label className="radio-inline">
-                      <input type="checkbox" value="admin" name="message_to" onChange={handleInputChange} /> Admin
-                    </label>
-                  </div>
-                  <div>
-                    <label className="radio-inline">
-                      <input type="checkbox" value="teacher" name="message_to" onChange={handleInputChange} /> Teacher
-                    </label>
-                  </div>
-                </div>
+               <div className="field mb-6">
+  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Message To</label>
+  <div>
+    <label className="radio-inline flex items-center space-x-2">
+      <input
+        type="checkbox"
+        value="student"
+        name="message_to"
+        onChange={handleInputChange}
+        className="border border-black dark:border-white text-primary focus:ring-2 focus:ring-primary-dark rounded"
+      />
+      <span>Student</span>
+    </label>
+  </div>
+  <div>
+    <label className="radio-inline flex items-center space-x-2">
+      <input
+        type="checkbox"
+        value="parent"
+        name="message_to"
+        onChange={handleInputChange}
+        className="border border-black dark:border-white text-primary focus:ring-2 focus:ring-primary-dark rounded"
+      />
+      <span>Parent</span>
+    </label>
+  </div>
+  <div>
+    <label className="radio-inline flex items-center space-x-2">
+      <input
+        type="checkbox"
+        value="admin"
+        name="message_to"
+        onChange={handleInputChange}
+        className="border border-black dark:border-white text-primary focus:ring-2 focus:ring-primary-dark rounded"
+      />
+      <span>Admin</span>
+    </label>
+  </div>
+  <div>
+    <label className="radio-inline flex items-center space-x-2">
+      <input
+        type="checkbox"
+        value="teacher"
+        name="message_to"
+        onChange={handleInputChange}
+        className="border border-black dark:border-white text-primary focus:ring-2 focus:ring-primary-dark rounded"
+      />
+      <span>Teacher</span>
+    </label>
+  </div>
+</div>
+
 
                 <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">Multiple Select</label>

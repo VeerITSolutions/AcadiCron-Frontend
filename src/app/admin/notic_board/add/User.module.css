@@ -17,3 +17,11 @@
   position: relative;
   top: 1px;
 }
+
+.ql-container.ql-snow {
+  border: 1px solid #E2E8F0 !important;
+}
+.ql-toolbar.ql-snow {
+  border: 1px solid #E2E8F0 !important;
+ 
+}
