@@ -7,10 +7,7 @@ import MUIDataTable from "mui-datatables";
 import { fetchStudentDisabledData } from "@/services/studentDisabledService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
-import {
-  fetchsectionByClassData,
-  fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
+import { fetchsectionByClassData } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
@@ -19,18 +16,12 @@ import {
   Edit,
   Delete,
   Visibility,
-  TextFields,
   AttachMoney,
+  ListAlt, // Import List View icon
+  Info,    // Import Details View icon
 } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
+import { Tabs, Tab, Box } from "@mui/material"; // Import Tabs and Tab
 import { toast } from "react-toastify";
 
 const columns = [
@@ -44,18 +35,25 @@ const columns = [
   "Action",
 ];
 
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  responsive: "standard",
-  selectableRows: "none", // Disable row selection
+const detailsColumns = [
+  "Field",
+  "Value",
+];
 
-  filter: false, // Disable filter,
+const options = {
+  filter: false, // Disable filter
+  search: false, // Disable search
+  pagination: false, // Disable pagination
+  sort: false, // Disable sorting
+  selectableRows: "none", // Disable row selection
+  download: false, // Disable download button
+  print: false, // Disable print button
   viewColumns: false, // Disable view columns button
+  responsive: "standard", // Customize responsiveness if needed
 };
 
 const StudentDetails = () => {
-  const [colorMode, setColorMode] = useColorMode();
+  const [colorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,13 +62,11 @@ const StudentDetails = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
   const [keyword, setKeyword] = useState<string>("");
+  const [activeTab, setActiveTab] = useState(0); // State for active tab
+  const [selectedStudent, setSelectedStudent] = useState<any | null>(null); // Store selected student details
   const router = useRouter();
 
   const token = localStorage.getItem("authToken") || "";
@@ -84,20 +80,16 @@ const StudentDetails = () => {
       "N/A" || "N/A",
       student.gender || "N/A",
       student.mobileno,
-
       <div key={student.id}>
         <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
           <Visibility />
         </IconButton>
-        {/*  <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
           <Edit />
         </IconButton>
-        <IconButton
-          onClick={() => handleAddFees(student.id)}
-          aria-label="Add Fee"
-        >
+        <IconButton onClick={() => handleAddFees(student.id)} aria-label="Add Fee">
           <AttachMoney />
-        </IconButton> */}
+        </IconButton>
       </div>,
     ]);
   };
@@ -110,7 +102,6 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      // Pass selectedClass and selectedSection as parameters to filter data
       const result = await fetchStudentDisabledData(
         currentPage + 1,
         rowsPerPage,
@@ -147,7 +138,6 @@ const StudentDetails = () => {
   };
 
   const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
     router.push(`/admin/student/${id}`);
   };
 
@@ -157,6 +147,11 @@ const StudentDetails = () => {
 
   const handleAddFees = (id: number) => {
     router.push(`/admin/student/fees/${id}`);
+  };
+
+  const handleViewDetails = (student: any) => {
+    setSelectedStudent(student);
+    setActiveTab(1); // Switch to details view
   };
 
   useEffect(() => {
@@ -191,9 +186,10 @@ const StudentDetails = () => {
   };
 
   const handleSearch = () => {
-    setPage(0); // Reset to first page on search
+    setPage(0); 
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
+
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
@@ -228,7 +224,7 @@ const StudentDetails = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={styles.select}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              disabled={!selectedClass} 
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -254,24 +250,80 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
+
+ 
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-        <MUIDataTable
-          title={"Student Details"}
-          data={data}
-          columns={columns}
-          options={{
-            ...options,
-            count: totalCount,
-            page: page,
-            rowsPerPage: rowsPerPage,
-            onChangePage: handlePageChange,
-            onChangeRowsPerPage: handleRowsPerPageChange,
-          }}
-        />
+        <Box >
+          <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} className="dark:text-white">
+            <Tab 
+              icon={<ListAlt />} 
+              label="List View" 
+              iconPosition="start" 
+              className="dark:text-white"
+            />
+            <Tab 
+              icon={<Info />} 
+              label="Details View" 
+              iconPosition="start" 
+              className="dark:text-white"
+            />
+          </Tabs>
+
+      
+          {activeTab === 0 && (
+            <MUIDataTable
+              title={""} 
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }}
+              onRowClick={(rowData) => handleViewDetails(rowData)}
+            />
+          )}
+
+        
+{activeTab === 1 && (
+  <Box sx={{ width: '100%' }}>
+    {selectedStudent ? (
+      <MUIDataTable
+        title={"Student Details"} 
+        data={[
+          ["Admission No", selectedStudent[0]],
+          ["Student Name", selectedStudent[1]],
+          ["Class", selectedStudent[2]],
+          ["Father Name", selectedStudent[3]],
+          ["Address", selectedStudent.address || "N/A"], 
+          ["Email", selectedStudent.email || "N/A"], 
+          ["Disable Reason", "N/A"],
+          ["Gender", selectedStudent[5]],
+          ["Mobile Number", selectedStudent[6]],
+        ]}
+        columns={detailsColumns}
+        options={{
+          filter: false,
+          viewColumns: false,
+          download: false,
+          print: false,
+          pagination: false,
+        }}
+      />
+    ) : (
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-4">
+      
+        <p className="dark:text-white">No record found</p>
+        </div>
+    )}
+  </Box>
+)}
+
+        </Box>
       </ThemeProvider>
     </DefaultLayout>
   );
