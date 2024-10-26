@@ -221,13 +221,7 @@ const StudentDetails = () => {
     title={
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>Homework List</h2>
-        <Button
-          variant="contained"
-          onClick={handleAddHomework}
-          sx={{ color: "white" }}  // Ensure the text color is white
-        >
-          Add
-        </Button>
+       
       </div>
     }
     data={data}

@@ -293,18 +293,15 @@ const [formData, setFormData] = useState({
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-            <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Upload Content" : "Add Upload Content"}
+
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                    
+                    <h3 className="font-medium text-black dark:text-white">
+                    {isEditing ? "Edit Upload Content" : "Add Upload Content"}
               </h3>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                <div className="flex flex-col gap-5.5 p-6.5">
+                  </div>
+                  <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Content Title *
@@ -317,8 +314,6 @@ const [formData, setFormData] = useState({
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Content Type *
@@ -336,8 +331,6 @@ const [formData, setFormData] = useState({
                       <option value="otherdownload">Other Download</option>
                     </select>
                   </div>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Available For *{" "}
@@ -371,10 +364,7 @@ const [formData, setFormData] = useState({
                       Available For All Classes{" "}
                     </label>
                   </div>
-                </div>
-
-                <div className="flex flex-col gap-5.5 p-6.5">
-                    <div className="field">
+                  <div className="field">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                         Class:
                       </label>
@@ -391,9 +381,6 @@ const [formData, setFormData] = useState({
                         ))}
                       </select>
                     </div>
-                  </div>
-
-                  <div className="flex flex-col gap-5.5 p-6.5">
                     <div className="field">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                         Section:
@@ -412,10 +399,10 @@ const [formData, setFormData] = useState({
                         ))}
                       </select>
                     </div>
-                  </div>
 
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
+
+            
+                    <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Upload Date
                     </label>
@@ -429,9 +416,7 @@ const [formData, setFormData] = useState({
                      
                     />
                   </div>
-                </div>
 
-                <div className="flex flex-col gap-5.5 p-6.5">
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Description
@@ -444,8 +429,7 @@ const [formData, setFormData] = useState({
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
+
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Student Photo
@@ -457,16 +441,17 @@ const [formData, setFormData] = useState({
                       onChange={handleInputChange}
                     />
                   </div>
-                </div>
-
-                <div>
-                <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+                
+                    <div>
+                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
-              </form>
-            </div>
-          </div>
+                  </div>
+        </div>
+
+
+       
         </div>
 
         <div className="flex flex-col gap-9">
