@@ -16,13 +16,13 @@ import CloseIcon from "@mui/icons-material/Close"; // Import Close icon
 
 // Example of theme styles based on 'black' or 'white' mode
 const themeStyles = {
-  black: {
+  dark: {
     backgroundColor: "black",
     borderColor: "white",
     textColor: "white",
     iconColor: "white",
   },
-  white: {
+  light: {
     backgroundColor: "white",
     borderColor: "black",
     textColor: "black",
@@ -34,11 +34,12 @@ const staffidcard = () => {
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false); // State to manage modal open/close
   const router = useRouter();
+  
 
   // Accessing theme from context (this could be 'black' or 'white')
 
   // Get the styles based on the current theme
-  const styles = themeStyles["black"];
+  const styles = themeStyles["dark"];
 
   const handleOpen = () => setOpen(true); // Function to open modal
   const handleClose = () => setOpen(false); // Function to close modal

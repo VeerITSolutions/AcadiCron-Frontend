@@ -58,6 +58,7 @@ const ClassSectionSelector = () => {
           id="class-select"
           onChange={handleClassChange}
           value={selectedClassId}
+          
         >
           <option value="">Select a class</option>
           {classes.map((cls) => (

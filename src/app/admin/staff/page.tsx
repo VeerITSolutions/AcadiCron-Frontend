@@ -161,7 +161,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={styles.select}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             >
               <option value="">Select</option>
               <option value="Class1">Admin</option>
@@ -183,7 +183,7 @@ const StudentDetails = () => {
               placeholder="Search By Keyword"
               value={keyword}
               onChange={handleKeywordChange}
-              className={styles.searchInput}
+              className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search

@@ -288,56 +288,49 @@ const FeesMaster = () => {
               <h3 className="font-medium text-black dark:text-white">
                 {isEditing ? "Edit Add Topic" : "Add Topic"}
               </h3>
-            </div>
-            <div className="flex flex-col gap-5.5 p-6.5">
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Class:
-                </label>
-                <select
-                  value={selectedClass || ""}
-                  onChange={handleClassChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {classes.map((cls) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.class}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Section:
-                </label>
-                <select
-                  value={selectedSection || ""}
-                  onChange={handleSectionChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  disabled={!selectedClass} // Disable section dropdown if no class is selected
-                >
-                  <option value="">Select</option>
-                  {section.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  </div>
+                  <div className="flex flex-col gap-5.5 p-6.5">
+                  <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Class:
+                      </label>
+                      <select
+                        value={selectedClass || ""}
+                        onChange={handleClassChange}
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="">Select</option>
+                        {classes.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Section:
+                      </label>
+                      <select
+                        value={selectedSection || ""}
+                        onChange={handleSectionChange}
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        disabled={!selectedClass} // Disable section dropdown if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {section.map((sec) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-              <div className="">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Subject Group <span className="required">*</span>
-                </label>
-                <select
-                  id="section_id"
-                  name="section_id"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                </select>
-              </div>
+
+
+                    <div className="">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">Subject Group <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option></select>
+                    </div>
 
               <div className="">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
