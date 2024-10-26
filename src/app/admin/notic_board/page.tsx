@@ -31,7 +31,7 @@ const notic_board = () => {
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
-console.log(data);
+  console.log(data);
   const notices = [
     {
       id: 1,
@@ -49,11 +49,9 @@ console.log(data);
       createdBy: "Super Admin",
       messageTo: "Student",
     },
-    
   ];
 
   const formatStudentData = (students: any[]) => {
-
     return students.map((student: any) => [
       student.id,
       student.title || "N/A",
@@ -61,11 +59,10 @@ console.log(data);
       student.date,
       student.created_by,
       student.visible_student,
-      student.visible_staff,  
+      student.visible_staff,
       student.visible_parent,
     ]);
   };
-  
 
   const fetchData = async (
     currentPage: number,
@@ -107,71 +104,6 @@ console.log(data);
                   Post New Message
                 </button>
               </Link>
-            </div>
-
-            <div className="p-4 dark:bg-boxdark dark:drop-shadow-none">
-              {data.map((notice, index) => (
-           
-                <div key={notice.id} className="mb-4 rounded-lg border">
-                  <div
-                    className="bg-gray-200 flex cursor-pointer items-center justify-between p-4"
-                    onClick={() => toggleAccordion(index)}
-                  >
-                    <h4 className="text-md font-semibold">{notice.title}</h4>
-                    <div className="space-x-4">
-                      <Link href={`/admin/notification/edit/${notice.id}`}>
-                        <i
-                          className="fa fa-pencil text-blue-500 hover:text-blue-700"
-                          title="Edit"
-                        />
-                      </Link>
-                      <Link href={`/admin/notification/delete/${notice.id}`}>
-                        <i
-                          className="fa fa-remove text-red-500 hover:text-red-700"
-                          title="Delete"
-                          onClick={(e) => {
-                            if (!confirm("Delete Confirm?")) e.preventDefault();
-                          }}
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                  {activeIndex === index && (
-                    <div className="p-4">
-                      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                        <div>
-                          <p>{notice.title}</p>
-                        </div>
-                        <div className="col-span-1 md:col-span-1">
-                          <div className="rounded border p-4">
-                            <ul className="space-y-2">
-                              <li>
-                                <i className="fa fa-calendar-check-o mr-2" />
-                                Publish Date: {notice.publish_date}
-                              </li>
-                              <li>
-                                <i className="fa fa-calendar mr-2" />
-                                Notice Date: {notice.date}
-                              </li>
-                              <li>
-                                <i className="fa fa-user mr-2" />
-                                Created By: {notice.created_by}
-                              </li>
-                            </ul>
-                            <h4 className="mt-4 text-blue-500">Message To</h4>
-                            <ul className="space-y-2">
-                              <li>
-                                <i className="fa fa-user mr-2" />
-                                {notice.id}
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
             </div>
           </div>
         </div>

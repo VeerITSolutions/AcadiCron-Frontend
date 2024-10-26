@@ -90,12 +90,12 @@ const fees_reminder = () => {
                             <input
                               type="checkbox"
                               name="isactive_2"
-                              value={section.is_active}
+                              /* value={section.is_active} */
                               defaultChecked
                               className="form-checkbox h-4 w-4 text-blue-600"
                             />
                             <span className="text-gray-900 ml-2 text-sm">
-                              {section.is_active ? "Active" : "Inactive"}
+                              {/*     {section.is_active ? "Active" : "Inactive"} */}
                             </span>
                           </label>
                         </td>
@@ -103,18 +103,18 @@ const fees_reminder = () => {
                           <input
                             type="hidden"
                             name="ids[]"
-                            value={section.id}
+                            /* value={section.id} */
                           />
                           <span className="text-gray-900 text-sm">
                             {" "}
-                            {section.reminder_type}{" "}
+                            {/*   {section.reminder_type}{" "} */}
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">
                           <input
                             type="number"
-                            name="days2"
-                            defaultValue={section.day}
+                            name="days2" /*
+                             */ /* defaultValue={section.day} */
                             className="form-input border-gray-300 mt-1 block w-full rounded-md shadow-sm"
                           />
                         </td>

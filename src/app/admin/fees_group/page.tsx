@@ -42,7 +42,7 @@ const GroupMaster = () => {
     try {
       const result = await fetchStudentFeesGroupData(
         currentPage + 1,
-        rowsPerPage
+        rowsPerPage,
       );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
@@ -64,7 +64,12 @@ const GroupMaster = () => {
     }
   };
 
-  const handleEdit = (id: number, type: string, description: string, is_active: string) => {
+  const handleEdit = (
+    id: number,
+    type: string,
+    description: string,
+    is_active: string,
+  ) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
@@ -81,12 +86,22 @@ const GroupMaster = () => {
       student.description || "N/A",
       <div key={student.id}>
         <IconButton
-          onClick={() => handleEdit(student.id, student.type, student.description, student.is_active)}
+          onClick={() =>
+            handleEdit(
+              student.id,
+              student.type,
+              student.description,
+              student.is_active,
+            )
+          }
           aria-label="Edit"
         >
           <Edit />
         </IconButton>
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="delete">
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
           <Delete />
         </IconButton>
       </div>,
@@ -114,18 +129,17 @@ const GroupMaster = () => {
           editCategoryId,
           formData.type,
           formData.description,
-          formData.is_active
         );
       } else {
-        result = await createFeesGroup(
-          formData.type,
-          formData.description,
-          formData.is_active
-        );
+        result = await createFeesGroup(formData.type, formData.description);
       }
 
       if (result.success) {
-        toast.success(isEditing ? "Fees group updated successfully" : "Fees group saved successfully");
+        toast.success(
+          isEditing
+            ? "Fees group updated successfully"
+            : "Fees group saved successfully",
+        );
         setFormData({
           type: "",
           description: "",
@@ -143,7 +157,7 @@ const GroupMaster = () => {
         if (errors.type) {
           toast.error(`Type: ${errors.type.join(", ")}`);
         }
-        
+
         if (errors.description) {
           toast.error(`Description: ${errors.description.join(", ")}`);
         }
@@ -225,7 +239,10 @@ const GroupMaster = () => {
                   </div>
                 </div>
                 <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
@@ -235,13 +252,13 @@ const GroupMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Fees Group List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Fees Group List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
           </ThemeProvider>
         </div>
       </div>

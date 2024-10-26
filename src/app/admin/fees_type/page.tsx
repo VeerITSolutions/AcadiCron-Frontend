@@ -194,12 +194,12 @@ const FeesMaster = () => {
     setPage(0);
   };
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
+    /* setSelectedClass(event.target.value); */
     setPage(0);
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
+    /* setSelectedSection(event.target.value); */
     setPage(0);
   };
 
@@ -292,13 +292,13 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Fees Type List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Fees Type List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
           </ThemeProvider>
         </div>
       </div>

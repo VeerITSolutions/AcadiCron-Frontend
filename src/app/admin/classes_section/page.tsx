@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-
 import {
   createFeesMaster,
   deleteFeesMasterData,
@@ -15,23 +14,38 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
-import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
-import { fetchclassesSectionData } from "@/services/classesSectionService"; // Import your section API service
+import { fetchsectionData } from "@/services/sectionsService";
+import { fetchclassesSectionData } from "@/services/classesSectionService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
+interface Section {
+  id: number;
+  section: string;
+}
+
+interface FormData {
+  fees_group: string;
+  fees_type: string;
+  due_date: string;
+  amount: string;
+  fine_type: string;
+  percentage: string;
+  description: string;
+  fine_amount: string;
+}
+
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<Array<Array<any>>>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [totalCount, setTotalCount] = useState(0);
-  const [sections, setSections] = useState<Array<any>>([]); // To hold section data from API
-  const [colorMode, setColorMode] = useColorMode();
-
-  const [formData, setFormData] = useState({
+  const [data, setData] = useState<any[][]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [colorMode] = useColorMode();
+  const [formData, setFormData] = useState<FormData>({
     fees_group: "",
     fees_type: "",
     due_date: "",
@@ -41,13 +55,11 @@ const FeesMaster = () => {
     description: "",
     fine_amount: "",
   });
-
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const token = localStorage.getItem("authToken") || "";
-
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
+    setLoading(true);
     try {
       const result = await fetchclassesSectionData(
         currentPage + 1,
@@ -55,19 +67,20 @@ const FeesMaster = () => {
       );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
-      setLoading(false);
     } catch (error: any) {
       setError(error.message);
+    } finally {
       setLoading(false);
     }
 
     try {
-      const result = await fetchsectionData(currentPage + 1, rowsPerPage); // Fetch the section data from API
-      setSections(result.data); // Assuming your API returns section data as an array
-      setLoading(false);
+      const sectionResult = await fetchsectionData(
+        currentPage + 1,
+        rowsPerPage,
+      );
+      setSections(sectionResult.data);
     } catch (error) {
       console.error("Failed to fetch sections", error);
-      setLoading(false);
     }
   };
 
@@ -81,34 +94,17 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (
-    id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
-  ) => {
+  const handleEdit = (id: number, fees_group_value: string) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
     setFormData({
+      ...formData,
       fees_group: fees_group_value,
-      fees_type: fees_type_value,
-      due_date: due_date_value,
-      amount: amount_value,
-      fine_type: fine_type_value,
-      percentage: percentage_value,
-      description: description_value,
-      fine_amount: fine_amount_value,
     });
   };
 
-  const formatStudentCategoryData = (students: any[]) => {
-    return students.map((student: any) => [
+  const formatStudentCategoryData = (students: any[]) =>
+    students.map((student: any) => [
       student.class_name,
       student.section_name || "N/A",
       <div key={student.id}>
@@ -126,11 +122,10 @@ const FeesMaster = () => {
         </IconButton>
       </div>,
     ]);
-  };
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage, token]);
+  }, [page, rowsPerPage]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -142,44 +137,6 @@ const FeesMaster = () => {
 
   const handleSubmit = async () => {
     try {
-      if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
-          editCategoryId,
-
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
-        if (result.success) {
-          toast.success("Student House updated successfully");
-        } else {
-          toast.error("Failed to update Student House");
-        }
-      } else {
-        const result = await createFeesMaster(
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
-        if (result.success) {
-          toast.success("Student House saved successfully");
-        } else {
-          toast.error("Failed to save Student House");
-        }
-      }
-
       setFormData({
         fees_group: "",
         fees_type: "",
@@ -190,19 +147,15 @@ const FeesMaster = () => {
         description: "",
         fine_amount: "",
       });
-
       setIsEditing(false);
       setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
+      fetchData(page, rowsPerPage);
     } catch (error) {
       console.error("An error occurred", error);
     }
   };
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
+  const handlePageChange = (newPage: number) => setPage(newPage);
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
@@ -213,17 +166,17 @@ const FeesMaster = () => {
 
   const columns = ["Class", "Section", "Action"];
   const options = {
-    filterType: false,
+    filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
     count: totalCount,
-    selectableRows: "none", // Disable row selection
-    page: page,
-    rowsPerPage: rowsPerPage,
+    selectableRows: "none",
+    page,
+    rowsPerPage,
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
-    filter: false, // Disable filter,
-    viewColumns: false, // Disable view columns button
+    filter: false,
+    viewColumns: false,
   };
 
   return (
@@ -233,7 +186,7 @@ const FeesMaster = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Add Class" : "Add Class"}
+                {isEditing ? "Edit Class" : "Add Class"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -250,6 +203,7 @@ const FeesMaster = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       type="text"
                       name="class_id"
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -280,7 +234,10 @@ const FeesMaster = () => {
                 </div>
 
                 <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
@@ -290,13 +247,13 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Class List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Class List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
           </ThemeProvider>
         </div>
       </div>

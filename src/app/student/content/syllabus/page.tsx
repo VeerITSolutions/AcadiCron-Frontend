@@ -29,12 +29,7 @@ import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 
-const columns = [
-  "Name",
-  "Type",
-  "Date",
-  "Action",
-];
+const columns = ["Name", "Type", "Date", "Action"];
 
 const options = {
   filterType: false,
@@ -53,8 +48,12 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
@@ -63,7 +62,7 @@ const StudentDetails = () => {
     leave_from: "",
     leave_to: "",
     reason: "",
-    document_file: null,
+    document_file: "",
   });
   const [editing, setEditing] = useState(false); // Add state for editing
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
@@ -92,7 +91,7 @@ const StudentDetails = () => {
       leave_from: leaveData.leave_from || "",
       leave_to: leaveData.leave_to || "",
       reason: leaveData.reason || "",
-      document_file: null,
+      document_file: "",
     });
     setOpen(true); // Open the modal
   };
@@ -165,7 +164,7 @@ const StudentDetails = () => {
           formData.leave_from,
           formData.leave_to,
           formData.reason,
-          formData.document_file
+          formData.document_file,
         );
       } else {
         result = await createLeave(
@@ -174,18 +173,20 @@ const StudentDetails = () => {
           formData.leave_from,
           formData.leave_to,
           formData.reason,
-          formData.document_file
+          formData.document_file,
         );
       }
       if (result.success) {
-        toast.success(editing ? "Leave updated successfully" : "Leave applied successfully");
+        toast.success(
+          editing ? "Leave updated successfully" : "Leave applied successfully",
+        );
         setFormData({
           date: "",
           leave_type_id: "",
           leave_from: "",
           leave_to: "",
           reason: "",
-          document_file: null,
+          document_file: "",
         });
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
@@ -199,7 +200,9 @@ const StudentDetails = () => {
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value, type, files } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -253,9 +256,7 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-      
-     
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Syllabus List"}
           data={data}
@@ -270,30 +271,30 @@ const StudentDetails = () => {
             onChangeRowsPerPage: handleRowsPerPageChange,
           }}
         />
-        </ThemeProvider>
-        <Dialog open={open} onClose={handleClose} className="dark:bg-boxdark dark:drop-shadow-none">
-     
-        
+      </ThemeProvider>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        className="dark:bg-boxdark dark:drop-shadow-none"
+      >
         <DialogActions>
-        <Button 
-          onClick={handleClose} 
-          variant="contained" 
-          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-        >
-          Cancel
-        </Button>
+          <Button
+            onClick={handleClose}
+            variant="contained"
+            className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+          >
+            Cancel
+          </Button>
 
-        <Button 
-          onClick={handleSubmit} 
-          variant="contained" 
-          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-        >
-          {editing ? "Update" : "Save"}
-        </Button>
-      </DialogActions>
-
-        </Dialog>
-    
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+          >
+            {editing ? "Update" : "Save"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </DefaultLayout>
   );
 };

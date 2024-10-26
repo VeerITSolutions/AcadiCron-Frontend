@@ -9,7 +9,6 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
-
 import {
   createFeesMaster,
   deleteFeesMasterData,
@@ -43,16 +42,15 @@ const FeesMaster = () => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-  
-const [classes, setClassessData] = useState<Array<any>>([]);
-const [section, setSections] = useState<Array<any>>([]);
-const [selectedClass, setSelectedClass] = useState<string | undefined>(
-  undefined,
-);
-const [selectedSection, setSelectedSection] = useState<string | undefined>(
-  undefined,
-);
 
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
 
   const token = localStorage.getItem("authToken") || "";
 
@@ -166,7 +164,6 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
         const result = await editFeesMasterData(
           editCategoryId,
 
-          formData.id,
           formData.fees_group,
           formData.fees_type,
           formData.due_date,
@@ -183,7 +180,6 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
         }
       } else {
         const result = await createFeesMaster(
-          formData.id,
           formData.fees_group,
           formData.fees_type,
           formData.due_date,
@@ -238,11 +234,10 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
     setPage(0);
   };
 
- 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
-  
+
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -285,9 +280,7 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing
-                  ? "Edit Add Subject Group"
-                  : "Add Subject Group"}
+                {isEditing ? "Edit Add Subject Group" : "Add Subject Group"}
               </h3>
               <form
                 onSubmit={(e) => {
@@ -295,66 +288,111 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                   handleSubmit();
                 }}
               >
-
-<div className="flex flex-col gap-5.5 p-6.5"><div>
-  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Name</label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="name" /></div>
-  </div>
-               
-  <div className="flex flex-col gap-5.5 p-6.5">
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Class:
-                      </label>
-                      <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Name
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="name"
+                    />
                   </div>
+                </div>
 
-                  <div className="flex flex-col gap-5.5 p-6.5">
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Section:
-                      </label>
-                      <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {section.map((sec) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Class:
+                    </label>
+                    <select
+                      value={selectedClass || ""}
+                      onChange={handleClassChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    >
+                      <option value="">Select</option>
+                      {classes.map((cls) => (
+                        <option key={cls.id} value={cls.id}>
+                          {cls.class}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+                </div>
 
-                   
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Section:
+                    </label>
+                    <select
+                      value={selectedSection || ""}
+                      onChange={handleSectionChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      disabled={!selectedClass} // Disable section dropdown if no class is selected
+                    >
+                      <option value="">Select</option>
+                      {section.map((sec) => (
+                        <option key={sec.section_id} value={sec.section_id}>
+                          {sec.section_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
-                    <div className="flex flex-col gap-5.5 p-6.5"><label className="block text-sm font-medium text-black dark:text-white">Subject<span className="required">*</span>&nbsp;&nbsp;&nbsp;</label>
-<label className="radio-inline block text-sm font-medium text-black dark:text-white"><input className=" User_radio__Zd0k2" type="checkbox" value="teacher" name="class_teacher" /> Maths </label>
-<label className="radio-inline block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> English </label>
-<label className="radio-inline block text-sm font-medium text-black dark:text-white">
-<input className=" User_radio__Zd0k2" type="checkbox" value="other" name="class_teacher" /> Hindi</label>
-</div>
-                   
-<div className="flex flex-col gap-5.5 p-6.5"><div><label className="mb-3 block text-sm font-medium text-black dark:text-white">Description</label><input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="description" /></div></div>     
- 
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <label className="block text-sm font-medium text-black dark:text-white">
+                    Subject<span className="required">*</span>&nbsp;&nbsp;&nbsp;
+                  </label>
+                  <label className="radio-inline block text-sm font-medium text-black dark:text-white">
+                    <input
+                      className=" User_radio__Zd0k2"
+                      type="checkbox"
+                      value="teacher"
+                      name="class_teacher"
+                    />{" "}
+                    Maths{" "}
+                  </label>
+                  <label className="radio-inline block text-sm font-medium text-black dark:text-white">
+                    <input
+                      className=" User_radio__Zd0k2"
+                      type="checkbox"
+                      value="other"
+                      name="class_teacher"
+                    />{" "}
+                    English{" "}
+                  </label>
+                  <label className="radio-inline block text-sm font-medium text-black dark:text-white">
+                    <input
+                      className=" User_radio__Zd0k2"
+                      type="checkbox"
+                      value="other"
+                      name="class_teacher"
+                    />{" "}
+                    Hindi
+                  </label>
+                </div>
+
+                <div className="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Description
+                    </label>
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="description"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
@@ -364,13 +402,13 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Subject Group List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Subject Group List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
           </ThemeProvider>
         </div>
       </div>

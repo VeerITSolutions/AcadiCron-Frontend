@@ -213,11 +213,11 @@ const StudentDetails = () => {
             >
               <option value="">Select</option>
 
-              {feessessiongroupdata.map((section) => (
+              {/*  {feessessiongroupdata.map((section) => (
                 <option key={section.id} value={section.id}>
                   {section.fees_group_name}
                 </option>
-              ))}
+              ))} */}
             </select>
           </label>
 

@@ -178,15 +178,8 @@ const FeesMaster = () => {
         const result = await editFeesMasterData(
           editCategoryId,
 
-          formData.id,
           formData.fees_group,
           formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
         );
         if (result.success) {
           toast.success("Student House updated successfully");
@@ -195,15 +188,8 @@ const FeesMaster = () => {
         }
       } else {
         const result = await createFeesMaster(
-          formData.id,
           formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
+          formData.fees_group,
         );
         if (result.success) {
           toast.success("Student House saved successfully");
@@ -284,7 +270,7 @@ const FeesMaster = () => {
                     <select
                       name="fees_group"
                       value={formData.fees_group}
-                      onChange={handleInputChange}
+                      /* onChange={handleInputChange} */
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="">Select</option>
@@ -305,7 +291,7 @@ const FeesMaster = () => {
                     <select
                       name="fees_type"
                       value={formData.fees_type}
-                      onChange={handleInputChange} // Re-enable onChange handler
+                      /* onChange={handleInputChange}  */// Re-enable onChange handler
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
                       <option value="">Select</option>
@@ -410,7 +396,10 @@ const FeesMaster = () => {
                 </div>
 
                 <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-8">
+                  <button
+                    type="submit"
+                    className="hover:bg-opacity-8 flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white"
+                  >
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
@@ -420,13 +409,13 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Add Fees Master : 2024-25"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Add Fees Master : 2024-25"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
           </ThemeProvider>
         </div>
       </div>

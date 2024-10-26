@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchStaffData = async (page: number, perPage: number) => {
+export const fetchStaffData = async (page?: number, perPage?: number) => {
   const response = await apiClient.get(`/staff`, {
     params: {
       page,
@@ -39,7 +39,7 @@ export const editStaffData = async (id: number, house_name: string, description:
 
 
 
-export const getStaffbyrole = async (page: number, perPage: number) => {
+export const getStaffbyrole = async (page?: number, perPage?: number) => {
   const response = await apiClient.get(`/staff-by-role`, {
     params: {
       page,

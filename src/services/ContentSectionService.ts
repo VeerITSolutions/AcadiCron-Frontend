@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchContentSectionData = async (page: number, perPage: number) => {
+export const fetchContentSectionData = async (page?: number, perPage?: number) => {
   const response = await apiClient.get(`/content-section`, {
     params: {
       page,

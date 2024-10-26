@@ -72,8 +72,7 @@ const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
- 
- 
+
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -157,12 +156,10 @@ const StudentDetails = () => {
     setKeyword(event.target.value);
   };
 
-
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
-
 
   const handleRefresh = () => {
     setSelectedClass("");
@@ -170,11 +167,10 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
- 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
-  
+
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -200,39 +196,37 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-        <label className={styles.label}>
-                        Class:
-                     
-                        <select
-  value={selectedClass || ""}
-  onChange={handleClassChange}
-  className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none`}
->
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-                      </label>
-                     <label className={styles.label}>
-                        Section:
-                     
-                      <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
-                        className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none`}
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {section.map((sec) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-                      </label>
+          <label className={styles.label}>
+            Class:
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none`}
+            >
+              <option value="">Select</option>
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+            Section:
+            <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none`}
+              disabled={!selectedClass} // Disable section dropdown if no class is selected
+            >
+              <option value="">Select</option>
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
+            </select>
+          </label>
           <div className={styles.searchGroup}>
             <input
               type="text"
@@ -254,19 +248,19 @@ const StudentDetails = () => {
         </div> */}
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-      <MUIDataTable
-        title={"Homework List"}
-        data={data}
-        columns={columns}
-        options={{
-          ...options,
-          count: totalCount,
-          page: page,
-          rowsPerPage: rowsPerPage,
-          onChangePage: handlePageChange,
-          onChangeRowsPerPage: handleRowsPerPageChange,
-        }}
-      />
+        <MUIDataTable
+          title={"Homework List"}
+          data={data}
+          columns={columns}
+          options={{
+            ...options,
+            count: totalCount,
+            page: page,
+            rowsPerPage: rowsPerPage,
+            onChangePage: handlePageChange,
+            onChangeRowsPerPage: handleRowsPerPageChange,
+          }}
+        />
       </ThemeProvider>
     </DefaultLayout>
   );
