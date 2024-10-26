@@ -14,9 +14,20 @@ interface SidebarProps {
   setSidebarOpen: (arg: boolean) => void;
 }
 const roleId = localStorage.getItem("role_id");
-let menuGroups = [];
+interface MenuGroup {
+  name: string;
+  menuItems: MenuItem[];
+}
+interface MenuItem {
+  icon: JSX.Element;
+  label: string;
+  route: string;
+  children?: any;
+  hidden?: boolean; // Optional property
+}
+
 if (roleId === "7") {
-  menuGroups = [
+  const menuGroups: MenuGroup[] = [
     {
       name: "",
       menuItems: [
@@ -347,7 +358,7 @@ if (roleId === "7") {
 }
 
 if (roleId === "2") {
-  menuGroups = [
+  const menuGroups: MenuGroup[] = [
     {
       name: "",
       menuItems: [
@@ -374,7 +385,6 @@ if (roleId === "2") {
               label: "Student Details",
               route: "/teacher/student/search",
             },
-            
           ],
         },
         {
@@ -508,7 +518,6 @@ if (roleId === "2") {
               label: "Apply Leave",
               route: "/admin/staff/leaverequest",
             },
-          
           ],
         },
         {
@@ -535,7 +544,6 @@ if (roleId === "2") {
               label: "Notice Board",
               route: "/admin/notic_board",
             },
-            
           ],
         },
         {
@@ -607,7 +615,6 @@ if (roleId === "2") {
               label: "Add Homework",
               route: "/teacher/homework",
             },
-            
           ],
         },
         {
@@ -632,15 +639,13 @@ if (roleId === "2") {
           ),
           label: "Certificate",
           route: "#",
-         
-        }
-        
+        },
       ],
     },
   ];
 }
 if (roleId === "10" || roleId === "11") {
-  menuGroups = [
+  const menuGroups: MenuGroup[] = [
     {
       name: "",
       menuItems: [
@@ -920,12 +925,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     } catch (error: any) {}
   };
 
-  const handleSessionChange = (value) => {
+  /*  const handleSessionChange = (value) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
     setDefaultSession(value);
     setSavedSession(value);
-    /* window.location.reload(); */
-  };
+
+  }; */
 
   return (
     <>
@@ -982,7 +987,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </button>
 
               <hr />
-              {menuGroups?.map((group, groupIndex) => (
+              {/* {menuGroups?.map((group, groupIndex) => (
                 <div key={groupIndex}>
                   <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
                     {group.name}
@@ -999,7 +1004,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     ))}
                   </ul>
                 </div>
-              ))}
+              ))} */}
             </nav>
             {/* Sidebar Menu */}
           </div>
@@ -1047,14 +1052,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
-                value={savedSessionstate} // Set the value of the select input to the selected session
-                onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
+                /* value={savedSessionstate} */ // Set the value of the select input to the selected session
+                /*  onChange={(e) => handleSessionChange(e.target.value)}  */ // Call function when session changes
               >
-                {allSession?.map((cls) => (
+                {/*  {allSession?.map((cls) => (
                   <option key={cls.id} value={cls.id}>
                     {cls.session}
                   </option>
-                ))}
+                ))} */}
               </select>
             </div>
 

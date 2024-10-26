@@ -3,7 +3,10 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import styles from "./User.module.css"; // Assuming this has your styles
-import { createNotification, editNotificationData } from "@/services/notificationService";
+import {
+  createNotification,
+  editNotificationData,
+} from "@/services/notificationService";
 import "react-quill/dist/quill.snow.css";
 
 // Dynamic import for ReactQuill
@@ -35,7 +38,7 @@ const NoticeForm = () => {
   // Handling input changes (checkbox, text, file)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    if (type === "checkbox") {
+    /*  if (type === "checkbox") {
       setFormData((prevState) => ({
         ...prevState,
         [name]: checked
@@ -44,42 +47,53 @@ const NoticeForm = () => {
       }));
     } else {
       setFormData({ ...formData, [name]: value });
-    }
+    } */
   };
 
   // Handling file input change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  /* const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFormData({ ...formData, file: e.target.files[0] });
     }
-  };
+  }; */
 
   // Handle edit action
-  const handleEdit = (id: number, title_value: string, publish_date: string, message: string, date:string ) => {
+  const handleEdit = (
+    id: number,
+    title_value: string,
+    publish_date: string,
+    message: string,
+    date: string,
+  ) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setFormData({ ...formData, title: title_value, publish_date: publish_date, message: message, date: date});
+    setFormData({
+      ...formData,
+      title: title_value,
+      publish_date: publish_date,
+      message: message,
+      date: date,
+    });
   };
 
   // Handle form submission
   const handleSubmit = async () => {
     const formDataToSend = new FormData();
-    
+
     // Map formData to your required structure
 
     formDataToSend.append("title", formData.title);
     formDataToSend.append("publish_date", formData.publish_date);
-    formDataToSend.append("date", formData.date); 
+    formDataToSend.append("date", formData.date);
     formDataToSend.append("message", value);
- 
-    if (formData.file) {
-      formDataToSend.append("path", formData.file); // File path
-    }
-  
+
     try {
       // Check if editing or creating a new entry
-      if (isEditing && editCategoryId !== null) {
-        const result = await editNotificationData(editCategoryId, formDataToSend);
+      /* if (isEditing && editCategoryId !== null) {
+        const result = await editNotificationData(
+          editCategoryId,
+          formDataToSend,
+        );
         if (result.success) {
           toast.success("Notification updated successfully");
         } else {
@@ -92,22 +106,21 @@ const NoticeForm = () => {
         } else {
           toast.error("Failed to create notification");
         }
-      }
-  
+      } */
+
       // Reset form and state after submission
-      setFormData({
+      /*  setFormData({
         title: "",
         publish_date: "",
         date: "",
         message: "",
 
         file: null,
-      });
+      }); */
       setValue("");
       setIsEditing(false);
       setEditCategoryId(null);
-      fetchData(); // Assuming this fetches fresh data
-  
+      /*   fetchData();  */ // Assuming this fetches fresh data
     } catch (error) {
       toast.error("An error occurred while saving the form");
       console.error("Submission error:", error);
@@ -120,9 +133,11 @@ const NoticeForm = () => {
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">Student Details</h3>
+              <h3 className="font-medium text-black dark:text-white">
+                Student Details
+              </h3>
             </div>
-            <div className="grid grid-cols-3 gap-6 pt-6 pr-6 pl-6">
+            <div className="grid grid-cols-3 gap-6 pl-6 pr-6 pt-6">
               {/* First Column */}
               <div className="col-span-2">
                 <div className="field mb-6">
@@ -139,91 +154,156 @@ const NoticeForm = () => {
                 </div>
 
                 <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Message</label>
-                  <ReactQuill value={value} onChange={setValue} modules={modules} style={{ height: "300px" }} />
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Message
+                  </label>
+                  <ReactQuill
+                    value={value}
+                    onChange={setValue}
+                    modules={modules}
+                    style={{ height: "300px" }}
+                  />
                 </div>
 
                 <div className="field mb-6 pt-9">
-                  <label className="block text-sm font-medium text-black dark:text-white">Upload File</label>
-                  <input className="form-control mt-2 w-full" type="file" name="file" onChange={handleFileChange} />
+                  <label className="block text-sm font-medium text-black dark:text-white">
+                    Upload File
+                  </label>
+                  <input
+                    className="form-control mt-2 w-full"
+                    type="file"
+                    name="file"
+                    /* onChange={handleFileChange} */
+                  />
                 </div>
               </div>
 
               {/* Second Column */}
               <div className="col-span-1">
-              <div className="field mb-6">
-  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-    Notice Date <span className="required">*</span>
-  </label>
-  <input
-    id="date"
-    name="date"
-    value={formData.date}
-    onChange={handleInputChange}
-    type="date" // Changed from 'text' to 'date'
-    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-  />
-</div>
-
-<div className="field mb-6">
-  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-    Publish On
-  </label>
-  <input
-    id="publish_date"
-    name="publish_date"
-    value={formData.publish_date}
-    onChange={handleInputChange}
-    type="date" // Changed from 'text' to 'date'
-    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-  />
-</div>
-
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Notice Date <span className="required">*</span>
+                  </label>
+                  <input
+                    id="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleInputChange}
+                    type="date" // Changed from 'text' to 'date'
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                </div>
 
                 <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Message To</label>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Publish On
+                  </label>
+                  <input
+                    id="publish_date"
+                    name="publish_date"
+                    value={formData.publish_date}
+                    onChange={handleInputChange}
+                    type="date" // Changed from 'text' to 'date'
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Message To
+                  </label>
                   <div>
                     <label className="radio-inline">
-                      <input type="checkbox" value="student" name="message_to" onChange={handleInputChange} /> Student
+                      <input
+                        type="checkbox"
+                        value="student"
+                        name="message_to"
+                        onChange={handleInputChange}
+                      />{" "}
+                      Student
                     </label>
                   </div>
                   <div>
                     <label className="radio-inline">
-                      <input type="checkbox" value="parent" name="message_to" onChange={handleInputChange} /> Parent
+                      <input
+                        type="checkbox"
+                        value="parent"
+                        name="message_to"
+                        onChange={handleInputChange}
+                      />{" "}
+                      Parent
                     </label>
                   </div>
                   <div>
                     <label className="radio-inline">
-                      <input type="checkbox" value="admin" name="message_to" onChange={handleInputChange} /> Admin
+                      <input
+                        type="checkbox"
+                        value="admin"
+                        name="message_to"
+                        onChange={handleInputChange}
+                      />{" "}
+                      Admin
                     </label>
                   </div>
                   <div>
                     <label className="radio-inline">
-                      <input type="checkbox" value="teacher" name="message_to" onChange={handleInputChange} /> Teacher
+                      <input
+                        type="checkbox"
+                        value="teacher"
+                        name="message_to"
+                        onChange={handleInputChange}
+                      />{" "}
+                      Teacher
                     </label>
                   </div>
                 </div>
 
                 <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">Multiple Select</label>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Multiple Select
+                  </label>
                   <div>
                     <label className="radio-inline">
-                      <input type="checkbox" value="class1" name="classes" onChange={handleInputChange} /> Class 1 to 2
+                      <input
+                        type="checkbox"
+                        value="class1"
+                        name="classes"
+                        onChange={handleInputChange}
+                      />{" "}
+                      Class 1 to 2
                     </label>
                   </div>
                   <div>
                     <label className="radio-inline">
-                      <input type="checkbox" value="class2" name="classes" onChange={handleInputChange} /> Class 3 to 4
+                      <input
+                        type="checkbox"
+                        value="class2"
+                        name="classes"
+                        onChange={handleInputChange}
+                      />{" "}
+                      Class 3 to 4
                     </label>
                   </div>
                   <div>
                     <label className="radio-inline">
-                      <input type="checkbox" value="class3" name="classes" onChange={handleInputChange} /> Class 5 to 7
+                      <input
+                        type="checkbox"
+                        value="class3"
+                        name="classes"
+                        onChange={handleInputChange}
+                      />{" "}
+                      Class 5 to 7
                     </label>
                   </div>
                   <div>
                     <label className="radio-inline">
-                      <input type="checkbox" value="class4" name="classes" onChange={handleInputChange} /> Class 8 to 9
+                      <input
+                        type="checkbox"
+                        value="class4"
+                        name="classes"
+                        onChange={handleInputChange}
+                      />{" "}
+                      Class 8 to 9
                     </label>
                   </div>
                 </div>
@@ -231,7 +311,10 @@ const NoticeForm = () => {
             </div>
 
             <div className="px-6.5 py-4">
-              <button onClick={handleSubmit} className="flex justify-center rounded bg-primary p-2 font-semibold text-gray">
+              <button
+                onClick={handleSubmit}
+                className="flex justify-center rounded bg-primary p-2 font-semibold text-gray"
+              >
                 Send
               </button>
             </div>

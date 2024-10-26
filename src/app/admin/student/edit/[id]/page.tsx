@@ -9,11 +9,11 @@ import StudentEdit from "@/components/User/StudentEdit";
 
 const Edit = () => {
   const router = useRouter();
-  const { id } = useParams(); // `id` will be
+  //const { id } = useParams(); // `id` will be
 
   return (
     <DefaultLayout>
-       <StudentEdit />
+      <StudentEdit />
     </DefaultLayout>
   );
 };
