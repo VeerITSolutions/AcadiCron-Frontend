@@ -226,14 +226,14 @@ const StudentDetails = () => {
     }
     data={data}
     columns={columns}
-    options={{
+    /* options={{
       ...options,
       count: totalCount,
       page: page,
       rowsPerPage: rowsPerPage,
       onChangePage: handlePageChange,
       onChangeRowsPerPage: handleRowsPerPageChange,
-    }}
+    }} */
   />
 </ThemeProvider>
     </DefaultLayout>

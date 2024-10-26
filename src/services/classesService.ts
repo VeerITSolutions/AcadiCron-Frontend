@@ -37,7 +37,7 @@ export const editclasses = async (id: number, house_name: string, description: s
 };
 
 
-export const getClasses = async (page: number, perPage: number) => {
+export const getClasses = async (page?: number, perPage?: number) => {
   const response = await apiClient.get(`/get-classes`, {
     params: {
       page,

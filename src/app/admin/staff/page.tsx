@@ -7,6 +7,9 @@ import MUIDataTable from "mui-datatables";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
   Edit,
   Delete,
@@ -22,6 +25,7 @@ import {
   DialogTitle,
   Button,
   TextField,
+  
 } from "@mui/material";
 import { toast } from "react-toastify";
 const columns = [
@@ -61,6 +65,7 @@ const StudentDetails = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+  const [colorMode, setColorMode] = useColorMode();
 
   const token = localStorage.getItem("authToken") || "";
 
@@ -460,12 +465,15 @@ const StudentDetails = () => {
         {activeTab === 'card' && (
           <div className="leading-relaxed">
             {/* List view with MUIDataTable */}
+            <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Staff List"}
               data={data}
-              className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
+              
               columns={columns}
               options={{
+                selectableRows: "none", // Disable row selection
+
                 count: totalCount,
                 page: page,
                 rowsPerPage: rowsPerPage,
@@ -473,6 +481,7 @@ const StudentDetails = () => {
                 onChangeRowsPerPage: handleRowsPerPageChange,
               }}
             />
+            </ThemeProvider>
           </div>
         )}
       </div>

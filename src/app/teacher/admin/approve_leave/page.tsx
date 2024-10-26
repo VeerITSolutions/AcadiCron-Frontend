@@ -252,14 +252,14 @@ const StudentDetails = () => {
           title={"Approve Leave List"} // You can leave this empty since you have a custom title above
           data={data}
           columns={columns}
-          options={{
+          /* options={{
             ...options,
             count: totalCount,
             page: page,
             rowsPerPage: rowsPerPage,
             onChangePage: setPage,
             onChangeRowsPerPage: setRowsPerPage,
-          }}
+          }} */
         />
       </ThemeProvider>
 

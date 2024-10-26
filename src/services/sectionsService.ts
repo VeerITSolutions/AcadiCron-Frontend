@@ -10,7 +10,7 @@ export const fetchsectionData = async (page: number, perPage: number) => {
   return response.data;
 };
 
-export const fetchsectionByClassData = async (selectedClass: number) => {
+export const fetchsectionByClassData = async (selectedClass: string) => {
   const response = await apiClient.get(`/sections-by-class`, {
     params: {
       selectedClass
