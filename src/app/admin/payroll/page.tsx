@@ -168,7 +168,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={styles.select}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             >
               <option value="">Select</option>
               <option value="Class1">Admin</option>
@@ -184,7 +184,7 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={styles.select}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             >
               <option value="">Select</option>
               <option value="SectionA">January</option>
@@ -200,7 +200,7 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={styles.select}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             >
               <option value="">Select</option>
               <option value="SectionA">2023</option>

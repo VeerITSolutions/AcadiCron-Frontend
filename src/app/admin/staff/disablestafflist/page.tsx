@@ -206,7 +206,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={styles.select}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             >
               <option value="">Select</option>
               <option value="1">Admin</option>
@@ -226,7 +226,8 @@ const StudentDetails = () => {
                 placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc."
                 value={keyword}
                 onChange={handleKeywordChange}
-                className={styles.searchInput}
+               
+                className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
               />
             </label>
             <button onClick={handleSearch} className={styles.searchButton}>

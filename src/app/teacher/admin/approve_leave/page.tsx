@@ -176,7 +176,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={styles.select}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             >
               <option value="">Select</option>
               {classes.map((cls) => (
@@ -192,7 +192,7 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={styles.select}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
               disabled={!selectedClass} // Disable section dropdown if no class is selected
             >
               <option value="">Select</option>
@@ -209,7 +209,7 @@ const StudentDetails = () => {
             Attendance Date:
             <input
               type="date"
-              className={styles.select}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             />
           </label>
 
@@ -219,7 +219,7 @@ const StudentDetails = () => {
               placeholder="Search By Keyword"
               value={keyword}
               onChange={handleKeywordChange}
-              className={styles.searchInput}
+              className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
@@ -287,7 +287,7 @@ const StudentDetails = () => {
             <select
                         value={selectedClass || ""}
                         onChange={handleClassChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark"
                       >
                         <option value="">Select</option>
                         {classes.map((cls) => (
@@ -306,7 +306,7 @@ const StudentDetails = () => {
             <select
                         value={selectedSection || ""}
                         onChange={handleSectionChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark"
                         disabled={!selectedClass} // Disable section dropdown if no class is selected
                       >
                         <option value="">Select</option>
@@ -326,7 +326,7 @@ const StudentDetails = () => {
             <select
                 name="student"
                 id="student"
-                className="w-full rounded border-[1.5px] border-stroke px-5 py-3 font-normal bg-transparent dark:border-form-strokedark dark:bg-form-input focus:border-primary dark:focus:border-primary dark:text-white"
+                className="w-full rounded border-[1.5px] border-stroke px-5 py-3 font-normal bg-transparent dark:border-form-strokedark dark:bg-form-input focus:border-primary dark:focus:border-primary dark:text-white dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark"
             >
                 <option value="">Select</option>
                 {/* Dynamically populated options */}

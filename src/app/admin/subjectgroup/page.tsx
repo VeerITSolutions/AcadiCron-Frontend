@@ -308,7 +308,7 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                       <select
                         value={selectedClass || ""}
                         onChange={handleClassChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark"
                       >
                         <option value="">Select</option>
                         {classes.map((cls) => (
@@ -328,7 +328,7 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
                       <select
                         value={selectedSection || ""}
                         onChange={handleSectionChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark"
                         disabled={!selectedClass} // Disable section dropdown if no class is selected
                       >
                         <option value="">Select</option>

@@ -277,15 +277,13 @@ const User = () => {
                 />
               </div>
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Student Photo
-                </label>
-                <FileUpload
-                  label="Upload Photo/Video"
-                  accept="image/*,video/*"
-                  onFileChange={handleFileChange}
-                />
-              </div>
+               
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Student Photo
+                      </label>
+                      <input type="file" className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary" onFileChange={handleFileChange} />
+                    </div>
+             
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Blood Group
@@ -688,17 +686,14 @@ const User = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
+              
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Father Photo
-                </label>
-                <input
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
-                  type="file"
-                  name="father_pic"
-                  id="file"
-                />
-              </div>
+               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+               Father Photo
+               </label>
+               <input type="file" className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary" />
+             </div>
+              
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Mother Name
@@ -735,17 +730,14 @@ const User = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
+
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Mother Photo
-                </label>
-                <input
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
-                  type="file"
-                  name="mother_pic"
-                  id="file"
-                />
-              </div>
+               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+               Mother Photo
+               </label>
+               <input type="file" className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary" />
+             </div>
+
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   If Guardian Is<span className="required">*</span>
@@ -816,17 +808,14 @@ const User = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
+              
               <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Guardian Photo
-                </label>
-                <input
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
-                  type="file"
-                  name="guardian_pic"
-                  id="file"
-                />
-              </div>
+               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+               Guardian Photo
+               </label>
+               <input type="file" className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary" />
+             </div>
+
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Guardian Phone <span className="required">*</span>
@@ -1052,7 +1041,7 @@ const User = () => {
                   id="file1"
                   name="first_doc"
                   type="file"
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
+                  className={`form-control mt-2 w-full dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none dark:file:bg-white/30 dark:file:text-white ${styles["f-13"]}`}
                 />
               </div>
 
@@ -1072,7 +1061,7 @@ const User = () => {
                   id="file2"
                   name="second_doc"
                   type="file"
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
+                  className={`form-control mt-2 w-full dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none dark:file:bg-white/30 dark:file:text-white ${styles["f-13"]}`}
                 />
               </div>
 
@@ -1092,7 +1081,7 @@ const User = () => {
                   id="file3"
                   name="third_doc"
                   type="file"
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
+                  className={`form-control mt-2 w-full dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none dark:file:bg-white/30 dark:file:text-white ${styles["f-13"]}`}
                 />
               </div>
 
@@ -1112,7 +1101,7 @@ const User = () => {
                   id="file4"
                   name="fourth_doc"
                   type="file"
-                  className={`form-control mt-2 w-full ${styles["f-13"]}`}
+                  className={`form-control mt-2 w-full dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none dark:file:bg-white/30 dark:file:text-white ${styles["f-13"]}`}
                 />
               </div>
             </div>
