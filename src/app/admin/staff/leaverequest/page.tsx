@@ -268,22 +268,22 @@ const StudentDetails = () => {
     <DefaultLayout className="dark:bg-boxdark dark:drop-shadow-none">
       <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
         <div
-  className="mb-4 pl-4 pt-4 text-right sm:w-3/12 xl:w-2/12"
-  style={{
-    display: "flex",
-    justifyContent: "flex-end", // Aligns content to the right
-    alignItems: "center",
-  }}
->
-  <button
-    type="submit"
-    className="flex rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
-    onClick={handleClickOpen}
-  >
-    {editing ? "Edit Leave" : "Apply Leave"}
-  </button>
-</div>
-
+          className="mb-4 pl-4 pt-4 text-right sm:w-3/12 xl:w-2/12"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          
+          <button
+        type="submit"
+        className="flex rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
+        onClick={handleClickOpen}
+      >
+      {editing ? "Edit Leave" : "Apply Leave"}
+      </button>
+        </div>
         <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Leaves"}
