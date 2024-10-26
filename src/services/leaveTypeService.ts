@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchLeaveTypeData = async (page: number, perPage: number) => {
+export const fetchLeaveTypeData = async (page?: number, perPage?: number) => {
   const response = await apiClient.get(`/leave-type`, {
     params: {
       page,

@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchtimeTableData = async (page: number, perPage: number) => {
+export const fetchtimeTableData = async (page?: number, perPage?: number) => {
   const response = await apiClient.get(`/timetable`, {
     params: {
       page,

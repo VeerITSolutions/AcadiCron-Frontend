@@ -36,7 +36,6 @@ const FeesMaster = () => {
     undefined,
   );
   const [colorMode, setColorMode] = useColorMode();
- 
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -164,7 +163,6 @@ const FeesMaster = () => {
         const result = await editFeesMasterData(
           editCategoryId,
 
-          formData.id,
           formData.fees_group,
           formData.fees_type,
           formData.due_date,
@@ -181,7 +179,6 @@ const FeesMaster = () => {
         }
       } else {
         const result = await createFeesMaster(
-          formData.id,
           formData.fees_group,
           formData.fees_type,
           formData.due_date,
@@ -224,7 +221,7 @@ const FeesMaster = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-  
+
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
     setPage(0);
@@ -235,11 +232,10 @@ const FeesMaster = () => {
     setPage(0);
   };
 
- 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
-  
+
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -258,11 +254,17 @@ const FeesMaster = () => {
     }
   };
 
-
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
-  const columns = ["Class", "Section", "Subject Group", "Subject", "Lesson", "Action"];
+  const columns = [
+    "Class",
+    "Section",
+    "Subject Group",
+    "Subject",
+    "Lesson",
+    "Action",
+  ];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -280,83 +282,107 @@ const FeesMaster = () => {
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                    
-                    <h3 className="font-medium text-black dark:text-white">
-                {isEditing
-                  ? "Edit Add Lesson"
-                  : "Add Lesson"}
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                {isEditing ? "Edit Add Lesson" : "Add Lesson"}
               </h3>
-                  </div>
-                  <div className="flex flex-col gap-5.5 p-6.5">
-                  <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Class:
-                      </label>
-                      <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Section:
-                      </label>
-                      <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {section.map((sec) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+            </div>
+            <div className="flex flex-col gap-5.5 p-6.5">
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Class:
+                </label>
+                <select
+                  value={selectedClass || ""}
+                  onChange={handleClassChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  {classes.map((cls) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.class}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Section:
+                </label>
+                <select
+                  value={selectedSection || ""}
+                  onChange={handleSectionChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  disabled={!selectedClass} // Disable section dropdown if no class is selected
+                >
+                  <option value="">Select</option>
+                  {section.map((sec) => (
+                    <option key={sec.section_id} value={sec.section_id}>
+                      {sec.section_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
+              <div className="">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Subject Group <span className="required">*</span>
+                </label>
+                <select
+                  id="section_id"
+                  name="section_id"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                </select>
+              </div>
 
-            
-                    <div className="">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">Subject Group <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option></select>
-                    </div>
+              <div className="">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  {" "}
+                  Subject <span className="required">*</span>
+                </label>
+                <select
+                  id="section_id"
+                  name="section_id"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                </select>
+              </div>
 
-                    <div className="">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white"> Subject <span className="required">*</span></label><select id="section_id" name="section_id" className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"><option value="">Select</option></select>
-                    </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Lesson Name
+                </label>
+                <input
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  type="text"
+                  name="lesson_name"
+                />
+              </div>
 
-                      <div><label className="mb-3 block text-sm font-medium text-black dark:text-white">Lesson Name</label>
-                    <input className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" type="text" name="lesson_name" />
-                    </div>
-                  
-                    <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-                    {isEditing ? "Update" : "Save"}
-                  </button>
-                </div>
-                  </div>
-        </div>
+              <div>
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Lesson List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Lesson List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
           </ThemeProvider>
         </div>
       </div>

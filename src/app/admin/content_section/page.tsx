@@ -8,7 +8,6 @@ import {
   createContentSectionForUpload,
   deleteContentSectionForUpload,
   editContentSectionForUpload,
-
 } from "@/services/ContentSectionService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
@@ -33,30 +32,26 @@ const StudentCategories = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [colorMode, setColorMode] = useColorMode();
-  
-  
-const [classes, setClassessData] = useState<Array<any>>([]);
-const [section, setSections] = useState<Array<any>>([]);
-const [selectedClass, setSelectedClass] = useState<string | undefined>(
-  undefined,
-);
-const [selectedSection, setSelectedSection] = useState<string | undefined>(
-  undefined,
-);
 
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
 
-const [formData, setFormData] = useState({
-  title: "",
-  type: "",
-  date:"",
-  cls_sec_id: "",
-  class_id: "",
-  role: "",
-  note: "",
-  file:""
-});
-
-
+  const [formData, setFormData] = useState({
+    title: "",
+    type: "",
+    date: "",
+    cls_sec_id: "",
+    class_id: "",
+    role: "",
+    note: "",
+    file: "",
+  });
 
   // State for modal visibility
   const [open, setOpen] = useState<boolean>(false);
@@ -65,23 +60,25 @@ const [formData, setFormData] = useState({
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-        const result = await fetchContentSectionData(currentPage + 1, rowsPerPage);
-        setTotalCount(result.totalCount);
-        
-        // Check if result.data is defined and is an array
-        if (Array.isArray(result.data)) {
-            setData(formatStudentCategoryData(result.data));
-        } else {
-            setData([]); // Fallback to an empty array
-        }
+      const result = await fetchContentSectionData(
+        currentPage + 1,
+        rowsPerPage,
+      );
+      setTotalCount(result.totalCount);
 
-        setLoading(false);
+      // Check if result.data is defined and is an array
+      if (Array.isArray(result.data)) {
+        setData(formatStudentCategoryData(result.data));
+      } else {
+        setData([]); // Fallback to an empty array
+      }
+
+      setLoading(false);
     } catch (error: any) {
-        setError(error.message);
-        setLoading(false);
+      setError(error.message);
+      setLoading(false);
     }
-};
-
+  };
 
   const handleDelete = async (id: number) => {
     try {
@@ -93,41 +90,58 @@ const [formData, setFormData] = useState({
     }
   };
 
-  const handleEdit = (id: number, title: string, type: string, date: string,  class_id: string, cls_sec_id: string, role:string, note:string) => {
+  const handleEdit = (
+    id: number,
+    title: string,
+    type: string,
+    date: string,
+    class_id: string,
+    cls_sec_id: string,
+    role: string,
+    note: string,
+  ) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setCategorynew(title, type, date, class_id, cls_sec_id, role, note);
+    setCategorynew(title);
     setOpen(true); // Open the modal
   };
 
   const formatStudentCategoryData = (students: any[]) => {
     if (!Array.isArray(students)) return []; // Fallback to an empty array if not an array
-    
+
     return students.map((student: any) => [
-        student.title || "N/A",
-        student.type || "N/A",
-        student.date || "N/A",
-        student.class || "N/A",
-        
-        <div key={student.id}>
-            <IconButton
-                onClick={() => handleEdit(student.id, student.title, student.type, student.class, student.date)}
-                aria-label="edit"
-            >
-                <Edit />
-            </IconButton>
-            <IconButton
-                onClick={() => handleDelete(student.id)}
-                aria-label="delete"
-            >
-                <Delete />
-            </IconButton>
-        </div>,
+      student.title || "N/A",
+      student.type || "N/A",
+      student.date || "N/A",
+      student.class || "N/A",
+
+      <div key={student.id}>
+        <IconButton
+          onClick={() =>
+            handleEdit(
+              student.id,
+              student.title,
+              student.type,
+              student.class,
+              student.date,
+              student.date,
+              student.date,
+              student.date,
+            )
+          }
+          aria-label="edit"
+        >
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
     ]);
-};
-
-
- 
+  };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
@@ -137,15 +151,13 @@ const [formData, setFormData] = useState({
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage, token]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     if (type === "file") {
-      setFormData((prevData) => ({
+      /*  setFormData((prevData) => ({
         ...prevData,
         file: (e.target as HTMLInputElement).files![0],
-      }));
+      })); */
     } else {
       setFormData((prevData) => ({
         ...prevData,
@@ -154,22 +166,14 @@ const [formData, setFormData] = useState({
     }
   };
 
-
   const handleSubmit = async () => {
     try {
       let result;
-  
+
       if (isEditing && editCategoryId !== null) {
         result = await editContentSectionForUpload(
           editCategoryId,
           formData.title,
-          formData.type,
-          formData.date,
-          formData.class_id,
-          formData.cls_sec_id,
-        
-          formData. role,
-          formData. note
         );
       } else {
         result = await createContentSectionForUpload(
@@ -178,24 +182,25 @@ const [formData, setFormData] = useState({
           formData.date,
           formData.class_id,
           formData.cls_sec_id,
-          formData.role,
-          formData. note
-
         );
       }
-  
+
       if (result.success) {
-        toast.success(isEditing ? "Fees type updated successfully" : "Fees type saved successfully");
-        setFormData({
+        toast.success(
+          isEditing
+            ? "Fees type updated successfully"
+            : "Fees type saved successfully",
+        );
+        /* setFormData({
           type: "",
           title: "",
           date: "",
           class_id: "",
           cls_sec_id: "",
-        
+
           role: "",
-          note: ""
-        });
+          note: "",
+        }); */
         setIsEditing(false);
         setEditCategoryId(null);
         fetchData(page, rowsPerPage); // Refresh data after submit
@@ -203,9 +208,9 @@ const [formData, setFormData] = useState({
         // If the API response includes error messages, display them using toast
         const errorMessage = result.message || "An error occurred";
         const errors = result.errors || {};
-  
+
         toast.error(errorMessage); // Show the main error message
-  
+
         // Display individual field errors (optional)
         if (errors.type) {
           toast.error(`Type: ${errors.type.join(", ")}`);
@@ -222,7 +227,6 @@ const [formData, setFormData] = useState({
       toast.error("An unexpected error occurred. Please try again.");
     }
   };
-  
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -242,11 +246,10 @@ const [formData, setFormData] = useState({
     setPage(0);
   };
 
- 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
-  
+
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -293,180 +296,173 @@ const [formData, setFormData] = useState({
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                    
-                    <h3 className="font-medium text-black dark:text-white">
-                    {isEditing ? "Edit Upload Content" : "Add Upload Content"}
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                {isEditing ? "Edit Upload Content" : "Add Upload Content"}
               </h3>
-                  </div>
-                  <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Content Title *
-                    </label>
-                    <input
-                      name="title"
-                      type="text"
-                      value={formData.title}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Content Type *
-                    </label>
-                    <select
-                      name="type"
-                      value={formData.type}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    >
-                      <option value="">Select</option>
-                      <option value="assignments">Assignments</option>
-                      <option value="studymaterial">Study Material</option>
-                      <option value="syllabus">Syllabus</option>
-                      <option value="otherdownload">Other Download</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Available For *{" "}
-                    </label>
-                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input
-                        className=" User_radio__EmAK7"
-                        type="checkbox"
-                        name="role"
-                        value={formData.role}
-                      onChange={handleInputChange}
-                      />{" "}
-                      All Super Admin{" "}
-                    </label>
-                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input
-                        className=" User_radio__EmAK7"
-                        type="checkbox"
-                        value="add_student"
-                        name="add_student"
-                      />{" "}
-                      All Student{" "}
-                    </label>
-                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input
-                        className=" User_radio__EmAK7"
-                        type="checkbox"
-                        value="allclasses"
-                        name="allclasses"
-                      />{" "}
-                      Available For All Classes{" "}
-                    </label>
-                  </div>
-                  <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Class:
-                      </label>
-                      <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Section:
-                      </label>
-                      <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {section.map((sec) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+            </div>
+            <div className="flex flex-col gap-5.5 p-6.5">
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Content Title *
+                </label>
+                <input
+                  name="title"
+                  type="text"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Content Type *
+                </label>
+                <select
+                  name="type"
+                  value={formData.type}
+                  /* onChange={handleInputChange} */
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  <option value="assignments">Assignments</option>
+                  <option value="studymaterial">Study Material</option>
+                  <option value="syllabus">Syllabus</option>
+                  <option value="otherdownload">Other Download</option>
+                </select>
+              </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Available For *{" "}
+                </label>
+                <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                  <input
+                    className=" User_radio__EmAK7"
+                    type="checkbox"
+                    name="role"
+                    value={formData.role}
+                    onChange={handleInputChange}
+                  />{" "}
+                  All Super Admin{" "}
+                </label>
+                <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                  <input
+                    className=" User_radio__EmAK7"
+                    type="checkbox"
+                    value="add_student"
+                    name="add_student"
+                  />{" "}
+                  All Student{" "}
+                </label>
+                <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                  <input
+                    className=" User_radio__EmAK7"
+                    type="checkbox"
+                    value="allclasses"
+                    name="allclasses"
+                  />{" "}
+                  Available For All Classes{" "}
+                </label>
+              </div>
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Class:
+                </label>
+                <select
+                  value={selectedClass || ""}
+                  onChange={handleClassChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  {classes.map((cls) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.class}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Section:
+                </label>
+                <select
+                  value={selectedSection || ""}
+                  onChange={handleSectionChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  disabled={!selectedClass} // Disable section dropdown if no class is selected
+                >
+                  <option value="">Select</option>
+                  {section.map((sec) => (
+                    <option key={sec.section_id} value={sec.section_id}>
+                      {sec.section_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Upload Date
+                </label>
+                <input
+                  id="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  type="text"
+                />
+              </div>
 
-            
-                    <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Upload Date
-                    </label>
-                    <input
-                      id="date"
-                      name= "date"
-                      value={formData.date}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      type="text"
-                     
-                    />
-                  </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Description
+                </label>
+                <input
+                  name="note"
+                  type="text"
+                  value={formData.note}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Description
-                    </label>
-                    <input
-                      name="note"
-                      type="text"
-                      value={formData.note}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Student Photo
+                </label>
+                <input
+                  className="form-control User_f-13__35loD mt-2 w-full"
+                  name="file"
+                  type="file"
+                  onChange={handleInputChange}
+                />
+              </div>
 
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Student Photo
-                    </label>
-                    <input
-                      className="form-control User_f-13__35loD mt-2 w-full"
-                      name="file"
-                      type="file"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                
-                    <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-                    {isEditing ? "Update" : "Save"}
-                  </button>
-                </div>
-                  </div>
-        </div>
-
-
-       
+              <div>
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Content List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Content List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
           </ThemeProvider>
         </div>
       </div>
-
-     
     </DefaultLayout>
   );
 };

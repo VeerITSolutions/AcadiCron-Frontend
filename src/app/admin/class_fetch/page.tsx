@@ -1,22 +1,33 @@
-// components/ClassSectionSelector.js
+// components/ClassSectionSelector.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { classesApi, sectionsApi } from "../../../js/fakeApi"; // Adjust the import path as necessary
 
+interface Class {
+  id: number;
+  name: string;
+}
+
+interface Section {
+  id: number;
+  name: string;
+  class_id: number; // Assuming that each section has a `class_id` property
+}
+
 const ClassSectionSelector = () => {
-  const [classes, setClasses] = useState([]);
-  const [sections, setSections] = useState([]);
-  const [selectedClassId, setSelectedClassId] = useState("");
-  const [filteredSections, setFilteredSections] = useState([]);
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [selectedClassId, setSelectedClassId] = useState<string>("");
+  const [filteredSections, setFilteredSections] = useState<Section[]>([]);
 
   useEffect(() => {
     const fetchClasses = async () => {
-      const classesData = await classesApi();
+      const classesData: Class[] = await classesApi();
       setClasses(classesData);
     };
 
     const fetchSections = async () => {
-      const sectionsData = await sectionsApi();
+      const sectionsData: Section[] = await sectionsApi();
       setSections(sectionsData);
     };
 
@@ -35,7 +46,7 @@ const ClassSectionSelector = () => {
     }
   }, [selectedClassId, sections]);
 
-  const handleClassChange = (event) => {
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClassId(event.target.value);
   };
 

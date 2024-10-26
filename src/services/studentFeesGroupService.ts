@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentFeesGroupData = async (page: number, perPage: number) => {
+export const fetchStudentFeesGroupData = async (page?: number, perPage?: number) => {
   const response = await apiClient.get(`/fees-group`, {
     params: {
       page,

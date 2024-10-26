@@ -35,7 +35,7 @@ const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const [teacher, setTeacherData] = useState<Array<Array<any>>>([]);
- 
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -199,7 +199,6 @@ const FeesMaster = () => {
         const result = await editFeesMasterData(
           editCategoryId,
 
-          formData.id,
           formData.fees_group,
           formData.fees_type,
           formData.due_date,
@@ -216,7 +215,6 @@ const FeesMaster = () => {
         }
       } else {
         const result = await createFeesMaster(
-          formData.id,
           formData.fees_group,
           formData.fees_type,
           formData.due_date,
@@ -271,11 +269,10 @@ const FeesMaster = () => {
     setPage(0);
   };
 
- 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
-  
+
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -330,24 +327,24 @@ const FeesMaster = () => {
                 }}
               >
                 <div className="flex flex-col gap-5.5 p-6.5">
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Class:
-                      </label>
-                      <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark"
-                      >
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Class:
+                    </label>
+                    <select
+                      value={selectedClass || ""}
+                      onChange={handleClassChange}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    >
+                      <option value="">Select</option>
+                      {classes.map((cls) => (
+                        <option key={cls.id} value={cls.id}>
+                          {cls.class}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+                </div>
 
                   <div className="flex flex-col gap-5.5 p-6.5">
                     <div className="field">
@@ -357,7 +354,7 @@ const FeesMaster = () => {
                       <select
                         value={selectedSection || ""}
                         onChange={handleSectionChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                         disabled={!selectedClass} // Disable section dropdown if no class is selected
                       >
                         <option value="">Select</option>
@@ -392,7 +389,10 @@ const FeesMaster = () => {
                 </div>
 
                 <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
                     {isEditing ? "Update" : "Save"}
                   </button>
                 </div>
@@ -402,13 +402,13 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Class Teacher List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Class Teacher List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
           </ThemeProvider>
         </div>
       </div>

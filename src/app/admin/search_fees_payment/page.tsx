@@ -29,10 +29,10 @@ const SearchFeesPayment = () => {
     message: "",
   });
 
-  const handleInputChange = (e) => {
+  /*  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
+  }; */
 
   const columns = [
     "Payment Id",
@@ -66,10 +66,10 @@ const SearchFeesPayment = () => {
     setPage(0);
   };
 
-  const handleSubmit = (e) => {
+  /*  const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-  };
+  }; */
 
   return (
     <DefaultLayout>
@@ -89,7 +89,7 @@ const SearchFeesPayment = () => {
               className="border-gray-300 text-gray-900 dark:border-gray-600 dark:bg-gray-700 mt-2 w-full rounded-md border bg-transparent px-4 py-3 text-sm shadow-sm transition-shadow duration-300 ease-in-out focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:text-white"
               type="text"
               value={formData.firstName}
-              onChange={handleInputChange}
+              /* onChange={handleInputChange} */
               placeholder="Enter Payment Id"
             />
           </div>

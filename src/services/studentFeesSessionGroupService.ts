@@ -1,6 +1,8 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentFeesSeesionGroupData = async (page: number, perPage: number) => {
+export const fetchStudentFeesSeesionGroupData = async (page: number, perPage: number,selectedClass?: string,
+  selectedSection?: string,
+  keyword?: string) => {
   const response = await apiClient.get(`/fees-session-group`, {
     params: {
       page,

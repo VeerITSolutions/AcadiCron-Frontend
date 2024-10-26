@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentFeesDiscountData = async (page: number, perPage: number) => {
+export const fetchStudentFeesDiscountData = async (page?: number, perPage?: number) => {
   const response = await apiClient.get(`/fees-discount`, {
     params: {
       page,

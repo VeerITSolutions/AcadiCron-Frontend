@@ -1,6 +1,8 @@
 import apiClient from "./apiClient";
 
-export const fetchHomeWorkData = async (page: number, perPage: number) => {
+export const fetchHomeWorkData = async (page: number, perPage: number,selectedClass?: string,
+  selectedSection?: string,
+  keyword?: string) => {
   const response = await apiClient.get(`/homework`, {
     params: {
       page,

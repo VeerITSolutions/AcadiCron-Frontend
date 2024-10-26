@@ -167,7 +167,7 @@ const GroupMaster = () => {
   if (error) return <p>{error}</p>;
 
   const columns = ["Name", "Description", "Actions"];
-  const options = {
+ const options = {
     filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
@@ -241,7 +241,7 @@ const GroupMaster = () => {
             title={"Fees Group List"}
             data={data}
             columns={columns}
-            // options={options}
+            options={options}
           />
           </ThemeProvider>
         </div>
