@@ -207,10 +207,10 @@ const StudentDetails = () => {
           <label className={styles.label}>
             Class:
             <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={styles.select}
-            >
+  value={selectedClass || ""}
+  onChange={handleClassChange}
+  className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none`}
+>
               <option value="">Select</option>
               {classes.map((cls) => (
                 <option key={cls.id} value={cls.id}>

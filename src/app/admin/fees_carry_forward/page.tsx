@@ -205,10 +205,10 @@ const StudentDetails = () => {
                         Class:
                      
                       <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className={styles.select}
-                      >
+  value={selectedClass || ""}
+  onChange={handleClassChange}
+  className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none`}
+>
                         <option value="">Select</option>
                         {classes.map((cls) => (
                           <option key={cls.id} value={cls.id}>
@@ -223,7 +223,7 @@ const StudentDetails = () => {
                       <select
                         value={selectedSection || ""}
                         onChange={handleSectionChange}
-                        className={styles.select}
+                        className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none`}
                         disabled={!selectedClass} // Disable section dropdown if no class is selected
                       >
                         <option value="">Select</option>
