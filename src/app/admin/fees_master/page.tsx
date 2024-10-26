@@ -178,15 +178,9 @@ const FeesMaster = () => {
         const result = await editFeesMasterData(
           editCategoryId,
 
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
           formData.description,
-          formData.fine_amount,
+          formData.description,
+          
         );
         if (result.success) {
           toast.success("Student House updated successfully");
@@ -195,15 +189,9 @@ const FeesMaster = () => {
         }
       } else {
         const result = await createFeesMaster(
-          formData.id,
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
           formData.description,
-          formData.fine_amount,
+          formData.description
+          
         );
         if (result.success) {
           toast.success("Student House saved successfully");
@@ -262,161 +250,141 @@ const FeesMaster = () => {
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                {isEditing
-                  ? "Edit Add Fees Master : 2024-25"
-                  : "Add Fees Master : 2024-25"}
-              </h3>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Fees Group *
-                    </label>
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+      {isEditing ? "Edit Add Fees Master : 2024-25" : "Add Fees Master : 2024-25"}
+    </h3>
+  </div>
+  
+  <form onSubmit={(e) => {
+      e.preventDefault();
+      handleSubmit();
+    }}>
+    <div className="flex flex-col gap-5.5 p-6.5">
+      
+      <div className="field">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Fees Group *
+        </label>
+        <select
+          name="fees_group"
+          value={formData.fees_group}
+          onChange={handleInputChange}
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        >
+          <option value="">Select</option>
+          {datafeesgroupdata.map((group) => (
+            <option key={group.id} value={group.id}>
+              {group.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
-                    <select
-                      name="fees_group"
-                      value={formData.fees_group}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    >
-                      <option value="">Select</option>
-                      {datafeesgroupdata.map((group: any) => (
-                        <option key={group.id} value={group.id}>
-                          {group.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+      <div className="field">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Fees Type *
+        </label>
+        <select
+          name="fees_type"
+          value={formData.fees_type}
+          onChange={handleInputChange}
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        >
+          <option value="">Select</option>
+          {datafesstypedata.map((group) => (
+            <option key={group.id} value={group.id}>
+              {group.type}
+            </option>
+          ))}
+        </select>
+      </div>
 
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Fees Type *
-                    </label>
-                    <select
-                      name="fees_type"
-                      value={formData.fees_type}
-                      onChange={handleInputChange} // Re-enable onChange handler
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    >
-                      <option value="">Select</option>
-                      {datafesstypedata.map((group: any) => (
-                        <option key={group.id} value={group.id}>
-                          {group.type}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Due Date
-                    </label>
-                    <input
-                      name="due_date"
-                      type="date"
-                      value={formData.due_date}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Amount *
-                    </label>
-                    <input
-                      name="amount"
-                      type="text"
-                      value={formData.amount}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Fine Type
-                    </label>
-                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input
-                        type="radio"
-                        className={` ${styles["radio"]}`}
-                        name="guardian_is"
-                        value="father"
-                      />{" "}
-                      Father{" "}
-                    </label>
-                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input
-                        type="radio"
-                        className={` ${styles["radio"]}`}
-                        name="guardian_is"
-                        value="mother"
-                      />{" "}
-                      Mother{" "}
-                    </label>
-                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input
-                        type="radio"
-                        className={` ${styles["radio"]}`}
-                        name="guardian_is"
-                        value="other"
-                      />{" "}
-                      Other{" "}
-                    </label>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Percentage *
-                    </label>
-                    <input
-                      name="percentage"
-                      type="text"
-                      value={formData.percentage}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                </div>
+      <div className="">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Due Date
+        </label>
+        <input
+          name="due_date"
+          type="date"
+          value={formData.due_date}
+          onChange={handleInputChange}
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        />
+      </div>
 
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Fine Amount *
-                    </label>
-                    <input
-                      name="fine_amount"
-                      type="text"
-                      value={formData.fine_amount}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                </div>
+      
 
-                <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-8">
-                    {isEditing ? "Update" : "Save"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+      <div className="">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Amount *
+        </label>
+        <input
+          name="amount"
+          type="text"
+          value={formData.amount}
+          onChange={handleInputChange}
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        />
+      </div>
+
+      <div className="">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Fine Type
+        </label>
+        <div className="flex gap-5">
+          <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+            <input type="radio" name="guardian_is" value="father" /> Father
+          </label>
+          <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+            <input type="radio" name="guardian_is" value="mother" /> Mother
+          </label>
+          <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+            <input type="radio" name="guardian_is" value="other" /> Other
+          </label>
+        </div>
+      </div>
+
+      <div className="">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Percentage *
+        </label>
+        <input
+          name="percentage"
+          type="text"
+          value={formData.percentage}
+          onChange={handleInputChange}
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        />
+      </div>
+
+      <div className="">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Fine Amount *
+        </label>
+        <input
+          name="fine_amount"
+          type="text"
+          value={formData.fine_amount}
+          onChange={handleInputChange}
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        />
+      </div>
+
+      <div>
+        <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+          {isEditing ? "Update" : "Save"}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+
         </div>
 
         <div className="flex flex-col gap-9">
@@ -425,7 +393,7 @@ const FeesMaster = () => {
             title={"Add Fees Master : 2024-25"}
             data={data}
             columns={columns}
-            options={options}
+            // options={options}
           />
           </ThemeProvider>
         </div>

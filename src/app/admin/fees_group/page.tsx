@@ -114,13 +114,13 @@ const GroupMaster = () => {
           editCategoryId,
           formData.type,
           formData.description,
-          formData.is_active
+        
         );
       } else {
         result = await createFeesGroup(
           formData.type,
           formData.description,
-          formData.is_active
+        
         );
       }
 
@@ -171,67 +171,68 @@ const GroupMaster = () => {
     filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
-    selectableRows: "none",
+    selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
-    filter: false,
-    viewColumns: false,
+    filter: false, // Disable filter
+    viewColumns: false, // Disable view columns button
   };
 
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Fees Group" : "Add Fees Group"}
-              </h3>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Name
-                    </label>
-                    <input
-                      name="type"
-                      type="text"
-                      value={formData.type}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Description
-                    </label>
-                    <input
-                      name="description"
-                      type="text"
-                      value={formData.description}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-                    {isEditing ? "Update" : "Save"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+      {isEditing ? "Edit Fees Group" : "Add Fees Group"}
+    </h3>
+  </div>
+  <div className="flex flex-col gap-5.5 p-6.5">
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Name
+      </label>
+      <input
+        name="type"
+        type="text"
+        value={formData.type}
+        onChange={handleInputChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Description
+      </label>
+      <input
+        name="description"
+        type="text"
+        value={formData.description}
+        onChange={handleInputChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <button
+        type="submit"
+        className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+        onClick={(e) => {
+          e.preventDefault(); // Prevent default form submission
+          handleSubmit();
+        }}
+      >
+        {isEditing ? "Update" : "Save"}
+      </button>
+    </div>
+  </div>
+</div>
+
         </div>
 
         <div className="flex flex-col gap-9">
@@ -240,7 +241,7 @@ const GroupMaster = () => {
             title={"Fees Group List"}
             data={data}
             columns={columns}
-            options={options}
+            // options={options}
           />
           </ThemeProvider>
         </div>

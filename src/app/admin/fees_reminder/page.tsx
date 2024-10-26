@@ -38,9 +38,7 @@ const fees_reminder = () => {
       const result = await fetchStudentFeesReminderData(
         currentPage + 1,
         rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
+       
       );
       setTotalCount(result.totalCount);
 
@@ -115,7 +113,7 @@ const fees_reminder = () => {
                             type="number"
                             name="days2"
                             defaultValue={section.day}
-                            className="form-input border-gray-300 mt-1 block w-full rounded-md shadow-sm"
+                            className="form-input border-gray-300 mt-1 block w-full rounded-md shadow-sm dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
                           />
                         </td>
                       </tr>

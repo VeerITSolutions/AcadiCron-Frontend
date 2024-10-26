@@ -200,7 +200,7 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-      <div className={styles.filters}>
+     <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
             Class:
@@ -234,16 +234,13 @@ const StudentDetails = () => {
             </select>
           </label>
           <div className={styles.searchGroup}>
-            <label className={styles.label}>
-              Search By Keyword
-              <input
-                type="text"
-                placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc."
-                value={keyword}
-                onChange={handleKeywordChange}
-                className={styles.searchInput}
-              />
-            </label>
+            <input
+              type="text"
+              placeholder="Search By Keyword"
+              value={keyword}
+              onChange={handleKeywordChange}
+              className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+            />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
@@ -252,6 +249,9 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
+        {/*  <div className={styles.searchGroup}>
+
+        </div> */}
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
