@@ -13,7 +13,12 @@ interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
-const roleId = localStorage.getItem("role_id");
+let roleId: string | null = null; // Declare roleId outside
+if (typeof window !== "undefined") {
+  // Safe to access localStorage here
+  const roleId = localStorage.getItem("role_id");
+}
+
 let menuGroups: any[] = [];
 if (roleId === "7") {
   menuGroups = [
