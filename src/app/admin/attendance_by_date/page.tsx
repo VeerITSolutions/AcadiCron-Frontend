@@ -176,7 +176,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             >
               <option value="">Select</option>
               {classes.map((cls) => (

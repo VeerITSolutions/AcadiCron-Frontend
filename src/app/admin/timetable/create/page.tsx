@@ -237,7 +237,7 @@ const FeesMaster = () => {
                 )}
               </div>
 
-              <div className="mb-4 ml-2">
+              <div className="mt-6 flex">
                 <button
                   type="submit"
                   className="flex items-center gap-2 rounded bg-primary px-5 py-2 text-white hover:bg-opacity-80"

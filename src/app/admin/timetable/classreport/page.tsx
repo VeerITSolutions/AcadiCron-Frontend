@@ -221,7 +221,7 @@ const StudentDetails = () => {
       </div>
 
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-        <div className="flex items-center justify-between border-b border-[#E0E0E0] bg-[#F8F8F8] px-4 pb-3 pt-3 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className="flex items-center justify-between border-b border-[#E0E0E0] bg-[#F8F8F8] px-4 pb-5 pt-5 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
           <div>
             <h6>Weekly Timetable</h6>
           </div>

@@ -8,6 +8,9 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import styles from "./MultiClass.module.css"; // Import CSS module
 
 import MUIDataTable from "mui-datatables";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const columns = [
   "Admission No",
@@ -61,18 +64,20 @@ const options = {
   viewColumns: false, // Disable view columns button
 };
 const StudentDetails = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   return (
     <DefaultLayout>
+      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
       <MUIDataTable
         title={"Multi Class Student List"}
-        className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
         data={data}
         columns={columns}
         options={options}
       />
+      </ThemeProvider>
     </DefaultLayout>
   );
 };

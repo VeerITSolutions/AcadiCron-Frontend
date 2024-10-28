@@ -183,70 +183,73 @@ const FeesMaster = () => {
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Class" : "Add Class"}
-              </h3>
-            </div>
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+      {isEditing ? "Edit Class" : "Add Class"}
+    </h3>
+  </div>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-            >
-              <div className="flex flex-col gap-5.5 p-6.5">
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Class<span className="required">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="class_id"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </div>
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      handleSubmit();
+    }}
+  >
+    <div className="flex flex-col gap-5.5 p-6.5">
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium text-black dark:text-white">
+          Class<span className="text-red-500"> *</span>
+        </label>
+        <input
+          type="text"
+          name="class_id"
+          onChange={handleInputChange}
+          required
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-not-allowed dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        />
+      </div>
 
-              <div className="flex flex-col gap-5.5 p-6.5">
-                <label className="block text-sm font-medium text-black dark:text-white">
-                  Sections<span className="required">*</span>
-                </label>
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium text-black dark:text-white">
+          Sections<span className="text-red-500"> *</span>
+        </label>
+        <div className="flex flex-col gap-2">
+          {sections.length > 0 ? (
+            sections.map((section) => (
+              <label
+                key={section.id}
+                className="flex items-center text-sm font-medium text-black dark:text-white"
+              >
+                <input
+                  type="radio"
+                  value={section.id}
+                  name="section_id"
+                  onChange={handleInputChange}
+                  className="mr-2 h-4 w-4"
+                />
+                {section.section}
+              </label>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500 dark:text-gray-400">No sections available</p>
+          )}
+        </div>
+      </div>
 
-                {sections.length > 0 ? (
-                  sections.map((section) => (
-                    <label
-                      key={section.id}
-                      className="radio-inline block text-sm font-medium text-black dark:text-white"
-                    >
-                      <input
-                        type="radio"
-                        value={section.id}
-                        name="section_id"
-                        onChange={handleInputChange}
-                        className="mr-2"
-                      />{" "}
-                      {section.section}
-                    </label>
-                  ))
-                ) : (
-                  <p>No sections available</p>
-                )}
-              </div>
+      <div className="mt-6">
+        <button
+          type="submit"
+          className="rounded bg-primary px-5 py-2 font-medium text-white hover:bg-opacity-80"
+        >
+          {isEditing ? "Update" : "Save"}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
 
-              <div className="mb-4 ml-2">
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 rounded bg-primary px-5 py-2 text-white hover:bg-opacity-80"
-                >
-                  {isEditing ? "Update" : "Save"}
-                </button>
-              </div>
-            </form>
-          </div>
+
         </div>
 
         <div className="flex flex-col gap-9">

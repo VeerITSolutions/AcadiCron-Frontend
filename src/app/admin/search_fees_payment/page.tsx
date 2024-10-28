@@ -5,8 +5,12 @@ import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const SearchFeesPayment = () => {
+  const [colorMode, setColorMode] = useColorMode();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -102,6 +106,7 @@ const SearchFeesPayment = () => {
 
         {/* MUI Data Table */}
         <div className="mt-12">
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Payment Id Detail"}
             data={data}
@@ -115,6 +120,7 @@ const SearchFeesPayment = () => {
               onChangeRowsPerPage: handleRowsPerPageChange,
             }}
           />
+          </ThemeProvider>
         </div>
       </div>
     </DefaultLayout>
