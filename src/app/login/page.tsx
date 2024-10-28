@@ -24,7 +24,6 @@ const LoginPage = () => {
     const data = await checkLogin(email, password);
 
     if (data.token) {
-      alert(data.token);
       // Save token and redirect to dashboard
       localStorage.setItem("token", data.token);
 
