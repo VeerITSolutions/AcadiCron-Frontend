@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "install": "npm install --legacy-peer-deps"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
