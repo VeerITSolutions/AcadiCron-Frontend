@@ -14,20 +14,9 @@ interface SidebarProps {
   setSidebarOpen: (arg: boolean) => void;
 }
 const roleId = localStorage.getItem("role_id");
-interface MenuGroup {
-  name: string;
-  menuItems: MenuItem[];
-}
-interface MenuItem {
-  icon: JSX.Element;
-  label: string;
-  route: string;
-  children?: any;
-  hidden?: boolean; // Optional property
-}
-
+let menuGroups: any[] = [];
 if (roleId === "7") {
-  const menuGroups: MenuGroup[] = [
+  menuGroups = [
     {
       name: "",
       menuItems: [
@@ -358,7 +347,7 @@ if (roleId === "7") {
 }
 
 if (roleId === "2") {
-  const menuGroups: MenuGroup[] = [
+  menuGroups = [
     {
       name: "",
       menuItems: [
@@ -379,13 +368,7 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Student Information",
-          route: "#",
-          children: [
-            {
-              label: "Student Details",
-              route: "/teacher/student/search",
-            },
-          ],
+          route: "/teacher/student/search",
         },
         {
           icon: (
@@ -512,13 +495,7 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Human Resource",
-          route: "#",
-          children: [
-            {
-              label: "Apply Leave",
-              route: "/admin/staff/leaverequest",
-            },
-          ],
+          route: "/student/homework",
         },
         {
           icon: (
@@ -538,13 +515,7 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Communicate",
-          route: "#",
-          children: [
-            {
-              label: "Notice Board",
-              route: "/admin/notic_board",
-            },
-          ],
+          route: "/student/apply_leave",
         },
         {
           icon: (
@@ -564,29 +535,7 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Download Center",
-          route: "#",
-          children: [
-            {
-              label: "Upload Content",
-              route: "/admin/content_section",
-            },
-            {
-              label: "Assignments",
-              route: "/admin/content_section/assignment",
-            },
-            {
-              label: "Study Material",
-              route: "/admin/content_section/studymaterial",
-            },
-            {
-              label: "Syllabus",
-              route: "/admin/content_section/syllabus",
-            },
-            {
-              label: "Other Downloads",
-              route: "/admin/content_section/other_section",
-            },
-          ],
+          route: "/student/download_center",
         },
 
         {
@@ -609,43 +558,14 @@ if (roleId === "2") {
             </svg>
           ),
           label: "Homework",
-          route: "#",
-          children: [
-            {
-              label: "Add Homework",
-              route: "/teacher/homework",
-            },
-          ],
-        },
-        {
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20 21v-2a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2" />
-              <rect x="8" y="3" width="8" height="12" rx="2" />
-              <path d="M12 7v4" />
-              <path d="M10 9h4" />
-              <path d="M12 16l1.5 3H10.5L12 16z" />
-            </svg>
-          ),
-          label: "Certificate",
-          route: "#",
+          route: "/student/download_center",
         },
       ],
     },
   ];
 }
 if (roleId === "10" || roleId === "11") {
-  const menuGroups: MenuGroup[] = [
+  menuGroups = [
     {
       name: "",
       menuItems: [
@@ -897,6 +817,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const [defaultSession, setDefaultSession] = useState(false);
   const [allSession, setAllSession] = useState([]);
+
+  /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
   const [savedSessionstate, setSavedSession] = useState(false);
 
@@ -906,32 +828,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const fetchClassesAndSections = async () => {
     try {
-      const classesResult = await fetchSession();
-      setAllSession(classesResult.data);
+      const classesResult = await fetchSchSetting();
+      setDefaultSession(classesResult.data.session_id);
     } catch (error: any) {}
 
     try {
-      const classesResult2 = await fetchSchSetting();
-      setDefaultSession(classesResult2.data.session_id);
-      setSavedSession(classesResult2.data.session_id);
-      localStorage.setItem("selectedSession", classesResult2.data.session_id);
-
-      const savedSession = localStorage.getItem("selectedSession");
-      if (!savedSession) {
-        setSavedSession(classesResult2.data.session_id);
-
-        // Use this value in your logic
-      }
+      const classesResult = await fetchSession();
+      setAllSession(classesResult.data.session_id);
     } catch (error: any) {}
   };
 
-  /*  const handleSessionChange = (value) => {
+  const handleSessionChange = (value: string) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
-    setDefaultSession(value);
-    setSavedSession(value);
+    window.location.reload();
+  };
 
-  }; */
-
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSession");
+    if (savedSession) {
+      /* setSavedSession(savedSession); */
+      // Use this value in your logic
+    }
+  }, []);
   return (
     <>
       <ClickOutside onClick={() => setSidebarOpen(false)}>
@@ -987,14 +905,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </button>
 
               <hr />
-              {/* {menuGroups?.map((group, groupIndex) => (
+              {menuGroups?.map((group, groupIndex) => (
                 <div key={groupIndex}>
                   <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
                     {group.name}
                   </h3>
 
                   <ul className="mb-6 flex flex-col gap-1.5">
-                    {group.menuItems.map((menuItem, menuIndex) => (
+                    {group.menuItems.map((menuItem: any, menuIndex: any) => (
                       <SidebarItem
                         key={menuIndex}
                         item={menuItem}
@@ -1004,7 +922,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     ))}
                   </ul>
                 </div>
-              ))} */}
+              ))}
             </nav>
             {/* Sidebar Menu */}
           </div>
@@ -1052,14 +970,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
-                /* value={savedSessionstate} */ // Set the value of the select input to the selected session
-                /*  onChange={(e) => handleSessionChange(e.target.value)}  */ // Call function when session changes
+                /* value={savedSessionstate}  */ // Set the value of the select input to the selected session
+                onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
-                {/*  {allSession?.map((cls) => (
-                  <option key={cls.id} value={cls.id}>
-                    {cls.session}
-                  </option>
-                ))} */}
+                {allSession?.map((group, groupIndex) => (
+                  <option value="2016-17">2016-17</option>
+                ))}
               </select>
             </div>
 
