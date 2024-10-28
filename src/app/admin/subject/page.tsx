@@ -1,5 +1,10 @@
-"use client";
+"use client"; // Add this at the top of the file
+import { useState, useContext } from "react";
+import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
+import LogoutButton from "@/components/LogoutButton";
+import React from "react";
 
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
@@ -305,6 +310,10 @@ const FeesMaster = () => {
       </div>
     </DefaultLayout>
   );
+=======
+const staffidcard = () => {
+  return <>Hello</>;
+>>>>>>> aed60f00f072212c3627c639b7b696f157eb6155
 };
 
-export default FeesMaster;
+export default staffidcard;

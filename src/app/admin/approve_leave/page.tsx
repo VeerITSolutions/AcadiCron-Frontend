@@ -1,59 +1,14 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+"use client"; // Add this at the top of the file
+import { useState, useContext } from "react";
+import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
+import LogoutButton from "@/components/LogoutButton";
 import React from "react";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
-import Loader from "@/components/common/Loader";
-import {
-  fetchsectionByClassData,
-  fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your classes API service
-import { ThemeProvider } from "@mui/material/styles";
-import useColorMode from "@/hooks/useColorMode";
-import { darkTheme, lightTheme } from "@/components/theme/theme";
 
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
-
-const columns = [
-  "Student Name",
-  "Class",
-  "Section",
-  "Apply Date",
-  "From Date",
-  "To Date",
-  "Status",
-  "Approve By",
-  "Action",
-];
-
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  responsive: "standard",
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
+const staffidcard = () => {
+  return <>Hello</>;
 };
 
+<<<<<<< HEAD
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
@@ -272,3 +227,6 @@ const StudentDetails = () => {
 };
 
 export default StudentDetails;
+=======
+export default staffidcard;
+>>>>>>> aed60f00f072212c3627c639b7b696f157eb6155

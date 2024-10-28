@@ -1,40 +1,14 @@
-"use client";
-import { useState, useEffect } from "react";
+"use client"; // Add this at the top of the file
+import { useState, useContext } from "react";
+import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
+import LogoutButton from "@/components/LogoutButton";
 import React from "react";
-import MUIDataTable from "mui-datatables";
-import { fetchtimeTableData } from "@/services/timeTableService";
-import Loader from "@/components/common/Loader";
-import { toast } from "react-toastify";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import Tabs from "@mui/material/Tabs";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { TextField } from "@mui/material";
-import {
-  fetchsectionByClassData,
-  fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your classes API service
-import styles from "./StudentDetails.module.css"; // Import CSS module
 
-const columns = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-const options = {
-  filter: false,
-  search: false,
-  pagination: false,
-  sort: false,
-  selectableRows: "none",
-  download: false,
-  print: false,
-  viewColumns: false,
-  responsive: "standard",
+const staffidcard = () => {
+  return <>Hello</>;
 };
 
+<<<<<<< HEAD
 const StudentDetails = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -350,3 +324,6 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 };
 
 export default StudentDetails;
+=======
+export default staffidcard;
+>>>>>>> aed60f00f072212c3627c639b7b696f157eb6155

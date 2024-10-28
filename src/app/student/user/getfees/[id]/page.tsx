@@ -79,7 +79,9 @@ const StudentDetails = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const token = localStorage.getItem("authToken") || "";
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("authToken") || "";
+  }
 
   const handleDelete = async (id: number) => {
     try {
@@ -210,7 +212,7 @@ const StudentDetails = () => {
     }
   };
 
-  const handleChange = (
+  /*const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value, type, files } = event.target;
@@ -218,7 +220,7 @@ const StudentDetails = () => {
       ...prevFormData,
       [name]: type === "file" ? files?.[0] : value,
     }));
-  };
+  };*/
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -226,31 +228,31 @@ const StudentDetails = () => {
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
-    setPage(0);
+    //setPage(0);
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
-    setPage(0);
+    //setPage(0);
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
-    setPage(0);
+    //setPage(0);
   };
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
+    //setKeyword(event.target.value);
   };
 
   const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    //setPage(0); // Reset to first page on search
+    //fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, token, selectedClass, selectedSection, keyword]);
+    //fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -470,9 +472,9 @@ const StudentDetails = () => {
                 <TextField
                   name="note"
                   type="text"
-                  className="w-full dark:text-white"
-                  value={formData.reason}
-                  onChange={handleChange}
+                  /* className="w-full dark:text-white"
+                   */ /* value={formData.reason}
+                  onChange={handleChange} */
                 />
               </div>
             </div>

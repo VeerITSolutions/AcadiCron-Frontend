@@ -1,44 +1,14 @@
-"use client";
-import { useState, useEffect } from "react";
+"use client"; // Add this at the top of the file
+import { useState, useContext } from "react";
+import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
+import LogoutButton from "@/components/LogoutButton";
 import React from "react";
-import MUIDataTable from "mui-datatables";
-import { fetchtimeTableData } from "@/services/timeTableService";
-import Loader from "@/components/common/Loader";
-import { toast } from "react-toastify";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import {
-  fetchsectionByClassData,
-  fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your classes API service
-import styles from "./StudentDetails.module.css"; // Import CSS module
-import { Button } from '@mui/material';
-import { ThemeProvider } from "@mui/material/styles";
-import useColorMode from "@/hooks/useColorMode";
-import { darkTheme, lightTheme } from "@/components/theme/theme";
 
-const columns = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
-
-const options = {
-  filter: false, // Disable filter
-  search: false, // Disable search
-  pagination: false, // Disable pagination
-  sort: false, // Disable sorting
-  selectableRows: "none", // Disable row selection
-  download: false, // Disable download button
-  print: false, // Disable print button
-  viewColumns: false, // Disable view columns button
-  responsive: "standard", // Customize responsiveness if needed
+const staffidcard = () => {
+  return <>Hello</>;
 };
 
+<<<<<<< HEAD
 const StudentDetails = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -258,3 +228,6 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 };
 
 export default StudentDetails;
+=======
+export default staffidcard;
+>>>>>>> aed60f00f072212c3627c639b7b696f157eb6155

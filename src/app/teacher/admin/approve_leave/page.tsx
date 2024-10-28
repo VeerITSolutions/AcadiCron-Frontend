@@ -1,51 +1,14 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+"use client"; // Add this at the top of the file
+import { useState, useContext } from "react";
+import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
+import LogoutButton from "@/components/LogoutButton";
 import React from "react";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
-import Loader from "@/components/common/Loader";
-import { getClasses } from "@/services/classesService";
-import { fetchsectionByClassData } from "@/services/sectionsService";
-import { ThemeProvider } from "@mui/material/styles";
-import useColorMode from "@/hooks/useColorMode";
-import { darkTheme, lightTheme } from "@/components/theme/theme";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-  IconButton,
-} from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close'; // Import close icon
-
-const columns = [
-  "Student Name",
-  "Class",
-  "Section",
-  "Apply Date",
-  "From Date",
-  "To Date",
-  "Status",
-  "Approve By",
-  "Action",
-];
-
-const options = {
-  filterType: false,
-  serverSide: true,
-  responsive: "standard",
- 
-  selectableRows: "none", // Disable row selection
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
-
+const staffidcard = () => {
+  return <>Hello</>;
 };
 
+<<<<<<< HEAD
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
@@ -410,3 +373,6 @@ const StudentDetails = () => {
 };
 
 export default StudentDetails;
+=======
+export default staffidcard;
+>>>>>>> aed60f00f072212c3627c639b7b696f157eb6155

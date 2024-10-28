@@ -1,7 +1,15 @@
 import { BRAND } from "@/types/brand";
 import Image from "next/image";
-
-const TableOneDynamic = ({ title, headers, brandData }) => {
+interface TableOneDynamicProps {
+  title: string;
+  headers: string[]; // or whatever type your headers are
+  brandData: any[]; // Replace `any` with the actual type of the brandData if known
+}
+const TableOneDynamic: React.FC<TableOneDynamicProps> = ({
+  title,
+  headers,
+  brandData,
+}) => {
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
