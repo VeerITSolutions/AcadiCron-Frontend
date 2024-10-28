@@ -973,9 +973,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 /* value={savedSessionstate}  */ // Set the value of the select input to the selected session
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
-                {allSession?.map((group, groupIndex) => (
+                {/*  {allSession?.map((group, groupIndex) => (
                   <option value="2016-17">2016-17</option>
-                ))}
+                ))} */}
               </select>
             </div>
 
