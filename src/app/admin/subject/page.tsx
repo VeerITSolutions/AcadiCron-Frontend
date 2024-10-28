@@ -197,92 +197,100 @@ const FeesMaster = () => {
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Subject" : "Add Subject"}
-              </h3>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Subject Name<span className="required">*</span>
-                    </label>
-                    <input
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Subject Code
-                    </label>
-                    <input
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="code"
-                      value={formData.code}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Subject Type
-                    </label>
-                    <div className="flex gap-5">
-                      <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
-                        <input
-                          type="radio"
-                          name="type"
-                          value="Theory"
-                          checked={formData.type === "Theory"}
-                          onChange={handleInputChange}
-                        />
-                        Theory
-                      </label>
-                      <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
-                        <input
-                          type="radio"
-                          name="type"
-                          value="Practical"
-                          checked={formData.type === "Practical"}
-                          onChange={handleInputChange}
-                        />
-                        Practical
-                      </label>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Active Status
-                    </label>
-                    <input
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="is_active"
-                      value={formData.is_active}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <button
-                    className="mt-5 rounded bg-primary px-5 py-2 text-white"
-                    type="submit"
-                  >
-                    {isEditing ? "Update" : "Create"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+      {isEditing ? "Edit Subject" : "Add Subject"}
+    </h3>
+  </div>
+
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      handleSubmit();
+    }}
+  >
+    <div className="flex flex-col gap-5.5 p-6.5">
+      <div>
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Subject Name<span className="required">*</span>
+        </label>
+        <input
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div>
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Subject Code
+        </label>
+        <input
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          type="text"
+          name="code"
+          value={formData.code}
+          onChange={handleInputChange}
+        />
+      </div>
+
+      <div>
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Subject Type
+        </label>
+        <div className="flex gap-5">
+          <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
+            <input
+              type="radio"
+              name="type"
+              value="Theory"
+              checked={formData.type === "Theory"}
+              onChange={handleInputChange}
+              className="mr-2"
+            />
+            Theory
+          </label>
+          <label className="relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-black dark:text-white">
+            <input
+              type="radio"
+              name="type"
+              value="Practical"
+              checked={formData.type === "Practical"}
+              onChange={handleInputChange}
+              className="mr-2"
+            />
+            Practical
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Active Status
+        </label>
+        <input
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          type="text"
+          name="is_active"
+          value={formData.is_active}
+          onChange={handleInputChange}
+        />
+      </div>
+
+      <button
+        className="mt-5 rounded bg-primary px-5 py-2 text-white hover:bg-opacity-80"
+        type="submit"
+      >
+        {isEditing ? "Update" : "Create"}
+      </button>
+    </div>
+  </form>
+</div>
+
         </div>
         <div className={styles.container}>
         <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>

@@ -187,40 +187,46 @@ const FeesMaster = () => {
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Section" : "Add Section"}
-              </h3>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Section Name<span className="required">*</span>
-                    </label>
-                    <input
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      type="text"
-                      value={formData.section_name}
-                      name="section_name"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+      {isEditing ? "Edit Section" : "Add Section"}
+    </h3>
+  </div>
 
-                <div>
-                  <button type="submit" className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-                    {isEditing ? "Update" : "Save"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      handleSubmit();
+    }}
+  >
+    <div className="flex flex-col gap-5.5 p-6.5">
+      <div>
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Section Name<span className="required">*</span>
+        </label>
+        <input
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          type="text"
+          name="section_name"
+          value={formData.section_name}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+        >
+          {isEditing ? "Update" : "Save"}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
         </div>
 
         <div className="flex flex-col gap-9">

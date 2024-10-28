@@ -161,19 +161,22 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
   if (loading) return <Loader />;
   if (error) return <div>{error}</div>;
 
-  const CustomHeader = () => (
-    <div className="flex justify-between items-center">
-      <h2>Weekly Timetable</h2>
-      <div className="flex ml-auto">
-        <a
-          href="/admin/timetable/create"
-          className="StudentDetails_searchButton__bCORU"
-        >
-          Add
-        </a>
-      </div>
-    </div>
-  );
+  // const CustomHeader = () => (
+  //   <div className="flex justify-between items-center">
+  //     <h6>Weekly Timetable</h6>
+  //     <div className="flex ml-auto">
+  //       <a
+  //         href="/admin/timetable/create"
+  //         className="StudentDetails_searchButton__bCORU"
+  //       >
+  //         Add
+  //       </a>
+  //     </div>
+      
+  //   </div>
+
+    
+  // );
 
   return (
     <DefaultLayout>
@@ -226,8 +229,25 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 
 <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
 
+
+<div className="dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark bg-[#F8F8F8] flex items-center justify-between pt-3 pb-3 px-4 shadow-sm border-b border-[#E0E0E0]">
+  <div>
+    <h6>Weekly Timetable</h6>
+  </div>
+  <div>
+    <a
+      href="/admin/timetable/create"
+      className="StudentDetails_searchButton__bCORU"
+    >
+      Add
+    </a>
+  </div>
+</div>
+
+
+
       <MUIDataTable
-         title={<CustomHeader />}
+         title={''}
         data={data}
         columns={columns}
         options={options}

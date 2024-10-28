@@ -231,14 +231,7 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <div className="dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark bg-[#F8F8F8]" style={{
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end', // Aligns content to the right
-  padding: '10px 14px',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-  borderBottom: '1px solid rgba(224, 224, 224, 1)',
-}}>
+      <div className="dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark bg-[#F8F8F8] flex items-center justify-end pt-3 pb-3 px-4 shadow-sm border-b border-[#E0E0E0]">
 
   <button onClick={handleAddStudent} className="StudentDetails_searchButton__UQjAD">
     Add

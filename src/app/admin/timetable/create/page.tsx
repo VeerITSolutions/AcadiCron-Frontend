@@ -222,21 +222,21 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 </div>
 
 <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="Timetable Tabs" variant="scrollable" scrollButtons="auto">
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }} className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+          <TabList onChange={handleChange} aria-label="Timetable Tabs" variant="scrollable" scrollButtons="auto" className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
             {columns.map((day) => (
-              <Tab key={day} label={day} value={day} />
+              <Tab key={day} label={day} value={day} className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"/>
             ))}
           </TabList>
         </Box>
 
         {columns.map((day) => (
-        <TabPanel key={day} value={day}>
-        <div className="container mx-auto mt-8">
+        <TabPanel key={day} value={day} className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+        <div className="container mx-auto mt-8 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
           {/* Add Row Button */}
           <button
             onClick={() => addRow(day)}
-           className="inline-flex items-center justify-center gap-1 rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-white hover:bg-opacity-90 lg:px-3 xl:px-4"
+           className="inline-flex items-center justify-center gap-1 rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-white hover:bg-opacity-90 lg:px-3 xl:px-4 "
           >
             Add Row
           </button>
@@ -244,8 +244,8 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
           {/* Timetable */}
          <table className="min-w-full table-auto border-collapse shadow-lg mt-4 mb-4 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
   <thead className="bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-white">
-    <tr>
-      <th className="px-4 py-4 text-left font-semibold">Subject</th>
+    <tr className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+      <th className="px-4 py-4 text-left font-semibold ">Subject</th>
       <th className="px-4 py-4 text-left font-semibold">Teacher</th>
       <th className="px-4 py-4 text-left font-semibold">Time From</th>
       <th className="px-4 py-4 text-left font-semibold">Time To</th>
@@ -257,67 +257,72 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     {rows[day].map((row, index) => (
       <tr
         key={index}
-        className="hover:bg-gray-100 transition duration-200 ease-in-out dark:hover:bg-gray-600"
+        className="hover:bg-gray-100 transition duration-200 ease-in-out dark:hover:bg-gray-600 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
       >
         {/* Subject */}
-        <td className="px-4 py-3">
+        <td className="px-4 py-3 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
           <TextField
             variant="outlined"
             size="small"
             name="subject"
             value={row.subject}
+            className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
             onChange={(e) => handleInputChange(day, index, e)}
             fullWidth
           />
         </td>
         {/* Teacher */}
-        <td className="px-4 py-3">
+        <td className="px-4 py-3 dark:bg-boxdark dark:border-strokedark dark:text-white">
           <TextField
             variant="outlined"
             size="small"
             name="teacher"
             value={row.teacher}
+            className="dark:bg-boxdark dark:border-strokedark dark:text-white"
             onChange={(e) => handleInputChange(day, index, e)}
             fullWidth
           />
         </td>
         {/* Time From */}
-        <td className="px-4 py-3">
+        <td className="px-4 py-3 dark:bg-boxdark dark:border-strokedark dark:text-white">
           <TextField
             variant="outlined"
             type="time"
             size="small"
             name="timeFrom"
+            className="dark:bg-boxdark dark:border-strokedark dark:text-white"
             value={row.timeFrom}
             onChange={(e) => handleInputChange(day, index, e)}
             fullWidth
           />
         </td>
         {/* Time To */}
-        <td className="px-4 py-3">
+        <td className="px-4 py-3 dark:bg-boxdark dark:border-strokedark dark:text-white">
           <TextField
             variant="outlined"
             type="time"
             size="small"
             name="timeTo"
             value={row.timeTo}
+            className="dark:bg-boxdark dark:border-strokedark dark:text-white"
             onChange={(e) => handleInputChange(day, index, e)}
             fullWidth
           />
         </td>
         {/* Room No */}
-        <td className="px-4 py-3">
+        <td className="px-4 py-3 dark:bg-boxdark dark:border-strokedark dark:text-white">
           <TextField
             variant="outlined"
             size="small"
             name="roomNo"
+            className="dark:bg-boxdark dark:border-strokedark dark:text-white"
             value={row.roomNo}
             onChange={(e) => handleInputChange(day, index, e)}
             fullWidth
           />
         </td>
         {/* Action */}
-        <td className="px-4 py-3">
+        <td className="px-4 py-3 ">
           <IconButton color="error" onClick={() => removeRow(day, index)}>
             <DeleteIcon />
           </IconButton>
