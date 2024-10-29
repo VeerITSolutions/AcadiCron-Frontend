@@ -22,7 +22,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
-  const [savedSessionstate, setSavedSession] = useState(false);
+  const [savedSessionstate, setSavedSession] = useState("");
   const [getRoleId, SetGetRoleId] = useState("");
 
   useEffect(() => {
@@ -42,19 +42,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
     try {
       const classesResult = await fetchSession();
-      setAllSession(classesResult.data.session_id);
+      setAllSession(classesResult.data);
     } catch (error: any) {}
   };
 
   const handleSessionChange = (value: string) => {
     localStorage.setItem("selectedSession", value); // Store session in localStorage
-    window.location.reload();
+
+    /* window.location.reload(); */
   };
 
   useEffect(() => {
     const savedSession = localStorage.getItem("selectedSession");
     if (savedSession) {
-      /* setSavedSession(savedSession); */
+      setSavedSession(savedSession);
       // Use this value in your logic
     }
   }, []);
@@ -1005,9 +1006,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 /* value={savedSessionstate}  */ // Set the value of the select input to the selected session
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
-                {/*  {allSession?.map((group, groupIndex) => (
-                  <option value="2016-17">2016-17</option>
-                ))} */}
+                {allSession?.map((cls: any) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.session}
+                  </option>
+                ))}
               </select>
             </div>
 
