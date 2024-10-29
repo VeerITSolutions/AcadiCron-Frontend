@@ -85,3 +85,16 @@ thead.MuiTableHead-root {
 .css-hyum1k-MuiToolbar-root {
     padding-left: 12px !important;
 }
+
+
+
+
+
+@media (max-width: 320px){
+    .tss-hj53wm-MUIDataTableToolbar-titleText {
+         text-align: left !important;
+    }
+    .tss-qbo1l6-MUIDataTableToolbar-actions {
+        text-align: right !important;
+    }
+}
