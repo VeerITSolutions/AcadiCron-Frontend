@@ -153,48 +153,56 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
+
+
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (
     <DefaultLayout>
-      <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Role:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-            >
-              <option value="">Select</option>
-              <option value="Class1">Admin</option>
-              <option value="Class2">Teacher</option>
-              <option value="Class3">Accountant</option>
-              <option value="Class4">Librarian</option>
-              <option value="Class5">Receptionist</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Month:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-            >
-              <option value="">Select</option>
-              <option value="SectionA">January</option>
-              <option value="SectionB">February</option>
-              <option value="SectionC">March</option>
-              <option value="SectionD">April</option>
-              <option value="SectionE">May</option>
-              {/* Add more section options here */}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Year:
-            <select
+       <div className={styles.filters}>
+      <div className={styles.filterGroup}>
+        <label className={styles.label}>
+          Role:
+          <select
+          value={selectedClass || ""}
+          onChange={handleClassChange}
+          className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+        >
+          <option value="">Select</option>
+          <option value="Class1">Admin</option>
+          <option value="Class2">Teacher</option>
+          <option value="Class3">Accountant</option>
+          <option value="Class4">Librarian</option>
+          <option value="Class5">Receptionist</option>
+          {/* Add more class options here */}
+        </select>
+        </label>
+        <label className={styles.label}>
+          Month:
+          <select
+          value={selectedSection || ""}
+          onChange={handleSectionChange}
+          className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+        >
+          <option value="">Select</option>
+          <option value="SectionA">January</option>
+          <option value="SectionB">February</option>
+          <option value="SectionC">March</option>
+          <option value="SectionD">April</option>
+          <option value="SectionE">May</option>
+          {/* Add more section options here */}
+        </select>
+        </label>
+
+        <label className={styles.label}>
+        Year:
+        <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
@@ -204,17 +212,24 @@ const StudentDetails = () => {
               <option value="SectionB">2024</option>
               {/* Add more section options here */}
             </select>
-          </label>
-          <div className={styles.searchGroup}>
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-          </div>
+      </label>
+        <div className={styles.searchGroup}>
+          <input
+            type="text"
+            placeholder="Search By Keyword"
+            value={keyword}
+            onChange={handleKeywordChange}
+            className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+          />
+          <button onClick={handleSearch} className={styles.searchButton}>
+            Search
+          </button>
+          <button onClick={handleRefresh} className={styles.searchButton}>
+            Reset
+          </button>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
+    </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Staff List"}

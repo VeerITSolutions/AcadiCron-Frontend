@@ -161,186 +161,179 @@ const StudentCategories = () => {
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                {isEditing
-                  ? "Edit Student Certificate"
-                  : "Add Student Certificate"}
-              </h3>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                <div className="flex flex-col gap-5.5 p-6.5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Certificate Name
-                    </label>
-                    <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="font-medium text-black dark:text-white">
+      Add Student Certificate
+    </h3>
+  </div>
+  <div className="flex flex-col gap-5.5 p-6.5">
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Certificate Name
+      </label>
+      <input
+        name="certificate_name"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
 
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Header Left Text
-                    </label>
-                    <input
-                      name="header_left_text"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Header Left Text
+      </label>
+      <input
+        name="header_left_text"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
 
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Header Center Text
-                    </label>
-                    <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Header Right Text
-                    </label>
-                    <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Body Text *
-                    </label>
-                    <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Footer Left Text
-                    </label>
-                    <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Footer Center Text
-                    </label>
-                    <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Footer Right Text
-                    </label>
-                    <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Certificate Design
-                    </label>
-                    <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Student Photo
-                    </label>
-                    <div x-data="{ switcherToggle: false }">
-                      <label
-                        htmlFor="toggle2"
-                        className="flex cursor-pointer select-none items-center"
-                      >
-                        <div className="relative">
-                          <input
-                            id="toggle2"
-                            type="checkbox"
-                            className="sr-only"
-                            onChange={() => {
-                              setEnabled(!enabled);
-                            }}
-                          />
-                          <div className="h-5 w-14 rounded-full bg-meta-9 shadow-inner dark:bg-[#5A616B]"></div>
-                          <div
-                            className={`dot ${enabled && "!right-0 dark:!bg-white"} absolute -top-1 left-0 h-7
-              w-7 !translate-x-full rounded-full !bg-primary bg-white shadow-switch-1
-            transition`}
-                          ></div>
-                        </div>
-                      </label>
-                    </div>
-                    {/* <input
-                      name="certificate_name"
-                      type="text"
-                      value={certificate_name}
-                      onChange={handleCategoryChange}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    /> */}
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Background Image
-                    </label>
-                    <input
-                      type="file"
-                      className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <button
-                    type="submit"
-                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  >
-                    {isEditing ? "Update" : "Save"}
-                  </button>
-                </div>
-              </form>
-            </div>
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Header Center Text
+      </label>
+      <input
+        name="header_center_text"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Header Right Text
+      </label>
+      <input
+        name="header_right_text"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Body Text *
+      </label>
+      <input
+        name="body_text"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Footer Left Text
+      </label>
+      <input
+        name="footer_left_text"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Footer Center Text
+      </label>
+      <input
+        name="footer_center_text"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Footer Right Text
+      </label>
+      <input
+        name="footer_right_text"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Certificate Design
+      </label>
+      <input
+        name="certificate_design"
+        type="text"
+        value={certificate_name}
+        onChange={handleCategoryChange}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Student Photo
+      </label>
+      <div x-data="{ switcherToggle: false }">
+        <label
+          htmlFor="toggle2"
+          className="flex cursor-pointer select-none items-center"
+        >
+          <div className="relative">
+            <input
+              id="toggle2"
+              type="checkbox"
+              className="sr-only"
+              onChange={() => {
+                setEnabled(!enabled);
+              }}
+            />
+            <div className="h-5 w-14 rounded-full bg-meta-9 shadow-inner dark:bg-[#5A616B]"></div>
+            <div
+              className={`dot ${enabled && "!right-0 dark:!bg-white"} absolute -top-1 left-0 h-7 w-7 !translate-x-full rounded-full !bg-primary bg-white shadow-switch-1 transition`}
+            ></div>
           </div>
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        Background Image
+      </label>
+      <input
+        type="file"
+        className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+      />
+    </div>
+    
+    <div>
+      <button
+        type="button"
+        className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+        onClick={handleSubmit}
+      >
+        {isEditing ? "Update" : "Save"}
+      </button>
+    </div>
+  </div>
+</div>
+
         </div>
 
         <div className="flex flex-col gap-9">
