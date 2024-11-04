@@ -157,6 +157,12 @@ const StudentCategories = () => {
     onChangeRowsPerPage: handleRowsPerPageChange,
   };
 
+  const handleCancel = () => {
+    setCertificateName("");
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
@@ -322,7 +328,7 @@ const StudentCategories = () => {
       />
     </div>
     
-    <div>
+    <div className="flex gap-2">
       <button
         type="button"
         className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
@@ -330,6 +336,15 @@ const StudentCategories = () => {
       >
         {isEditing ? "Update" : "Save"}
       </button>
+      {isEditing && (
+    <button
+      type="button"
+      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+      onClick={handleCancel}
+    >
+      Cancel
+    </button>
+  )}
     </div>
   </div>
 </div>
