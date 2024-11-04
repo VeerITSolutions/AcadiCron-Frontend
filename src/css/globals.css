@@ -86,6 +86,20 @@ thead.MuiTableHead-root {
     padding-left: 12px !important;
 }
 
+@media (min-width: 1024px) {
+    .lg\:ml-72\.5 {
+      margin-left: 0px;
+    }
+  
+    .sidebarOpen {
+      width: 290px !important;
+    }
+  
+    .relative.flex.flex-1.flex-col.lg\:ml-72\.5 {
+      width: calc(100% - 290px);
+    }
+  }
+  
 
 
 @media (max-width: 320px){

@@ -1,6 +1,5 @@
-"use client";
-
-import { useState, useEffect } from "react";
+'use client'
+import React, { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import {
@@ -38,10 +37,7 @@ const GroupMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesGroupData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchStudentFeesGroupData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -76,6 +72,12 @@ const GroupMaster = () => {
       description,
       is_active,
     });
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    setFormData({ type: "", description: "", is_active: "no" });
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -183,14 +185,14 @@ const GroupMaster = () => {
     filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
-    selectableRows: "none", // Disable row selection
+    selectableRows: "none",
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
-    filter: false, // Disable filter
-    viewColumns: false, // Disable view columns button
+    filter: false,
+    viewColumns: false,
   };
 
   return (
@@ -213,7 +215,7 @@ const GroupMaster = () => {
                   type="text"
                   value={formData.type}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
 
@@ -226,21 +228,30 @@ const GroupMaster = () => {
                   type="text"
                   value={formData.description}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
 
-              <div>
+              <div className="flex gap-2">
                 <button
                   type="submit"
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent default form submission
+                    e.preventDefault(); 
                     handleSubmit();
                   }}
                 >
                   {isEditing ? "Update" : "Save"}
                 </button>
+                {isEditing && (
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -252,7 +263,7 @@ const GroupMaster = () => {
               title={"Fees Group List"}
               data={data}
               columns={columns}
-              // options={options}
+              options={options}
             />
           </ThemeProvider>
         </div>
