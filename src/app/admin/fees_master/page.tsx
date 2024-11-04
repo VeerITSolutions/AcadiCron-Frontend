@@ -64,12 +64,13 @@ const FeesMaster = () => {
     }
 
     try {
-      const result = await fetchStudentFeesGroupData(
+      const result = await fetchStudentFeesSeesionGroupData(
         currentPage + 1,
         rowsPerPage,
       );
 
       setFessGroupData(result.data);
+      console.log("datafeesgroupdata" ,datafeesgroupdata)
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -277,7 +278,7 @@ const FeesMaster = () => {
                     <option value="">Select</option>
                     {datafeesgroupdata.map((group :any) => (
                       <option key={group.id} value={group.id}>
-                        {group.name}
+                        {group.fees_group_name}
                       </option>
                     ))}
                   </select>

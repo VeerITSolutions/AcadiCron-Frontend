@@ -16,17 +16,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
-import styles from "./StudentCategories.module.css"; // Import CSS module
 
 const StudentCategories = () => {
   const [colorMode, setColorMode] = useColorMode();
@@ -37,21 +28,12 @@ const StudentCategories = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [category, setCategory] = useState<string>("");
-  const [categorynew, setCategorynew] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  // State for modal visibility
-  const [open, setOpen] = useState<boolean>(false);
-
-  /* const token = localStorage.getItem("authToken") || ""; */
-
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentCategoryData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchStudentCategoryData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -74,8 +56,7 @@ const StudentCategories = () => {
   const handleEdit = (id: number, categoryName: string) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setCategorynew(categoryName);
-    setOpen(true); // Open the modal
+    setCategory(categoryName); // Load the selected category name into the input
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -107,51 +88,38 @@ const StudentCategories = () => {
     setCategory(e.target.value);
   };
 
-  const handleEditCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategorynew(e.target.value);
-  };
-
   const handleSubmit = async () => {
     try {
-      const result = await createCategory(category);
-      if (result.success) {
-        toast.success("Category saved successfully");
-      } else {
-        toast.error("Failed to save category");
-      }
-      setCategory("");
-      setIsEditing(false);
-      setEditCategoryId(null);
-      setOpen(false); // Close the modal
-      fetchData(page, rowsPerPage); // Refresh data after submit
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  };
-
-  const handleEditSubmit = async () => {
-    try {
       if (isEditing && editCategoryId !== null) {
-        // Edit existing category
-        const result = await editStudentCategoryData(
-          editCategoryId,
-          categorynew,
-        );
+        // Editing an existing category
+        const result = await editStudentCategoryData(editCategoryId, category);
         if (result.success) {
           toast.success("Category updated successfully");
         } else {
           toast.error("Failed to update category");
         }
       } else {
+        // Creating a new category
+        const result = await createCategory(category);
+        if (result.success) {
+          toast.success("Category saved successfully");
+        } else {
+          toast.error("Failed to save category");
+        }
       }
       setCategory("");
       setIsEditing(false);
       setEditCategoryId(null);
-      setOpen(false); // Close the modal
-      fetchData(page, rowsPerPage); // Refresh data after submit
+      fetchData(page, rowsPerPage);
     } catch (error) {
       console.error("An error occurred", error);
     }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    setCategory(""); // Clear the input field
   };
 
   const handlePageChange = (newPage: number) => {
@@ -176,8 +144,8 @@ const StudentCategories = () => {
     rowsPerPage: rowsPerPage,
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
-    filter: false, // Disable filter,
-    viewColumns: false, // Disable view columns button
+    filter: false,
+    viewColumns: false,
   };
 
   return (
@@ -187,7 +155,7 @@ const StudentCategories = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Create Category
+                {isEditing ? "Edit Category" : "Create Category"}
               </h3>
             </div>
             <div className="flex flex-col gap-5.5 p-6.5">
@@ -204,14 +172,22 @@ const StudentCategories = () => {
                 />
               </div>
 
-              <div>
+              <div className="flex gap-4">
                 <button
                   type="submit"
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                   onClick={handleSubmit}
                 >
-                  Save
+                  {isEditing ? "Update" : "Save"}
                 </button>
+                {isEditing && (
+                  <button
+                    className="flex items-center gap-2 rounded bg-gray-500 px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -228,30 +204,6 @@ const StudentCategories = () => {
           </ThemeProvider>
         </div>
       </div>
-
-      {/* Edit Category Modal */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>
-          {isEditing ? "Edit Category" : "Create Category"}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="category"
-            label="Category"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={categorynew}
-            onChange={handleEditCategoryChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleEditSubmit}>Update</Button>
-        </DialogActions>
-      </Dialog>
     </DefaultLayout>
   );
 };
