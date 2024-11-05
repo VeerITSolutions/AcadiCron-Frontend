@@ -307,6 +307,24 @@ const FeesMaster = () => {
     viewColumns: false, // Disable view columns button
   };
 
+
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    setFormData({
+      fees_group: "",
+      fees_type: "",
+      due_date: "",
+      amount: "",
+      fine_type: "",
+      percentage: "",
+      description: "",
+      fine_amount: "",
+    });
+  };
+
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
@@ -378,13 +396,23 @@ const FeesMaster = () => {
                 ))}
               </div>
 
-              <div>
+              <div className="flex gap-2">
                 <button
                   type="submit"
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                 >
                   {isEditing ? "Update" : "Save"}
                 </button>
+
+                      {isEditing && (
+                      <button
+                      type="button"
+                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      onClick={handleCancel}
+                      >
+                      Cancel
+                      </button>
+                      )}
               </div>
             </div>
           </div>
