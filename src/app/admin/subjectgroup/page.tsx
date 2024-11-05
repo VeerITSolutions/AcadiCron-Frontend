@@ -74,6 +74,17 @@ const FeesMaster = () => {
     setFormData({ name, code, type, is_active });
   };
 
+  const handleCancel = () => {
+    setFormData({
+      name: "",
+      code: "",
+      type: "",
+      is_active: "",
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name,
@@ -306,13 +317,22 @@ const FeesMaster = () => {
                   />
                 </div>
 
-                <div>
+                <div className="flex gap-2">
                   <button
                     type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                   >
                     {isEditing ? "Update" : "Save"}
                   </button>
+                  {isEditing && (
+                      <button
+                        type="button"
+                        onClick={handleCancel} // Call the cancel function
+                        className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      >
+                        Cancel
+                      </button>
+                    )}
                 </div>
               </div>
             </form>

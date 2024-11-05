@@ -81,6 +81,15 @@ const FeesMaster = () => {
     });
   };
 
+  const handleCancel = () => {
+    setFormData({
+      fees_group: "",
+      section_name: "",
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.section,
@@ -206,13 +215,22 @@ const FeesMaster = () => {
                   />
                 </div>
 
-                <div>
+                <div className="flex gap-2">
                   <button
                     type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                   >
                     {isEditing ? "Update" : "Save"}
                   </button>
+                  {isEditing && ( // Only show cancel button while editing
+                  <button
+                    type="button"
+                    onClick={handleCancel} // Call the cancel function
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
+                    Cancel
+                  </button>
+                )}
                 </div>
               </div>
             </form>
