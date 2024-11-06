@@ -9,12 +9,12 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchSubjectData,
-  createSubject,
-  deleteSubject,
-  editSubject,
+  fetchSubjectGroupData,
+  createSubjectGroup,
+  deleteSubjectGroup,
+  editSubjectGroup,
   
-} from "@/services/subjectsService";
+} from "@/services/subjectGroupService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -32,9 +32,7 @@ const FeesMaster = () => {
 
   const [formData, setFormData] = useState({
     name: "",
-    code: "",
-    type: "",
-    is_active: "",
+    description: "",
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -47,7 +45,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectData(currentPage + 1, rowsPerPage);
+      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setData(formatSubjectData(result.data));
       setLoading(false);
@@ -59,7 +57,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubject(id);
+      await deleteSubjectGroup(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -68,18 +66,26 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (id: number, name: string, code: string, type: string, is_active: string) => {
+  const handleEdit = (
+    id: number,
+    name: string,
+    description: string,
+   
+  ) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setFormData({ name, code, type, is_active });
+
+    setFormData({
+      name,
+      description,
+    });
   };
 
   const handleCancel = () => {
     setFormData({
       name: "",
-      code: "",
-      type: "",
-      is_active: "",
+      description: "",
+     
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -90,7 +96,7 @@ const FeesMaster = () => {
       subject.name,
       subject.description || "N/A",
       <div key={subject.id}>
-        <IconButton onClick={() => handleEdit(subject.id, subject.name, subject.code, subject.type, subject.is_active)} aria-label="edit">
+        <IconButton onClick={() => handleEdit(subject.id, subject.name, subject.description)} aria-label="edit">
           <Edit />
         </IconButton>
         <IconButton onClick={() => handleDelete(subject.id)} aria-label="delete">
@@ -106,32 +112,29 @@ const FeesMaster = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
-
+  
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubject(
+        const result = await editSubjectGroup(
           editCategoryId,
           formData.name,
-          formData.code,
-          formData.type,
-          formData.is_active,
-         
+          formData.description,
         );
         if (result.success) {
-          toast.success("Subject updated successfully");
+          toast.success("Subject group updated successfully");
         } else {
-          toast.error("Failed to update subject");
+          toast.error("Failed to update subject group");
         }
       } else {
-        const result = await createSubject(
+        const result = await createSubjectGroup(
           formData.name,
-          formData.code,
-          formData.type,
-          formData.is_active,
-         
+          formData.description,
         );
         if (result.success) {
           toast.success("Subject group created successfully");
@@ -139,14 +142,10 @@ const FeesMaster = () => {
           toast.error("Failed to create subject group");
         }
       }
-
       // Reset form after successful action
       setFormData({
         name: "",
-        code: "",
-        type: "",
-        is_active: "",
-        
+        description: "",
       });
 
       setIsEditing(false);
@@ -311,8 +310,8 @@ const FeesMaster = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="code"
-                    value={formData.code}
+                    name="description"
+                    value={formData.description}
                     onChange={handleInputChange}
                   />
                 </div>
