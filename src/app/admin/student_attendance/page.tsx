@@ -32,6 +32,7 @@ const columns = [
             {["Present", "Late", "Absent", "Halfday"].map((status) => (
               <label key={status} className="flex items-center gap-1">
                 <input
+                className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
                   type="radio"
                   name={`attendance-${rowIndex}`}
                   value={status}
@@ -56,7 +57,7 @@ const columns = [
             type="text"
             value={value || ""} // Use the note if available or empty string
             onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full p-1 border rounded"
+            className="w-full p-1 border rounded dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
           />
         );
       }
