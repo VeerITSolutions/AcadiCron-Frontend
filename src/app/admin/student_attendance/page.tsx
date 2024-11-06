@@ -12,31 +12,69 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import { toast } from "react-toastify";
-const columns = ["Admission No", "Roll Number", "Name", "Attendance", "Note"];
 
+// Define columns, including a custom render for "Attendance"
+const columns = [
+  "Admission No", 
+  "Roll Number", 
+  "Name", 
+  {
+    name: "Attendance", 
+    options: {
+      customBodyRender: (value: string, tableMeta: any, updateData: (value: string) => void) => {
+        const { rowIndex } = tableMeta;
+        const attendance = value || "Present"; // Default value is "Present"
+        return (
+          <div className="flex gap-2">
+            {["Present", "Late", "Absent", "Halfday"].map((status) => (
+              <label key={status} className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  name={`attendance-${rowIndex}`}
+                  value={status}
+                  checked={attendance === status}
+                  onChange={() => updateData(status)} // Update the attendance when radio button is clicked
+                />
+                {status}
+              </label>
+            ))}
+          </div>
+        );
+      }
+    }
+  },
+  "Note"
+];
+
+// Define options for MUIDataTable
 const options = {
-  filterType: "checkbox",
-  serverSide: true,
+  filter: false,
+  search: false,
+  pagination: false,
+  sort: false,
+  selectableRows: "none",
+  download: false,
+  print: false,
+  viewColumns: false,
   responsive: "standard",
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
+  customToolbar: () => (
+    <div className="flex gap-2 justify-end">
+      <button
+        className="rounded bg-primary px-5 py-2 font-medium text-white hover:bg-opacity-80"
+        onClick={() => console.log("Mark As Holiday clicked")}
+      >
+        Mark As Holiday
+      </button>
+      <button
+        className="rounded bg-primary px-5 py-2 font-medium text-white hover:bg-opacity-80"
+        onClick={() => console.log("Save Attendance clicked")}
+      >
+        Save Attendance
+      </button>
+    </div>
+  ),
 };
 
 const StudentDetails = () => {
@@ -46,28 +84,27 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
   const [keyword, setKeyword] = useState<string>("");
+
   const router = useRouter();
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [colorMode, setColorMode] = useColorMode();
 
+  // Function to format the student data, with a default attendance value
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      "Present", // Default attendance to "Present"
+      student.note || "",
     ]);
   };
 
+  // Function to fetch student data
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -92,17 +129,6 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
-
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
@@ -126,7 +152,6 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
-  //
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
     setPage(0);
@@ -136,6 +161,7 @@ const StudentDetails = () => {
     setSelectedSection(event.target.value);
     setPage(0);
   };
+
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
@@ -146,12 +172,12 @@ const StudentDetails = () => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
 
+  // Fetch classes and sections from the service
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
 
-      // Fetch sections if a class is selected
       if (selectedClass) {
         const sectionsResult = await fetchsectionByClassData(selectedClass);
         setSections(sectionsResult.data);
@@ -192,7 +218,7 @@ const StudentDetails = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              disabled={!selectedClass}
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -219,13 +245,10 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
-          title={" Student List "}
+          title={"Student List"}
           data={data}
           columns={columns}
           options={{
