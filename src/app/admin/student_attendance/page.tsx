@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 
 // Define columns, including a custom render for "Attendance"
 const columns = [
+  "#",
   "Admission No", 
   "Roll Number", 
   "Name", 
@@ -45,7 +46,22 @@ const columns = [
       }
     }
   },
-  "Note"
+  {
+    name: "Note",
+    options: {
+      customBodyRender: (value: string, tableMeta: any, updateData: (value: string) => void) => {
+        const { rowIndex } = tableMeta;
+        return (
+          <input
+            type="text"
+            value={value || ""} // Use the note if available or empty string
+            onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
+            className="w-full p-1 border rounded"
+          />
+        );
+      }
+    }
+  }
 ];
 
 // Define options for MUIDataTable
