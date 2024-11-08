@@ -84,13 +84,13 @@ const StudentDetails = () => {
 
       student.mobileno,
       <div key={student.id}>
-        <IconButton
+        <button
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
-          className="btn btn primary"
+          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
         >
           Collect Fees
-        </IconButton>
+        </button>
       </div>,
     ]);
   };
@@ -253,7 +253,7 @@ const StudentDetails = () => {
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
-          title={"Student Details"}
+          title={"Student List"}
           data={data}
           columns={columns}
           options={{

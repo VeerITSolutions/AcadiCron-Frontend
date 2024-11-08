@@ -86,6 +86,16 @@ thead.MuiTableHead-root {
     padding-left: 12px !important;
 }
 
+.css-1qmdl2m-MuiTableCell-root {
+  text-align: left !important;
+}
+
+.css-hd79m-MuiButtonBase-root-MuiButton-root {
+  padding: 10px 0px !important;
+  justify-content: left !important;
+
+}
+
 @media (min-width: 1024px) {
     .lg\:ml-72\.5 {
       margin-left: 0px;

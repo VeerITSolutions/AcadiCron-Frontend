@@ -67,7 +67,7 @@ const StudentDetails = () => {
               <div className="field">
                 <table className="divide-gray-200 min-w-full divide-y">
                   <thead className="bg-gray-50">
-                    <tr>
+                  <tr>
                       <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         Action
                       </th>
@@ -108,11 +108,11 @@ const StudentDetails = () => {
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">
-                          <input
+                        <input
                             type="number"
                             name="days2"
                             defaultValue={section.day}
-                            className="form-input border-gray-300 mt-1 block w-full rounded-md shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+                            className="form-input border-gray-300 mt-1 block w-full rounded-md shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none bg-[#F1F5F9]"
                           />
                         </td>
                       </tr>
