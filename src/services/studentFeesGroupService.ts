@@ -30,8 +30,8 @@ export const deleteFeesGroupData = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editFeesGroupData = async (id: number, type: string, description: string) => {
-  const data = { type, description }; // Create an object with the name field
+export const editFeesGroupData = async (id: number, name: string, description: string) => {
+  const data = { name, description }; // Create an object with the name field
   const response = await apiClient.put(`/fees-group/${id}`, data);
   return response.data;
 };

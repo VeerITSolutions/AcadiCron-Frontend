@@ -27,7 +27,7 @@ const GroupMaster = () => {
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
-    type: "",
+    name: "",
     description: "",
     is_active: "no",
   });
@@ -60,7 +60,7 @@ const GroupMaster = () => {
 
   const handleEdit = (
     id: number,
-    type: string,
+    name: string,
     description: string,
     is_active: string,
   ) => {
@@ -68,7 +68,7 @@ const GroupMaster = () => {
     setEditCategoryId(id);
 
     setFormData({
-      type,
+      name,
       description,
       is_active,
     });
@@ -77,19 +77,19 @@ const GroupMaster = () => {
   const handleCancel = () => {
     setIsEditing(false);
     setEditCategoryId(null);
-    setFormData({ type: "", description: "", is_active: "no" });
+    setFormData({ name: "", description: "", is_active: "no" });
   };
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.type || "N/A",
+      student.name || "N/A",
       student.description || "N/A",
       <div key={student.id}>
         <IconButton
           onClick={() =>
             handleEdit(
               student.id,
-              student.type,
+              student.name,
               student.description,
               student.is_active,
             )
@@ -127,11 +127,11 @@ const GroupMaster = () => {
       if (isEditing && editCategoryId !== null) {
         result = await editFeesGroupData(
           editCategoryId,
-          formData.type,
+          formData.name,
           formData.description,
         );
       } else {
-        result = await createFeesGroup(formData.type, formData.description);
+        result = await createFeesGroup(formData.name, formData.description);
       }
 
       if (result.success) {
@@ -141,7 +141,7 @@ const GroupMaster = () => {
             : "Fees group saved successfully",
         );
         setFormData({
-          type: "",
+          name: "",
           description: "",
           is_active: "1",
         });
@@ -154,8 +154,8 @@ const GroupMaster = () => {
 
         toast.error(errorMessage);
 
-        if (errors.type) {
-          toast.error(`Type: ${errors.type.join(", ")}`);
+        if (errors.name) {
+          toast.error(`name: ${errors.name.join(", ")}`);
         }
 
         if (errors.description) {
@@ -211,9 +211,9 @@ const GroupMaster = () => {
                   Name
                 </label>
                 <input
-                  name="type"
+                  name="name"
                   type="text"
-                  value={formData.type}
+                  value={formData.name}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
