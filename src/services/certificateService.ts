@@ -11,9 +11,9 @@ export const fetchCertificateData = async (page?: number, perPage?: number) => {
 };
 
 
-export const createCertificate = async (certificate_name: string): Promise<any> => {
+export const createCertificate = async (certificate_name: string, certificate_text: String, left_header: string, center_header: string, right_header:string, left_footer: string, center_footer: string, background_image: string ): Promise<any> => {
   try {
-    const response = await apiClient.post("/certificate", { certificate_name });
+    const response = await apiClient.post("/certificate", { certificate_name, certificate_text, left_header, center_header, right_header, left_footer, center_footer, background_image });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -30,8 +30,8 @@ export const deleteCertificateData = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editCertificateData = async (id: number, certificate_name: string) => {
-  const data = { certificate_name }; // Create an object with the name field
+export const editCertificateData = async (id: number, certificate_name: string, certificate_text: String, left_header: string, center_header: string, right_header:string, left_footer: string, center_footer: string, background_image: string ) => {
+  const data = { certificate_name, certificate_text, left_header, center_header, right_header, left_footer, center_footer, background_image }; // Create an object with the name field
   const response = await apiClient.put(`/certificate/${id}`, data);
   return response.data;
 };
