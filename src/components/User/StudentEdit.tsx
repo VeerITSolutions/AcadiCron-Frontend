@@ -6,7 +6,10 @@ import {
 } from "@/services/sectionsService";
 import { getClasses } from "@/services/classesService";
 import styles from "./User.module.css";
-import { createStudent } from "@/services/studentService";
+import {
+  createStudent,
+  fetchStudentSingleData,
+} from "@/services/studentService";
 
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
@@ -159,6 +162,15 @@ const User = () => {
   useEffect(() => {
     fetchClassesAndSections();
   }, [selectedClass]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        fetchStudentSingleData(id);
+      }
+    }
+  }, []);
 
   return (
     <div className="student_admission_form ">

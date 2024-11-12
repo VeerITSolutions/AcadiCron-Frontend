@@ -15,6 +15,15 @@ export const fetchStudentData = async (page: number, perPage: number,selectedCla
   return response.data;
 };
 
+export const fetchStudentSingleData = async (id: string) => {
+  const response = await apiClient.get(`/admin/dtstudentlist/${id}`, {
+    params: {
+      id
+    },
+  });
+  return response.data;
+};
+
 
 // Delete a student category by ID
 export const deleteStudent = async (id: number) => {
