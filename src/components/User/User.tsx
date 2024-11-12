@@ -80,6 +80,7 @@ const User = () => {
     app_key: "",
     parent_app_key: "",
     disable_at: "",
+    section_id: "",
     // Add other initial fields as needed
   });
 
@@ -101,7 +102,9 @@ const User = () => {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -211,7 +214,7 @@ const User = () => {
                 Section:
               </label>
               <select
-                value={selectedSection || ""}
+                value={formData.section_id}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 disabled={!selectedClass} // Disable section dropdown if no class is selected
@@ -231,6 +234,7 @@ const User = () => {
               <input
                 id="firstname"
                 name="firstname"
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -243,6 +247,7 @@ const User = () => {
               <input
                 id="lastname"
                 name="lastname"
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -255,6 +260,8 @@ const User = () => {
               <select
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 name="gender"
+                value={formData.class_id}
+                onChange={handleInputChange}
               >
                 <option value="">Select</option>
 
@@ -270,6 +277,8 @@ const User = () => {
               <input
                 id="dob"
                 name="dob"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -282,6 +291,8 @@ const User = () => {
               <select
                 id="category_id"
                 name="category_id"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -303,6 +314,8 @@ const User = () => {
               <input
                 id="religion"
                 name="religion"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -315,6 +328,8 @@ const User = () => {
               <input
                 id="cast"
                 name="cast"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -327,6 +342,8 @@ const User = () => {
               <input
                 id="mobileno"
                 name="mobileno"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -339,8 +356,10 @@ const User = () => {
               <input
                 id="email"
                 name="email"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
-                type="text"
+                type="email"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -351,10 +370,11 @@ const User = () => {
               <input
                 id="admission_date"
                 name="admission_date"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                value="23-08-2024"
               />
             </div>
             <div className="field">
@@ -377,6 +397,8 @@ const User = () => {
               <select
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 name="blood_group"
+                value={formData.dob}
+                onChange={handleInputChange}
               >
                 <option value="">Select</option>
                 <option value="A+">A+</option>
@@ -401,6 +423,8 @@ const User = () => {
               <select
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 name="house"
+                value={formData.dob}
+                onChange={handleInputChange}
               >
                 <option value="">Select</option>
                 <option value="1">Red</option>
@@ -419,6 +443,8 @@ const User = () => {
               <input
                 type="text"
                 name="height"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -429,6 +455,8 @@ const User = () => {
               <input
                 type="text"
                 name="weight"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -439,8 +467,9 @@ const User = () => {
               <input
                 type="text"
                 id="measure_date"
-                value="23-08-2024"
                 name="measure_date"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -451,6 +480,8 @@ const User = () => {
               <select
                 id="sibiling_class_id"
                 name="sibiling_class_id"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -476,6 +507,8 @@ const User = () => {
               <select
                 id="sibiling_section_id"
                 name="sibiling_section_id"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -488,6 +521,8 @@ const User = () => {
               <select
                 id="sibiling_student_id"
                 name="sibiling_student_id"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -501,6 +536,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][4]"
                 name="custom_fields[students][4]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -512,6 +549,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][3]"
                 name="custom_fields[students][3]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -523,6 +562,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][21]"
                 name="custom_fields[students][21]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -534,6 +575,8 @@ const User = () => {
                 type="number"
                 id="custom_fields[students][20]"
                 name="custom_fields[students][20]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -545,6 +588,8 @@ const User = () => {
                 type="number"
                 id="custom_fields[students][1]"
                 name="custom_fields[students][1]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -556,6 +601,8 @@ const User = () => {
                 type="number"
                 id="custom_fields[students][19]"
                 name="custom_fields[students][19]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -567,6 +614,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][2]"
                 name="custom_fields[students][2]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -578,6 +627,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][5]"
                 name="custom_fields[students][5]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -589,6 +640,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][6]"
                 name="custom_fields[students][6]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -600,6 +653,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][7]"
                 name="custom_fields[students][7]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -610,6 +665,8 @@ const User = () => {
               <select
                 id="sibiling_class_id"
                 name="sibiling_class_id"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -625,6 +682,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][9]"
                 name="custom_fields[students][9]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -636,6 +695,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][10]"
                 name="custom_fields[students][10]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -647,6 +708,8 @@ const User = () => {
                 type="number"
                 id="custom_fields[students][11]"
                 name="custom_fields[students][11]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -658,6 +721,8 @@ const User = () => {
                 type="number"
                 id="custom_fields[students][12]"
                 name="custom_fields[students][12]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -669,6 +734,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][13]"
                 name="custom_fields[students][13]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -680,6 +747,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][14]"
                 name="custom_fields[students][14]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -691,6 +760,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][15]"
                 name="custom_fields[students][15]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -702,6 +773,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][16]"
                 name="custom_fields[students][16]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -713,6 +786,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][17]"
                 name="custom_fields[students][17]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -724,6 +799,8 @@ const User = () => {
                 type="text"
                 id="custom_fields[students][18]"
                 name="custom_fields[students][18]"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -743,6 +820,8 @@ const User = () => {
               <input
                 id="father_name"
                 name="father_name"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -755,6 +834,8 @@ const User = () => {
               <input
                 id="father_phone"
                 name="father_phone"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -767,6 +848,8 @@ const User = () => {
               <input
                 id="father_occupation"
                 name="father_occupation"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -779,7 +862,9 @@ const User = () => {
               <input
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
-                name="father_pic"
+                accept="image/*,video/*"
+                name="father_pic" // Optional: Include name for form data
+                onChange={handleFileChange} // Handle file change separately
                 id="file"
               />
             </div>
@@ -790,6 +875,8 @@ const User = () => {
               <input
                 id="mother_name"
                 name="mother_name"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -802,6 +889,8 @@ const User = () => {
               <input
                 id="mother_phone"
                 name="mother_phone"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -814,6 +903,8 @@ const User = () => {
               <input
                 id="mother_occupation"
                 name="mother_occupation"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -826,7 +917,9 @@ const User = () => {
               <input
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
-                name="mother_pic"
+                accept="image/*,video/*"
+                name="mother_pic" // Optional: Include name for form data
+                onChange={handleFileChange} // Handle file change separately
                 id="file"
               />
             </div>
@@ -840,7 +933,8 @@ const User = () => {
                   type="radio"
                   className={` ${styles["radio"]}`}
                   name="guardian_is"
-                  value="father"
+                  value={formData.dob}
+                  onChange={handleInputChange}
                 />{" "}
                 Father{" "}
               </label>
@@ -849,7 +943,8 @@ const User = () => {
                   type="radio"
                   className={` ${styles["radio"]}`}
                   name="guardian_is"
-                  value="mother"
+                  value={formData.dob}
+                  onChange={handleInputChange}
                 />{" "}
                 Mother{" "}
               </label>
@@ -858,7 +953,8 @@ const User = () => {
                   type="radio"
                   className={` ${styles["radio"]}`}
                   name="guardian_is"
-                  value="other"
+                  value={formData.dob}
+                  onChange={handleInputChange}
                 />{" "}
                 Other{" "}
               </label>
@@ -871,6 +967,8 @@ const User = () => {
               <input
                 id="guardian_name"
                 name="guardian_name"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -883,6 +981,8 @@ const User = () => {
               <input
                 id="guardian_relation"
                 name="guardian_relation"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -895,6 +995,8 @@ const User = () => {
               <input
                 id="guardian_email"
                 name="guardian_email"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -908,6 +1010,8 @@ const User = () => {
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
                 name="guardian_pic"
+                value={formData.dob}
+                onChange={handleInputChange}
                 id="file"
               />
             </div>
@@ -918,6 +1022,8 @@ const User = () => {
               <input
                 id="guardian_phone"
                 name="guardian_phone"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -930,6 +1036,8 @@ const User = () => {
               <input
                 id="guardian_occupation"
                 name="guardian_occupation"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -942,6 +1050,8 @@ const User = () => {
               <textarea
                 id="guardian_address"
                 name="guardian_address"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
               ></textarea>
@@ -961,6 +1071,8 @@ const User = () => {
                   type="checkbox"
                   className={`${styles["checkbox"]}`}
                   id="autofill_current_address"
+                  value={formData.dob}
+                  onChange={handleInputChange}
                 />
                 If Guardian Address is Current Address
               </label>
@@ -970,6 +1082,8 @@ const User = () => {
                 <input
                   type="checkbox"
                   className={`${styles["checkbox"]}`}
+                  value={formData.dob}
+                  onChange={handleInputChange}
                   id="autofill_address"
                 />
                 If Permanent Address is Current Address
@@ -982,6 +1096,8 @@ const User = () => {
               <textarea
                 id="current_address"
                 name="current_address"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
               ></textarea>
@@ -993,6 +1109,8 @@ const User = () => {
               <textarea
                 id="permanent_address"
                 name="permanent_address"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
               ></textarea>
@@ -1013,6 +1131,8 @@ const User = () => {
               <input
                 id="bank_account_no"
                 name="bank_account_no"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -1025,6 +1145,8 @@ const User = () => {
               <input
                 id="bank_name"
                 name="bank_name"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -1037,6 +1159,8 @@ const User = () => {
               <input
                 id="ifsc_code"
                 name="ifsc_code"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -1049,6 +1173,8 @@ const User = () => {
               <input
                 id="adhar_no"
                 name="adhar_no"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -1061,6 +1187,8 @@ const User = () => {
               <input
                 id="samagra_id"
                 name="samagra_id"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder=""
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -1077,6 +1205,8 @@ const User = () => {
                     type="radio"
                     name="rte"
                     value="Yes"
+                    checked={formData.rte === "Yes"} // Check if 'Yes' is selected
+                    onChange={handleInputChange}
                   />
                   Yes
                 </label>
@@ -1086,6 +1216,8 @@ const User = () => {
                     type="radio"
                     name="rte"
                     value="No"
+                    checked={formData.rte === "No"} // Check if 'No' is selected
+                    onChange={handleInputChange}
                   />
                   No
                 </label>
@@ -1099,6 +1231,8 @@ const User = () => {
                 className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 placeholder=""
                 name="previous_school"
+                value={formData.dob}
+                onChange={handleInputChange}
               ></textarea>
             </div>
             <div className="field">
@@ -1109,6 +1243,8 @@ const User = () => {
                 className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 placeholder=""
                 name="note"
+                value={formData.dob}
+                onChange={handleInputChange}
               ></textarea>
             </div>
           </div>
@@ -1127,14 +1263,17 @@ const User = () => {
               <input
                 id="title1"
                 name="first_title"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder="Enter title"
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                value=""
               />
               <input
                 id="file1"
                 name="first_doc"
+                value={formData.dob}
+                onChange={handleInputChange}
                 type="file"
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
               />
@@ -1147,10 +1286,11 @@ const User = () => {
               <input
                 id="title2"
                 name="second_title"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder="Enter title"
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                value=""
               />
               <input
                 id="file2"
@@ -1170,12 +1310,15 @@ const User = () => {
                 placeholder="Enter title"
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                value=""
+                value={formData.dob}
+                onChange={handleInputChange}
               />
               <input
                 id="file3"
                 name="third_doc"
                 type="file"
+                value={formData.dob}
+                onChange={handleInputChange}
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
               />
             </div>
@@ -1187,10 +1330,11 @@ const User = () => {
               <input
                 id="title4"
                 name="fourth_title"
+                value={formData.dob}
+                onChange={handleInputChange}
                 placeholder="Enter title"
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                value=""
               />
               <input
                 id="file4"
