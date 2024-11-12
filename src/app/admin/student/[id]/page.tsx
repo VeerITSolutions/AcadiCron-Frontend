@@ -197,20 +197,23 @@ const StudentDetails = () => {
                 <span className="text-aqua">{formData.admission_no}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>Roll Number</b> <span className="text-aqua"></span>
+                <b>Roll Number</b>{" "}
+                <span className="text-aqua"> {formData.roll_no}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Class</b>{" "}
-                <span className="text-aqua">Class 2 (2024-25)</span>
+                <span className="text-aqua">{formData.class_id} (2024-25)</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>Section</b> <span className="text-aqua">Bright</span>
+                <b>Section</b>{" "}
+                <span className="text-aqua">{formData.section_id}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>RTE</b> <span className="text-aqua">No</span>
+                <b>RTE</b> <span className="text-aqua">{formData.rte}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>Gender</b> <span className="text-aqua">Female</span>
+                <b>Gender</b>{" "}
+                <span className="text-aqua">{formData.gender}</span>
               </li>
             </ul>
           </div>
