@@ -22,8 +22,64 @@ const User = () => {
 
   // State to hold all form inputs as a single object
   const [formData, setFormData] = useState<Record<string, any>>({
+    parent_id: "",
     admission_no: "",
-    roll_number: "",
+    roll_no: "",
+    admission_date: "",
+    firstname: "",
+    middlename: "",
+    lastname: "",
+    rte: "",
+    image: "",
+    mobileno: "",
+    email: "",
+    state: "",
+    city: "",
+    pincode: "",
+    religion: "",
+    cast: "",
+    dob: "",
+    gender: "",
+    current_address: "",
+    permanent_address: "",
+    category_id: "",
+    route_id: "",
+    school_house_id: "",
+    blood_group: "",
+    vehroute_id: "",
+    hostel_room_id: "",
+    adhar_no: "",
+    samagra_id: "",
+    bank_account_no: "",
+    bank_name: "",
+    ifsc_code: "",
+    guardian_is: "",
+    father_name: "",
+    father_phone: "",
+    father_occupation: "",
+    mother_name: "",
+    mother_phone: "",
+    mother_occupation: "",
+    guardian_name: "",
+    guardian_relation: "",
+    guardian_phone: "",
+    guardian_occupation: "",
+    guardian_address: "",
+    guardian_email: "",
+    father_pic: "",
+    mother_pic: "",
+    guardian_pic: "",
+    is_active: "",
+    previous_school: "",
+    height: "",
+    weight: "",
+    measurement_date: "",
+    dis_reason: "",
+    note: "",
+    dis_note: "",
+    app_key: "",
+    parent_app_key: "",
+    disable_at: "",
     // Add other initial fields as needed
   });
 
@@ -105,8 +161,8 @@ const User = () => {
           </label>
           <input
             type="text"
-            name="roll_number"
-            value={formData.roll_number}
+            name="roll_no"
+            value={formData.roll_no}
             onChange={handleInputChange}
             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
           />
