@@ -263,7 +263,7 @@ const User = () => {
               <select
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 name="gender"
-                value={formData.class_id}
+                value={formData.gender}
                 onChange={handleInputChange}
               >
                 <option value="">Select</option>
@@ -294,7 +294,7 @@ const User = () => {
               <select
                 id="category_id"
                 name="category_id"
-                value={formData.dob}
+                value={formData.category_id}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
@@ -317,7 +317,7 @@ const User = () => {
               <input
                 id="religion"
                 name="religion"
-                value={formData.dob}
+                value={formData.religion}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -331,7 +331,7 @@ const User = () => {
               <input
                 id="cast"
                 name="cast"
-                value={formData.dob}
+                value={formData.cast}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -345,7 +345,7 @@ const User = () => {
               <input
                 id="mobileno"
                 name="mobileno"
-                value={formData.dob}
+                value={formData.mobileno}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -359,7 +359,7 @@ const User = () => {
               <input
                 id="email"
                 name="email"
-                value={formData.dob}
+                value={formData.email}
                 onChange={handleInputChange}
                 placeholder=""
                 type="email"
@@ -373,7 +373,7 @@ const User = () => {
               <input
                 id="admission_date"
                 name="admission_date"
-                value={formData.dob}
+                value={formData.admission_date}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -400,7 +400,7 @@ const User = () => {
               <select
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 name="blood_group"
-                value={formData.dob}
+                value={formData.blood_group}
                 onChange={handleInputChange}
               >
                 <option value="">Select</option>
@@ -425,8 +425,8 @@ const User = () => {
               </label>
               <select
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                name="house"
-                value={formData.dob}
+                name="school_house_id"
+                value={formData.school_house_id}
                 onChange={handleInputChange}
               >
                 <option value="">Select</option>
@@ -446,7 +446,7 @@ const User = () => {
               <input
                 type="text"
                 name="height"
-                value={formData.dob}
+                value={formData.height}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -458,7 +458,7 @@ const User = () => {
               <input
                 type="text"
                 name="weight"
-                value={formData.dob}
+                value={formData.weight}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -469,9 +469,9 @@ const User = () => {
               </label>
               <input
                 type="text"
-                id="measure_date"
-                name="measure_date"
-                value={formData.dob}
+                id="measurement_date"
+                name="measurement_date"
+                value={formData.measurement_date}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
