@@ -823,7 +823,7 @@ const User = () => {
               <input
                 id="father_name"
                 name="father_name"
-                value={formData.dob}
+                value={formData.father_name}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -837,7 +837,7 @@ const User = () => {
               <input
                 id="father_phone"
                 name="father_phone"
-                value={formData.dob}
+                value={formData.father_phone}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -851,7 +851,7 @@ const User = () => {
               <input
                 id="father_occupation"
                 name="father_occupation"
-                value={formData.dob}
+                value={formData.father_occupation}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -876,12 +876,11 @@ const User = () => {
                 Mother Name
               </label>
               <input
-                id="mother_name"
-                name="mother_name"
-                value={formData.dob}
-                onChange={handleInputChange}
-                placeholder=""
-                type="text"
+                id="mother_pic"
+                type="file"
+                accept="image/*,video/*"
+                name="mother_pic" // Optional: Include name for form data
+                onChange={handleFileChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -892,7 +891,7 @@ const User = () => {
               <input
                 id="mother_phone"
                 name="mother_phone"
-                value={formData.dob}
+                value={formData.mother_phone}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -906,7 +905,7 @@ const User = () => {
               <input
                 id="mother_occupation"
                 name="mother_occupation"
-                value={formData.dob}
+                value={formData.mother_occupation}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
