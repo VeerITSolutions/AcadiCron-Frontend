@@ -117,7 +117,7 @@ const User = () => {
       // You can directly update the file in your form data
       setFormData((prevData) => ({
         ...prevData,
-        studentPhoto: file, // Store the file in formData
+        image: file, // Store the file in formData
       }));
     }
   };
@@ -364,7 +364,7 @@ const User = () => {
               <input
                 type="file"
                 accept="image/*,video/*"
-                name="studentPhoto" // Optional: Include name for form data
+                name="image" // Optional: Include name for form data
                 onChange={handleFileChange} // Handle file change separately
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
