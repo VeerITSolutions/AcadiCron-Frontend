@@ -214,6 +214,7 @@ const User = () => {
                 Section:
               </label>
               <select
+                name="section_id"
                 value={formData.section_id}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -234,6 +235,7 @@ const User = () => {
               <input
                 id="firstname"
                 name="firstname"
+                value={formData.firstname}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -247,6 +249,7 @@ const User = () => {
               <input
                 id="lastname"
                 name="lastname"
+                value={formData.lastname}
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
@@ -280,7 +283,7 @@ const User = () => {
                 value={formData.dob}
                 onChange={handleInputChange}
                 placeholder=""
-                type="text"
+                type="date"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
