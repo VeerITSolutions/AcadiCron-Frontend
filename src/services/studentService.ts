@@ -16,7 +16,7 @@ export const fetchStudentData = async (page: number, perPage: number,selectedCla
 };
 
 export const fetchStudentSingleData = async (id: string) => {
-  const response = await apiClient.get(`/admin/dtstudentlist/${id}`, {
+  const response = await apiClient.get(`/admin/dtstudentlist`, {
     params: {
       id
     },
