@@ -6,6 +6,7 @@ import {
 } from "@/services/sectionsService";
 import { getClasses } from "@/services/classesService";
 import styles from "./User.module.css";
+import { createStudent } from "@/services/studentService";
 
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
@@ -60,14 +61,14 @@ const User = () => {
         section_id: selectedSection,
       };
 
-      const response = await apiClient.post("/your-api-endpoint", data);
+      const response = await createStudent(data);
 
       if (response.status === 200) {
         alert("Data saved successfully");
       } else {
         alert("Error saving data");
       }
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message);
     } finally {
       setLoading(false);
