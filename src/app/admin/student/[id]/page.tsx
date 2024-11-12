@@ -272,7 +272,7 @@ const StudentDetails = () => {
                                 Admission Date
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 col-md-5 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                05-06-2023
+                                {formData.admission_date}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -280,7 +280,7 @@ const StudentDetails = () => {
                                 Date of Birth
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                23-11-2017
+                                {formData.dob}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -288,7 +288,7 @@ const StudentDetails = () => {
                                 Category
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Open
+                                {formData.category_id}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -296,7 +296,7 @@ const StudentDetails = () => {
                                 Mobile Number
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                9970521533
+                                {formData.mobileno}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -304,7 +304,7 @@ const StudentDetails = () => {
                                 Caste
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Brahmin
+                                {formData.cast}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -312,14 +312,16 @@ const StudentDetails = () => {
                                 Religion
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Hindu
+                                {formData.religion}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                 Email
                               </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
+                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                {formData.email}
+                              </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
@@ -381,12 +383,12 @@ const StudentDetails = () => {
                                   Current Address
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  Bhagwan Nagar, Nagpur
+                                  {formData.current_address}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Permanent Address
+                                  {formData.permanent_address}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
                               </tr>
@@ -411,7 +413,7 @@ const StudentDetails = () => {
                                   Father Name
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  Sameer Dani
+                                  {formData.father_name}
                                 </td>
                                 <td className="px-6 py-4">
                                   <img
@@ -426,21 +428,23 @@ const StudentDetails = () => {
                                   Father Phone
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  9970521533
+                                  {formData.father_phone}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Father Occupation
                                 </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.father_occupation}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Mother Name
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  Sheetal S. Dani
+                                  {formData.mother_name}
                                 </td>
                                 <td className="px-6 py-4">
                                   <img
@@ -455,21 +459,23 @@ const StudentDetails = () => {
                                   Mother Phone
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  9922964043
+                                  {formData.mother_phone}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Mother Occupation
                                 </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.mother_occupation}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Guardian Name
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  Sameer Dani
+                                  {formData.guardian_name}
                                 </td>
                                 <td className="px-6 py-4">
                                   <img
@@ -483,14 +489,16 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Guardian Email
                                 </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.guardian_email}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Guardian Relation
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  Father
+                                  {formData.guardian_relation}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -498,20 +506,24 @@ const StudentDetails = () => {
                                   Guardian Phone
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  9970521533
+                                  {formData.guardian_phone}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Guardian Occupation
                                 </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.guardian_occupation}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Guardian Address
                                 </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.guardian_address}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -533,32 +545,40 @@ const StudentDetails = () => {
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Blood Group
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.blood_group}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Student House
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.school_house_id}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Height
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.height}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Weight
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.weight}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   As on Date
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  05-07-2023
+                                  {formData.admission_date}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -571,31 +591,41 @@ const StudentDetails = () => {
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   National Identification Number
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.adhar_no}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Local Identification Number
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.mobileno}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Bank Account Number
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.bank_account_no}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   Bank Name
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.bank_name}
+                                </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   IFSC Code
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                  {formData.ifsc_code}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
