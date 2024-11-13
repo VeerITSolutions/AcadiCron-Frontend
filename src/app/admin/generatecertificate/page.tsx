@@ -33,6 +33,9 @@ const columns = [
   "Admission No",
   "Student Name",
   "Class",
+  "Father Name",
+  "Date of Birth",
+  "Gender",
   "Category",
   "Mobile Number",
 ];
@@ -223,6 +226,14 @@ const StudentDetails = () => {
               {/* Add more section options here */}
             </select>
           </label>
+          <div className={styles.searchGroup}>
+            <button onClick={handleSearch} className={styles.searchButton}>
+              Search
+            </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
+            </button>
+          </div>
         </div>
         {/*  <div className={styles.searchGroup}>
 
@@ -230,7 +241,23 @@ const StudentDetails = () => {
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
-          title={"Generate Certificates"}
+          title={ <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span className="text-xl leading-7 font-satoshi font-semibold mr-2">
+            Generate Certificates
+          </span>
+          <button
+            onClick={() => {
+              // Implement your generate certificates logic here
+              console.log("Generate button clicked");
+            }}
+            className="flex rounded bg-primary p-1.5 font-medium text-gray hover:bg-opacity-90 ml-2"
+          >
+            Generate
+          </button>
+        </div>        
+      
+        }
+          
           data={data}
           columns={columns}
           options={{
