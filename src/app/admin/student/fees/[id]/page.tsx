@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStudentSingleData } from "@/services/studentService";
+import { fetchStudentFeesData } from "@/services/studentFeesService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -210,7 +211,8 @@ const StudentDetails = () => {
         const getData = async () => {
           try {
             const data = await fetchStudentSingleData(id);
-            console.log("data", data);
+            const formattedData2 = await fetchStudentFeesData(id);
+            /* setData(formattedData2); */
             setFormData({
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
@@ -304,7 +306,7 @@ const StudentDetails = () => {
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
-      setData(formattedData);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
