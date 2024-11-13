@@ -34,9 +34,25 @@ const StudentCategories = () => {
 
   const [colorMode, setColorMode] = useColorMode();
 
+  const [formData, setFormData] = useState({
+    certificate_name: "",
+    certificate_text: "",
+    left_header: "",
+    center_header: "",
+    right_header: "",
+    left_footer: "",
+    right_footer: "",
+    center_footer: "",
+    background_image: "",
+  });
+
+
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchCertificateData(currentPage + 1, rowsPerPage);
+      const result = await fetchCertificateData(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -46,7 +62,7 @@ const StudentCategories = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
+   const handleDelete = async (id: number) => {
     try {
       await deleteCertificateData(id);
       toast.success("Delete successful");
@@ -56,10 +72,33 @@ const StudentCategories = () => {
     }
   };
 
-  const handleEdit = (id: number, categoryName: string) => {
+  const handleEdit = (
+    id: number,
+    certificate_name: string,
+    certificate_text: string,
+    left_header: string,
+    center_header: string,
+    right_header: string,
+    left_footer: string,
+    right_footer: string,
+    center_footer: string,
+    background_image: string,
+  ) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setCertificateName(categoryName);
+
+    setFormData({
+      certificate_name,
+      certificate_text,
+      left_header,
+      center_header,
+      right_header,
+      left_footer,
+      right_footer,
+      center_footer,
+      background_image
+
+    });
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -76,7 +115,18 @@ const StudentCategories = () => {
       ),
       <div key={student.id}>
         <IconButton
-          onClick={() => handleEdit(student.id, student.certificate_name)}
+          onClick={() => handleEdit(
+            student.id, 
+            student.certificate_name,
+            student.certificate_text,
+            student.left_header,
+            student.center_header,
+            student.right_header,
+            student.left_footer,
+            student.right_footer,
+            student.center_footer,
+            student.background_image
+)}
           aria-label="edit"
         >
           <Edit />
@@ -95,40 +145,96 @@ const StudentCategories = () => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCertificateName(e.target.value);
+ 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = async () => {
+   const handleSubmit = async () => {
     try {
+      let result;
+
+      // Check if we are editing an existing category
       if (isEditing && editCategoryId !== null) {
-        // If editing an existing category
-        const result = await editCertificateData(
+        result = await editCertificateData(
           editCategoryId,
-          certificate_name,
+          formData.certificate_name,
+          formData.certificate_text,
+          formData.left_header,
+          formData.center_header,
+          formData.right_header,
+          formData.left_footer,
+          formData.center_footer,
+          formData.background_image,
+
         );
-        if (result.success) {
-          toast.success("Certificated updated successfully");
-        } else {
-          toast.error("Failed to update certificated");
-        }
       } else {
-        // Creating a new category
-        const result = await createCertificate(certificate_name);
-        if (result.success) {
-          toast.success("certificated added successfully");
-        } else {
-          toast.error("Failed to save category");
+        result = await createCertificate(
+          formData.certificate_name,
+          formData.certificate_text,
+          formData.left_header,
+          formData.center_header,
+          formData.right_header,
+          formData.left_footer,
+          formData.center_footer,
+          formData.background_image,
+         
+        );
+      }
+
+      // Handle the API response
+      if (result.success) {
+        toast.success(
+          isEditing
+            ? "Student House updated successfully"
+            : "Student House saved successfully",
+        );
+        // Reset form data
+        setFormData({
+          certificate_name: "",
+          certificate_text: "",
+          left_header: "",
+          center_header: "",
+          right_header: "",
+          left_footer: "",
+          right_footer: "",
+          center_footer: "",
+          background_image: "",
+        });
+        setIsEditing(false);
+        setEditCategoryId(null);
+        fetchData(page, rowsPerPage); // Refresh data after submit
+      } else {
+        // Handle errors
+        const errorMessage = result.message || "An error occurred";
+        const errors = result.errors || {};
+
+        toast.error(errorMessage); // Show the main error message
+
+        // Optionally display individual field errors
+        if (errors.name) {
+          toast.error(`Name: ${errors.name.join(", ")}`);
+        }
+        if (errors.code) {
+          toast.error(`Code: ${errors.code.join(", ")}`);
+        }
+        if (errors.amount) {
+          toast.error(`Amount: ${errors.amount.join(", ")}`);
+        }
+        if (errors.description) {
+          toast.error(`Description: ${errors.description.join(", ")}`);
         }
       }
-      setCertificateName("");
-      setIsEditing(false);
-      setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
+
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -170,7 +276,7 @@ const StudentCategories = () => {
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
   <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
     <h3 className="font-medium text-black dark:text-white">
-      Add Student Certificate
+      {isEditing ? "Edit Student Certificate" : "Add Student Certificate"}
     </h3>
   </div>
   <div className="flex flex-col gap-5.5 p-6.5">
@@ -181,8 +287,8 @@ const StudentCategories = () => {
       <input
         name="certificate_name"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.certificate_name}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -192,10 +298,10 @@ const StudentCategories = () => {
         Header Left Text
       </label>
       <input
-        name="header_left_text"
+        name="left_header"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.left_header}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -205,10 +311,10 @@ const StudentCategories = () => {
         Header Center Text
       </label>
       <input
-        name="header_center_text"
+        name="center_header"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.center_header}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -218,10 +324,10 @@ const StudentCategories = () => {
         Header Right Text
       </label>
       <input
-        name="header_right_text"
+        name="right_header"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.right_header}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -231,10 +337,10 @@ const StudentCategories = () => {
         Body Text *
       </label>
       <input
-        name="body_text"
+        name="certificate_text"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.certificate_text}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -244,10 +350,10 @@ const StudentCategories = () => {
         Footer Left Text
       </label>
       <input
-        name="footer_left_text"
+        name="left_footer"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.left_footer}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -257,10 +363,10 @@ const StudentCategories = () => {
         Footer Center Text
       </label>
       <input
-        name="footer_center_text"
+        name="center_footer"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.center_footer}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -270,10 +376,10 @@ const StudentCategories = () => {
         Footer Right Text
       </label>
       <input
-        name="footer_right_text"
+        name="right_footer"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.right_footer}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -283,10 +389,10 @@ const StudentCategories = () => {
         Certificate Design
       </label>
       <input
-        name="certificate_design"
+        name="certificate_name"
         type="text"
-        value={certificate_name}
-        onChange={handleCategoryChange}
+        value={formData.certificate_name}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -324,15 +430,20 @@ const StudentCategories = () => {
       </label>
       <input
         type="file"
+        name="background_image"
+        
         className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
       />
     </div>
     
     <div className="flex gap-2">
       <button
-        type="button"
+        type="submit"
         className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-        onClick={handleSubmit}
+        onClick={(e) => {
+          e.preventDefault(); // Prevent default form submission
+          handleSubmit();
+        }}
       >
         {isEditing ? "Update" : "Save"}
       </button>

@@ -177,7 +177,7 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div>
-          <h6 className="MuiTypography-root MuiTypography-h6 tss-hj53wm-MUIDataTableToolbar-titleText css-2ulfj5-MuiTypography-root">
+          <h6 className="text-[1.25rem] leading-[1.75rem] font-satoshi font-semibold">
             {" "}
             Select Criteria{" "}
           </h6>
@@ -221,10 +221,9 @@ const StudentDetails = () => {
       </div>
       <div className={styles.filters}>
         <div>
-          <h6 className="MuiTypography-root MuiTypography-h6 tss-hj53wm-MUIDataTableToolbar-titleText css-2ulfj5-MuiTypography-root">
-            {" "}
-            Promote Students In Next Session{" "}
-          </h6>
+        <h6 className="text-[1.25rem] leading-[1.75rem] font-satoshi font-semibold">
+          Promote Students In Next Session
+        </h6>
         </div>
 
         <div className={styles.filterGroup}>
