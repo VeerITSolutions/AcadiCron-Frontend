@@ -9,8 +9,6 @@ import {
   editCertificateData,
   deleteCertificateData,
 } from "@/services/certificateService";
-
-import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
@@ -18,6 +16,8 @@ import SwitcherTwo from "@/components/Switchers/SwitcherTwo";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { Edit, Delete, Visibility } from '@mui/icons-material';
+
 
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +31,7 @@ const StudentCategories = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [enabled, setEnabled] = useState(false);
+  
 
   const [colorMode, setColorMode] = useColorMode();
 
@@ -43,6 +44,10 @@ const StudentCategories = () => {
     left_footer: "",
     right_footer: "",
     center_footer: "",
+    header_height: "",
+    content_height: "",
+    footer_height: "",
+    content_width: "",
     background_image: "",
   });
 
@@ -82,6 +87,10 @@ const StudentCategories = () => {
     left_footer: string,
     right_footer: string,
     center_footer: string,
+    header_height: string,
+    content_height: string,
+    footer_height: string,
+    content_width: string,
     background_image: string,
   ) => {
     setIsEditing(true);
@@ -96,6 +105,10 @@ const StudentCategories = () => {
       left_footer,
       right_footer,
       center_footer,
+      header_height,
+      content_height,
+      footer_height,
+      content_width,
       background_image
 
     });
@@ -114,30 +127,39 @@ const StudentCategories = () => {
         "N/A"
       ),
       <div key={student.id}>
-        <IconButton
-          onClick={() => handleEdit(
-            student.id, 
-            student.certificate_name,
-            student.certificate_text,
-            student.left_header,
-            student.center_header,
-            student.right_header,
-            student.left_footer,
-            student.right_footer,
-            student.center_footer,
-            student.background_image
-)}
-          aria-label="edit"
-        >
-          <Edit />
+          <IconButton aria-label="Show">
+          <Visibility />
         </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
+        
+  <IconButton
+    onClick={() => handleEdit(
+      student.id, 
+      student.certificate_name,
+      student.certificate_text,
+      student.left_header,
+      student.center_header,
+      student.right_header,
+      student.left_footer,
+      student.right_footer,
+      student.center_footer,
+      student. header_height,
+      student. content_height,
+      student. footer_height,
+      student. content_width,
+      student.background_image
+    )}
+    aria-label="edit"
+  >
+    <Edit />
+  </IconButton>
+  <IconButton
+    onClick={() => handleDelete(student.id)}
+    aria-label="delete"
+  >
+    <Delete />
+  </IconButton>
+</div>
+,
     ]);
   };
 
@@ -169,6 +191,10 @@ const StudentCategories = () => {
           formData.right_header,
           formData.left_footer,
           formData.center_footer,
+          formData.header_height,
+          formData.content_height,
+          formData.footer_height,
+          formData.content_width,
           formData.background_image,
 
         );
@@ -181,6 +207,10 @@ const StudentCategories = () => {
           formData.right_header,
           formData.left_footer,
           formData.center_footer,
+          formData.header_height,
+          formData.content_height,
+          formData.footer_height,
+          formData.content_width,
           formData.background_image,
          
         );
@@ -203,6 +233,10 @@ const StudentCategories = () => {
           left_footer: "",
           right_footer: "",
           center_footer: "",
+          header_height: "",
+          content_height: "",
+          footer_height: "",
+          content_width: "",
           background_image: "",
         });
         setIsEditing(false);
@@ -263,11 +297,26 @@ const StudentCategories = () => {
     onChangeRowsPerPage: handleRowsPerPageChange,
   };
 
-  const handleCancel = () => {
-    setCertificateName("");
-    setIsEditing(false);
-    setEditCategoryId(null);
-  };
+const handleCancel = () => {
+  setFormData({
+    certificate_name: "",
+    certificate_text: "",
+    left_header: "",
+    center_header: "",
+    right_header: "",
+    left_footer: "",
+    right_footer: "",
+    center_footer: "",
+    header_height: "",
+    content_height: "",
+    footer_height: "",
+    content_width: "",
+    background_image: "",
+  });
+  setIsEditing(false);
+  setEditCategoryId(null);
+};
+
 
   return (
     <DefaultLayout>
@@ -385,17 +434,57 @@ const StudentCategories = () => {
     </div>
 
     <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Certificate Design
-      </label>
-      <input
-        name="certificate_name"
-        type="text"
-        value={formData.certificate_name}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+  <label className="block text-sm font-medium text-black dark:text-white">
+    Certificate Design
+  </label>
+</div>
+
+<div className="grid grid-cols-2 gap-4">
+  <div>
+    <input
+      name="header_height"
+      type="text"
+      value={formData.header_height}
+      onChange={handleInputChange}
+      placeholder="Header Height"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <input
+      name="footer_height"
+      type="text"
+      value={formData.footer_height}
+      onChange={handleInputChange}
+      placeholder="Footer Height"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <input
+      name="content_height"
+      type="text"
+      value={formData.content_height}
+      onChange={handleInputChange}
+      placeholder="Body Height"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <input
+      name="content_width"
+      type="text"
+      value={formData.content_width}
+      onChange={handleInputChange}
+      placeholder="Body Width"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+    />
+  </div>
+</div>
+
 
     <div>
       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
