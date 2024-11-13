@@ -182,7 +182,7 @@ const StudentCategories = () => {
                 </button>
                 {isEditing && (
                   <button
-                    className="flex items-center gap-2 rounded bg-gray-500 px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                     onClick={handleCancelEdit}
                   >
                     Cancel

@@ -182,7 +182,7 @@ const StudentHouse = () => {
                   />
                 </div>
               </div>
-              <div className="mt-6 flex">
+              <div className="mt-6 flex gap-2">
                 <button
                   type="button"
                   className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
@@ -193,7 +193,7 @@ const StudentHouse = () => {
                 {isEditing && (
                   <button
                     type="button"
-                    className="ml-4 rounded bg-gray-400 px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                     onClick={() => {
                       setIsEditing(false);
                       setName("");
