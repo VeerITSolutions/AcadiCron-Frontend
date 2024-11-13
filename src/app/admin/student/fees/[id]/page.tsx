@@ -25,7 +25,9 @@ import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStudentSingleData } from "@/services/studentService";
-
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 const columns = [
   "Fees Group",
   "Fees Code",
@@ -65,6 +67,7 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   /* const [formData, setFormData] = useState({
     date: "",
@@ -499,21 +502,22 @@ const StudentDetails = () => {
             </Button>
           </div>
         </div>
-
-        <MUIDataTable
-          title={""}
-          data={data}
-          className={`${styles["miui-box-shadow"]}`}
-          columns={columns}
-          options={{
-            ...options,
-            count: totalCount,
-            page: page,
-            rowsPerPage: rowsPerPage,
-            onChangePage: handlePageChange,
-            onChangeRowsPerPage: handleRowsPerPageChange,
-          }}
-        />
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <MUIDataTable
+            title={""}
+            data={data}
+            className={`${styles["miui-box-shadow"]}`}
+            columns={columns}
+            options={{
+              ...options,
+              count: totalCount,
+              page: page,
+              rowsPerPage: rowsPerPage,
+              onChangePage: handlePageChange,
+              onChangeRowsPerPage: handleRowsPerPageChange,
+            }}
+          />
+        </ThemeProvider>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
