@@ -28,19 +28,83 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Span } from "next/dist/trace";
-const columns = ["#", "Staff ID", "Name", "Role", "Attendance", "Note"];
+const columns = [
+  "#", 
+  "Staff ID",
+  "Name",
+  "Role",
+  {
+    name: "Attendance", 
+    options: {
+      customBodyRender: (value: string, tableMeta: any, updateData: (value: string) => void) => {
+        const { rowIndex } = tableMeta;
+        const attendance = value || "Present"; // Default value is "Present"
+        return (
+          <div className="flex gap-2">
+            {["Present", "Late", "Absent", "Halfday"].map((status) => (
+              <label key={status} className="flex items-center gap-1">
+                <input
+                className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+                  type="radio"
+                  name={`attendance-${rowIndex}`}
+                  value={status}
+                  checked={attendance === status}
+                  onChange={() => updateData(status)} // Update the attendance when radio button is clicked
+                />
+                {status}
+              </label>
+            ))}
+          </div>
+        );
+      }
+    }
+  }, 
+  {
+    name: "Note",
+    options: {
+      customBodyRender: (value: string, tableMeta: any, updateData: (value: string) => void) => {
+        const { rowIndex } = tableMeta;
+        return (
+          <input
+            type="text"
+            value={value || ""} // Use the note if available or empty string
+            onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
+            className="w-full p-1 border rounded dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+          />
+        );
+      }
+    }
+  }];
 
-const options = {
-  filter: false, // Disable filter
-  search: false, // Disable search
-  pagination: false, // Disable pagination
-  sort: false, // Disable sorting
-  selectableRows: "none", // Disable row selection
-  download: false, // Disable download button
-  print: false, // Disable print button
-  viewColumns: false, // Disable view columns button
-  responsive: "standard", // Customize responsiveness if needed
-};
+  const options = {
+    filter: false,
+    search: false,
+    pagination: false,
+    sort: false,
+    selectableRows: "none",
+    download: false,
+    print: false,
+    viewColumns: false,
+    responsive: "standard",
+    customToolbar: () => (
+      <div className="flex gap-2 justify-end">
+        <button
+          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+          onClick={() => console.log("Mark As Holiday clicked")}
+        >
+          Mark As Holiday
+        </button>
+        <button
+          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
+          onClick={() => console.log("Save Attendance clicked")}
+        >
+          Save Attendance
+        </button>
+      </div>
+    ),
+  };
+
+
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
@@ -62,9 +126,10 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
+      student.staff_id || "N/A",
       student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      student.remark || "N/A",
+      student.staff_attendance_type_id || "N/A",,
     ]);
   };
 
@@ -158,18 +223,13 @@ const StudentDetails = () => {
               {/* Add more class options here */}
             </select>
           </label>
+        
           <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
+            Attendance Date:
+            <input
+              type="date"
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-            >
-              <option value="">All Sections</option>
-              <option value="SectionA">Section A</option>
-              <option value="SectionB">Section B</option>
-              {/* Add more section options here */}
-            </select>
+            />
           </label>
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
@@ -177,12 +237,11 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
+        
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
+         title={"Staff List"}
           data={data}
           columns={columns}
           options={{

@@ -333,10 +333,9 @@ const StudentDetails = () => {
                   </label>
                   <div className="relative">
                     <Flatpickr
-                      /* value={formData.date} */
                       onChange={handleDateChange}
                       options={{
-                        dateFormat: "m/d/Y", // Customize date format if necessary
+                        dateFormat: "m/d/Y",
                       }}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
