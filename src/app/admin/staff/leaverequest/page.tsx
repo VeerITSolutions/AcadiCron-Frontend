@@ -283,7 +283,7 @@ const StudentDetails = () => {
         >
           <button
             type="submit"
-            className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 mr-4"
+            className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"
             onClick={handleClickOpen}
           >
             {editing ? "Edit Leave" : "Apply Leave"}
