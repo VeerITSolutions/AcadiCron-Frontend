@@ -368,7 +368,7 @@ const StudentDetails = () => {
 >
   <button
     type="submit"
-    className="flex rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90 mr-4"  // Added margin-right for spacing
+    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 mr-4"  // Added margin-right for spacing
     onClick={handleClickOpen}
   >
     {editing ? "Edit Homework" : "Add Homework"}

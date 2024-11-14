@@ -276,16 +276,14 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
         <div
-          className="mb-4 pl-4 pt-4 text-right sm:w-3/12 xl:w-2/12"
+          className="mb-4 pl-4 pt-4 text-right"
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            display: "flex", justifyContent: "flex-end", alignItems: "center",
           }}
         >
           <button
             type="submit"
-            className="flex rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
+            className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 mr-4"
             onClick={handleClickOpen}
           >
             {editing ? "Edit Leave" : "Apply Leave"}

@@ -239,25 +239,25 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
+
+
+      <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
+      <div
+  className="mb-4 pl-4 pt-4 text-right"
+  style={{
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  }}
+>
+  <button type="submit" className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4">
+   Generate
+  </button>
+</div>
+</div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
-          title={ <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span className="text-xl leading-7 font-satoshi font-semibold mr-2">
-            Generate Certificates
-          </span>
-          <button
-            onClick={() => {
-              // Implement your generate certificates logic here
-              console.log("Generate button clicked");
-            }}
-            className="flex rounded bg-primary p-1.5 font-medium text-gray hover:bg-opacity-90 ml-2"
-          >
-            Generate
-          </button>
-        </div>        
-      
-        }
-          
+          title={"Generate Certificates"}
           data={data}
           columns={columns}
           options={{
