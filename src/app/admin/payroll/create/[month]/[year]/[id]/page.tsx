@@ -1,11 +1,389 @@
-"use client"; // Add this at the top of the file
-import { useState, useContext } from "react";
-import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
-import LogoutButton from "@/components/LogoutButton";
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import React from "react";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { IconButton } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
+import { Delete, Edit, Add, Remove, Calculate } from "@mui/icons-material";  // Import Calculate icon
 
-const staffidcard = () => {
-  return <>Hello</>;
+const StudentDetails = () => {
+  const router = useRouter();
+
+  // Salary state
+  const [allowances, setAllowances] = useState([{ type: "", amount: 0 }]);
+  const [deductions, setDeductions] = useState([{ type: "", amount: 0 }]);
+  const [salary, setSalary] = useState({
+    basic: 0,
+    totalAllowance: 0,
+    totalDeduction: 0,
+    gross: 0,
+    net: 0,
+    tax: 0,
+  });
+
+  // Calculating total salary components
+  const calculateTotal = () => {
+    const totalAllowance = allowances.reduce((acc, curr) => acc + Number(curr.amount), 0);
+    const totalDeduction = deductions.reduce((acc, curr) => acc + Number(curr.amount), 0);
+    const grossSalary = Number(salary.basic) + totalAllowance;
+    
+    // Set both gross and net salary to the same value
+    const netSalary = grossSalary;  // Net Salary is same as Gross Salary
+    setSalary((prev) => ({
+      ...prev,
+      totalAllowance,
+      totalDeduction,
+      gross: grossSalary,
+      net: netSalary, // Assign the same value to Net Salary
+    }));
+  };
+  
+  // Handling row addition and removal for allowances and deductions
+  const handleAddRow = (type: any) => {
+    if (type === "allowance") {
+      setAllowances((prevAllowances) => [...prevAllowances, { type: "", amount: 0 }]);
+    } else if (type === "deduction") {
+      setDeductions((prevDeductions) => [...prevDeductions, { type: "", amount: 0 }]);
+    }
+  };
+
+  const handleRemoveRow = (index: any, type: any) => {
+    if (type === "allowance") {
+      setAllowances((prevAllowances) => prevAllowances.filter((_, i) => i !== index));
+    } else if (type === "deduction") {
+      setDeductions((prevDeductions) => prevDeductions.filter((_, i) => i !== index));
+    }
+  };
+
+  const handleChange = (e: any, index: any, type: any) => {
+    const { name, value } = e.target;
+
+    if (type === "allowance") {
+      setAllowances((prevAllowances) => {
+        const updatedAllowances = [...prevAllowances];
+        updatedAllowances[index] = { ...updatedAllowances[index], [name]: value };
+        return updatedAllowances;
+      });
+    } else if (type === "deduction") {
+      setDeductions((prevDeductions) => {
+        const updatedDeductions = [...prevDeductions];
+        updatedDeductions[index] = { ...updatedDeductions[index], [name]: value };
+        return updatedDeductions;
+      });
+    }
+  };
+
+  // Salary and tax input changes
+  const handleSalaryChange = (e: any) => {
+    const { name, value } = e.target;
+    setSalary((prev) => ({ ...prev, [name]: Number(value) }));
+  };
+
+  return (
+    <DefaultLayout>
+      <div className="container mx-auto p-4 dark:bg-boxdark dark:drop-shadow-none">
+        <div className="bg-white flex justify-between items-center p-6 pb-0 dark:bg-boxdark dark:drop-shadow-none">
+          <h2 className="text-lg font-bold dark:text-white">Staff Details</h2>
+          <a href="/admin/payroll" className="btn-primary text-xs flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 12H5m7-7l-7 7 7 7"
+            />
+          </svg>
+          Back
+        </a>
+
+
+        </div>
+
+        <div className="bg-white p-6 shadow-lg mb-6 flex space-x-6 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+  {/* Left Section */}
+  <div className="w-8/12 flex-grow">
+    <div className="flex bg-gray-100 p-4 rounded-lg border border-stroke border-gray-300 h-full dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
+      <div className="w-1/5">
+        <img
+          src="https://erp.erabesa.co.in/uploads/staff_images/no_image.png"
+          className="rounded-lg w-28 h-28 object-cover"
+          alt="No Image"
+        />
+      </div>
+      <div className="w-4/5 pl-4">
+      <table className="table-auto w-full text-sm text-gray-600">
+  <tbody>
+    <tr className="border-b border-stroke dark:border-strokedark">
+      <th className="text-left pr-4 py-2 font-bold dark:text-white">Name</th>
+      <td className="py-2 dark:text-white">Rashmi Shrivastav</td>
+      <th className="text-left pr-4 py-2 font-bold dark:text-white">Staff ID</th>
+      <td className="py-2 dark:text-white">19024</td>
+    </tr>
+    <tr className="border-b border-stroke dark:border-strokedark">
+      <th className="text-left pr-4 py-2 font-bold dark:text-white">Phone</th>
+      <td className="py-2 dark:text-white">8668338370</td>
+      <th className="text-left pr-4 py-2 font-bold dark:text-white">Email</th>
+      <td className="py-2 dark:text-white">rashmi.shri18@gmail.com</td>
+    </tr>
+    <tr className="border-b border-stroke dark:border-strokedark">
+      <th className="text-left pr-4 py-2 font-bold dark:text-white">EPF No</th>
+      <td className="py-2 dark:text-white"></td>
+      <th className="text-left pr-4 py-2 font-bold dark:text-white">Role</th>
+      <td className="py-2 dark:text-white">Admin</td>
+    </tr>
+    <tr className="border-b border-stroke dark:border-strokedark">
+      <th className="text-left pr-4 py-2 font-bold dark:text-white">Department</th>
+      <td className="py-2 dark:text-white">Non Teaching</td>
+      <th className="text-left pr-4 py-2 font-bold dark:text-white">Designation</th>
+      <td className="py-2 dark:text-white">Admin A/c</td>
+    </tr>
+  </tbody>
+</table>
+
+      </div>
+    </div>
+  </div>
+
+  {/* Right Section */}
+  <div className="w-3/12 flex-grow">
+    <div className="bg-gray-100 p-4 rounded-lg border border-stroke border-gray-300 h-full dark:border-strokedark">
+      <div className="font-semibold text-lg mb-4 text-gray-700 dark:text-white">Attendance</div>
+      <table className="table-auto w-full text-sm text-gray-600 border-collapse">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="text-left py-2 px-2 font-medium">Month</th>
+            <th className="text-left py-2 px-2 font-medium">P</th>
+            <th className="text-left py-2 px-2 font-medium">L</th>
+            <th className="text-left py-2 px-2 font-medium">A</th>
+            <th className="text-left py-2 px-2 font-medium">F</th>
+            <th className="text-left py-2 px-2 font-medium">H</th>
+            <th className="text-left py-2 px-2 font-medium">V</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-t border-stroke border-gray-300 dark:border-strokedark">
+            <td className="py-2 px-2 ">January</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+          </tr>
+          <tr className="border-t border-stroke  border-gray-300 dark:border-strokedark">
+            <td className="py-2 px-2 ">December</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+          </tr>
+          <tr className="border-t border-stroke border-gray-300 dark:border-strokedark">
+            <td className="py-2 px-2 ">November</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+            <td className="py-2 px-2 ">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <div className="bg-white p-6 shadow-md rounded dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
+          <div className="grid grid-cols-3 gap-6 mb-6">
+            <div className="border border-stroke p-4 rounded shadow-md dark:border-strokedark">
+              <div className="flex justify-between items-center mb-5">
+                <h3 className="text-md font-bold">Earnings</h3>
+                <button
+  className="btn-primary w-5 h-5 flex justify-center items-center rounded bg-blue-500 hover:bg-blue-600"
+  onClick={() => handleAddRow("allowance")}
+>
+  <Add className="text-white" />
+</button>
+
+
+              </div>
+            
+              {allowances.map((item, index) => (
+                <div key={index} className="flex items-center mb-3 space-x-4">
+                  <input
+                    type="text"
+                    name="type"
+                    value={item.type}
+                    placeholder="Type"
+                    onChange={(e) => handleChange(e, index, "allowance")}
+                    className="w-40 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  <input
+                    type="number"
+                    name="amount"
+                    value={item.amount}
+                    onChange={(e) => handleChange(e, index, "allowance")}
+                    className="w-16 px-3 py-3 rounded-md border border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  
+                  {index > 0 && (
+                    <button
+                    className="btn-error py-2 rounded flex items-center"
+                    onClick={() => handleRemoveRow(index, "allowance")}
+                  >
+                    <DeleteIcon className="mr-2" />
+                  </button>
+                  
+                  )}
+                </div>
+              ))}
+            </div>
+
+          
+            <div className="border border-stroke p-4 rounded shadow-md dark:border-strokedark">
+              <div className="flex justify-between items-center mb-5">
+                <h3 className="text-md font-bold">Deductions</h3>
+                <button
+                className="btn-primary w-5 h-5 flex justify-center rounded items-center bg-blue-500 hover:bg-blue-600"
+                onClick={() => handleAddRow("deduction")}
+              >
+                <Add className="text-white" />
+              </button>
+
+              </div>
+           
+              {deductions.map((item, index) => (
+                <div key={index} className="flex items-center mb-3 space-x-4">
+                  <input
+                    type="text"
+                    name="type"
+                    value={item.type}
+                    placeholder="Type"
+                    onChange={(e) => handleChange(e, index, "deduction")}
+                    className="w-40 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  <input
+                    type="number"
+                    name="amount"
+                    value={item.amount}
+                    onChange={(e) => handleChange(e, index, "deduction")}
+                    className="w-16 px-3 py-3 rounded-md border border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  {/* Conditionally show remove button for index greater than 0 */}
+                  {index > 0 && (
+                   <button
+                   className="btn-error py-2 rounded flex items-center"
+                   onClick={() => handleRemoveRow(index, "deduction")}
+                 >
+                   <DeleteIcon className="mr-2" />
+                 </button>
+                 
+                  )}
+                </div>
+              ))}
+            </div>
+
+          
+            <div className="border border-stroke p-4 rounded shadow-md dark:border-strokedark">
+              <div className="text-center mb-5">
+                <h3 className="text-md font-bold">Payroll Summary</h3>
+              </div>
+              <div className="mb-5">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Basic Salary</label>
+                <input
+                  type="number"
+                  name="basic"
+                  value={salary.basic}
+                  onChange={handleSalaryChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  placeholder="Enter basic salary"
+                />
+              </div>
+              <div className="mb-5">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Total Allowances</label>
+                <input
+                  type="number"
+                  name="totalAllowance"
+                  value={salary.totalAllowance}
+                  readOnly
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-5">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Total Deductions</label>
+                <input
+                  type="number"
+                  name="totalDeduction"
+                  value={salary.totalDeduction}
+                  readOnly
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-5">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Gross Salary</label>
+                <input
+                  type="number"
+                  name="gross"
+                  value={salary.gross}
+                  readOnly
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+           
+              <div className="mb-5">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Tax</label>
+                <input
+                  type="number"
+                  name="tax"
+                  value={salary.tax}
+                  onChange={handleSalaryChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="mb-5">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Net Salary</label>
+                <input
+                  type="number"
+                  name="net"
+                  value={salary.net}
+                  readOnly
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="flex justify-center">
+                <button
+                  className="btn-primary py-2  rounded"
+                  onClick={calculateTotal}
+                >
+                  <Calculate className="mr-2" /> Calculate
+                </button>
+              </div>
+            </div>
+          </div>
+          <button
+          type="submit"
+          className="flex justify-end items-center gap-2 ml-auto rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+        >
+          Save
+        </button>
+
+        </div>
+      </div>
+    </DefaultLayout>
+  );
 };
 
-export default staffidcard;
+export default StudentDetails;
