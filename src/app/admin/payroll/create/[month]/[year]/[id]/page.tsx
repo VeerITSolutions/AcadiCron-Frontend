@@ -297,8 +297,16 @@ const StudentDetails = () => {
 
           
             <div className="border border-stroke p-4 rounded shadow-md dark:border-strokedark">
-              <div className="text-center mb-5">
+              <div className="flex justify-between items-center mb-5">
                 <h3 className="text-md font-bold">Payroll Summary</h3>
+                <button
+              className="btn-primary flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-teal-500 hover:from-teal-500 hover:to-blue-500 shadow-lg transform hover:scale-105 transition-all duration-300 py-2 px-4"
+              onClick={calculateTotal}
+            >
+              <Calculate className="text-white text-xl" />
+              <span className="text-white font-medium">Calculate</span>
+            </button>
+
               </div>
               <div className="mb-5">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">Basic Salary</label>
@@ -362,14 +370,6 @@ const StudentDetails = () => {
                   readOnly
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
-              </div>
-              <div className="flex justify-center">
-                <button
-                  className="btn-primary py-2  rounded"
-                  onClick={calculateTotal}
-                >
-                  <Calculate className="mr-2" /> Calculate
-                </button>
               </div>
             </div>
           </div>
