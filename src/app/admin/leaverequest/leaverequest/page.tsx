@@ -328,8 +328,6 @@ const StudentDetails = () => {
           <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
-                {/* Apply Date */}
-           
         <div className="field">
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
             Role <span className="required">*</span> </label>
@@ -344,7 +342,6 @@ const StudentDetails = () => {
               <option value="Class2">Accountant</option>
               <option value="Class2">Librarian</option>
             </select>
-         
         </div>
 
         <div className="field">
@@ -365,14 +362,14 @@ const StudentDetails = () => {
      
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Apply Date <span className="required">*</span>
+                    Apply Date
                   </label>
                   <div className="relative">
                     <Flatpickr
                       /* value={formData.date} */
                       onChange={handleDateChange}
                       options={{
-                        dateFormat: "m/d/Y", // Customize date format if necessary
+                        dateFormat: "m/d/Y",
                       }}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
@@ -407,10 +404,6 @@ const StudentDetails = () => {
 
             </select>
         </div>
-
-           
-      
-           
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Leave From Date <span className="required">*</span>
@@ -420,7 +413,7 @@ const StudentDetails = () => {
                       /* value={formData.date} */
                       onChange={handleDateChange}
                       options={{
-                        dateFormat: "m/d/Y", // Customize date format if necessary
+                        dateFormat: "m/d/Y", 
                       }}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
@@ -442,7 +435,7 @@ const StudentDetails = () => {
                   </div>
                 </div>
 
-                {/* Leave To Date */}
+               
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Leave To Date <span className="required">*</span>
@@ -452,7 +445,7 @@ const StudentDetails = () => {
                       /* value={formData.date} */
                       onChange={handleDateChange}
                       options={{
-                        dateFormat: "m/d/Y", // Customize date format if necessary
+                        dateFormat: "m/d/Y", 
                       }}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
@@ -473,8 +466,6 @@ const StudentDetails = () => {
                     </div>
                   </div>
                 </div>
-
-              
 
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
