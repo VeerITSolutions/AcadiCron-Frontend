@@ -966,10 +966,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       {/* Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl md:max-w-2xl">
-            <div className="mb-6 flex items-center justify-between border-b pb-4">
-              <h2 className="text-gray-800 text-2xl font-bold">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 ">
+          <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl dark:border-strokedark dark:bg-boxdark md:max-w-2xl">
+            <div className="mb-6 flex items-center justify-between border-b pb-4 ">
+              <h2 className="text-gray-800 text-2xl font-bold ">
                 Select Session
               </h2>
               <button
@@ -1002,7 +1002,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </label>
               <select
                 id="session"
-                className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
+                className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none dark:border-strokedark dark:bg-boxdark"
                 /* value={savedSessionstate}  */ // Set the value of the select input to the selected session
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
