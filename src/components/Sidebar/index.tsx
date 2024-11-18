@@ -47,9 +47,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   };
 
   const handleSessionChange = (value: string) => {
-    localStorage.setItem("selectedSession", value); // Store session in localStorage
+    // Filter to find the session that matches the selected value
+    const selectedSession = allSession?.find(
+      (cls: any) => cls.session === value,
+    );
 
-    /* window.location.reload(); */
+    if (selectedSession) {
+      // Store session ID in localStorage
+      localStorage.setItem("selectedSession", selectedSession);
+    }
+
+    // Optional: Uncomment if you need to reload the page after changing the session
+    // window.location.reload();
   };
 
   useEffect(() => {

@@ -641,321 +641,94 @@ const StudentDetails = () => {
               </div>
             )}
             {activeTab === "fee" && (
-              <div>
-                <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                  <div
-                    className="tab-pane active flex flex-col gap-9"
-                    id="activity"
-                  >
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                      <div className="grid gap-5.5">
-                        <div className="overflow-x-auto">
-                          <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
-                            <thead>
-                              <tr className="bg-gray-100 text-left">
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Fees Group
+              <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                <div
+                  className="tab-pane active flex flex-col gap-9"
+                  id="activity"
+                >
+                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div className="grid gap-5.5">
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
+                          <thead>
+                            <tr className="bg-gray-100 text-left">
+                              {[
+                                "Fees Group",
+                                "Fees Code",
+                                "Due Date",
+                                "Status",
+                                "Amount (₹)",
+                                "Payment Id",
+                                "Mode",
+                                "Date",
+                                "Discount (₹)",
+                                "Fine (₹)",
+                                "Paid (₹)",
+                                "Balance",
+                              ].map((header) => (
+                                <th
+                                  key={header}
+                                  className="border-b border-stroke px-4 py-2 text-sm font-medium text-black dark:text-white"
+                                >
+                                  {header}
                                 </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Fees Code
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Due Date
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Status
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Amount <span>(₹)</span>
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Payment Id
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Mode
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Date
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Discount <span>(₹)</span>
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Fine <span>(₹)</span>
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Paid <span>(₹)</span>
-                                </th>
-                                <th className="col-md-4 col-md-4 col-md-4 border-b border-stroke px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Balance
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr className="border-b border-stroke">
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Class 3 - I Installment
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  at the time of Admission
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  30-06-2024
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 bg-red-100 text-red-800 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  <span className="bg-red-200 rounded-full px-2 py-1">
-                                    Unpaid
-                                  </span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  10000.00{" "}
-                                  <span className="text-red-600">+ 0.00</span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  10000.00
-                                </td>
-                              </tr>
-
-                              <tr className="border-b border-stroke">
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Class 3 - II Installment
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Before 30 Aug 2024
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 bg-red-100 text-red-800 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  <span className="bg-red-200 rounded-full px-2 py-1">
-                                    Unpaid
-                                  </span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  10000.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  10000.00
-                                </td>
-                              </tr>
-
-                              <tr className="border-b border-stroke">
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Class 2- I Installment
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  at the time of Admission
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  30-06-2024
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 bg-red-100 text-red-800 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  <span className="bg-red-200 rounded-full px-2 py-1">
-                                    Unpaid
-                                  </span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  10000.00{" "}
-                                  <span className="text-red-600">+ 0.00</span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  10000.00
-                                </td>
-                              </tr>
-
-                              <tr className="border-b border-stroke">
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Class 2- II Installment
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Before 30 Aug 2024
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 bg-red-100 text-red-800 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  <span className="bg-red-200 rounded-full px-2 py-1">
-                                    Unpaid
-                                  </span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  10000.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  10000.00
-                                </td>
-                              </tr>
-
-                              <tr className="border-b border-stroke">
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Class 2 - III Installment D
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Before 30 Nov 2024
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  30-11-2024
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 bg-red-100 text-red-800 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  <span className="bg-red-200 rounded-full px-2 py-1">
-                                    Unpaid
-                                  </span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  6200.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  6200.00
-                                </td>
-                              </tr>
-
-                              <tr className="border-b border-stroke">
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Class 2 - IV Installment E
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Before 30 Jan 2025
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  30-01-2025
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 bg-red-100 text-red-800 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  <span className="bg-red-200 rounded-full px-2 py-1">
-                                    Unpaid
-                                  </span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  6200.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  6200.00
-                                </td>
-                              </tr>
-
-                              <tr className="bg-gray-200 font-bold">
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  Discount
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  dis 200
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-left text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  <a
-                                    href="#"
-                                    className="text-blue-600 hover:underline"
-                                  >
-                                    Discount of ₹1000.00 Applied : 33//1
-                                  </a>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                              </tr>
-
-                              <tr className="bg-gray-100 font-bold">
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  {" "}
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  ₹52400.00
-                                  <span className="text-red-600"> +0.00</span>
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white"></td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  ₹0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  ₹0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  ₹0.00
-                                </td>
-                                <td className="col-md-4 col-md-4 col-md-4 px-4 py-2 text-right text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black dark:text-white dark:text-white dark:text-white">
-                                  ₹52400.00
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b border-stroke">
+                              <td className="px-4 py-2">
+                                Class 3 - I Installment
+                              </td>
+                              <td className="px-4 py-2">
+                                at the time of Admission
+                              </td>
+                              <td className="px-4 py-2">30-06-2024</td>
+                              <td className="px-4 py-2">
+                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
+                                  Unpaid
+                                </span>
+                              </td>
+                              <td className="px-4 py-2 text-right">
+                                10000.00{" "}
+                                <span className="text-red-600">+ 0.00</span>
+                              </td>
+                              <td className="px-4 py-2"></td>
+                              <td className="px-4 py-2"></td>
+                              <td className="px-4 py-2"></td>
+                              <td className="px-4 py-2 text-right">0.00</td>
+                              <td className="px-4 py-2 text-right">0.00</td>
+                              <td className="px-4 py-2 text-right">0.00</td>
+                              <td className="px-4 py-2 text-right">10000.00</td>
+                            </tr>
+                            {/* Additional rows */}
+                            <tr className="border-b border-stroke">
+                              <td className="px-4 py-2">
+                                Class 3 - I Installment
+                              </td>
+                              <td className="px-4 py-2">
+                                at the time of Admission
+                              </td>
+                              <td className="px-4 py-2">30-06-2024</td>
+                              <td className="px-4 py-2">
+                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
+                                  Unpaid
+                                </span>
+                              </td>
+                              <td className="px-4 py-2 text-right">
+                                10000.00{" "}
+                                <span className="text-red-600">+ 0.00</span>
+                              </td>
+                              <td className="px-4 py-2"></td>
+                              <td className="px-4 py-2"></td>
+                              <td className="px-4 py-2"></td>
+                              <td className="px-4 py-2 text-right">0.00</td>
+                              <td className="px-4 py-2 text-right">0.00</td>
+                              <td className="px-4 py-2 text-right">0.00</td>
+                              <td className="px-4 py-2 text-right">10000.00</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
