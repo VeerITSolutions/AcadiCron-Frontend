@@ -16,9 +16,13 @@ const StudentDetails = () => {
   const [activeTab, setActiveTab] = useState("activity");
 
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormVisible2, setIsFormVisible2] = useState(false);
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
+  };
+  const handleButtonClick2 = () => {
+    setIsFormVisible2(!isFormVisible2);
   };
   const [formData, setFormData] = useState<Record<string, any>>({
     parent_id: "",
@@ -982,66 +986,6 @@ const StudentDetails = () => {
                           </button>
                         </div>
 
-                        {/* Modal */}
-                        {isFormVisible && (
-                          <>
-                            {/* Modal Overlay */}
-                            <div
-                              className="fixed inset-0 z-40 bg-black bg-opacity-50"
-                              onClick={handleButtonClick}
-                            ></div>
-
-                            {/* Modal Content */}
-                            <div className="fixed inset-0 z-50 flex items-center justify-center">
-                              <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-                                {/* Close Button */}
-                                <button
-                                  onClick={handleButtonClick}
-                                  className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
-                                >
-                                  &times;
-                                </button>
-
-                                {/* Form Content */}
-                                <h2 className="mb-4 text-lg font-semibold">
-                                  Upload Documents
-                                </h2>
-                                <form className="rounded-md border border-stroke bg-white p-4 shadow-md dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
-                                  <div className="mb-4">
-                                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                      Title:
-                                    </label>
-                                    <input
-                                      aria-invalid="false"
-                                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                                      type="text"
-                                      name="title"
-                                    />
-                                  </div>
-                                  <div className="mb-4">
-                                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                      Document:
-                                    </label>
-                                    <input
-                                      className="form-control mt-2 w-full"
-                                      type="file"
-                                      name="document_file"
-                                    />
-                                  </div>
-                                  <div className="flex justify-end">
-                                    <button
-                                      type="submit"
-                                      className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
-                                    >
-                                      Submit
-                                    </button>
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                          </>
-                        )}
-
                         {/* Table */}
                         <table className="min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
                           <thead className="bg-gray-100">
@@ -1085,103 +1029,12 @@ const StudentDetails = () => {
                       <div className="p-6">
                         <div className="mb-4 flex justify-end">
                           <button
-                            onClick={handleButtonClick}
+                            onClick={handleButtonClick2}
                             className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
                           >
                             {isFormVisible ? "Close Form" : "Add"}
                           </button>
                         </div>
-
-                        {/* Modal Popup */}
-                        {isFormVisible && (
-                          <>
-                            {/* Modal Overlay */}
-                            <div
-                              className="fixed inset-0 z-40 bg-black bg-opacity-50"
-                              onClick={handleButtonClick} // Closes modal when clicking outside
-                            ></div>
-
-                            {/* Modal Content */}
-                            <div className="fixed inset-0 z-50 flex items-center justify-center">
-                              <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-                                {/* Close Button */}
-                                <button
-                                  onClick={handleButtonClick}
-                                  className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
-                                >
-                                  &times;
-                                </button>
-
-                                {/* Form Content */}
-                                <h2 className="mb-4 text-lg font-semibold">
-                                  Add Timeline
-                                </h2>
-                                <form className="rounded-md border border-stroke bg-white p-4 shadow-md dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
-                                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                    <div className="field">
-                                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                        Title:
-                                      </label>
-                                      <input
-                                        aria-invalid="false"
-                                        id="title"
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                                        type="text"
-                                        name="title"
-                                      />
-                                    </div>
-
-                                    <div className="field">
-                                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                        Date <span className="required">*</span>
-                                      </label>
-                                      <input
-                                        id="date"
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                                        type="text"
-                                        name="dob"
-                                      />
-                                    </div>
-
-                                    <div className="field">
-                                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                        Description:
-                                      </label>
-                                      <input
-                                        aria-invalid="false"
-                                        id="description"
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                                        type="text"
-                                        name="description"
-                                      />
-                                    </div>
-
-                                    <div className="field">
-                                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                        Document:
-                                      </label>
-                                      <input
-                                        className="form-control mt-2 w-full"
-                                        id="document_file"
-                                        type="file"
-                                        name="document_file"
-                                      />
-                                    </div>
-                                  </div>
-
-                                  <div className="mt-4 flex justify-end">
-                                    <button
-                                      type="submit"
-                                      className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
-                                    >
-                                      Submit
-                                    </button>
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                          </>
-                        )}
 
                         {/* Table */}
                         <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
@@ -1218,6 +1071,152 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
+      {/* Modal */}
+      {isFormVisible && (
+        <>
+          {/* Modal Overlay */}
+          <div
+            className="fixed inset-0 z-40 bg-black bg-opacity-50"
+            onClick={handleButtonClick}
+          ></div>
+
+          {/* Modal Content */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              {/* Close Button */}
+              <button
+                onClick={handleButtonClick}
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+              >
+                &times;
+              </button>
+
+              {/* Form Content */}
+              <h2 className="mb-4 text-lg font-semibold">Upload Documents</h2>
+              <form className="rounded-md border border-stroke bg-white p-4 shadow-md dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
+                <div className="mb-4">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Title:
+                  </label>
+                  <input
+                    aria-invalid="false"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                    type="text"
+                    name="title"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Document:
+                  </label>
+                  <input
+                    className="form-control mt-2 w-full"
+                    type="file"
+                    name="document_file"
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Modal Popup */}
+      {isFormVisible2 && (
+        <>
+          {/* Modal Overlay */}
+          <div
+            className="fixed inset-0 z-40 bg-black bg-opacity-50"
+            onClick={handleButtonClick2} // Closes modal when clicking outside
+          ></div>
+
+          {/* Modal Content */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              {/* Close Button */}
+              <button
+                onClick={handleButtonClick2}
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+              >
+                &times;
+              </button>
+
+              {/* Form Content */}
+              <h2 className="mb-4 text-lg font-semibold">Add Timeline</h2>
+              <form className="rounded-md border border-stroke bg-white p-4 shadow-md dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Title:
+                    </label>
+                    <input
+                      aria-invalid="false"
+                      id="title"
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="title"
+                    />
+                  </div>
+
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Date <span className="required">*</span>
+                    </label>
+                    <input
+                      id="date"
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="dob"
+                    />
+                  </div>
+
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Description:
+                    </label>
+                    <input
+                      aria-invalid="false"
+                      id="description"
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="description"
+                    />
+                  </div>
+
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Document:
+                    </label>
+                    <input
+                      className="form-control mt-2 w-full"
+                      id="document_file"
+                      type="file"
+                      name="document_file"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-4 flex justify-end">
+                  <button
+                    type="submit"
+                    className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </>
+      )}
     </DefaultLayout>
   );
 };
