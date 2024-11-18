@@ -329,7 +329,41 @@ const StudentDetails = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
                 {/* Apply Date */}
-                <div className="field mb-6">
+           
+        <div className="field">
+          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+            Role <span className="required">*</span> </label>
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            >
+              <option value="">Select</option>
+              <option value="Class1">Admin</option>
+              <option value="Class2">Teacher</option>
+              <option value="Class2">Accountant</option>
+              <option value="Class2">Librarian</option>
+            </select>
+         
+        </div>
+
+        <div className="field">
+          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Name <span className="required">*</span> </label>
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            >
+              <option value="">Select</option>
+              <option value="Class1">Priya Ronghe (19001)</option>
+              <option value="Class2">Rushali Patil (19003)</option>
+              <option value="Class2">Tabassum Firdous (19005)</option>
+              <option value="Class2">Harshalata Khante (19002)</option>
+            </select>
+        </div>
+     
+                <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Apply Date <span className="required">*</span>
                   </label>
@@ -360,28 +394,24 @@ const StudentDetails = () => {
                   </div>
                 </div>
 
-                {/* Available Leave Type */}
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Available Leave <span className="required">*</span>
-                  </label>
-                  <select
-                    name="leave_type_id"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value={formData.leave_type_id}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select</option>
-                    {dataleavetype.map((type) => (
-                      <option key={type.id} value={type.id}>
-                        {type.type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
 
-                {/* Leave From Date */}
-                <div className="field mb-6">
+                <div className="field">
+          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Leave Type <span className="required">*</span> </label>
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            >
+              <option value="">Select</option>
+
+            </select>
+        </div>
+
+           
+      
+           
+                <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Leave From Date <span className="required">*</span>
                   </label>
@@ -413,7 +443,7 @@ const StudentDetails = () => {
                 </div>
 
                 {/* Leave To Date */}
-                <div className="field mb-6">
+                <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Leave To Date <span className="required">*</span>
                   </label>
@@ -444,10 +474,24 @@ const StudentDetails = () => {
                   </div>
                 </div>
 
-                {/* Reason */}
+              
+
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Reason
+                  </label>
+                  <input
+                    name="reason"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    value={formData.reason}
+                    onChange={handleChange}
+                  />
+                </div> 
+
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Note
                   </label>
                   <input
                     name="reason"
@@ -469,12 +513,52 @@ const StudentDetails = () => {
                 />
               </div>
 
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Status
+                </label>
+                <div className="flex flex-col space-y-2">
+                  <label className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      value="pending"
+                      name="addstatus"
+                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
+                    />
+                    <span className="text-sm font-medium text-black dark:text-white">
+                      Pending
+                    </span>
+                  </label>
+                  <label className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      value="approve"
+                      name="addstatus"
+                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
+                    />
+                    <span className="text-sm font-medium text-black dark:text-white">
+                      Approve
+                    </span>
+                  </label>
+                  <label className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      value="disapprove"
+                      name="addstatus"
+                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
+                    />
+                    <span className="text-sm font-medium text-black dark:text-white">
+                      Disapprove
+                    </span>
+                  </label>
+                </div>
+              </div>
 
           
                 <div className="col-span-full">
                   <button
                     type="submit"
-                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >
                     Save
                   </button>
