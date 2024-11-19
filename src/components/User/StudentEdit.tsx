@@ -1024,7 +1024,7 @@ const User = () => {
                   type="radio"
                   className={`${styles["radio"]}`}
                   name="guardian_is"
-                  value="Father" // Unique value for Father
+                  value="father" // Unique value for Father
                   checked={formData.guardian_is === "father"}
                   onChange={handleInputChange}
                 />{" "}
@@ -1036,7 +1036,7 @@ const User = () => {
                   type="radio"
                   className={`${styles["radio"]}`}
                   name="guardian_is"
-                  value="Mother" // Unique value for Mother
+                  value="mother" // Unique value for Mother
                   checked={formData.guardian_is === "mother"}
                   onChange={handleInputChange}
                 />{" "}
@@ -1048,7 +1048,7 @@ const User = () => {
                   type="radio"
                   className={`${styles["radio"]}`}
                   name="guardian_is"
-                  value="Other" // Unique value for Other
+                  value="other" // Unique value for Other
                   checked={formData.guardian_is === "other"}
                   onChange={handleInputChange}
                 />{" "}
