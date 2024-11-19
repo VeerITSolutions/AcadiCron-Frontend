@@ -20,7 +20,7 @@ const User = () => {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [savedSessionstate, setSavedSession] = useState("");
   // State to hold all form inputs as a single object
   const [formData, setFormData] = useState<Record<string, any>>({
     parent_id: "",
@@ -168,6 +168,11 @@ const User = () => {
   };
 
   useEffect(() => {
+    const session_value = localStorage.getItem("selectedSessionId");
+    if (session_value) {
+      setSavedSession(session_value);
+    }
+
     fetchClassesAndSections();
   }, [selectedClass]);
 
