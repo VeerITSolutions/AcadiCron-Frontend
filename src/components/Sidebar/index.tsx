@@ -48,6 +48,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       const classesResult = await fetchSchSetting();
       setDefaultSessionYear(classesResult.data.session_year);
       setDefaultSession(classesResult.data.session_id);
+      setSavedSession(classesResult.data.session_year);
 
       localStorage.setItem(
         "selectedSessionYear",
@@ -65,12 +66,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const handleSessionChange = (value: string) => {
     if (value) {
       // Store session ID in localStorage
-      localStorage.setItem("selectedSessionYear", "");
-      console.log("allSession", allSession);
+
+      const result = allSession.find((session: any) => session.id == value);
 
       localStorage.setItem("selectedSessionId", value);
+      localStorage.setItem("selectedSessionYear", result.session);
 
-      setSavedSession(value);
+      setSavedSession(result.session);
 
       setModalOpen(false);
     }
