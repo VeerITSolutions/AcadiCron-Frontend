@@ -36,7 +36,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   }, []);
 
   useEffect(() => {
-    const savedSession = localStorage.getItem("selectedSession");
+    const savedSession = localStorage.getItem("selectedSessionYear");
     if (savedSession) {
       setSavedSession(savedSession);
       // Use this value in your logic
@@ -49,7 +49,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       setDefaultSessionYear(classesResult.data.session_year);
       setDefaultSession(classesResult.data.session_id);
 
-      localStorage.setItem("selectedSession", classesResult.data.session_year);
+      localStorage.setItem(
+        "selectedSessionYear",
+        classesResult.data.session_year,
+      );
       localStorage.setItem("selectedSessionId", classesResult.data.session_id);
     } catch (error: any) {}
 
@@ -62,7 +65,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const handleSessionChange = (value: string) => {
     if (value) {
       // Store session ID in localStorage
-      localStorage.setItem("selectedSession", value);
+      localStorage.setItem("selectedSessionYear", "");
+      console.log("allSession", allSession);
+
+      localStorage.setItem("selectedSessionId", value);
+
+      setSavedSession(value);
+
+      setModalOpen(false);
     }
   };
 
@@ -1009,7 +1019,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none dark:border-strokedark dark:bg-boxdark"
-                /* value={savedSessionstate}  */ // Set the value of the select input to the selected session
+                value={savedSessionstate} // Bind the select value to savedSessionstate
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
                 {allSession?.map((cls: any) => (
