@@ -46,15 +46,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await fetchSchSetting();
-      setDefaultSessionYear(classesResult.data.session_year);
-      setDefaultSession(classesResult.data.session_id);
-      setSavedSession(classesResult.data.session_year);
 
-      localStorage.setItem(
-        "selectedSessionYear",
-        classesResult.data.session_year,
-      );
-      localStorage.setItem("selectedSessionId", classesResult.data.session_id);
+      if (!localStorage.getItem("selectedSessionYear")) {
+        localStorage.setItem(
+          "selectedSessionYear",
+          classesResult.data.session_year,
+        );
+        setDefaultSessionYear(classesResult.data.session_year);
+        setSavedSession(classesResult.data.session_year);
+      }
+
+      if (!localStorage.getItem("selectedSessionId")) {
+        localStorage.setItem(
+          "selectedSessionId",
+          classesResult.data.session_id,
+        );
+        setDefaultSession(classesResult.data.session_id);
+      }
     } catch (error: any) {}
 
     try {
