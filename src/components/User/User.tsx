@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -43,11 +44,12 @@ const User = () => {
     current_address: "",
     permanent_address: "",
     category_id: "",
-    route_id: "",
-    school_house_id: "",
+
+    route_id: 0,
+    school_house_id: 0,
     blood_group: "",
-    vehroute_id: "",
-    hostel_room_id: "",
+    vehroute_id: 0,
+    hostel_room_id: 0,
     adhar_no: "",
     samagra_id: "",
     bank_account_no: "",
@@ -121,6 +123,14 @@ const User = () => {
     }));
   };
 
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+  };
+
   // Function to handle file input changes
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -140,6 +150,7 @@ const User = () => {
         ...formData,
         class_id: selectedClass,
         section_id: selectedSection,
+        session_id: localStorage.getItem("selectedSessionId"),
       };
 
       const response = await createStudent(data);
@@ -205,8 +216,8 @@ const User = () => {
               </label>
               <select
                 name="class_id" // Adding name attribute for dynamic handling
-                value={formData.class_id}
-                onChange={handleInputChange}
+                value={selectedClass}
+                onChange={handleClassChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -223,14 +234,14 @@ const User = () => {
               </label>
               <select
                 name="section_id"
-                value={formData.section_id}
-                onChange={handleInputChange}
+                value={selectedSection}
+                onChange={handleSectionChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 /* disabled={!selectedClass} */ // Disable section dropdown if no class is selected
               >
                 <option value="">Select</option>
                 {section.map((sec) => (
-                  <option key={sec.section_id} value={sec.section_id}>
+                  <option key={sec.id} value={sec.id}>
                     {sec.section_name}
                   </option>
                 ))}
