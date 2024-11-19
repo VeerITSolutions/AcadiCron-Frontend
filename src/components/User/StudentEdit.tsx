@@ -185,15 +185,16 @@ const User = () => {
               email: data.data.email,
               state: data.data.state,
               guardian_is: data.data.guardian_is,
-              /*  city: data.data.city,
+              city: data.data.city,
               pincode: data.data.pincode,
               religion: data.data.religion,
               cast: data.data.cast,
-              dob: data.data.dob, */
-              /*  gender: data.data.gender, */
-              /* current_address: data.data.current_address,
-              permanent_address: data.data.permanent_address, */
-              /*  category_id: data.data.category_id,
+              gender: data.data.gender,
+              /* dob: data.data.dob, */
+
+              current_address: data.data.current_address,
+              permanent_address: data.data.permanent_address,
+              category_id: data.data.category_id,
               route_id: data.data.route_id,
               school_house_id: data.data.school_house_id,
               blood_group: data.data.blood_group,
@@ -237,7 +238,7 @@ const User = () => {
               first_doc: "",
               second_title: "",
               third_title: "",
-              fourth_title: "", */
+              fourth_title: "",
             });
           } catch (error) {
             console.error("Error fetching student data:", error);
@@ -369,7 +370,7 @@ const User = () => {
               <input
                 id="dob"
                 name="dob"
-                value={formData.dob}
+                value={formData.dob || ""} // Ensure it's a string
                 onChange={handleInputChange}
                 type="date"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
