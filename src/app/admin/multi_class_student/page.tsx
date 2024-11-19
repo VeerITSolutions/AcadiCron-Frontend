@@ -211,10 +211,10 @@ const StudentDetails = () => {
       <form
   action="https://erp.erabesa.co.in/student/savemulticlass"
   method="POST"
-  className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-[350px] dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white" 
+  className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-[400px] dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white" 
 >
-  <div className="flex flex-col justify-between p-4 h-[350px]"> 
-    <div className="flex items-center justify-between mb-4">
+  <div className="flex flex-col justify-between p-4 h-[400px]"> 
+    <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-2">
         <h3 className="text-small font-semibold">Aaradhya Korde (794)</h3>
       </div>
@@ -291,7 +291,7 @@ const StudentDetails = () => {
       ))}
     </div>
   </div>
-  <div className="text-left bg-black p-4 mt-auto bottom-0 w-full">
+  <div className="text-left bg-[#C1C1C1] p-4 mt-auto bottom-0 w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
   <button
     type="submit"
     className="text-white btn-primary flex items-center gap-1 rounded bg-blue-500 hover:bg-blue-600 py-2 px-4 text-sm"
@@ -308,10 +308,10 @@ const StudentDetails = () => {
 <form
   action="https://erp.erabesa.co.in/student/savemulticlass"
   method="POST"
-  className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-[350px] dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white" 
+  className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-[400px] dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white" 
 >
-  <div className="flex flex-col justify-between p-4 h-[350px]"> 
-    <div className="flex items-center justify-between mb-4">
+  <div className="flex flex-col justify-between p-4 h-[400px]"> 
+    <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-2">
         <h3 className="text-small font-semibold">Tejasvi Bhendarkar (792)</h3>
       </div>
@@ -388,7 +388,7 @@ const StudentDetails = () => {
       ))}
     </div>
   </div>
-  <div className="text-left bg-black p-4 mt-auto bottom-0 w-full">
+  <div className="text-left bg-[#C1C1C1] p-4 mt-auto bottom-0 w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
   <button
     type="submit"
     className="text-white btn-primary flex items-center gap-1 rounded bg-blue-500 hover:bg-blue-600 py-2 px-4 text-sm"
