@@ -557,7 +557,7 @@ const User = () => {
                 As on Date
               </label>
               <input
-                type="text"
+                type="date"
                 id="measurement_date"
                 name="measurement_date"
                 value={formData.measurement_date}
