@@ -13,13 +13,17 @@ interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
-
+interface Session {
+  id: string; // or whatever type 'id' should be
+  session: string; // or whatever type 'session' should be
+}
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const [defaultSession, setDefaultSession] = useState("");
   const [defaultSessionYear, setDefaultSessionYear] = useState("");
-  const [allSession, setAllSession] = useState([]);
+
+  const [allSession, setAllSession] = useState<Session[]>([]);
 
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
@@ -70,17 +74,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const handleSessionChange = (value: string) => {
     if (value) {
-      // Store session ID in localStorage
-
+      // Find session by ID
       const result = allSession.find((session: any) => session.id == value);
 
-      localStorage.setItem("selectedSessionId", value);
-      localStorage.setItem("selectedSessionYear", result.session);
+      // Check if result is not undefined
+      if (result) {
+        localStorage.setItem("selectedSessionId", value);
+        localStorage.setItem("selectedSessionYear", result.session);
 
-      setSavedSession(result.session);
-      setDefaultSession(value);
+        setSavedSession(result.session);
+        setDefaultSession(value);
 
-      setModalOpen(false);
+        setModalOpen(false);
+      } else {
+        // Handle case where no matching session was found, if needed
+        console.error("Session not found");
+      }
     }
   };
 
