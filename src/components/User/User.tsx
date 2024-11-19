@@ -7,7 +7,7 @@ import {
 import { getClasses } from "@/services/classesService";
 import styles from "./User.module.css";
 import { createStudent } from "@/services/studentService";
-
+import { toast } from "react-toastify";
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
@@ -144,10 +144,10 @@ const User = () => {
 
       const response = await createStudent(data);
 
-      if (response.status === 200) {
-        alert("Data saved successfully");
+      if (response.status == 200) {
+        toast.success("Added successful");
       } else {
-        alert("Error saving data");
+        toast.error("Error Edit data");
       }
     } catch (error: any) {
       setError(error.message);
@@ -1265,7 +1265,7 @@ const User = () => {
             </div>
           </div>
         </div>
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        {/*    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
               Miscellaneous Details
@@ -1360,7 +1360,7 @@ const User = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="flex">
           <button
             onClick={handleSave}
