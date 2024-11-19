@@ -18,6 +18,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const [defaultSession, setDefaultSession] = useState(false);
+  const [defaultSessionYear, setDefaultSessionYear] = useState(false);
   const [allSession, setAllSession] = useState([]);
 
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
@@ -34,10 +35,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     fetchClassesAndSections();
   }, []);
 
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSession");
+    if (savedSession) {
+      setSavedSession(savedSession);
+      // Use this value in your logic
+    }
+  }, []);
+
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await fetchSchSetting();
+      setDefaultSessionYear(classesResult.data.session_year);
       setDefaultSession(classesResult.data.session_id);
+
+      localStorage.setItem("selectedSession", classesResult.data.session_year);
+      localStorage.setItem("selectedSessionId", classesResult.data.session_id);
     } catch (error: any) {}
 
     try {
@@ -47,27 +60,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   };
 
   const handleSessionChange = (value: string) => {
-    // Filter to find the session that matches the selected value
-    const selectedSession = allSession?.find(
-      (cls: any) => cls.session === value,
-    );
-
-    if (selectedSession) {
+    if (value) {
       // Store session ID in localStorage
-      localStorage.setItem("selectedSession", selectedSession);
+      localStorage.setItem("selectedSession", value);
     }
-
-    // Optional: Uncomment if you need to reload the page after changing the session
-    // window.location.reload();
   };
-
-  useEffect(() => {
-    const savedSession = localStorage.getItem("selectedSession");
-    if (savedSession) {
-      setSavedSession(savedSession);
-      // Use this value in your logic
-    }
-  }, []);
 
   let menuGroups: any[] = [];
   if (getRoleId === "7") {
