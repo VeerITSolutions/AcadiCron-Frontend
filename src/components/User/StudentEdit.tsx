@@ -172,10 +172,10 @@ const User = () => {
             const data = await fetchStudentSingleData(id);
             console.log("data", data);
             setFormData({
-              /*   parent_id: data.data.parent_id, */
+              parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
               roll_no: data.data.roll_no,
-              /*  admission_date: data.data.admission_date,
+              admission_date: data.data.admission_date,
               firstname: data.data.firstname,
               middlename: data.data.middlename,
               lastname: data.data.lastname,
@@ -184,15 +184,16 @@ const User = () => {
               mobileno: data.data.mobileno,
               email: data.data.email,
               state: data.data.state,
-              city: data.data.city,
+              guardian_is: data.data.guardian_is,
+              /*  city: data.data.city,
               pincode: data.data.pincode,
               religion: data.data.religion,
               cast: data.data.cast,
-              dob: data.data.dob,
-              gender: data.data.gender,
-              current_address: data.data.current_address,
-              permanent_address: data.data.permanent_address,
-              category_id: data.data.category_id,
+              dob: data.data.dob, */
+              /*  gender: data.data.gender, */
+              /* current_address: data.data.current_address,
+              permanent_address: data.data.permanent_address, */
+              /*  category_id: data.data.category_id,
               route_id: data.data.route_id,
               school_house_id: data.data.school_house_id,
               blood_group: data.data.blood_group,
@@ -203,7 +204,7 @@ const User = () => {
               bank_account_no: data.data.bank_account_no,
               bank_name: data.data.bank_name,
               ifsc_code: data.data.ifsc_code,
-              guardian_is: data.data.guardian_is,
+
               father_name: data.data.father_name,
               father_phone: data.data.father_phone,
               father_occupation: data.data.father_occupation,
@@ -1024,7 +1025,7 @@ const User = () => {
                   className={`${styles["radio"]}`}
                   name="guardian_is"
                   value="Father" // Unique value for Father
-                  checked={formData.guardian_is === "Father"}
+                  checked={formData.guardian_is === "father"}
                   onChange={handleInputChange}
                 />{" "}
                 Father
@@ -1036,7 +1037,7 @@ const User = () => {
                   className={`${styles["radio"]}`}
                   name="guardian_is"
                   value="Mother" // Unique value for Mother
-                  checked={formData.guardian_is === "Mother"}
+                  checked={formData.guardian_is === "mother"}
                   onChange={handleInputChange}
                 />{" "}
                 Mother
@@ -1048,7 +1049,7 @@ const User = () => {
                   className={`${styles["radio"]}`}
                   name="guardian_is"
                   value="Other" // Unique value for Other
-                  checked={formData.guardian_is === "Other"}
+                  checked={formData.guardian_is === "other"}
                   onChange={handleInputChange}
                 />{" "}
                 Other
