@@ -17,8 +17,8 @@ interface SidebarProps {
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
-  const [defaultSession, setDefaultSession] = useState(false);
-  const [defaultSessionYear, setDefaultSessionYear] = useState(false);
+  const [defaultSession, setDefaultSession] = useState("");
+  const [defaultSessionYear, setDefaultSessionYear] = useState("");
   const [allSession, setAllSession] = useState([]);
 
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
@@ -73,6 +73,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       localStorage.setItem("selectedSessionYear", result.session);
 
       setSavedSession(result.session);
+      setDefaultSession(value);
 
       setModalOpen(false);
     }
@@ -1021,7 +1022,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none dark:border-strokedark dark:bg-boxdark"
-                value={savedSessionstate} // Bind the select value to savedSessionstate
+                value={defaultSession} // Bind the select value to savedSessionstate
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
                 {allSession?.map((cls: any) => (
