@@ -14,6 +14,7 @@ import {
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [section2, setSections2] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -85,6 +86,9 @@ const User = () => {
     disable_at: "",
     class_id: "",
     section_id: "",
+    sibiling_class_id: "",
+    sibiling_section_id: "",
+    sibiling_student_id: "",
 
     notes: "",
     first_title: "",
@@ -174,6 +178,7 @@ const User = () => {
               data.data.class_id,
             );
             setSections(sectionsResult.data);
+            setSections2(sectionsResult.data);
             setFormData({
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
@@ -207,7 +212,7 @@ const User = () => {
               bank_account_no: data.data.bank_account_no,
               bank_name: data.data.bank_name,
               ifsc_code: data.data.ifsc_code,
-
+              dob: data.data.dob,
               father_name: data.data.father_name,
               father_phone: data.data.father_phone,
               father_occupation: data.data.father_occupation,
@@ -242,6 +247,9 @@ const User = () => {
               second_title: "",
               third_title: "",
               fourth_title: "",
+              sibiling_class_id: "",
+              sibiling_section_id: "",
+              sibiling_student_id: "",
             });
           } catch (error) {
             console.error("Error fetching student data:", error);
@@ -371,9 +379,9 @@ const User = () => {
                 Date of Birth <span className="required">*</span>
               </label>
               <input
-                id="admission_date"
-                name="admission_date"
-                value={formData.admission_date}
+                id="dob"
+                name="dob"
+                value={formData.dob}
                 onChange={handleInputChange}
                 placeholder=""
                 type="date"
@@ -565,337 +573,6 @@ const User = () => {
                 id="measurement_date"
                 name="measurement_date"
                 value={formData.measurement_date}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Sibling Class
-              </label>
-              <select
-                id="sibiling_class_id"
-                name="sibiling_class_id"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="">Select</option>
-                <option value="1">Class 1</option>
-                <option value="2">Class 2</option>
-                <option value="3">Class 3</option>
-                <option value="4">Class 4</option>
-                <option value="5">Class 5</option>
-                <option value="6">Class 6</option>
-                <option value="7">Class 7</option>
-                <option value="8">Class 8</option>
-                <option value="9">Class 9</option>
-                <option value="10">Class 10</option>
-                <option value="11">Nursery</option>
-                <option value="12">K.G.-I</option>
-                <option value="13">K.G. - II</option>
-              </select>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Sibling Section
-              </label>
-              <select
-                id="sibiling_section_id"
-                name="sibiling_section_id"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="">Select</option>
-              </select>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Sibling Student
-              </label>
-              <select
-                id="sibiling_student_id"
-                name="sibiling_student_id"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="">Select</option>
-              </select>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Place of Birth
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][4]"
-                name="custom_fields[students][4]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Nationality
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][3]"
-                name="custom_fields[students][3]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Mother Tongue
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][21]"
-                name="custom_fields[students][21]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                TC Number
-              </label>
-              <input
-                type="number"
-                id="custom_fields[students][20]"
-                name="custom_fields[students][20]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                StudentID CBSE
-              </label>
-              <input
-                type="number"
-                id="custom_fields[students][1]"
-                name="custom_fields[students][1]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Student Aadhar
-              </label>
-              <input
-                type="number"
-                id="custom_fields[students][19]"
-                name="custom_fields[students][19]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Last School Attended
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][2]"
-                name="custom_fields[students][2]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Date of Admission in School Class
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][5]"
-                name="custom_fields[students][5]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Class in which Pupil Last Studied
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][6]"
-                name="custom_fields[students][6]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Subject Studied
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][7]"
-                name="custom_fields[students][7]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Whether Qualified
-              </label>
-              <select
-                id="sibiling_class_id"
-                name="sibiling_class_id"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="">Select</option>
-                <option value="Pass">Pass</option>
-                <option value="Fail">Fail</option>
-              </select>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Promoted to Class
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][9]"
-                name="custom_fields[students][9]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Month Upto Pupil Paid Fees
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][10]"
-                name="custom_fields[students][10]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Total Working Days
-              </label>
-              <input
-                type="number"
-                id="custom_fields[students][11]"
-                name="custom_fields[students][11]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Total Present Days
-              </label>
-              <input
-                type="number"
-                id="custom_fields[students][12]"
-                name="custom_fields[students][12]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Whether NCC Scout
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][13]"
-                name="custom_fields[students][13]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Games Played Other Activity
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][14]"
-                name="custom_fields[students][14]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                General Conduct
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][15]"
-                name="custom_fields[students][15]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Certificate Issue Date
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][16]"
-                name="custom_fields[students][16]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Reason for Leaving School
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][17]"
-                name="custom_fields[students][17]"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Any Other Remarks
-              </label>
-              <input
-                type="text"
-                id="custom_fields[students][18]"
-                name="custom_fields[students][18]"
-                value={formData.dob}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -1173,7 +850,7 @@ const User = () => {
                   type="checkbox"
                   className={`${styles["checkbox"]}`}
                   id="autofill_current_address"
-                  value={formData.dob}
+                  /* value={formData.dob} */
                   onChange={handleInputChange}
                 />
                 If Guardian Address is Current Address
@@ -1184,7 +861,7 @@ const User = () => {
                 <input
                   type="checkbox"
                   className={`${styles["checkbox"]}`}
-                  value={formData.dob}
+                  /* value={formData.dob} */
                   onChange={handleInputChange}
                   id="autofill_address"
                 />
@@ -1351,7 +1028,7 @@ const User = () => {
             </div>
           </div>
         </div>
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        {/*  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
               Miscellaneous Details
@@ -1446,7 +1123,7 @@ const User = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="flex">
           <button
             onClick={handleSave}
