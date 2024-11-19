@@ -8,6 +8,8 @@ import { getClasses } from "@/services/classesService";
 import styles from "./User.module.css";
 import { createStudent } from "@/services/studentService";
 import { toast } from "react-toastify";
+
+import { useRouter } from "next/navigation";
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
@@ -93,7 +95,7 @@ const User = () => {
     fourth_title: "",
     // Add other initial fields as needed
   });
-
+  const router = useRouter();
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -157,6 +159,7 @@ const User = () => {
 
       if (response.status == 200) {
         toast.success("Added successful");
+        router.push(`/admin/student_details`);
       } else {
         toast.error("Error Edit data");
       }
