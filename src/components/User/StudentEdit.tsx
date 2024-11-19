@@ -170,7 +170,10 @@ const User = () => {
         const getData = async () => {
           try {
             const data = await fetchStudentSingleData(id);
-            console.log("data", data);
+            const sectionsResult = await fetchsectionByClassData(
+              data.data.class_id,
+            );
+            setSections(sectionsResult.data);
             setFormData({
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
