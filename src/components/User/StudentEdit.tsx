@@ -190,7 +190,6 @@ const User = () => {
               religion: data.data.religion,
               cast: data.data.cast,
               gender: data.data.gender,
-              /* dob: data.data.dob, */
 
               current_address: data.data.current_address,
               permanent_address: data.data.permanent_address,
@@ -368,10 +367,11 @@ const User = () => {
                 Date of Birth <span className="required">*</span>
               </label>
               <input
-                id="dob"
-                name="dob"
-                value={formData.dob || ""} // Ensure it's a string
+                id="admission_date"
+                name="admission_date"
+                value={formData.admission_date}
                 onChange={handleInputChange}
+                placeholder=""
                 type="date"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -465,7 +465,7 @@ const User = () => {
                 value={formData.admission_date}
                 onChange={handleInputChange}
                 placeholder=""
-                type="text"
+                type="date"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
