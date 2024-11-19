@@ -8,9 +8,10 @@ import { getClasses } from "@/services/classesService";
 import styles from "./User.module.css";
 import {
   createStudent,
+  editStudent,
   fetchStudentSingleData,
 } from "@/services/studentService";
-
+import { toast } from "react-toastify";
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
@@ -26,6 +27,7 @@ const User = () => {
 
   // State to hold all form inputs as a single object
   const [formData, setFormData] = useState<Record<string, any>>({
+    id: "",
     parent_id: "",
     admission_no: "",
     roll_no: "",
@@ -47,17 +49,17 @@ const User = () => {
     current_address: "",
     permanent_address: "",
     category_id: "",
-    route_id: "",
-    school_house_id: "",
-    blood_group: "",
-    vehroute_id: "",
-    hostel_room_id: "",
+    route_id: 0,
+    school_house_id: 0,
+    blood_group: 0,
+    vehroute_id: 0,
+    hostel_room_id: 0,
     adhar_no: "",
     samagra_id: "",
     bank_account_no: "",
     bank_name: "",
     ifsc_code: "",
-    guardian_is: "",
+    guardian_is: "No",
     father_name: "",
     father_phone: "",
     father_occupation: "",
@@ -67,7 +69,7 @@ const User = () => {
     guardian_name: "",
     guardian_relation: "",
     guardian_phone: "",
-    guardian_occupation: "",
+    guardian_occupation: "NA",
     guardian_address: "",
     guardian_email: "",
     father_pic: "",
@@ -149,12 +151,12 @@ const User = () => {
         section_id: selectedSection,
       };
 
-      const response = await createStudent(data);
+      const response = await editStudent(formData.id, data);
 
-      if (response.status === 200) {
-        alert("Data saved successfully");
+      if (response.success == true) {
+        toast.success("Edit successful");
       } else {
-        alert("Error saving data");
+        toast.error("Error Edit data");
       }
     } catch (error: any) {
       setError(error.message);
@@ -180,6 +182,7 @@ const User = () => {
             setSections(sectionsResult.data);
             setSections2(sectionsResult.data);
             setFormData({
+              id: data.data.id,
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
               roll_no: data.data.roll_no,
