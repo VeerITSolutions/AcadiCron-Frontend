@@ -86,6 +86,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         setDefaultSession(value);
 
         setModalOpen(false);
+        window.location.reload();
       } else {
         // Handle case where no matching session was found, if needed
         console.error("Session not found");
