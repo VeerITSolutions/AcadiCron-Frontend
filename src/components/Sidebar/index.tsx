@@ -17,7 +17,8 @@ interface SidebarProps {
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
-  const [defaultSession, setDefaultSession] = useState(false);
+  const [defaultSession, setDefaultSession] = useState("");
+  const [defaultSessionYear, setDefaultSessionYear] = useState("");
   const [allSession, setAllSession] = useState([]);
 
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
@@ -34,10 +35,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     fetchClassesAndSections();
   }, []);
 
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSessionYear");
+    if (savedSession) {
+      setSavedSession(savedSession);
+      // Use this value in your logic
+    }
+  }, []);
+
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await fetchSchSetting();
+      setDefaultSessionYear(classesResult.data.session_year);
       setDefaultSession(classesResult.data.session_id);
+      setSavedSession(classesResult.data.session_year);
+
+      localStorage.setItem(
+        "selectedSessionYear",
+        classesResult.data.session_year,
+      );
+      localStorage.setItem("selectedSessionId", classesResult.data.session_id);
     } catch (error: any) {}
 
     try {
@@ -47,27 +64,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   };
 
   const handleSessionChange = (value: string) => {
-    // Filter to find the session that matches the selected value
-    const selectedSession = allSession?.find(
-      (cls: any) => cls.session === value,
-    );
-
-    if (selectedSession) {
+    if (value) {
       // Store session ID in localStorage
-      localStorage.setItem("selectedSession", selectedSession);
-    }
 
-    // Optional: Uncomment if you need to reload the page after changing the session
-    // window.location.reload();
+      const result = allSession.find((session: any) => session.id == value);
+
+      localStorage.setItem("selectedSessionId", value);
+      localStorage.setItem("selectedSessionYear", result.session);
+
+      setSavedSession(result.session);
+      setDefaultSession(value);
+
+      setModalOpen(false);
+    }
   };
-
-  useEffect(() => {
-    const savedSession = localStorage.getItem("selectedSession");
-    if (savedSession) {
-      setSavedSession(savedSession);
-      // Use this value in your logic
-    }
-  }, []);
 
   let menuGroups: any[] = [];
   if (getRoleId === "7") {
@@ -1012,7 +1022,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none dark:border-strokedark dark:bg-boxdark"
-                /* value={savedSessionstate}  */ // Set the value of the select input to the selected session
+                value={defaultSession} // Bind the select value to savedSessionstate
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
                 {allSession?.map((cls: any) => (
