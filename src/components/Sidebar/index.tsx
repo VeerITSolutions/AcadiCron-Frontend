@@ -13,13 +13,17 @@ interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
-
+interface Session {
+  id: string; // or whatever type 'id' should be
+  session: string; // or whatever type 'session' should be
+}
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const [defaultSession, setDefaultSession] = useState("");
   const [defaultSessionYear, setDefaultSessionYear] = useState("");
-  const [allSession, setAllSession] = useState([]);
+
+  const [allSession, setAllSession] = useState<Session[]>([]);
 
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,30 +35,35 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     if (roleId) {
       SetGetRoleId(roleId);
     }
-
-    fetchClassesAndSections();
-  }, []);
-
-  useEffect(() => {
     const savedSession = localStorage.getItem("selectedSessionYear");
     if (savedSession) {
       setSavedSession(savedSession);
       // Use this value in your logic
     }
+
+    fetchClassesAndSections();
   }, []);
 
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await fetchSchSetting();
-      setDefaultSessionYear(classesResult.data.session_year);
-      setDefaultSession(classesResult.data.session_id);
-      setSavedSession(classesResult.data.session_year);
 
-      localStorage.setItem(
-        "selectedSessionYear",
-        classesResult.data.session_year,
-      );
-      localStorage.setItem("selectedSessionId", classesResult.data.session_id);
+      if (!localStorage.getItem("selectedSessionYear")) {
+        localStorage.setItem(
+          "selectedSessionYear",
+          classesResult.data.session_year,
+        );
+        setDefaultSessionYear(classesResult.data.session_year);
+        setSavedSession(classesResult.data.session_year);
+      }
+
+      if (!localStorage.getItem("selectedSessionId")) {
+        localStorage.setItem(
+          "selectedSessionId",
+          classesResult.data.session_id,
+        );
+        setDefaultSession(classesResult.data.session_id);
+      }
     } catch (error: any) {}
 
     try {
@@ -65,17 +74,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const handleSessionChange = (value: string) => {
     if (value) {
-      // Store session ID in localStorage
-
+      // Find session by ID
       const result = allSession.find((session: any) => session.id == value);
 
-      localStorage.setItem("selectedSessionId", value);
-      localStorage.setItem("selectedSessionYear", result.session);
+      // Check if result is not undefined
+      if (result) {
+        localStorage.setItem("selectedSessionId", value);
+        localStorage.setItem("selectedSessionYear", result.session);
 
-      setSavedSession(result.session);
-      setDefaultSession(value);
+        setSavedSession(result.session);
+        setDefaultSession(value);
 
-      setModalOpen(false);
+        setModalOpen(false);
+      } else {
+        // Handle case where no matching session was found, if needed
+        console.error("Session not found");
+      }
     }
   };
 

@@ -1,123 +1,118 @@
 .MuiPaper-root h6 {
-    font-size: 1.25rem !important;
-    line-height: 1.75rem !important;
-    font-family: 'Satoshi' !important;
-    font-weight: 600 !important;
+  font-size: 1.25rem !important;
+  line-height: 1.75rem !important;
+  font-family: "Satoshi" !important;
+  font-weight: 600 !important;
 }
 
 .MuiPaper-root {
-    box-shadow: 0px 8px 13px -3px rgba(0, 0, 0, .07) !IMPORTANT;
+  box-shadow: 0px 8px 13px -3px rgba(0, 0, 0, 0.07) !important;
 }
 
 .MuiToolbar-root {
-    padding: 1.5rem 1.875rem;
+  padding: 1.5rem 1.875rem;
 }
 
 thead.MuiTableHead-root {
-    border: solid rgb(226 232 240);
-    border-width: 1px 0 1px 0 !important;
-
+  border: solid rgb(226 232 240);
+  border-width: 1px 0 1px 0 !important;
 }
 
 .MuiTableCell-root {
-    padding: 0.80rem !important;
+  padding: 0.8rem !important;
 }
 
 .MuiPaper-root .MuiButtonBase-root {
-    font-family: Satoshi, sans-serif !important;
-    font-size: 1rem !important;
-    line-height: 1.5rem !important;
-    font-weight: 500 !important;
-    color: rgb(100 116 139);
-    text-transform: capitalize;
+  font-family: Satoshi, sans-serif !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+  font-weight: 500 !important;
+  color: rgb(100 116 139);
+  text-transform: capitalize;
 }
 
 .css-1w1rijm-MuiButtonBase-root-MuiButton-root {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 
 .MuiTableCell-root {
-    font-size: .875rem !important;
-    line-height: 1.25rem !important;
-    font-family: Satoshi, sans-serif !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  font-family: Satoshi, sans-serif !important;
 }
 
 .MuiButtonBase-root:hover {
-    background-color: unset !important;
+  background-color: unset !important;
 }
 
 .MuiTableRow-root:hover {
-    background-color: unset !important;
+  background-color: unset !important;
 }
 
-
-
 .dark .quill-dark .ql-container.ql-snow {
+  color: #ffffff;
+  border-color: #4b5563;
+}
 
-    color: #ffffff;
-    border-color: #4b5563; 
-  }
-  
-  .dark .quill-dark .ql-editor {
-    color: #ffffff;
-  }
-  
+.dark .quill-dark .ql-editor {
+  color: #ffffff;
+}
 
 .dark .quill-dark .ql-toolbar.ql-snow {
-    border-color: #4b5563; 
-    color: #ffffff; 
-  }
-  
-  .dark .quill-dark .ql-toolbar .ql-picker-label,
-  .dark .quill-dark .ql-toolbar .ql-picker-item,
-  .dark .quill-dark .ql-toolbar button {
-    color: #ffffff; 
-  }
-  
+  border-color: #4b5563;
+  color: #ffffff;
+}
+
+.dark .quill-dark .ql-toolbar .ql-picker-label,
+.dark .quill-dark .ql-toolbar .ql-picker-item,
+.dark .quill-dark .ql-toolbar button {
+  color: #ffffff;
+}
+
 .dark .quill-dark .ql-toolbar .ql-stroke {
-    stroke: #ffffff; 
-  }
-  
-  .css-1d6zwhm-MuiButtonBase-root-MuiTab-root.Mui-selected {
-    color: #8db0dd !important;
+  stroke: #ffffff;
+}
+
+.css-1d6zwhm-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: #8db0dd !important;
 }
 
 .css-hyum1k-MuiToolbar-root {
-    padding-left: 12px !important;
+  padding-left: 12px !important;
 }
 
 .css-1qmdl2m-MuiTableCell-root {
   text-align: left !important;
 }
 
-.css-hd79m-MuiButtonBase-root-MuiButton-root, .css-ych637-MuiButtonBase-root-MuiButton-root {
+.css-hd79m-MuiButtonBase-root-MuiButton-root,
+.css-ych637-MuiButtonBase-root-MuiButton-root {
   padding: 10px 0px !important;
   justify-content: left !important;
-
 }
 
 @media (min-width: 1024px) {
-    .lg\:ml-72\.5 {
-      margin-left: 0px;
-    }
-  
-    .sidebarOpen {
-      width: 290px !important;
-    }
-  
-    .relative.flex.flex-1.flex-col.lg\:ml-72\.5 {
-      width: calc(100% - 290px);
-    }
+  .lg\:ml-72\.5 {
+    margin-left: 0px;
   }
-  
 
+  .sidebarOpen {
+    width: 290px !important;
+  }
 
-@media (max-width: 320px){
-    .tss-hj53wm-MUIDataTableToolbar-titleText {
-         text-align: left !important;
-    }
-    .tss-qbo1l6-MUIDataTableToolbar-actions {
-        text-align: right !important;
-    }
-    
+  .relative.flex.flex-1.flex-col.lg\:ml-72\.5 {
+    width: calc(100% - 290px);
+  }
+}
+
+@media (max-width: 320px) {
+  .tss-hj53wm-MUIDataTableToolbar-titleText {
+    text-align: left !important;
+  }
+  .tss-qbo1l6-MUIDataTableToolbar-actions {
+    text-align: right !important;
+  }
+}
+span.required {
+  color: red;
 }
