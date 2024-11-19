@@ -31,16 +31,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     if (roleId) {
       SetGetRoleId(roleId);
     }
-
-    fetchClassesAndSections();
-  }, []);
-
-  useEffect(() => {
     const savedSession = localStorage.getItem("selectedSessionYear");
     if (savedSession) {
       setSavedSession(savedSession);
       // Use this value in your logic
     }
+
+    fetchClassesAndSections();
   }, []);
 
   const fetchClassesAndSections = async () => {
