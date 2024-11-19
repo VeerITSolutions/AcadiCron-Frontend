@@ -14,9 +14,6 @@ export const fetchLeaveData = async (page: number, perPage: number,selectedClass
 
 
 
-
-
-
 export const createLeave = async (date: string,
   leave_type_id: string,
   leave_from: string,
