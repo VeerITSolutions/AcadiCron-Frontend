@@ -9,3 +9,10 @@ export const fetchSchSetting = async (page?: number, perPage?: number) => {
   });
   return response.data;
 };
+
+
+export const editSchSetting = async (data: any) => {
+
+  const response = await apiClient.post(`/schsetting/1`, data);
+  return response.data;
+};
