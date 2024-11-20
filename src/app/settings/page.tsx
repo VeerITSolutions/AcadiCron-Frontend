@@ -4,6 +4,15 @@ import Image from "next/image";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useState } from "react";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Grid,
+} from "@mui/material";
 
 /* export const metadata: Metadata = {
   title: "Next.js Settings |",
@@ -31,22 +40,171 @@ const Settings = () => {
   const handleCancel = () => {
     setImage("/images/logo/logo2.png"); // Reset to default image
   };
+  const [formData, setFormData] = useState({
+    name: "",
+    biometric: 0,
+    biometric_device: "",
+    email: "",
+    phone: "",
+    address: "",
+    lang_id: "",
+    languages: "",
+    dise_code: "",
+    date_format: "",
+    time_format: "",
+    currency: "",
+    currency_symbol: "",
+    is_rtl: "disabled",
+    is_duplicate_fees_invoice: 0,
+    timezone: "UTC",
+    session_id: "",
+    cron_secret_key: "",
+    currency_place: "before_number",
+    class_teacher: "",
+    start_month: "",
+    attendence_type: 0,
+    image: "",
+    admin_logo: "",
+    admin_small_logo: "",
+    theme: "default.jpg",
+    fee_due_days: 0,
+    adm_auto_insert: 1,
+    adm_prefix: "ssadm19/20",
+    adm_start_from: "",
+    adm_no_digit: 6,
+    adm_update_status: 0,
+    staffid_auto_insert: 1,
+    staffid_prefix: "staffss/19/20",
+    staffid_start_from: "",
+    staffid_no_digit: 6,
+    staffid_update_status: 0,
+    is_active: "no",
+    online_admission: 0,
+    online_admission_payment: "",
+    online_admission_amount: 0,
+    online_admission_instruction: "",
+    online_admission_conditions: "",
+    is_blood_group: 1,
+    is_student_house: 1,
+    roll_no: 1,
+    category: "",
+    religion: 1,
+    cast: 1,
+    mobile_no: 1,
+    student_email: 1,
+    admission_date: 1,
+    lastname: 1,
+    middlename: 1,
+    student_photo: 1,
+    student_height: 1,
+    student_weight: 1,
+    measurement_date: 1,
+    father_name: 1,
+    father_phone: 1,
+    father_occupation: 1,
+    father_pic: 1,
+    mother_name: 1,
+    mother_phone: 1,
+    mother_occupation: 1,
+    mother_pic: 1,
+    guardian_name: 1,
+    guardian_relation: 1,
+    guardian_phone: 1,
+    guardian_email: 1,
+    guardian_pic: 1,
+    guardian_occupation: 1,
+    guardian_address: 1,
+    current_address: 1,
+    permanent_address: 1,
+    route_list: 1,
+    hostel_id: 1,
+    bank_account_no: 1,
+    ifsc_code: "",
+    bank_name: "",
+    national_identification_no: 1,
+    local_identification_no: 1,
+    rte: 1,
+    previous_school_details: 1,
+    student_note: 1,
+    upload_documents: 1,
+    staff_designation: 1,
+    staff_department: 1,
+    staff_last_name: 1,
+    staff_father_name: 1,
+    staff_mother_name: 1,
+    staff_date_of_joining: 1,
+    staff_phone: 1,
+    staff_emergency_contact: 1,
+    staff_marital_status: 1,
+    staff_photo: 1,
+    staff_current_address: 1,
+    staff_permanent_address: 1,
+    staff_qualification: 1,
+    staff_work_experience: 1,
+    staff_note: 1,
+    staff_epf_no: 1,
+    staff_basic_salary: 1,
+    staff_contract_type: 1,
+    staff_work_shift: 1,
+    staff_work_location: 1,
+    staff_leaves: 1,
+    staff_account_details: 1,
+    staff_social_media: 1,
+    staff_upload_documents: 1,
+    mobile_api_url: "",
+    app_primary_color_code: "",
+    app_secondary_color_code: "",
+    app_logo: "",
+    student_profile_edit: 0,
+    start_week: "",
+    my_question: 0,
+  });
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log(formData);
+  };
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Settings" />
 
         <div className="grid grid-cols-5 gap-8">
+          {/* new logic  */}
+
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Site Setting
-                </h3>
-              </div>
               <div className="p-7">
-                <form action="#">
+                <form onSubmit={handleSubmit}>
+                  {Object.keys(formData).map((key) => (
+                    <div className="mb-3 w-full" key={key}>
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor={key}
+                      >
+                        {key.replace(/_/g, " ").toUpperCase()}
+                      </label>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name={key}
+                        id={key}
+                        placeholder={key.replace(/_/g, " ").toUpperCase()}
+                        value={formData[key as keyof typeof formData]}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  ))}
+
+                  {/* new logic end  */}
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full">
                       <label
@@ -105,9 +263,7 @@ const Settings = () => {
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Site Logo
-                </h3>
+                <h3 className="font-medium text-black dark:text-white">Logo</h3>
               </div>
               <div className="p-7">
                 <form action="#">
