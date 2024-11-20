@@ -28,6 +28,7 @@ const Settings = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   // Handle file upload
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -624,7 +625,7 @@ const Settings = () => {
               </div>
             </div>
 
-            <div className="mt-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="mt-6 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">Admin Logo</h3>
               </div>
@@ -708,7 +709,6 @@ const Settings = () => {
                 </form>
               </div>
             </div>
-
           </div>
         </div>
         </div>
