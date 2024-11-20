@@ -35,7 +35,7 @@ export const deleteStudent = async (id: number) => {
 // Edit a student category by ID
 export const editStudent = async (id: number, data: any) => {
 
-  const response = await apiClient.put(`/student/${id}`, data);
+  const response = await apiClient.post(`/student/${id}`, data);
   return response.data;
 };
 
