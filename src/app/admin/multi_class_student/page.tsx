@@ -125,7 +125,6 @@ const StudentDetails = () => {
     { id: 3, name: "Brainy" },
   ];
 
-  // Save rows to localStorage whenever they change
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("rows", JSON.stringify(rows));
