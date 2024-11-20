@@ -94,6 +94,10 @@ const StudentDetails = () => {
     fourth_title: "",
     // Add other initial fields as needed
   });
+  const defaultImage = "/uploads/student_images/default_female.jpg";
+
+  // Dynamically construct the image URL
+  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image || defaultImage}`;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -186,7 +190,7 @@ const StudentDetails = () => {
           <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
             <div className="text-center">
               <img
-                src="https://erp.erabesa.co.in/uploads/student_images/default_female.jpg"
+                src={imageUrl}
                 alt="User Profile"
                 className="mx-auto h-24 w-24 rounded-full"
               />
