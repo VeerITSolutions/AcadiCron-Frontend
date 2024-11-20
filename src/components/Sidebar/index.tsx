@@ -933,7 +933,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <Image
                 width={176}
                 height={32}
-                src={"/images/logo/logo1.png"}
+                src={"/images/logo/logo2.png"}
                 alt="Logo"
                 priority
               />
