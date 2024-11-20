@@ -61,7 +61,7 @@ const LoginPage = () => {
               />
               <Image
                 className="dark:hidden"
-                src={"/images/logo/logo-dark.svg"}
+                src={"/images/logo/logo3.png"}
                 alt="Logo"
                 width={176}
                 height={32}
