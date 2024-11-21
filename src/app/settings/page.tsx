@@ -28,7 +28,10 @@ const Settings = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   // Handle file upload
+  const defaultImage = "/uploads/student_images/default_female.jpg";
 
+  // Dynamically construct the image URL
+  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${image || defaultImage}`;
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -52,9 +55,11 @@ const Settings = () => {
   const fetchClassesAndSections = async () => {
     try {
       const response = await fetchSchSetting();
-      console.log("response", response);
-      setFormData(response.data);
 
+      setFormData(response.data);
+      setImage(
+        `${process.env.NEXT_PUBLIC_BASE_URL}uploads/school_content/admin_logo/${response.data.admin_logo}`,
+      );
       setFormData({
         name: response.data.name,
         biometric: response.data.biometric,
@@ -79,8 +84,8 @@ const Settings = () => {
         start_month: response.data.start_month,
         attendence_type: response.data.attendence_type,
         image: response.data.image,
-        /* admin_logo: response.data.admin_logo, */
-        /* admin_small_logo: response.data.admin_small_logo, */
+        admin_logo: response.data.admin_logo,
+        admin_small_logo: response.data.admin_small_logo,
         theme: response.data.theme,
         fee_due_days: response.data.fee_due_days,
         adm_auto_insert: response.data.adm_auto_insert,
@@ -201,8 +206,8 @@ const Settings = () => {
     start_month: "",
     attendence_type: 0,
     image: "",
-    /* admin_logo: "",
-    admin_small_logo: "", */
+    admin_logo: "",
+    admin_small_logo: "",
     theme: "default.jpg",
     fee_due_days: 0,
     adm_auto_insert: 1,
@@ -338,14 +343,15 @@ const Settings = () => {
       setLoading(false);
     }
   };
+
+  console.log("image", image);
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Settings" />
 
         <div className="grid grid-cols-5 gap-8">
-
-              {/* <div className="col-span-5 xl:col-span-3">
+          {/* <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="p-7">
                 {Object.keys(formData).map((key) => (
@@ -424,133 +430,119 @@ const Settings = () => {
             </div>
           </div> */}
 
-        <div className="col-span-5 xl:col-span-3">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            
-            <div className="flex flex-col gap-5.5 p-6.5">
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Name
-                </label>
-                <input
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
+          <div className="col-span-5 xl:col-span-3">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="flex flex-col gap-5.5 p-6.5">
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Name
+                  </label>
+                  <input
+                    name="type"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Email
-                </label>
-                <input
-                   id="email"
-                   name="email"
-                   value={formData.email}
-                   onChange={handleInputChange}
-                   placeholder=""
-                   type="email"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-              </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Email
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Phone
-                </label>
-                <input
-                  name="phone"
-                  type="text"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
-              </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Phone
+                  </label>
+                  <input
+                    name="phone"
+                    type="number"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Address
-                </label>
-                <input
-                  name="address"
-                  type="text"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
-              </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Address
+                  </label>
+                  <input
+                    name="address"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Languages
-                </label>
-                <input
-                  name="languages"
-                  type="text"
-                  value={formData.languages}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
-              </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Languages
+                  </label>
+                  <input
+                    name="languages"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Time Format
-                </label>
-                <input
-                  name="time_format"
-                  type="text"
-                  value={formData.time_format}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
-              </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Time Format
+                  </label>
+                  <input
+                    name="time_format"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Currency Symbol
-                </label>
-                <input
-                  name="currency_symbol"
-                  type="text"
-                  value={formData.currency_symbol}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
-              </div>
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Currency
-                </label>
-                <input
-                  name="currency"
-                  type="text"
-                  value={formData.currency}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
-              </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Currency Symbol
+                  </label>
+                  <input
+                    name="currency_symbol"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Currency
+                  </label>
+                  <input
+                    name="currency"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Timezone
-                </label>
-                <input
-                  name="timezone"
-                  type="text"
-                  value={formData.timezone}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
-              </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Timezone
+                  </label>
+                  <input
+                    name="timezone"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                My Question
-                </label>
-                <input
-                  name="my_question"
-                  type="text"
-                  value={formData.my_question}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
-              </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    My Question
+                  </label>
+                  <input
+                    name="my_question"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div className="flex">
+                <div className="flex">
                   <button
                     type="button"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
@@ -558,13 +550,10 @@ const Settings = () => {
                   >
                     Save
                   </button>
-                  </div>
-             
+                </div>
               </div>
+            </div>
           </div>
-       </div>
-
-    
 
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -637,7 +626,7 @@ const Settings = () => {
                     <button
                       className="flex justify-center rounded border border-stroke px-4.5 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="button"
-                      onClick={handleCancel} 
+                      onClick={handleCancel}
                     >
                       Cancel
                     </button>
@@ -652,7 +641,7 @@ const Settings = () => {
               </div>
             </div>
 
-            <div className="mt-6 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            {/*  <div className="mt-6 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">Admin Logo</h3>
               </div>
@@ -722,7 +711,7 @@ const Settings = () => {
                     <button
                       className="flex justify-center rounded border border-stroke px-4.5 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="button"
-                      onClick={handleCancel} 
+                      onClick={handleCancel}
                     >
                       Cancel
                     </button>
@@ -735,11 +724,10 @@ const Settings = () => {
                   </div>
                 </form>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
-        </div>
-   
+      </div>
     </DefaultLayout>
   );
 };
