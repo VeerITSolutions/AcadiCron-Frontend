@@ -486,7 +486,7 @@ const User = () => {
               </label>
               <input
                 type="file"
-                accept="image/*,video/*"
+                accept="image/*"
                 name="image" // Optional: Include name for form data
                 onChange={handleFileChange} // Handle file change separately
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -634,7 +634,7 @@ const User = () => {
               <input
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
-                accept="image/*,video/*"
+                accept="image/*"
                 name="father_pic" // Optional: Include name for form data
                 onChange={handleFileChange} // Handle file change separately
                 id="file"
@@ -690,7 +690,7 @@ const User = () => {
               <input
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
-                accept="image/*,video/*"
+                accept="image/*"
                 name="mother_pic" // Optional: Include name for form data
                 onChange={handleFileChange} // Handle file change separately
                 id="file"
