@@ -32,7 +32,9 @@ const Settings = () => {
 
   // Dynamically construct the image URL
   const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${image || defaultImage}`;
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -40,6 +42,19 @@ const Settings = () => {
         setImage(reader.result as string); // Set the uploaded image as a base64 string
       };
       reader.readAsDataURL(file);
+
+      const data = {
+        ...formData,
+        admin_logo: file,
+      };
+
+      const response = await editSchSetting(data);
+
+      if (response.success == true) {
+        toast.success("Edit successful");
+      } else {
+        toast.error("Error Edit data");
+      }
     }
   };
 
