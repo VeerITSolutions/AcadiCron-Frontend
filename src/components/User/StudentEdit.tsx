@@ -36,6 +36,10 @@ const User = () => {
     middlename: "",
     lastname: "",
     rte: "",
+    image: "",
+    father_pic: "",
+    mather_pic: "",
+    guardian_pic: "",
 
     mobileno: "",
     email: "",
