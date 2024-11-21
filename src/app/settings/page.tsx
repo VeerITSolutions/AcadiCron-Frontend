@@ -36,6 +36,7 @@ const Settings = () => {
 
   // Dynamically construct the image URL
   const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${image || defaultImage}`;
+
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -55,9 +56,9 @@ const Settings = () => {
       const response = await editSchSetting(data);
 
       if (response.success == true) {
-        toast.success("Edit successful");
+        toast.success("Add successful");
       } else {
-        toast.error("Error Edit data");
+        toast.error("Error add data");
       }
     }
   };
@@ -347,14 +348,12 @@ const Settings = () => {
         section_id: selectedSection, */
       };
 
-      // const response = await editSchSetting(data);
-
       const response = await createSchSetting(data);
 
       if (response.success == true) {
         toast.success("Added successful");
       } else {
-        toast.error("Error Edit data");
+        toast.error("Error add data");
       }
     } catch (error: any) {
       setError(error.message);
@@ -454,7 +453,7 @@ const Settings = () => {
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Name
+                      Name
                   </label>
                   <input
                     name="name"
