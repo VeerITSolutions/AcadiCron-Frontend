@@ -153,7 +153,6 @@ const User = () => {
         ...formData,
         class_id: selectedClass,
         section_id: selectedSection,
-        session_id: localStorage.getItem("selectedSessionId"),
       };
 
       const response = await createStudent(data);
