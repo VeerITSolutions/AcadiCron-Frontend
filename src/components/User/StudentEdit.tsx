@@ -36,7 +36,7 @@ const User = () => {
     middlename: "",
     lastname: "",
     rte: "",
-    image: "",
+
     mobileno: "",
     email: "",
     state: "",
@@ -72,9 +72,7 @@ const User = () => {
     guardian_occupation: "NA",
     guardian_address: "",
     guardian_email: "",
-    father_pic: "",
-    mother_pic: "",
-    guardian_pic: "",
+
     is_active: "",
     previous_school: "",
     height: "",
@@ -191,7 +189,7 @@ const User = () => {
               middlename: data.data.middlename,
               lastname: data.data.lastname,
               rte: data.data.rte,
-              image: data.data.image,
+
               mobileno: data.data.mobileno,
               email: data.data.email,
               state: data.data.state,
@@ -228,9 +226,7 @@ const User = () => {
               guardian_occupation: data.data.guardian_occupation,
               guardian_address: data.data.guardian_address,
               guardian_email: data.data.guardian_email,
-              father_pic: data.data.father_pic,
-              mother_pic: data.data.mother_pic,
-              guardian_pic: data.data.guardian_pic,
+
               is_active: data.data.is_active,
               previous_school: data.data.previous_school,
               height: data.data.height,
@@ -794,8 +790,7 @@ const User = () => {
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
                 name="guardian_pic"
-                value={formData.guardian_pic}
-                onChange={handleInputChange}
+                onChange={handleFileChange}
                 id="file"
               />
             </div>
