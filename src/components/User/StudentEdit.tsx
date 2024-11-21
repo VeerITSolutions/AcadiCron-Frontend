@@ -130,12 +130,13 @@ const User = () => {
 
   // Function to handle file input changes
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target; // Get the name and files from the event
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       // You can directly update the file in your form data
       setFormData((prevData) => ({
         ...prevData,
-        image: file, // Store the file in formData
+        [name]: file, // Store the file in formData
       }));
     }
   };
