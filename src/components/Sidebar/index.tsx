@@ -29,8 +29,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [savedSessionstate, setSavedSession] = useState("");
   const [getRoleId, SetGetRoleId] = useState("");
+  const [image, setImage] = useState("");
 
   useEffect(() => {
+    fetchClassesAndSections();
+
     let roleId = localStorage.getItem("role_id");
     if (roleId) {
       SetGetRoleId(roleId);
@@ -46,6 +49,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const fetchClassesAndSections = async () => {
     try {
+      const response = await fetchSchSetting();
+
+      setImage(
+        `${process.env.NEXT_PUBLIC_BASE_URL}uploads/school_content/admin_logo/${response.data.admin_logo}`,
+      );
+
       const classesResult = await fetchSchSetting();
 
       if (!localStorage.getItem("selectedSessionYear")) {
@@ -930,13 +939,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* SIDEBAR HEADER */}
           <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
             <Link href="/">
-              <Image
-                width={160}
-                height={28}
-                src={"/images/logo/logo2.png"}
-                alt="Logo"
-                priority
-              />
+              <Image width={160} height={28} src={image} alt="Logo" priority />
             </Link>
 
             <button
