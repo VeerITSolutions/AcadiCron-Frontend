@@ -13,7 +13,11 @@ import {
   MenuItem,
   Grid,
 } from "@mui/material";
-import { editSchSetting, fetchSchSetting, createSchSetting } from "@/services/schSetting";
+import {
+  editSchSetting,
+  fetchSchSetting,
+  createSchSetting,
+} from "@/services/schSetting";
 import { toast } from "react-toastify";
 
 /* export const metadata: Metadata = {
