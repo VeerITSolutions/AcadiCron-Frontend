@@ -36,7 +36,7 @@ const User = () => {
     middlename: "",
     lastname: "",
     rte: "",
-    image: "",
+
     mobileno: "",
     email: "",
     state: "",
@@ -72,9 +72,7 @@ const User = () => {
     guardian_occupation: "NA",
     guardian_address: "",
     guardian_email: "",
-    father_pic: "",
-    mother_pic: "",
-    guardian_pic: "",
+
     is_active: "",
     previous_school: "",
     height: "",
@@ -132,12 +130,13 @@ const User = () => {
 
   // Function to handle file input changes
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target; // Get the name and files from the event
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       // You can directly update the file in your form data
       setFormData((prevData) => ({
         ...prevData,
-        image: file, // Store the file in formData
+        [name]: file, // Store the file in formData
       }));
     }
   };
@@ -191,7 +190,7 @@ const User = () => {
               middlename: data.data.middlename,
               lastname: data.data.lastname,
               rte: data.data.rte,
-              image: data.data.image,
+
               mobileno: data.data.mobileno,
               email: data.data.email,
               state: data.data.state,
@@ -228,9 +227,7 @@ const User = () => {
               guardian_occupation: data.data.guardian_occupation,
               guardian_address: data.data.guardian_address,
               guardian_email: data.data.guardian_email,
-              father_pic: data.data.father_pic,
-              mother_pic: data.data.mother_pic,
-              guardian_pic: data.data.guardian_pic,
+
               is_active: data.data.is_active,
               previous_school: data.data.previous_school,
               height: data.data.height,
@@ -490,7 +487,7 @@ const User = () => {
               </label>
               <input
                 type="file"
-                accept="image/*,video/*"
+                accept="image/*"
                 name="image" // Optional: Include name for form data
                 onChange={handleFileChange} // Handle file change separately
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -638,7 +635,7 @@ const User = () => {
               <input
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
-                accept="image/*,video/*"
+                accept="image/*"
                 name="father_pic" // Optional: Include name for form data
                 onChange={handleFileChange} // Handle file change separately
                 id="file"
@@ -694,7 +691,7 @@ const User = () => {
               <input
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
-                accept="image/*,video/*"
+                accept="image/*"
                 name="mother_pic" // Optional: Include name for form data
                 onChange={handleFileChange} // Handle file change separately
                 id="file"
@@ -794,8 +791,7 @@ const User = () => {
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
                 name="guardian_pic"
-                value={formData.guardian_pic}
-                onChange={handleInputChange}
+                onChange={handleFileChange}
                 id="file"
               />
             </div>
