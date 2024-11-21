@@ -135,12 +135,13 @@ const User = () => {
 
   // Function to handle file input changes
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    if (file) {
-      // You can directly update the file in your form data
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
       setFormData((prevData) => ({
         ...prevData,
-        image: file, // Store the file in formData
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
       }));
     }
   };
@@ -625,12 +626,14 @@ const User = () => {
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Mother Name
               </label>
+
               <input
-                id="mother_pic"
-                type="file"
-                accept="image/*,video/*"
-                name="mother_pic" // Optional: Include name for form data
-                onChange={handleFileChange}
+                id="mother_name"
+                name="mother_name"
+                value={formData.mother_name}
+                onChange={handleInputChange}
+                placeholder=""
+                type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
