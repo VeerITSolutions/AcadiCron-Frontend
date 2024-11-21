@@ -13,7 +13,7 @@ import {
   MenuItem,
   Grid,
 } from "@mui/material";
-import { editSchSetting, fetchSchSetting } from "@/services/schSetting";
+import { editSchSetting, fetchSchSetting, createSchSetting } from "@/services/schSetting";
 import { toast } from "react-toastify";
 
 /* export const metadata: Metadata = {
@@ -317,12 +317,16 @@ const Settings = () => {
     my_question: 0,
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
 
   /*  const handleSubmit = (event: React.FormEvent) => {
@@ -339,10 +343,12 @@ const Settings = () => {
         section_id: selectedSection, */
       };
 
-      const response = await editSchSetting(data);
+      // const response = await editSchSetting(data);
+
+      const response = await createSchSetting(data);
 
       if (response.success == true) {
-        toast.success("Edit successful");
+        toast.success("Added successful");
       } else {
         toast.error("Error Edit data");
       }
