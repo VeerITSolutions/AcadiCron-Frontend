@@ -426,7 +426,7 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src="https://erp.erabesa.co.in/uploads/student_images/no_image.png"
+                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}`}
                                     alt="Profile"
                                   />
                                 </td>
@@ -457,7 +457,7 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src="https://erp.erabesa.co.in/uploads/student_images/no_image.png"
+                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}`}
                                     alt="Profile"
                                   />
                                 </td>
@@ -488,7 +488,7 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src="https://erp.erabesa.co.in/uploads/student_images/no_image.png"
+                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}`}
                                     alt="Profile"
                                   />
                                 </td>
