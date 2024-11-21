@@ -13,7 +13,7 @@ import {
   MenuItem,
   Grid,
 } from "@mui/material";
-import { editSchSetting, fetchSchSetting } from "@/services/schSetting";
+import { editSchSetting, fetchSchSetting, createSchSetting } from "@/services/schSetting";
 import { toast } from "react-toastify";
 
 /* export const metadata: Metadata = {
@@ -297,12 +297,16 @@ const Settings = () => {
     my_question: 0,
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
 
   /*  const handleSubmit = (event: React.FormEvent) => {
@@ -319,10 +323,12 @@ const Settings = () => {
         section_id: selectedSection, */
       };
 
-      const response = await editSchSetting(data);
+      // const response = await editSchSetting(data);
+
+      const response = await createSchSetting(data);
 
       if (response.success == true) {
-        toast.success("Edit successful");
+        toast.success("Added successful");
       } else {
         toast.error("Error Edit data");
       }
@@ -427,9 +433,10 @@ const Settings = () => {
                   Name
                 </label>
                 <input
-                  name="type"
+                  name="name"
                   type="text"
-                
+                  value={formData.name}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
@@ -439,8 +446,12 @@ const Settings = () => {
                   Email
                 </label>
                 <input
-                  name="email"
-                  type="email"
+                   id="email"
+                   name="email"
+                   value={formData.email}
+                   onChange={handleInputChange}
+                   placeholder=""
+                   type="email"
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
               </div>
 
@@ -450,7 +461,9 @@ const Settings = () => {
                 </label>
                 <input
                   name="phone"
-                  type="number"
+                  type="text"
+                  value={formData.phone}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
               </div>
 
@@ -461,6 +474,8 @@ const Settings = () => {
                 <input
                   name="address"
                   type="text"
+                  value={formData.address}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
               </div>
 
@@ -471,6 +486,8 @@ const Settings = () => {
                 <input
                   name="languages"
                   type="text"
+                  value={formData.languages}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
               </div>
 
@@ -481,6 +498,8 @@ const Settings = () => {
                 <input
                   name="time_format"
                   type="text"
+                  value={formData.time_format}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
               </div>
 
@@ -491,6 +510,8 @@ const Settings = () => {
                 <input
                   name="currency_symbol"
                   type="text"
+                  value={formData.currency_symbol}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
               </div>
               <div>
@@ -500,6 +521,8 @@ const Settings = () => {
                 <input
                   name="currency"
                   type="text"
+                  value={formData.currency}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
               </div>
 
@@ -510,6 +533,8 @@ const Settings = () => {
                 <input
                   name="timezone"
                   type="text"
+                  value={formData.timezone}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
               </div>
 
@@ -520,6 +545,8 @@ const Settings = () => {
                 <input
                   name="my_question"
                   type="text"
+                  value={formData.my_question}
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"/>
               </div>
 
