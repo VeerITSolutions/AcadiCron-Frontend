@@ -457,8 +457,9 @@ const Settings = () => {
                     Name
                   </label>
                   <input
-                    name="type"
                     type="text"
+                    name="name"
+                    value={formData.name}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -469,6 +470,7 @@ const Settings = () => {
                   </label>
                   <input
                     name="email"
+                    value={formData.email}
                     type="email"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
@@ -479,8 +481,9 @@ const Settings = () => {
                     Phone
                   </label>
                   <input
-                    name="phone"
                     type="number"
+                    name="phone"
+                    value={formData.phone}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -490,8 +493,9 @@ const Settings = () => {
                     Address
                   </label>
                   <input
-                    name="address"
                     type="text"
+                    name="address"
+                    value={formData.address}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -501,8 +505,9 @@ const Settings = () => {
                     Languages
                   </label>
                   <input
-                    name="languages"
                     type="text"
+                    name="languages"
+                    value={formData.languages}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -514,6 +519,7 @@ const Settings = () => {
                   <input
                     name="time_format"
                     type="text"
+                    value={formData.time_format}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -525,6 +531,7 @@ const Settings = () => {
                   <input
                     name="currency_symbol"
                     type="text"
+                    value={formData.currency_symbol}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -533,8 +540,9 @@ const Settings = () => {
                     Currency
                   </label>
                   <input
-                    name="currency"
                     type="text"
+                    name="currency"
+                    value={formData.currency}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -544,8 +552,9 @@ const Settings = () => {
                     Timezone
                   </label>
                   <input
-                    name="timezone"
                     type="text"
+                    name="timezone"
+                    value={formData.timezone}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -555,8 +564,9 @@ const Settings = () => {
                     My Question
                   </label>
                   <input
-                    name="my_question"
                     type="text"
+                    name="my_question"
+                    value={formData.my_question}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
