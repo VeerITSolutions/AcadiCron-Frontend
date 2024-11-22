@@ -54,7 +54,7 @@ const Settings = () => {
 
       const response = await editSchSetting(data);
 
-      if (response.success == true) {
+      if (response.status == 200) {
         toast.success("Edit successful");
       } else {
         toast.error("Error Edit data");
@@ -345,11 +345,7 @@ const Settings = () => {
       setLoading(true);
       const data = {
         ...formData,
-        /* class_id: selectedClass,
-        section_id: selectedSection, */
       };
-
-      // const response = await editSchSetting(data);
 
       const response = await editSchSetting(data);
 
