@@ -20,6 +20,8 @@ interface Session {
 }
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const logoUrl = useLogoStore((state) => state.logoUrl); // Access lo
+
+  console.log("logoUrl", logoUrl);
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const [defaultSession, setDefaultSession] = useState("");
@@ -944,7 +946,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <Image
                 width={160}
                 height={28}
-                src={logoUrl}
+                src={logoUrl ? logoUrl : image}
                 alt="Logo"
                 priority
               />
