@@ -767,12 +767,13 @@ const User = () => {
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Guardian Photo
               </label>
+
               <input
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
-                name="guardian_pic"
-                value={formData.guardian_pic}
-                onChange={handleInputChange}
+                accept="image/*"
+                name="guardian_pic" // Optional: Include name for form data
+                onChange={handleFileChange} // Handle file change separately
                 id="file"
               />
             </div>
