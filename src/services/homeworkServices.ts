@@ -34,6 +34,6 @@ export const deleteHomeWorkData = async (id: number) => {
 // Edit a student category by ID
 export const editHomeWorkData = async (id: number, house_name: string, description: string) => {
   const data = { house_name, description }; // Create an object with the name field
-  const response = await apiClient.put(`/homework/${id}`, data);
+  const response = await apiClient.post(`/homework/${id}`, data);
   return response.data;
 };

@@ -32,6 +32,6 @@ export const deleteConetentForUpload = async (id: number) => {
 // Edit a student category by ID
 export const editConententForUpload = async (id: number, house_name: string) => {
   const data = { house_name, id }; // Create an object with the name field
-  const response = await apiClient.put(`/content-for-upload/${id}`, data);
+  const response = await apiClient.post(`/content-for-upload/${id}`, data);
   return response.data;
 };

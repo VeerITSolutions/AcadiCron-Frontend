@@ -34,6 +34,6 @@ export const deleteNotificationData = async (id: number) => {
 // Edit a student category by ID
 export const editNotificationData = async (id: number, title: string, publish_date: string, date: string, message: string) => {
   const data = { title, publish_date, date, message  }; // Create an object with the name field
-  const response = await apiClient.put(`/notification/${id}`, data);
+  const response = await apiClient.post(`/notification/${id}`, data);
   return response.data;
 };

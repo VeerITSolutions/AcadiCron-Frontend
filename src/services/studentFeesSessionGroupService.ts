@@ -34,6 +34,6 @@ export const deleteFeesSessionGroup = async (id: number) => {
 // Edit a student category by ID
 export const editFeesSessionGroup = async (id: number, house_name: string, description: string) => {
   const data = { house_name, description }; // Create an object with the name field
-  const response = await apiClient.put(`/fees-master/${id}`, data);
+  const response = await apiClient.post(`/fees-master/${id}`, data);
   return response.data;
 };

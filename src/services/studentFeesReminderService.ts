@@ -34,6 +34,6 @@ export const deleteFeesReminder = async (id: number) => {
 // Edit a student category by ID
 export const editFeesReminder = async (id: number, house_name: string, description: string) => {
   const data = { house_name, description }; // Create an object with the name field
-  const response = await apiClient.put(`/fees-remainder/${id}`, data);
+  const response = await apiClient.post(`/fees-remainder/${id}`, data);
   return response.data;
 };

@@ -45,6 +45,6 @@ export const editLeaveData = async (id: number,date: string,
   reason: string,
   document_file: any) => {
   const data = { date, leave_type_id, leave_from, leave_to, reason, document_file }; // Create an object with the name field
-  const response = await apiClient.put(`/leave-request/${id}`, data);
+  const response = await apiClient.post(`/leave-request/${id}`, data);
   return response.data;
 };
