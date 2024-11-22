@@ -55,8 +55,8 @@ const Settings = () => {
 
       const response = await editSchSetting(data);
 
-      if (response.success == true) {
-        toast.success("Add successful");
+      if (response.status == 200) {
+        toast.success("Edit successful");
       } else {
         toast.error("Error add data");
       }
@@ -81,6 +81,7 @@ const Settings = () => {
         `${process.env.NEXT_PUBLIC_BASE_URL}uploads/school_content/admin_logo/${response.data.admin_logo}`,
       );
       setFormData({
+        id: response.data.id,
         name: response.data.name,
         biometric: response.data.biometric,
         biometric_device: response.data.biometric_device,
@@ -203,6 +204,7 @@ const Settings = () => {
     } catch (error: any) {}
   };
   const [formData, setFormData] = useState({
+    id: "",
     name: "",
     biometric: 0,
     biometric_device: "",
@@ -344,13 +346,11 @@ const Settings = () => {
       setLoading(true);
       const data = {
         ...formData,
-        /* class_id: selectedClass,
-        section_id: selectedSection, */
       };
 
-      const response = await createSchSetting(data);
+      const response = await editSchSetting(data);
 
-      if (response.success == true) {
+      if (response.status == 200) {
         toast.success("Added successful");
       } else {
         toast.error("Error add data");
@@ -387,7 +387,8 @@ const Settings = () => {
                       id={key}
                       placeholder={key.replace(/_/g, " ").toUpperCase()}
                       value={formData[key as keyof typeof formData]}
-                      onChange={handleChange}
+
+onChange={handleInputChange}                      onChange={handleChange}
                     />
                   </div>
                 ))}
@@ -407,7 +408,8 @@ const Settings = () => {
                       id="Username"
                       placeholder="Educron"
                       defaultValue="Educron"
-                    />
+
+onChange={handleInputChange}                      />
                   </div>
                 </div>
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
@@ -425,7 +427,8 @@ const Settings = () => {
                       id="Username"
                       placeholder="Educron@gmail.com"
                       defaultValue="Educron@gmail.com"
-                    />
+
+onChange={handleInputChange}                      />
                   </div>
                 </div>
 
@@ -456,8 +459,9 @@ const Settings = () => {
                       Name
                   </label>
                   <input
-                    name="name"
                     type="text"
+                    name="name"
+                    id="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -470,6 +474,8 @@ const Settings = () => {
                   </label>
                   <input
                     name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -482,8 +488,8 @@ const Settings = () => {
                     Phone
                   </label>
                   <input
+                    type="number"
                     name="phone"
-                    type="text"
                     value={formData.phone}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -495,8 +501,8 @@ const Settings = () => {
                     Address
                   </label>
                   <input
-                    name="address"
                     type="text"
+                    name="address"
                     value={formData.address}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -508,8 +514,8 @@ const Settings = () => {
                     Languages
                   </label>
                   <input
-                    name="languages"
                     type="text"
+                    name="languages"
                     value={formData.languages}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -546,8 +552,8 @@ const Settings = () => {
                     Currency
                   </label>
                   <input
-                    name="currency"
                     type="text"
+                    name="currency"
                     value={formData.currency}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -559,8 +565,8 @@ const Settings = () => {
                     Timezone
                   </label>
                   <input
-                    name="timezone"
                     type="text"
+                    name="timezone"
                     value={formData.timezone}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -572,8 +578,8 @@ const Settings = () => {
                     My Question
                   </label>
                   <input
-                    name="my_question"
                     type="text"
+                    name="my_question"
                     value={formData.my_question}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -661,19 +667,19 @@ const Settings = () => {
                   </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <button
+                    {/*  <button
                       className="flex justify-center rounded border border-stroke px-4.5 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="button"
                       onClick={handleCancel}
                     >
                       Cancel
-                    </button>
-                    <button
+                    </button> */}
+                    {/* <button
                       className="flex justify-center rounded bg-primary px-4.5 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
                     >
                       Save
-                    </button>
+                    </button> */}
                   </div>
                 </form>
               </div>
