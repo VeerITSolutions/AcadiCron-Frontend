@@ -6,6 +6,6 @@ interface LogoState {
 }
 
 export const useLogoStore = create<LogoState>((set : any) => ({
-  logoUrl: '/default-logo.png', // Default logo path
+  logoUrl: '/images/logo/logo2.png', // Default logo path
   setLogoUrl: (url: string) => set({ logoUrl: url }),
 }));
