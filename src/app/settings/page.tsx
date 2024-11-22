@@ -668,19 +668,19 @@ onChange={handleInputChange}                      />
                   </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <button
+                    {/*  <button
                       className="flex justify-center rounded border border-stroke px-4.5 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="button"
                       onClick={handleCancel}
                     >
                       Cancel
-                    </button>
-                    <button
+                    </button> */}
+                    {/* <button
                       className="flex justify-center rounded bg-primary px-4.5 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
                     >
                       Save
-                    </button>
+                    </button> */}
                   </div>
                 </form>
               </div>
