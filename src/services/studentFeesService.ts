@@ -51,6 +51,6 @@ percentage?:string,
 fine_amount?:string,
 ) => {
   const data = { house_name, description }; // Create an object with the name field
-  const response = await apiClient.put(`/fees-master/${id}`, data);
+  const response = await apiClient.post(`/fees-master/${id}`, data);
   return response.data;
 };

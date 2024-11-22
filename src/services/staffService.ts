@@ -32,7 +32,7 @@ export const deleteStaff= async (id: number) => {
 // Edit a student category by ID
 export const editStaffData = async (id: number, house_name: string, description: string) => {
   const data = { house_name, description }; // Create an object with the name field
-  const response = await apiClient.put(`/staff/${id}`, data);
+  const response = await apiClient.post(`/staff/${id}`, data);
   return response.data;
 };
 

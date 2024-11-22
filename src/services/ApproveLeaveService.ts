@@ -32,6 +32,6 @@ export const deleteApproveLeaveData = async (id: number) => {
 // Edit a student category by ID
 export const editApproveLeaveData = async (id: number, type: string) => {
   const data = { type }; // Create an object with the name field
-  const response = await apiClient.put(`/approve-leave/${id}`, data);
+  const response = await apiClient.post(`/approve-leave/${id}`, data);
   return response.data;
 };
