@@ -351,7 +351,7 @@ const Settings = () => {
 
       // const response = await editSchSetting(data);
 
-      const response = await createSchSetting(data);
+      const response = await editSchSetting(data);
 
       if (response.status == 200) {
         toast.success("Added successful");
