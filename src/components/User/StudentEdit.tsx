@@ -850,30 +850,6 @@ const User = () => {
           <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
             <div className="field">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                <input
-                  type="checkbox"
-                  className={`${styles["checkbox"]}`}
-                  id="autofill_current_address"
-                  /* value={formData.dob} */
-                  onChange={handleInputChange}
-                />
-                If Guardian Address is Current Address
-              </label>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                <input
-                  type="checkbox"
-                  className={`${styles["checkbox"]}`}
-                  /* value={formData.dob} */
-                  onChange={handleInputChange}
-                  id="autofill_address"
-                />
-                If Permanent Address is Current Address
-              </label>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Current Address
               </label>
               <textarea
