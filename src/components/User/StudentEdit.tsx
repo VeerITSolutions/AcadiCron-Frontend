@@ -94,7 +94,6 @@ const User = () => {
     sibiling_section_id: "",
     sibiling_student_id: "",
 
-    notes: "",
     first_title: "",
     first_doc: "",
     second_title: "",
@@ -150,8 +149,8 @@ const User = () => {
       setLoading(true);
       const data = {
         ...formData,
-        class_id: selectedClass,
-        section_id: selectedSection,
+        /* class_id: selectedClass,
+        section_id: selectedSection, */
       };
 
       const response = await editStudent(formData.id, data);
@@ -245,7 +244,7 @@ const User = () => {
               disable_at: data.data.disable_at,
               section_id: data.data.section_id,
               class_id: data.data.class_id,
-              notes: "", // Add other fields as needed
+
               first_title: "",
               first_doc: "",
               second_title: "",
@@ -323,7 +322,7 @@ const User = () => {
                 value={formData.section_id}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                /* disabled={!selectedClass} */ // Disable section dropdown if no class is selected
+                /* disabled={!selectedClass} */
               >
                 <option value="">Select</option>
                 {section.map((sec) => (
@@ -851,30 +850,6 @@ const User = () => {
           <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
             <div className="field">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                <input
-                  type="checkbox"
-                  className={`${styles["checkbox"]}`}
-                  id="autofill_current_address"
-                  /* value={formData.dob} */
-                  onChange={handleInputChange}
-                />
-                If Guardian Address is Current Address
-              </label>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                <input
-                  type="checkbox"
-                  className={`${styles["checkbox"]}`}
-                  /* value={formData.dob} */
-                  onChange={handleInputChange}
-                  id="autofill_address"
-                />
-                If Permanent Address is Current Address
-              </label>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Current Address
               </label>
               <textarea
@@ -1027,7 +1002,7 @@ const User = () => {
                 className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 placeholder=""
                 name="note"
-                value={formData.notes}
+                value={formData.note}
                 onChange={handleInputChange}
               ></textarea>
             </div>

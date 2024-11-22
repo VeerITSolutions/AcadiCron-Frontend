@@ -87,7 +87,6 @@ const User = () => {
 
     section_id: "",
 
-    notes: "",
     first_title: "",
     first_doc: "",
     second_title: "",
@@ -767,12 +766,13 @@ const User = () => {
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Guardian Photo
               </label>
+
               <input
                 className={`form-control mt-2 w-full ${styles["f-13"]}`}
                 type="file"
-                name="guardian_pic"
-                value={formData.guardian_pic}
-                onChange={handleInputChange}
+                accept="image/*"
+                name="guardian_pic" // Optional: Include name for form data
+                onChange={handleFileChange} // Handle file change separately
                 id="file"
               />
             </div>
@@ -826,30 +826,6 @@ const User = () => {
             </h3>
           </div>
           <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                <input
-                  type="checkbox"
-                  className={`${styles["checkbox"]}`}
-                  id="autofill_current_address"
-                  value={formData.dob}
-                  onChange={handleInputChange}
-                />
-                If Guardian Address is Current Address
-              </label>
-            </div>
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                <input
-                  type="checkbox"
-                  className={`${styles["checkbox"]}`}
-                  value={formData.dob}
-                  onChange={handleInputChange}
-                  id="autofill_address"
-                />
-                If Permanent Address is Current Address
-              </label>
-            </div>
             <div className="field">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Current Address
@@ -1004,7 +980,7 @@ const User = () => {
                 className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 placeholder=""
                 name="note"
-                value={formData.notes}
+                value={formData.note}
                 onChange={handleInputChange}
               ></textarea>
             </div>
