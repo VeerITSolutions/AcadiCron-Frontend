@@ -353,7 +353,7 @@ const Settings = () => {
 
       const response = await createSchSetting(data);
 
-      if (response.success == true) {
+      if (response.status == 200) {
         toast.success("Added successful");
       } else {
         toast.error("Error Edit data");
