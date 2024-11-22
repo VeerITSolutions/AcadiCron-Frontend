@@ -26,7 +26,7 @@ const DropdownUser = () => {
           </span>
           <span className="block text-xs">{roleName || ""}</span>
         </span>
-{/* 
+        {/*
         <span className="h-12 w-12 rounded-full pt-4">
           <Image
             width={112}
@@ -40,52 +40,51 @@ const DropdownUser = () => {
           />
         </span> */}
 
-<div className="group">
-  <svg
-    className="fill-current text-gray-500 group-hover:text-blue-500 transition duration-300 ease-in-out"
-    width="26"
-    height="26"
-    viewBox="0 0 48 48"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle 
-      cx="24" 
-      cy="24" 
-      r="22" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      opacity="0.5"
-    />
-    <circle 
-      cx="24" 
-      cy="16" 
-      r="6" 
-      fill="currentColor" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      opacity="0.8"
-    />
-    <path
-      d="M12 32C12 27.67 16.67 24 24 24C31.33 24 36 27.67 36 32"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-    <circle 
-      cx="24" 
-      cy="24" 
-      r="20" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="1" 
-      opacity="0.2"
-    />
-  </svg>
-</div>
-
+        <div className="group">
+          <svg
+            className="text-gray-500 fill-current transition duration-300 ease-in-out group-hover:text-blue-500"
+            width="26"
+            height="26"
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="24"
+              cy="24"
+              r="22"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              opacity="0.5"
+            />
+            <circle
+              cx="24"
+              cy="16"
+              r="6"
+              fill="currentColor"
+              stroke="currentColor"
+              strokeWidth="2"
+              opacity="0.8"
+            />
+            <path
+              d="M12 32C12 27.67 16.67 24 24 24C31.33 24 36 27.67 36 32"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+            <circle
+              cx="24"
+              cy="24"
+              r="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              opacity="0.2"
+            />
+          </svg>
+        </div>
       </Link>
 
       {/* <!-- Dropdown Start --> */}
@@ -119,7 +118,7 @@ const DropdownUser = () => {
                 My Profile
               </Link>
             </li>
-            <li>
+            {/*  <li>
               <Link
                 href="#"
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -139,7 +138,7 @@ const DropdownUser = () => {
                 </svg>
                 My Contacts
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
                 href="/settings"
