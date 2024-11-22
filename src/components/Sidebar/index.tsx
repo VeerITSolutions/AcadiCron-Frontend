@@ -9,6 +9,7 @@ import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { fetchSchSetting } from "@/services/schSetting";
 import { fetchSession } from "@/services/session";
+import { useLogoStore } from "@/store/logoStore";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -18,6 +19,7 @@ interface Session {
   session: string; // or whatever type 'session' should be
 }
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  const logoUrl = useLogoStore((state) => state.logoUrl); // Access lo
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const [defaultSession, setDefaultSession] = useState("");
@@ -939,7 +941,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* SIDEBAR HEADER */}
           <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
             <Link href="/">
-              <Image width={160} height={28} src={image} alt="Logo" priority />
+              <Image
+                width={160}
+                height={28}
+                src={logoUrl}
+                alt="Logo"
+                priority
+              />
             </Link>
 
             <button

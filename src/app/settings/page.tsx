@@ -19,6 +19,7 @@ import {
   createSchSetting,
 } from "@/services/schSetting";
 import { toast } from "react-toastify";
+import { useLogoStore } from "@/store/logoStore";
 
 /* export const metadata: Metadata = {
   title: "Next.js Settings |",
@@ -28,6 +29,8 @@ import { toast } from "react-toastify";
 
 const Settings = () => {
   // State to manage the uploaded image and its preview
+
+  const setLogoUrl = useLogoStore((state) => state.setLogoUrl);
   const [image, setImage] = useState<string | null>("/images/logo/logo2.png");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,6 +39,11 @@ const Settings = () => {
 
   // Dynamically construct the image URL
   const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${image || defaultImage}`;
+
+  useEffect(() => {
+    fetchClassesAndSections();
+  }, []);
+
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -44,6 +52,7 @@ const Settings = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result as string); // Set the uploaded image as a base64 string
+        setLogoUrl(reader.result as string);
       };
       reader.readAsDataURL(file);
 
@@ -66,10 +75,6 @@ const Settings = () => {
   const handleCancel = () => {
     setImage("/images/logo/logo2.png"); // Reset to default image
   };
-
-  useEffect(() => {
-    fetchClassesAndSections();
-  }, []);
 
   const fetchClassesAndSections = async () => {
     try {

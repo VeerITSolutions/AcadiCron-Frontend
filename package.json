@@ -28,7 +28,8 @@
     "react-flatpickr": "^3.10.13",
     "react-hot-toast": "^2.4.1",
     "react-quill": "^2.0.0",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
