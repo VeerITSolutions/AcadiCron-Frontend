@@ -40,10 +40,13 @@ const Settings = () => {
   // Dynamically construct the image URL
   const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${image || defaultImage}`;
 
+<<<<<<< HEAD
   useEffect(() => {
     fetchClassesAndSections();
   }, []);
 
+=======
+>>>>>>> cf2201d9fc4e5eb54f9310dd31df0728c55e5a19
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -66,7 +69,7 @@ const Settings = () => {
       if (response.status == 200) {
         toast.success("Edit successful");
       } else {
-        toast.error("Error Edit data");
+        toast.error("Error add data");
       }
     }
   };
@@ -357,7 +360,7 @@ const Settings = () => {
       if (response.status == 200) {
         toast.success("Added successful");
       } else {
-        toast.error("Error Edit data");
+        toast.error("Error add data");
       }
     } catch (error: any) {
       setError(error.message);
@@ -460,7 +463,7 @@ onChange={handleInputChange}                      />
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Name
+                      Name
                   </label>
                   <input
                     type="text"
@@ -478,9 +481,11 @@ onChange={handleInputChange}                      />
                   </label>
                   <input
                     name="email"
-                    value={formData.email}
+                    
                     onChange={handleInputChange}
                     type="email"
+                    value={formData.email}
+                    
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>

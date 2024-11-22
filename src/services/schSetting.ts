@@ -18,7 +18,6 @@ export const editSchSetting = async (data: any) => {
 };
 
 
-
 export const createSchSetting = async ( data : any) => {
 
   const response = await apiClient.post(`/schsetting`, data);
