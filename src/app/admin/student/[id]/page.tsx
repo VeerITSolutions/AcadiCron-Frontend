@@ -69,10 +69,13 @@ const StudentDetails = () => {
 
   const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
     {
+      id: window.location.pathname.split("/").pop(),
       title: "",
-      dob: "",
+      timeline_date: "",
       description: "",
-      doc: "",
+      document: "",
+      status: "",
+      date: "",
     },
   );
   const [formData, setFormData] = useState<Record<string, any>>({
@@ -1135,8 +1138,8 @@ const StudentDetails = () => {
                       id="date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="date"
-                      name="dob"
-                      value={formDataTimeline.dob}
+                      name="timeline_date"
+                      value={formDataTimeline.timeline_date}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -1164,7 +1167,7 @@ const StudentDetails = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      name="doc" // Optional: Include name for form data
+                      name="document" // Optional: Include name for form data
                       onChange={handleFileChange} // Handle file change separately
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
