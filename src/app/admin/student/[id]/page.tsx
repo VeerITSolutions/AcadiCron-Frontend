@@ -248,7 +248,7 @@ const StudentDetails = () => {
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Roll Number</b>{" "}
-                <span className="text-aqua"> {formData.roll_no}</span>
+                <span className="text-aqua"> {formData.roll_no || "N/A"}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Class</b>{" "}
