@@ -11,6 +11,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import PersonAdd from "@mui/icons-material/PersonAdd";
+import { Search, AddCircleOutline } from '@mui/icons-material';
 
 import {
   Edit,
@@ -165,7 +166,6 @@ const StudentDetails = () => {
               <option value="Class3">Accountant</option>
               <option value="Class4">Librarian</option>
               <option value="Class5">Receptionist</option>
-              {/* Add more class options here */}
             </select>
           </label>
           <button onClick={handleSearch} className={styles.searchButton}>
@@ -185,12 +185,9 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
 
-      <div className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-sm border border-stroke bg-white p-4.5 shadow-default dark:border-strokedark dark:bg-boxdark">
         {/* Tab Navigation */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
   {/* Tabs */}
@@ -220,421 +217,404 @@ const StudentDetails = () => {
       className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded focus:outline-none"
       onClick={() => router.push("/admin/staff/create")}
     >
-      <PersonAdd className="text-white" /> {/* Use the PersonAdd icon */}
+      <PersonAdd className="text-white" />
       Add Staff
     </button>
 </div>
 
 
-        {/* Content Rendering Based on Active Tab */}
+
         <div>
           {activeTab === "list" && (
             <div className="leading-relaxed">
-              {/* Card view content goes here */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 lg:grid-cols-4">
-                <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
-                  <div className="flex items-center">
-                    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
-                      <img
-                        alt="user"
-                        loading="lazy"
-                        width="80"
-                        height="80"
-                        className="rounded-full object-cover object-center"
-                        src="https://erp.erabesa.co.in/uploads/staff_images/1.png"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium text-black dark:text-white">
-                        Rushali Patil
-                      </h4>
-                      <p className="text-sm">19003</p>
-                      <p className="text-sm">8446643818</p>
-                    </div>
-                  </div>
-                  <div className="relative flex">
-                    <button className="bg-gray-300 hover:bg-gray-400 rounded p-2">
-                      {/* SVG Icon for three dots */}
-                      <svg
-                        className="text-gray-600 fill-current"
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </button>
-                    {/* Edit/Delete Menu */}
-                    <div className="absolute right-0 top-full z-40 hidden w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Edit
-                      </button>
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
-                  <div className="flex items-center">
-                    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
-                      <img
-                        alt="user"
-                        loading="lazy"
-                        width="80"
-                        height="80"
-                        className="rounded-full object-cover object-center"
-                        src="https://erp.erabesa.co.in/uploads/staff_images/default_female.jpg"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium text-black dark:text-white">
-                        Priya Ronghe
-                      </h4>
-                      <p className="text-sm">19001</p>
-                      <p className="text-sm">9130683314</p>
-                    </div>
-                  </div>
-                  <div className="relative flex">
-                    <button className="bg-gray-300 hover:bg-gray-400 rounded p-2">
-                      {/* SVG Icon for three dots */}
-                      <svg
-                        className="text-gray-600 fill-current"
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </button>
-                    {/* Edit/Delete Menu */}
-                    <div className="absolute right-0 top-full z-40 hidden w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Edit
-                      </button>
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
+             <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+  <div className="flex items-center relative group w-full">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+      <img
+        alt="user"
+        loading="lazy"
+        width="80"
+        height="80"
+        className="rounded-full object-cover object-center"
+        src="https://erp.erabesa.co.in/uploads/staff_images/1.png" // Replace with the actual image source
+      />
+    </div>
 
-                <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
-                  <div className="flex items-center">
-                    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
-                      <img
-                        alt="user"
-                        loading="lazy"
-                        width="80"
-                        height="80"
-                        className="rounded-full object-cover object-center"
-                        src="https://erp.erabesa.co.in/uploads/staff_images/5.jpg"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium text-black dark:text-white">
-                        Harshalata Khante
-                      </h4>
-                      <p className="text-sm">19002</p>
-                      <p className="text-sm">9623783502</p>
-                    </div>
-                  </div>
-                  <div className="relative flex">
-                    <button className="bg-gray-300 hover:bg-gray-400 rounded p-2">
-                      {/* SVG Icon for three dots */}
-                      <svg
-                        className="text-gray-600 fill-current"
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </button>
-                    {/* Edit/Delete Menu */}
-                    <div className="absolute right-0 top-full z-40 hidden w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Edit
-                      </button>
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
+    <div className="flex-1">
+      <h4 className="text-base font-medium text-black dark:text-white">
+        Rashmi Shrivastav
+      </h4>
+      <p className="text-sm text-gray-500 dark:text-gray-400">ID: 9000</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">8668338370</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          SuperAdmin
+        </span>
+      </p>
+    </div>
 
-                <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
-                  <div className="flex items-center">
-                    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
-                      <img
-                        alt="user"
-                        loading="lazy"
-                        width="80"
-                        height="80"
-                        className="rounded-full object-cover object-center"
-                        src="https://erp.erabesa.co.in/uploads/staff_images/6.jpg"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium text-black dark:text-white">
-                        Rushali Patil
-                      </h4>
-                      <p className="text-sm">19003</p>
-                      <p className="text-sm">8446643818</p>
-                    </div>
-                  </div>
-                  <div className="relative flex">
-                    <button className="bg-gray-300 hover:bg-gray-400 rounded p-2">
-                      {/* SVG Icon for three dots */}
-                      <svg
-                        className="text-gray-600 fill-current"
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </button>
-                    {/* Edit/Delete Menu */}
-                    <div className="absolute right-0 top-full z-40 hidden w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Edit
-                      </button>
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
+  
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="View"
+      >
+        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
 
-                <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
-                  <div className="flex items-center">
-                    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
-                      <img
-                        alt="user"
-                        loading="lazy"
-                        width="80"
-                        height="80"
-                        className="rounded-full object-cover object-center"
-                        src="https://erp.erabesa.co.in/uploads/staff_images/8.jpg"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium text-black dark:text-white">
-                        Tabassum Firdous
-                      </h4>
-                      <p className="text-sm">19005</p>
-                      <p className="text-sm">7843079790</p>
-                    </div>
-                  </div>
-                  <div className="relative flex">
-                    <button className="bg-gray-300 hover:bg-gray-400 rounded p-2">
-                      {/* SVG Icon for three dots */}
-                      <svg
-                        className="text-gray-600 fill-current"
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </button>
-                    {/* Edit/Delete Menu */}
-                    <div className="absolute right-0 top-full z-40 hidden w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Edit
-                      </button>
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="Edit"
+      >
+        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+    </div>
+  </div>
+</div>
 
-                <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
-                  <div className="flex items-center">
-                    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
-                      <img
-                        alt="user"
-                        loading="lazy"
-                        width="80"
-                        height="80"
-                        className="rounded-full object-cover object-center"
-                        src="https://erp.erabesa.co.in/uploads/staff_images/9.jpg"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium text-black dark:text-white">
-                        Kalpana Kharabe
-                      </h4>
-                      <p className="text-sm">19006</p>
-                      <p className="text-sm">8317255143</p>
-                    </div>
-                  </div>
-                  <div className="relative flex">
-                    <button className="bg-gray-300 hover:bg-gray-400 rounded p-2">
-                      {/* SVG Icon for three dots */}
-                      <svg
-                        className="text-gray-600 fill-current"
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </button>
-                    {/* Edit/Delete Menu */}
-                    <div className="absolute right-0 top-full z-40 hidden w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Edit
-                      </button>
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
-                  <div className="flex items-center">
-                    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
-                      <img
-                        alt="user"
-                        loading="lazy"
-                        width="80"
-                        height="80"
-                        className="rounded-full object-cover object-center"
-                        src="https://erp.erabesa.co.in/uploads/staff_images/10.jpg"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium text-black dark:text-white">
-                        Priyanka Rathod
-                      </h4>
-                      <p className="text-sm">19007</p>
-                      <p className="text-sm">9730081571</p>
-                    </div>
-                  </div>
-                  <div className="relative flex">
-                    <button className="bg-gray-300 hover:bg-gray-400 rounded p-2">
-                      {/* SVG Icon for three dots */}
-                      <svg
-                        className="text-gray-600 fill-current"
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </button>
-                    {/* Edit/Delete Menu */}
-                    <div className="absolute right-0 top-full z-40 hidden w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Edit
-                      </button>
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+  <div className="flex items-center relative group w-full">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+      <img
+        alt="user"
+        loading="lazy"
+        width="80"
+        height="80"
+        className="rounded-full object-cover object-center"
+        src="https://erp.erabesa.co.in/uploads/staff_images/default_female.jpg" // Replace with the actual image source
+      />
+    </div>
 
-                <div className="flex items-center justify-between p-4.5 hover:bg-[#F9FAFB] dark:hover:bg-meta-4">
-                  <div className="flex items-center">
-                    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full">
-                      <img
+    <div className="flex-1">
+      <h4 className="text-base font-medium text-black dark:text-white">
+        Priya Ronghe
+      </h4>
+      <p className="text-sm text-gray-500 dark:text-gray-400">ID: 19001</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">9130683314</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        <span data-toggle="tooltip" title="Location" className="cursor-pointer mr-2">
+         NA,
+        </span>
+        <span data-toggle="tooltip" title="Department" className="cursor-pointer">
+         Teaching
+        </span>
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Teacher
+        </span>
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Principal
+        </span>
+      </p>
+    </div>
+
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="View"
+      >
+        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="Edit"
+      >
+        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+    </div>
+  </div>
+</div>
+
+
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+  <div className="flex items-center relative group w-full">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+      <img
+        alt="user"
+        loading="lazy"
+        width="80"
+        height="80"
+        className="rounded-full object-cover object-center"
+        src="https://erp.erabesa.co.in/uploads/staff_images/5.jpg" // Replace with the actual image source
+      />
+    </div>
+
+    <div className="flex-1">
+      <h4 className="text-base font-medium text-black dark:text-white">
+        Harshalata Khante
+      </h4>
+      <p className="text-sm text-gray-500 dark:text-gray-400">ID: 19002</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">9623783502</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        <span data-toggle="tooltip" title="Location" className="cursor-pointer mr-2">
+         NA,
+        </span>
+        <span data-toggle="tooltip" title="Department" className="cursor-pointer">
+         Teaching
+        </span>
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Teacher
+        </span>
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Faculty
+        </span>
+      </p>
+    </div>
+
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="View"
+      >
+        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="Edit"
+      >
+        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+    </div>
+  </div>
+</div>
+
+
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+  <div className="flex items-center relative group w-full">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+      <img
+        alt="user"
+        loading="lazy"
+        width="80"
+        height="80"
+        className="rounded-full object-cover object-center"
+        src="https://erp.erabesa.co.in/uploads/staff_images/6.jpg" // Replace with actual image source
+      />
+    </div>
+
+    <div className="flex-1">
+      <h4 className="text-base font-medium text-black dark:text-white">
+        Rushali Patil
+      </h4>
+      <p className="text-sm text-gray-500 dark:text-gray-400">ID: 19003</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">8446643818</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        <span data-toggle="tooltip" title="Location" className="cursor-pointer mr-2">
+         NA,
+        </span>
+        <span data-toggle="tooltip" title="Department" className="cursor-pointer">
+         Teaching
+        </span>
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Teacher
+        </span>
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Faculty
+        </span>
+      </p>
+    </div>
+
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="View"
+      >
+        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="Edit"
+      >
+        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+    </div>
+  </div>
+</div>
+
+
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+  <div className="flex items-center relative group w-full">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+      <img
+        alt="user"
+        loading="lazy"
+        width="80"
+        height="80"
+        className="rounded-full object-cover object-center"
+        src="https://erp.erabesa.co.in/uploads/staff_images/8.jpg" // Replace with actual image source
+      />
+    </div>
+
+    <div className="flex-1">
+      <h4 className="text-base font-medium text-black dark:text-white">
+        Tabassum Firdous
+      </h4>
+      <p className="text-sm text-gray-500 dark:text-gray-400">ID: 19005</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">7843079790</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        <span data-toggle="tooltip" title="Location" className="cursor-pointer mr-2">
+         NA,
+        </span>
+        <span data-toggle="tooltip" title="Department" className="cursor-pointer">
+         Teaching
+        </span>
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Teacher
+        </span>
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Faculty
+        </span>
+      </p>
+    </div>
+
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="View"
+      >
+        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="Edit"
+      >
+        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+    </div>
+  </div>
+</div>
+
+
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+  <div className="flex items-center relative group w-full">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+      <img
+        alt="user"
+        loading="lazy"
+        width="80"
+        height="80"
+        className="rounded-full object-cover object-center"
+        src="https://erp.erabesa.co.in/uploads/staff_images/9.jpg" // Replace with actual image source
+      />
+    </div>
+
+    <div className="flex-1">
+      <h4 className="text-base font-medium text-black dark:text-white">
+        Kalpana Kharabe
+      </h4>
+      <p className="text-sm text-gray-500 dark:text-gray-400">ID: 19006</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">8317255143</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        <span data-toggle="tooltip" title="Location" className="cursor-pointer mr-2">
+         NA,
+        </span>
+        <span data-toggle="tooltip" title="Department" className="cursor-pointer">
+         Teaching
+        </span>
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Teacher
+        </span>
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Faculty
+        </span>
+      </p>
+    </div>
+
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="View"
+      >
+        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="Edit"
+      >
+        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+    </div>
+  </div>
+</div>
+
+
+ <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+  <div className="flex items-center relative group w-full">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+      <img
+        alt="user"
+        loading="lazy"
+        width="80"
+        height="80"
+        className="rounded-full object-cover object-center"
+        src="https://erp.erabesa.co.in/uploads/staff_images/10.jpg"
+      />
+    </div>
+
+    <div className="flex-1">
+      <h4 className="text-base font-medium text-black dark:text-white">
+        Priyanka Rathod
+      </h4>
+      <p className="text-sm text-gray-500 dark:text-gray-400">ID: 19007</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">9730081571</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        <span data-toggle="tooltip" title="Location" className="cursor-pointer mr-2">
+         NA,
+        </span>
+        <span data-toggle="tooltip" title="Department" className="cursor-pointer">
+         Teaching
+        </span>
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Teacher
+        </span>
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Faculty
+        </span>
+      </p>
+    </div>
+
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="View"
+      >
+        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="Edit"
+      >
+        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+    </div>
+  </div>
+</div>
+
+
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+  <div className="flex items-center relative group w-full">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+    <img
                         alt="user"
                         loading="lazy"
                         width="80"
@@ -642,51 +622,52 @@ const StudentDetails = () => {
                         className="rounded-full object-cover object-center"
                         src="https://erp.erabesa.co.in/uploads/staff_images/11.jpg"
                       />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-medium text-black dark:text-white">
+    </div>
+
+    <div className="flex-1">
+    <h4 className="text-base font-medium text-black dark:text-white">
                         Rucha Kale
-                      </h4>
+    </h4>
                       <p className="text-sm">19008</p>
                       <p className="text-sm">9730081571</p>
-                    </div>
-                  </div>
-                  <div className="relative flex">
-                    <button className="bg-gray-300 hover:bg-gray-400 rounded p-2">
-                      {/* SVG Icon for three dots */}
-                      <svg
-                        className="text-gray-600 fill-current"
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.5326 16.0338C12.5326 15.1133 11.7864 14.3671 10.8659 14.3671C9.94541 14.3671 9.19922 15.1133 9.19922 16.0338C9.19922 16.9542 9.94541 17.7004 10.8659 17.7004C11.7864 17.7004 12.5326 16.9542 12.5326 16.0338Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 10.2005C12.5326 9.28005 11.7864 8.53385 10.8659 8.53385C9.94541 8.53385 9.19922 9.28005 9.19922 10.2005C9.19922 11.121 9.94541 11.8672 10.8659 11.8672C11.7864 11.8672 12.5326 11.121 12.5326 10.2005Z"
-                          fill="currentColor"
-                        ></path>
-                        <path
-                          d="M12.5326 4.36702C12.5326 3.44655 11.7864 2.70036 10.8659 2.70036C9.94541 2.70036 9.19922 3.44655 9.19922 4.36703C9.19922 5.2875 9.94541 6.03369 10.8659 6.03369C11.7864 6.03369 12.5326 5.2875 12.5326 4.36702Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </button>
-                    {/* Edit/Delete Menu */}
-                    <div className="absolute right-0 top-full z-40 w-37.5 space-y-1 rounded bg-white p-2 shadow-card dark:bg-boxdark-2">
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Edit
-                      </button>
-                      <button className="w-full rounded px-3 py-1.5 text-left text-sm hover:bg-gray-2 dark:hover:bg-graydark">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        <span data-toggle="tooltip" title="Location" className="cursor-pointer mr-2">
+         NA,
+        </span>
+        <span data-toggle="tooltip" title="Department" className="cursor-pointer">
+         Teaching
+        </span>
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Teacher
+        </span>
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+          Faculty
+        </span>
+      </p>
+    </div>
+
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="View"
+      >
+        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+
+      <IconButton
+        className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        aria-label="Edit"
+      >
+        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+      </IconButton>
+    </div>
+  </div>
+</div>
+
+
+
               </div>
             </div>
           )}
