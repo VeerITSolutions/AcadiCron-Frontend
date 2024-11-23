@@ -95,10 +95,6 @@ const StudentDetails = () => {
     category_name: "",
     // Add other initial fields as needed
   });
-  const defaultImage = "/uploads/student_images/default_female.jpg";
-
-  // Dynamically construct the image URL
-  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image || defaultImage}`;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -187,6 +183,15 @@ const StudentDetails = () => {
       }
     }
   }, []);
+  let defaultImage = "/uploads/student_images/default_male.jpg";
+  if (formData.gender == "male") {
+    let defaultImage = "/uploads/student_images/default_male.jpg";
+  } else {
+    let defaultImage = "/uploads/student_images/default_female.jpg";
+  }
+
+  // Dynamically construct the image URL
+  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image || defaultImage}`;
   return (
     <DefaultLayout>
       <div className="flex flex-wrap">
@@ -195,7 +200,7 @@ const StudentDetails = () => {
           <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
             <div className="text-center">
               <img
-                src={imageUrl}
+                src={imageUrl || defaultImage}
                 alt="User Profile"
                 className="mx-auto h-24 w-24 rounded-full"
               />
@@ -382,16 +387,6 @@ const StudentDetails = () => {
                       <div className="grid gap-5.5">
                         <div className="overflow-x-auto">
                           <table className="min-w-full border-b border-stroke bg-white dark:bg-boxdark">
-                            {/* <thead>
-          <tr>
-            <th className="px-6 py-3 text-left text-sm font-medium text-black dark:text-white border-b border-stroke">
-              Label
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-medium text-black dark:text-white border-b border-stroke">
-              Details
-            </th>
-          </tr>
-        </thead> */}
                             <tbody>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
@@ -433,7 +428,10 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}`}
+                                    src={
+                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}` ||
+                                      defaultImage
+                                    }
                                     alt="Profile"
                                   />
                                 </td>
@@ -464,7 +462,10 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}`}
+                                    src={
+                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}` ||
+                                      defaultImage
+                                    }
                                     alt="Profile"
                                   />
                                 </td>
@@ -495,7 +496,10 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}`}
+                                    src={
+                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}` ||
+                                      defaultImage
+                                    }
                                     alt="Profile"
                                   />
                                 </td>
