@@ -78,6 +78,7 @@ const StudentDetails = () => {
       date: "",
     },
   );
+
   const [formData, setFormData] = useState<Record<string, any>>({
     class_name: "",
     section_name: "",
@@ -173,6 +174,16 @@ const StudentDetails = () => {
 
       if (response2.status == 200) {
         toast.success("Added successful");
+        setFormDataTimeline({
+          id: getId,
+          title: "",
+          timeline_date: "",
+          description: "",
+          document: "",
+          status: "",
+          date: "",
+        });
+        handleButtonClick2();
       } else {
         toast.error("Error Add data");
       }
