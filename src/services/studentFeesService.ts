@@ -1,9 +1,14 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentFeesData = async (id?: string) => {
+/* export const fetchStudentFeesData = async (id?: string) => {
   const response = await apiClient.post(`/student-fees`, {
     id
   });
+  return response.data;
+}; */
+
+export const fetchStudentFeesData = async (id?: string) => {
+  const response = await apiClient.get(`/studentfees/1816`);
   return response.data;
 };
 
@@ -38,9 +43,6 @@ export const deleteData = async (id: number) => {
 
 // Edit a student category by ID
 export const editData = async (id: number, house_name: string, description?: string,
-
-
-
 
 fees_type?:string,
 due_date?:string,
