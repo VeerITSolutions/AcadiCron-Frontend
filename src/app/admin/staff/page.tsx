@@ -10,6 +10,8 @@ import Loader from "@/components/common/Loader";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import PersonAdd from "@mui/icons-material/PersonAdd";
+
 import {
   Edit,
   Delete,
@@ -190,31 +192,39 @@ const StudentDetails = () => {
 
       <div className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
         {/* Tab Navigation */}
-        <div className="mb-6 flex flex-wrap gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
-          {" "}
-          <a
-            className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
-              activeTab === "list"
-                ? "border-primary text-primary"
-                : "border-transparent"
-            }`}
-            href="#"
-            onClick={() => setActiveTab("list")}
-          >
-            Card View
-          </a>
-          <a
-            className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
-              activeTab === "card"
-                ? "border-primary text-primary"
-                : "border-transparent"
-            }`}
-            href="#"
-            onClick={() => setActiveTab("card")}
-          >
-            List View
-          </a>
-        </div>
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
+  {/* Tabs */}
+  <div className="flex gap-5 sm:gap-10">
+    <a
+      className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
+        activeTab === "list" ? "border-primary text-primary" : "border-transparent"
+      }`}
+      href="#"
+      onClick={() => setActiveTab("list")}
+    >
+      Card View
+    </a>
+    <a
+      className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
+        activeTab === "card" ? "border-primary text-primary" : "border-transparent"
+      }`}
+      href="#"
+      onClick={() => setActiveTab("card")}
+    >
+      List View
+    </a>
+  </div>
+
+
+  <button
+      className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded focus:outline-none"
+      onClick={() => router.push("/admin/staff/create")}
+    >
+      <PersonAdd className="text-white" /> {/* Use the PersonAdd icon */}
+      Add Staff
+    </button>
+</div>
+
 
         {/* Content Rendering Based on Active Tab */}
         <div>
