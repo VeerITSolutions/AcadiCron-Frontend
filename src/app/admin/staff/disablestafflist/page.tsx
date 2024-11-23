@@ -109,6 +109,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        localStorage.getItem("selectedSessionId"),
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -198,41 +199,41 @@ const StudentDetails = () => {
   return (
     <DefaultLayout>
       <div className={styles.filters}>
-      <div className={styles.filterGroup}>
-        <label className={styles.label}>
-          Role:
-          <select
-          value={selectedClass || ""}
-          onChange={handleClassChange}
-          className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-        >
-          <option value="">Select</option>
-          <option value="Class1">Admin</option>
-          <option value="Class2">Teacher</option>
-          <option value="Class3">Accountant</option>
-          <option value="Class4">Librarian</option>
-          <option value="Class5">Receptionist</option>
-          {/* Add more class options here */}
-        </select>
-        </label>
-      
-        <div className={styles.searchGroup}>
-          <input
-            type="text"
-            placeholder="Search By Keyword"
-            value={keyword}
-            onChange={handleKeywordChange}
-            className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
-          />
-          <button onClick={handleSearch} className={styles.searchButton}>
-            Search
-          </button>
-          <button onClick={handleRefresh} className={styles.searchButton}>
-            Reset
-          </button>
+        <div className={styles.filterGroup}>
+          <label className={styles.label}>
+            Role:
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+            >
+              <option value="">Select</option>
+              <option value="Class1">Admin</option>
+              <option value="Class2">Teacher</option>
+              <option value="Class3">Accountant</option>
+              <option value="Class4">Librarian</option>
+              <option value="Class5">Receptionist</option>
+              {/* Add more class options here */}
+            </select>
+          </label>
+
+          <div className={styles.searchGroup}>
+            <input
+              type="text"
+              placeholder="Search By Keyword"
+              value={keyword}
+              onChange={handleKeywordChange}
+              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+            />
+            <button onClick={handleSearch} className={styles.searchButton}>
+              Search
+            </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
+            </button>
+          </div>
         </div>
       </div>
-    </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Student Details"}

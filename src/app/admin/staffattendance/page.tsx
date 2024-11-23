@@ -29,14 +29,18 @@ import {
 import { toast } from "react-toastify";
 import { Span } from "next/dist/trace";
 const columns = [
-  "#", 
+  "#",
   "Staff ID",
   "Name",
   "Role",
   {
-    name: "Attendance", 
+    name: "Attendance",
     options: {
-      customBodyRender: (value: string, tableMeta: any, updateData: (value: string) => void) => {
+      customBodyRender: (
+        value: string,
+        tableMeta: any,
+        updateData: (value: string) => void,
+      ) => {
         const { rowIndex } = tableMeta;
         const attendance = value || "Present"; // Default value is "Present"
         return (
@@ -44,7 +48,7 @@ const columns = [
             {["Present", "Late", "Absent", "Halfday"].map((status) => (
               <label key={status} className="flex items-center gap-1">
                 <input
-                className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+                  className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
                   type="radio"
                   name={`attendance-${rowIndex}`}
                   value={status}
@@ -56,54 +60,58 @@ const columns = [
             ))}
           </div>
         );
-      }
-    }
-  }, 
+      },
+    },
+  },
   {
     name: "Note",
     options: {
-      customBodyRender: (value: string, tableMeta: any, updateData: (value: string) => void) => {
+      customBodyRender: (
+        value: string,
+        tableMeta: any,
+        updateData: (value: string) => void,
+      ) => {
         const { rowIndex } = tableMeta;
         return (
           <input
             type="text"
             value={value || ""} // Use the note if available or empty string
             onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full p-1 border rounded dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+            className="w-full rounded border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
           />
         );
-      }
-    }
-  }];
+      },
+    },
+  },
+];
 
-  const options = {
-    filter: false,
-    search: false,
-    pagination: false,
-    sort: false,
-    selectableRows: "none",
-    download: false,
-    print: false,
-    viewColumns: false,
-    responsive: "standard",
-    customToolbar: () => (
-      <div className="flex gap-2 justify-end">
-        <button
-          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-          onClick={() => console.log("Mark As Holiday clicked")}
-        >
-          Mark As Holiday
-        </button>
-        <button
-          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
-          onClick={() => console.log("Save Attendance clicked")}
-        >
-          Save Attendance
-        </button>
-      </div>
-    ),
-  };
-
+const options = {
+  filter: false,
+  search: false,
+  pagination: false,
+  sort: false,
+  selectableRows: "none",
+  download: false,
+  print: false,
+  viewColumns: false,
+  responsive: "standard",
+  customToolbar: () => (
+    <div className="flex justify-end gap-2">
+      <button
+        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+        onClick={() => console.log("Mark As Holiday clicked")}
+      >
+        Mark As Holiday
+      </button>
+      <button
+        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
+        onClick={() => console.log("Save Attendance clicked")}
+      >
+        Save Attendance
+      </button>
+    </div>
+  ),
+};
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -129,7 +137,8 @@ const StudentDetails = () => {
       student.staff_id || "N/A",
       student.class || "N/A",
       student.remark || "N/A",
-      student.staff_attendance_type_id || "N/A",,
+      student.staff_attendance_type_id || "N/A",
+      ,
     ]);
   };
 
@@ -147,6 +156,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        localStorage.getItem("selectedSessionId"),
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -223,7 +233,7 @@ const StudentDetails = () => {
               {/* Add more class options here */}
             </select>
           </label>
-        
+
           <label className={styles.label}>
             Attendance Date:
             <input
@@ -237,11 +247,10 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
-         title={"Staff List"}
+          title={"Staff List"}
           data={data}
           columns={columns}
           options={{

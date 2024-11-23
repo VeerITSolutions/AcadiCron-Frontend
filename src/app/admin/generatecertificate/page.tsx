@@ -92,6 +92,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        localStorage.getItem("selectedSessionId"),
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -240,21 +241,23 @@ const StudentDetails = () => {
         </div> */}
       </div>
 
-
       <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
-      <div
-  className="mb-4 pl-4 pt-4 text-right"
-  style={{
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  }}
->
-  <button type="submit" className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4">
-   Generate
-  </button>
-</div>
-</div>
+        <div
+          className="mb-4 pl-4 pt-4 text-right"
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <button
+            type="submit"
+            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+          >
+            Generate
+          </button>
+        </div>
+      </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Generate Certificates"}
