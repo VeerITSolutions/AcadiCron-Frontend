@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
 import Image from "next/image";
-import { fetchStudentSingleData } from "@/services/studentService";
+import { fetchStaffSingleData } from "@/services/staffService";
 import 'font-awesome/css/font-awesome.min.css';
 
 
@@ -27,75 +27,56 @@ const StudentDetails = () => {
     setIsFormVisible2(!isFormVisible2);
   };
   const [formData, setFormData] = useState<Record<string, any>>({
-    class_name: "",
-    section_name: "",
-    parent_id: "",
-    admission_no: "",
-    roll_no: "",
-    admission_date: "",
-    firstname: "",
-    middlename: "",
-    lastname: "",
-    rte: "",
-    image: "",
-    mobileno: "",
-    email: "",
-    state: "",
-    city: "",
-    pincode: "",
-    religion: "",
-    cast: "",
-    dob: "",
-    gender: "",
-    current_address: "",
-    permanent_address: "",
-    category_id: "",
-    route_id: "",
-    school_house_id: "",
-    blood_group: "",
-    vehroute_id: "",
-    hostel_room_id: "",
-    adhar_no: "",
-    samagra_id: "",
-    bank_account_no: "",
-    bank_name: "",
-    ifsc_code: "",
-    guardian_is: "",
-    father_name: "",
-    father_phone: "",
-    father_occupation: "",
-    mother_name: "",
-    mother_phone: "",
-    mother_occupation: "",
-    guardian_name: "",
-    guardian_relation: "",
-    guardian_phone: "",
-    guardian_occupation: "",
-    guardian_address: "",
-    guardian_email: "",
-    father_pic: "",
-    mother_pic: "",
-    guardian_pic: "",
-    is_active: "",
-    previous_school: "",
-    height: "",
-    weight: "",
-    measurement_date: "",
-    dis_reason: "",
-    note: "",
-    dis_note: "",
-    app_key: "",
-    parent_app_key: "",
-    disable_at: "",
-    section_id: "",
-    notes: "",
-    first_title: "",
-    first_doc: "",
-    second_title: "",
-    third_title: "",
-    fourth_title: "",
-    category_name: "",
-    // Add other initial fields as needed
+
+            employee_id: "",
+            lang_id: "",
+            department: "",
+            designation: "",
+            qualification: "",
+            work_exp: "",
+            name: "",
+            surname: "",
+            father_name: "",
+            mother_name: "",
+            contact_no: "",
+            emergency_contact_no: "",
+            email: "",
+            dob: "",
+            marital_status: "",
+            date_of_joining: "",
+            date_of_leaving: "",
+            local_address: "",
+            permanent_address: "",
+            note: "",
+            image: "",
+            password: "",
+            gender: "",
+            account_title: "",
+            bank_account_no: "",
+            bank_name: "",
+            ifsc_code: "",
+            bank_branch: "",
+            payscale: "",
+            basic_salary: "",
+            epf_no: "",
+            contract_type: "",
+            shift: "",
+            location: "",
+            facebook: "",
+            twitter: "",
+            linkedin: "",
+            instagram: "",
+            resume: "",
+            joining_letter: "",
+            resignation_letter: "",
+            other_document_name: "",
+            other_document_file: "",
+            user_id: "",
+            is_active: "",
+            verification_code: "",
+            disable_at: "",
+            role_id: "",
+            user_type: ""
   });
 
   useEffect(() => {
@@ -104,78 +85,58 @@ const StudentDetails = () => {
       if (id) {
         const getData = async () => {
           try {
-            const data = await fetchStudentSingleData(id);
+            const data = await fetchStaffSingleData(id);
             console.log("data", data);
             setFormData({
-              class_name: data.data.class_name,
-
-              section_name: data.data.section_name,
-              parent_id: data.data.parent_id,
-              admission_no: data.data.admission_no,
-              roll_no: data.data.roll_no,
-              admission_date: data.data.admission_date,
-              firstname: data.data.firstname,
-              middlename: data.data.middlename,
-              lastname: data.data.lastname,
-              rte: data.data.rte,
-              image: data.data.image,
-              mobileno: data.data.mobileno,
-              email: data.data.email,
-              state: data.data.state,
-              city: data.data.city,
-              pincode: data.data.pincode,
-              religion: data.data.religion,
-              cast: data.data.cast,
-              dob: data.data.dob,
-              gender: data.data.gender,
-              current_address: data.data.current_address,
-              permanent_address: data.data.permanent_address,
-              category_id: data.data.category_id,
-              route_id: data.data.route_id,
-              school_house_id: data.data.school_house_id,
-              blood_group: data.data.blood_group,
-              vehroute_id: data.data.vehroute_id,
-              hostel_room_id: data.data.hostel_room_id,
-              adhar_no: data.data.adhar_no,
-              samagra_id: data.data.samagra_id,
-              bank_account_no: data.data.bank_account_no,
-              bank_name: data.data.bank_name,
-              ifsc_code: data.data.ifsc_code,
-              guardian_is: data.data.guardian_is,
-              father_name: data.data.father_name,
-              father_phone: data.data.father_phone,
-              father_occupation: data.data.father_occupation,
-              mother_name: data.data.mother_name,
-              mother_phone: data.data.mother_phone,
-              mother_occupation: data.data.mother_occupation,
-              guardian_name: data.data.guardian_name,
-              guardian_relation: data.data.guardian_relation,
-              guardian_phone: data.data.guardian_phone,
-              guardian_occupation: data.data.guardian_occupation,
-              guardian_address: data.data.guardian_address,
-              guardian_email: data.data.guardian_email,
-              father_pic: data.data.father_pic,
-              mother_pic: data.data.mother_pic,
-              guardian_pic: data.data.guardian_pic,
-              is_active: data.data.is_active,
-              previous_school: data.data.previous_school,
-              height: data.data.height,
-              weight: data.data.weight,
-              measurement_date: data.data.measurement_date,
-              dis_reason: data.data.dis_reason,
-              note: data.data.note,
-              dis_note: data.data.dis_note,
-              app_key: data.data.app_key,
-              parent_app_key: data.data.parent_app_key,
-              disable_at: data.data.disable_at,
-              section_id: data.data.section_id,
-              notes: "", // Add other fields as needed
-              first_title: "",
-              first_doc: "",
-              second_title: "",
-              third_title: "",
-              fourth_title: "",
-              category_name: data.data.category_name,
+              employee_id: data.data.employee_id || "",
+              lang_id: data.data.lang_id || "",
+              department: data.data.department || "",
+              designation: data.data.designation || "",
+              qualification: data.data.qualification || "",
+              work_exp: data.data.work_exp || "",
+              name: data.data.name || "",
+              surname: data.data.surname || "",
+              father_name: data.data.father_name || "",
+              mother_name: data.data.mother_name || "",
+              contact_no: data.data.contact_no || "",
+              emergency_contact_no: data.data.emergency_contact_no || "",
+              email: data.data.email || "",
+              dob: data.data.dob || "",
+              marital_status: data.data.marital_status || "",
+              date_of_joining: data.data.date_of_joining || "",
+              date_of_leaving: data.data.date_of_leaving || "",
+              local_address: data.data.local_address || "",
+              permanent_address: data.data.permanent_address || "",
+              note: data.data.note || "",
+              image: data.data.image || "",
+              password: data.data.password || "",
+              gender: data.data.gender || "",
+              account_title: data.data.account_title || "",
+              bank_account_no: data.data.bank_account_no || "",
+              bank_name: data.data.bank_name || "",
+              ifsc_code: data.data.ifsc_code || "",
+              bank_branch: data.data.bank_branch || "",
+              payscale: data.data.payscale || "",
+              basic_salary: data.data.basic_salary || "",
+              epf_no: data.data.epf_no || "",
+              contract_type: data.data.contract_type || "",
+              shift: data.data.shift || "",
+              location: data.data.location || "",
+              facebook: data.data.facebook || "",
+              twitter: data.data.twitter || "",
+              linkedin: data.data.linkedin || "",
+              instagram: data.data.instagram || "",
+              resume: data.data.resume || "",
+              joining_letter: data.data.joining_letter || "",
+              resignation_letter: data.data.resignation_letter || "",
+              other_document_name: data.data.other_document_name || "",
+              other_document_file: data.data.other_document_file || "",
+              user_id: data.data.user_id || "",
+              is_active: data.data.is_active || "",
+              verification_code: data.data.verification_code || "",
+              disable_at: data.data.disable_at || "",
+              role_id: data.data.role_id || "",
+              user_type: data.data.user_type || "",
             });
           } catch (error) {
             console.error("Error fetching student data:", error);
@@ -246,44 +207,44 @@ const StudentDetails = () => {
             <ul className="mt-4 list-none border-stroke p-0 dark:border-strokedark">
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Staff ID</b>{" "}
-                <span className="text-aqua">{formData.admission_no}</span>
+                <span className="text-aqua">{formData.employee_id}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Role</b>{" "}
-                <span className="text-aqua"> {formData.roll_no || "N/A"}</span>
+                <span className="text-aqua"> {formData.user_type || "N/A"}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Designation</b>{" "}
                 <span className="text-aqua">
-                  {formData.class_name} (2024-25)
+                  {formData.designation} (2024-25)
                 </span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Department</b>{" "}
-                <span className="text-aqua">{formData.section_name}</span>
+                <span className="text-aqua">{formData.department}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>EPF No</b> <span className="text-aqua">{formData.rte}</span>
+                <b>EPF No</b> <span className="text-aqua">{formData.epf_no}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Basic Salary</b>{" "}
-                <span className="text-aqua">{formData.gender}</span>
+                <span className="text-aqua">{formData.basic_salary}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Contract Type</b>{" "}
-                <span className="text-aqua">{formData.gender}</span>
+                <span className="text-aqua">{formData.contract_type}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Work Shift</b>{" "}
-                <span className="text-aqua">{formData.gender}</span>
+                <span className="text-aqua">{formData.shift}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Location</b>{" "}
-                <span className="text-aqua">{formData.gender}</span>
+                <span className="text-aqua">{formData.location}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Date Of Joining</b>{" "}
-                <span className="text-aqua">{formData.gender}</span>
+                <span className="text-aqua">{formData.date_of_joining}</span>
               </li>
             </ul>
           </div>
@@ -348,7 +309,7 @@ const StudentDetails = () => {
                               Phone
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 col-md-5 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.Phone}
+                                {formData.contact_no}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -356,7 +317,7 @@ const StudentDetails = () => {
                               Emergency Contact Number
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.category_name}
+                                {formData.emergency_contact_no}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -389,7 +350,7 @@ const StudentDetails = () => {
                               Marital Status
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.mobileno}
+                                {formData.marital_status}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -397,7 +358,7 @@ const StudentDetails = () => {
                               Father Name
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.cast}
+                                {formData.father_name}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -405,7 +366,7 @@ const StudentDetails = () => {
                               Mother Name
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.religion}
+                                {formData.mother_name}
                               </td>
                             </tr>
                            
@@ -413,19 +374,25 @@ const StudentDetails = () => {
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                               Qualification
                               </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
+                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white" >
+                              {formData.qualification}
+                              </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                               Work Experience
                               </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
+                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                              {formData.work_exp}
+                              </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                               Note
                               </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
+                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                              {formData.note}
+                              </td>
                             </tr>
                           
                           </tbody>
@@ -448,7 +415,7 @@ const StudentDetails = () => {
                                   Current Address
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.current_address}
+                                  {formData.local_address}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -481,10 +448,7 @@ const StudentDetails = () => {
                                Account Title
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.father_name}
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.father_phone}
+                                  {formData.account_title}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -492,7 +456,7 @@ const StudentDetails = () => {
                                 Bank Name
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.father_phone}
+                                  {formData.bank_name}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -500,7 +464,7 @@ const StudentDetails = () => {
                                 Bank Branch Name
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.father_occupation}
+                                  {formData.bank_branch}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -508,7 +472,7 @@ const StudentDetails = () => {
                                 Bank Account Number
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.mother_phone}
+                                  {formData.bank_account_no}
                                 </td>
                               </tr>
                              
@@ -517,7 +481,7 @@ const StudentDetails = () => {
                                 IFSC Code
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.mother_phone}
+                                  {formData.ifsc_code}
                                 </td>
                               </tr>
                              
@@ -543,7 +507,7 @@ const StudentDetails = () => {
 Facebook URL
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.blood_group}
+                                  {formData.facebook}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -551,7 +515,7 @@ Facebook URL
                                 Twitter URL
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.school_house_id}
+                                  {formData.twitter}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -559,7 +523,7 @@ Facebook URL
                                 Linkedin URL
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.height}
+                                  {formData.linkedin}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
@@ -567,7 +531,7 @@ Facebook URL
                                 Instagram URL
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.weight}
+                                  {formData.instagram}
                                 </td>
                               </tr>
                              
