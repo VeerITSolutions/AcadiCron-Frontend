@@ -9,6 +9,9 @@ import User from "@/components/User/User";
 import Image from "next/image";
 import { fetchStudentSingleData } from "@/services/studentService";
 import { fetchStudentFeesData } from "@/services/studentFeesService";
+import { toast } from "react-toastify";
+import { createStudentdoc } from "@/services/studentdocService";
+import { createStudentTimeline } from "@/services/studentTimelineService";
 interface FeeData {
   fees_group: string;
   fees_code: string;
@@ -54,6 +57,8 @@ const StudentDetails = () => {
 
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -61,15 +66,19 @@ const StudentDetails = () => {
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
   };
-
+  let getId = window.location.pathname.split("/").pop();
   const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
     {
+      id: getId,
       title: "",
-      dob: "",
+      timeline_date: "",
       description: "",
-      doc: "",
+      document: "",
+      status: "",
+      date: "",
     },
   );
+
   const [formData, setFormData] = useState<Record<string, any>>({
     class_name: "",
     section_name: "",
@@ -154,6 +163,36 @@ const StudentDetails = () => {
       }));
     }
   };
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const data = {
+        ...formDataTimeline,
+      };
+
+      const response2 = await createStudentTimeline(data);
+
+      if (response2.status == 200) {
+        toast.success("Added successful");
+        setFormDataTimeline({
+          id: getId,
+          title: "",
+          timeline_date: "",
+          description: "",
+          document: "",
+          status: "",
+          date: "",
+        });
+        handleButtonClick2();
+      } else {
+        toast.error("Error Add data");
+      }
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -161,7 +200,7 @@ const StudentDetails = () => {
     >,
   ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setFormDataTimeline((prevData) => ({
       ...prevData,
       [name]: value, // For regular inputs like text or selects
     }));
@@ -177,7 +216,6 @@ const StudentDetails = () => {
             const data2 = await fetchStudentFeesData(id);
             setFeeData(data2);
 
-            console.log("data", data2);
             setFormData({
               class_name: data.data.class_name,
 
@@ -812,7 +850,7 @@ const StudentDetails = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {student_due_fees?.map((fee: any, index: any) => (
+                        {/*  {student_due_fees?.map((fee: any, index: any) => (
                           <tr
                             key={index}
                             className={
@@ -893,7 +931,7 @@ const StudentDetails = () => {
                             {currency_symbol}
                             {totals?.balance?.toFixed(2) || "0.00"}
                           </td>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>
@@ -1098,6 +1136,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="title"
+                      value={formDataTimeline.title}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -1110,7 +1149,8 @@ const StudentDetails = () => {
                       id="date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="date"
-                      name="dob"
+                      name="timeline_date"
+                      value={formDataTimeline.timeline_date}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -1125,6 +1165,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="description"
+                      value={formDataTimeline.description}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -1137,7 +1178,7 @@ const StudentDetails = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      name="doc" // Optional: Include name for form data
+                      name="document" // Optional: Include name for form data
                       onChange={handleFileChange} // Handle file change separately
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -1146,7 +1187,8 @@ const StudentDetails = () => {
 
                 <div className="mt-4 flex justify-end">
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleSave}
                     className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
                   >
                     Submit
