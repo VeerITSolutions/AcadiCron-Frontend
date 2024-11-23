@@ -65,6 +65,9 @@ const StudentDetails = () => {
   const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
     {
       title: "",
+      dob: "",
+      description: "",
+      doc: "",
     },
   );
   const [formData, setFormData] = useState<Record<string, any>>({
@@ -139,6 +142,31 @@ const StudentDetails = () => {
     // Add other initial fields as needed
   });
   const [feeData, setFeeData] = useState<any>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormDataTimeline((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const id = window.location.pathname.split("/").pop();
@@ -1015,9 +1043,11 @@ const StudentDetails = () => {
                     Document:
                   </label>
                   <input
-                    className="form-control mt-2 w-full"
                     type="file"
-                    name="document_file"
+                    accept="image/*,video/*"
+                    name="doc" // Optional: Include name for form data
+                    onChange={handleFileChange} // Handle file change separately
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
                 <div className="flex justify-end">
@@ -1068,7 +1098,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="title"
-                      value={formDataTimeline.title}
+                      onChange={handleInputChange}
                     />
                   </div>
 
@@ -1081,7 +1111,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="date"
                       name="dob"
-                      value={formDataTimeline.dob}
+                      onChange={handleInputChange}
                     />
                   </div>
 
@@ -1095,7 +1125,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="description"
-                      value={formDataTimeline.description}
+                      onChange={handleInputChange}
                     />
                   </div>
 
@@ -1103,12 +1133,13 @@ const StudentDetails = () => {
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Document:
                     </label>
+
                     <input
-                      className="form-control mt-2 w-full"
-                      id="document_file"
                       type="file"
-                      name="document_file"
-                      /* onChange={} */
+                      accept="image/*"
+                      name="doc" // Optional: Include name for form data
+                      onChange={handleFileChange} // Handle file change separately
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
                 </div>
