@@ -11,6 +11,7 @@ import { fetchStudentSingleData } from "@/services/studentService";
 import { fetchStudentFeesData } from "@/services/studentFeesService";
 import { toast } from "react-toastify";
 import { createStudentdoc } from "@/services/studentdocService";
+import { createStudentTimeline } from "@/services/studentTimelineService";
 interface FeeData {
   fees_group: string;
   fees_code: string;
@@ -165,7 +166,7 @@ const StudentDetails = () => {
         ...formDataTimeline,
       };
 
-      const response2 = await createStudentdoc(data);
+      const response2 = await createStudentTimeline(data);
 
       if (response2.success == true) {
         toast.success("Edit successful");
