@@ -415,11 +415,9 @@ const StudentDetails = () => {
           <div className="flex items-start">
             <div className="flex w-1/5 items-center justify-center">
               <img
-                width="115"
-                height="115"
-                className="rounded-full"
                 src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
-                alt="No Image"
+                alt="User Profile"
+                className="mx-auto h-24 w-24 rounded-full"
               />
             </div>
 
