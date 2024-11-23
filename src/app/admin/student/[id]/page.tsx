@@ -9,6 +9,8 @@ import User from "@/components/User/User";
 import Image from "next/image";
 import { fetchStudentSingleData } from "@/services/studentService";
 import { fetchStudentFeesData } from "@/services/studentFeesService";
+import { toast } from "react-toastify";
+import { createStudentdoc } from "@/services/studentdocService";
 interface FeeData {
   fees_group: string;
   fees_code: string;
@@ -54,6 +56,8 @@ const StudentDetails = () => {
 
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -152,6 +156,26 @@ const StudentDetails = () => {
         ...prevData,
         [name]: file, // Dynamically set the file in formData using the input's name attribute
       }));
+    }
+  };
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const data = {
+        ...formDataTimeline,
+      };
+
+      const response2 = await createStudentdoc(data);
+
+      if (response2.success == true) {
+        toast.success("Edit successful");
+      } else {
+        toast.error("Error Edit data");
+      }
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -1146,7 +1170,8 @@ const StudentDetails = () => {
 
                 <div className="mt-4 flex justify-end">
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleSave}
                     className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
                   >
                     Submit
