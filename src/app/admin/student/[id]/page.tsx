@@ -61,6 +61,12 @@ const StudentDetails = () => {
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
   };
+
+  const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
+    {
+      title: "",
+    },
+  );
   const [formData, setFormData] = useState<Record<string, any>>({
     class_name: "",
     section_name: "",
@@ -1062,6 +1068,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="title"
+                      value={formDataTimeline.title}
                     />
                   </div>
 
@@ -1072,8 +1079,9 @@ const StudentDetails = () => {
                     <input
                       id="date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                      type="text"
+                      type="date"
                       name="dob"
+                      value={formDataTimeline.dob}
                     />
                   </div>
 
@@ -1087,6 +1095,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="description"
+                      value={formDataTimeline.description}
                     />
                   </div>
 
@@ -1099,6 +1108,7 @@ const StudentDetails = () => {
                       id="document_file"
                       type="file"
                       name="document_file"
+                      /* onChange={} */
                     />
                   </div>
                 </div>
