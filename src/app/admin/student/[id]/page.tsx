@@ -8,6 +8,43 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
 import Image from "next/image";
 import { fetchStudentSingleData } from "@/services/studentService";
+import { fetchStudentFeesData } from "@/services/studentFeesService";
+interface FeeData {
+  fees_group: string;
+  fees_code: string;
+  due_date: string;
+  status: string;
+  amount: number;
+  payment_id?: string;
+  mode?: string;
+  date?: string;
+  discount: number;
+  fine: number;
+  paid: number;
+  balance: number;
+}
+
+interface DiscountData {
+  code: string;
+  amount: number;
+  status: string;
+  description?: string;
+}
+
+interface Props {
+  feeData: {
+    student_due_fees: FeeData[];
+    student_discount_fees: DiscountData[];
+    totals: {
+      amount: number;
+      paid: number;
+      discount: number;
+      fine: number;
+      balance: number;
+    };
+    currency_symbol: string;
+  };
+}
 
 const StudentDetails = () => {
   const router = useRouter();
@@ -24,6 +61,15 @@ const StudentDetails = () => {
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
   };
+
+  const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
+    {
+      title: "",
+      dob: "",
+      description: "",
+      doc: "",
+    },
+  );
   const [formData, setFormData] = useState<Record<string, any>>({
     class_name: "",
     section_name: "",
@@ -95,6 +141,31 @@ const StudentDetails = () => {
     category_name: "",
     // Add other initial fields as needed
   });
+  const [feeData, setFeeData] = useState<any>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormDataTimeline((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -103,7 +174,10 @@ const StudentDetails = () => {
         const getData = async () => {
           try {
             const data = await fetchStudentSingleData(id);
-            console.log("data", data);
+            const data2 = await fetchStudentFeesData(id);
+            setFeeData(data2);
+
+            console.log("data", data2);
             setFormData({
               class_name: data.data.class_name,
 
@@ -223,6 +297,8 @@ const StudentDetails = () => {
   } else {
     defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image}`;
   } */
+  const { student_due_fees, student_discount_fees, totals, currency_symbol } =
+    feeData || {};
 
   return (
     <DefaultLayout>
@@ -690,7 +766,7 @@ const StudentDetails = () => {
                 </div>
               </div>
             )}
-            {activeTab === "fee" && (
+            {/* {activeTab === "fee" && (
               <div className="tab-content mx-auto max-w-screen-2xl p-4">
                 <div
                   className="tab-pane active flex flex-col gap-9"
@@ -698,88 +774,7 @@ const StudentDetails = () => {
                 >
                   <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="grid gap-5.5">
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
-                          <thead>
-                            <tr className="bg-gray-100 text-left">
-                              {[
-                                "Fees Group",
-                                "Fees Code",
-                                "Due Date",
-                                "Status",
-                                "Amount (₹)",
-                                "Payment Id",
-                                "Mode",
-                                "Date",
-                                "Discount (₹)",
-                                "Fine (₹)",
-                                "Paid (₹)",
-                                "Balance",
-                              ].map((header) => (
-                                <th
-                                  key={header}
-                                  className="border-b border-stroke px-4 py-2 text-sm font-medium text-black dark:text-white"
-                                >
-                                  {header}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr className="border-b border-stroke">
-                              <td className="px-4 py-2">
-                                Class 3 - I Installment
-                              </td>
-                              <td className="px-4 py-2">
-                                at the time of Admission
-                              </td>
-                              <td className="px-4 py-2">30-06-2024</td>
-                              <td className="px-4 py-2">
-                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
-                                  Unpaid
-                                </span>
-                              </td>
-                              <td className="px-4 py-2 text-right">
-                                10000.00{" "}
-                                <span className="text-red-600">+ 0.00</span>
-                              </td>
-                              <td className="px-4 py-2"></td>
-                              <td className="px-4 py-2"></td>
-                              <td className="px-4 py-2"></td>
-                              <td className="px-4 py-2 text-right">0.00</td>
-                              <td className="px-4 py-2 text-right">0.00</td>
-                              <td className="px-4 py-2 text-right">0.00</td>
-                              <td className="px-4 py-2 text-right">10000.00</td>
-                            </tr>
-                            {/* Additional rows */}
-                            <tr className="border-b border-stroke">
-                              <td className="px-4 py-2">
-                                Class 3 - I Installment
-                              </td>
-                              <td className="px-4 py-2">
-                                at the time of Admission
-                              </td>
-                              <td className="px-4 py-2">30-06-2024</td>
-                              <td className="px-4 py-2">
-                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
-                                  Unpaid
-                                </span>
-                              </td>
-                              <td className="px-4 py-2 text-right">
-                                10000.00{" "}
-                                <span className="text-red-600">+ 0.00</span>
-                              </td>
-                              <td className="px-4 py-2"></td>
-                              <td className="px-4 py-2"></td>
-                              <td className="px-4 py-2"></td>
-                              <td className="px-4 py-2 text-right">0.00</td>
-                              <td className="px-4 py-2 text-right">0.00</td>
-                              <td className="px-4 py-2 text-right">0.00</td>
-                              <td className="px-4 py-2 text-right">10000.00</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                      <div className="overflow-x-auto"></div>
                     </div>
                   </div>
                 </div>
@@ -790,7 +785,122 @@ const StudentDetails = () => {
                 <h2 className="text-xl font-semibold">Exam Results</h2>
                 <div className="alert alert-danger">No Record Found</div>
               </div>
+            )} */}
+
+            {activeTab === "fee" && (
+              <div className="fees-container">
+                {student_due_fees?.length === 0 &&
+                student_discount_fees?.length === 0 ? (
+                  <div className="alert alert-danger">No record found</div>
+                ) : (
+                  <div className="table-responsive">
+                    <table className="table-hover table-striped table">
+                      <thead>
+                        <tr>
+                          <th>Fees Group</th>
+                          <th>Fees Code</th>
+                          <th>Due Date</th>
+                          <th>Status</th>
+                          <th>Amount ({currency_symbol})</th>
+                          <th>Payment ID</th>
+                          <th>Mode</th>
+                          <th>Date</th>
+                          <th>Discount ({currency_symbol})</th>
+                          <th>Fine ({currency_symbol})</th>
+                          <th>Paid ({currency_symbol})</th>
+                          <th>Balance</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {student_due_fees?.map((fee: any, index: any) => (
+                          <tr
+                            key={index}
+                            className={
+                              fee.balance > 0 &&
+                              new Date(fee.due_date) < new Date()
+                                ? "danger"
+                                : ""
+                            }
+                          >
+                            <td>{fee.fees_group}</td>
+                            <td>{fee.fees_code}</td>
+                            <td>{fee.due_date || "N/A"}</td>
+                            <td>
+                              {fee.balance === 0 ? (
+                                <span className="label label-success">
+                                  Paid
+                                </span>
+                              ) : fee.paid > 0 ? (
+                                <span className="label label-warning">
+                                  Partial
+                                </span>
+                              ) : (
+                                <span className="label label-danger">
+                                  Unpaid
+                                </span>
+                              )}
+                            </td>
+                            <td>{fee.amount?.toFixed(2) || "0.00"}</td>
+                            <td>{fee.payment_id || "N/A"}</td>
+                            <td>{fee.mode || "N/A"}</td>
+                            <td>{fee.date || "N/A"}</td>
+                            <td>{fee.discount?.toFixed(2) || "0.00"}</td>
+                            <td>{fee.fine?.toFixed(2) || "0.00"}</td>
+                            <td>{fee.paid?.toFixed(2) || "0.00"}</td>
+                            <td>{fee.balance?.toFixed(2) || "0.00"}</td>
+                          </tr>
+                        ))}
+
+                        {student_discount_fees?.map(
+                          (discount: any, index: any) => (
+                            <tr
+                              key={`discount-${index}`}
+                              className="dark-light"
+                            >
+                              <td>Discount</td>
+                              <td>{discount.code}</td>
+                              <td colSpan={3}></td>
+                              <td>{discount.status}</td>
+                              <td colSpan={5}>
+                                {discount.description || "N/A"}
+                              </td>
+                            </tr>
+                          ),
+                        )}
+
+                        <tr className="total-bg">
+                          <td colSpan={4} className="text-right">
+                            Totals
+                          </td>
+                          <td>
+                            {currency_symbol}
+                            {totals?.amount?.toFixed(2) || "0.00"}
+                          </td>
+                          <td colSpan={3}></td>
+                          <td>
+                            {currency_symbol}
+                            {totals?.discount?.toFixed(2) || "0.00"}
+                          </td>
+                          <td>
+                            {currency_symbol}
+                            {totals?.fine?.toFixed(2) || "0.00"}
+                          </td>
+                          <td>
+                            {currency_symbol}
+                            {totals?.paid?.toFixed(2) || "0.00"}
+                          </td>
+                          <td>
+                            {currency_symbol}
+                            {totals?.balance?.toFixed(2) || "0.00"}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             )}
+
             {activeTab === "documents" && (
               <div>
                 <div className="tab-content mx-auto max-w-screen-2xl p-4">
@@ -933,9 +1043,11 @@ const StudentDetails = () => {
                     Document:
                   </label>
                   <input
-                    className="form-control mt-2 w-full"
                     type="file"
-                    name="document_file"
+                    accept="image/*,video/*"
+                    name="doc" // Optional: Include name for form data
+                    onChange={handleFileChange} // Handle file change separately
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
                 <div className="flex justify-end">
@@ -986,6 +1098,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="title"
+                      onChange={handleInputChange}
                     />
                   </div>
 
@@ -996,8 +1109,9 @@ const StudentDetails = () => {
                     <input
                       id="date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                      type="text"
+                      type="date"
                       name="dob"
+                      onChange={handleInputChange}
                     />
                   </div>
 
@@ -1011,6 +1125,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="description"
+                      onChange={handleInputChange}
                     />
                   </div>
 
@@ -1018,11 +1133,13 @@ const StudentDetails = () => {
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Document:
                     </label>
+
                     <input
-                      className="form-control mt-2 w-full"
-                      id="document_file"
                       type="file"
-                      name="document_file"
+                      accept="image/*"
+                      name="doc" // Optional: Include name for form data
+                      onChange={handleFileChange} // Handle file change separately
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
                 </div>
