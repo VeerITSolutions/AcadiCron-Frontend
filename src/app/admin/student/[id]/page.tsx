@@ -25,6 +25,8 @@ const StudentDetails = () => {
     setIsFormVisible2(!isFormVisible2);
   };
   const [formData, setFormData] = useState<Record<string, any>>({
+    class_name: "",
+    section_name: "",
     parent_id: "",
     admission_no: "",
     roll_no: "",
@@ -83,9 +85,7 @@ const StudentDetails = () => {
     app_key: "",
     parent_app_key: "",
     disable_at: "",
-
     section_id: "",
-
     notes: "",
     first_title: "",
     first_doc: "",
@@ -108,6 +108,8 @@ const StudentDetails = () => {
             const data = await fetchStudentSingleData(id);
             console.log("data", data);
             setFormData({
+              class_name: data.data.class_name,
+              section_name: data.data.section_name,
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
               roll_no: data.data.roll_no,
@@ -210,11 +212,13 @@ const StudentDetails = () => {
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Class</b>{" "}
-                <span className="text-aqua">{formData.class_id} (2024-25)</span>
+                <span className="text-aqua">
+                  {formData.class_name} (2024-25)
+                </span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Section</b>{" "}
-                <span className="text-aqua">{formData.section_id}</span>
+                <span className="text-aqua">{formData.section_name}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>RTE</b> <span className="text-aqua">{formData.rte}</span>
