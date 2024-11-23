@@ -220,7 +220,7 @@ const StudentDetails = () => {
             const data2 = await fetchStudentFeesData(id);
             const datatimeline = await fetchStudentTimelineData(id);
 
-            setDataTimeline(datatimeline);
+            setDataTimeline(datatimeline.data);
             setFeeData(data2);
 
             setFormData({
@@ -1018,18 +1018,25 @@ const StudentDetails = () => {
                         <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
                           <thead className="bg-gray-100">
                             <tr>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
-                                Title
-                              </th>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
-                                Name
-                              </th>
-                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium">
-                                Action
-                              </th>
+                              <th>Title</th>
+                              <th>Name</th>
+                              <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>{/*  */}</tbody>
+                          <tbody>
+                            {/*  */}
+
+                            {dataTimeline?.map((index: any, value: any) => (
+                              <tr
+                                key={`discount-${index}`}
+                                className="dark-light"
+                              >
+                                <td>Discount</td>
+                                <td>Discount</td>
+                                <td>Discount</td>
+                              </tr>
+                            ))}
+                          </tbody>
                         </table>
                       </div>
                     </div>
