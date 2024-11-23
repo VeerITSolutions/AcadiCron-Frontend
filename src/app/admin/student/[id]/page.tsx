@@ -183,15 +183,47 @@ const StudentDetails = () => {
       }
     }
   }, []);
-  let defaultImage = "/uploads/student_images/default_male.jpg";
-  if (formData.gender == "male") {
-    let defaultImage = "/uploads/student_images/default_male.jpg";
+  let defaultImage = "/images/user/default_male.jpg";
+
+  // Check for gender and default image conditions
+  if (
+    formData?.gender === "Female" &&
+    formData?.image === "uploads/student_images/default_female.jpg"
+  ) {
+    defaultImage = "/images/user/default_female.jpg";
+  } else if (
+    formData?.gender === "Male" &&
+    formData?.image === "uploads/student_images/default_male.jpg"
+  ) {
+    defaultImage = "/images/user/default_male.jpg";
   } else {
-    let defaultImage = "/uploads/student_images/default_female.jpg";
+    defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image}`;
   }
 
   // Dynamically construct the image URL
-  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image || defaultImage}`;
+  const imageUrl = `${defaultImage}`;
+
+  let defaultFatherImage = "/images/user/default_male.jpg";
+
+  let defaultFemalImage = "/images/user/default_female.jpg";
+
+  /* let defaultImage = "/images/user/default_male.jpg";
+
+  // Check for gender and default image conditions
+  if (
+    formData?.gender === "Female" &&
+    formData?.image === "uploads/student_images/default_female.jpg"
+  ) {
+    defaultImage = "/images/user/default_female.jpg";
+  } else if (
+    formData?.gender === "Male" &&
+    formData?.image === "uploads/student_images/default_male.jpg"
+  ) {
+    defaultImage = "/images/user/default_male.jpg";
+  } else {
+    defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image}`;
+  } */
+
   return (
     <DefaultLayout>
       <div className="flex flex-wrap">
@@ -429,8 +461,9 @@ const StudentDetails = () => {
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
                                     src={
-                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}` ||
-                                      defaultImage
+                                      formData?.father_pic
+                                        ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}`
+                                        : defaultFatherImage
                                     }
                                     alt="Profile"
                                   />
@@ -463,8 +496,9 @@ const StudentDetails = () => {
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
                                     src={
-                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}` ||
-                                      defaultImage
+                                      formData?.father_pic
+                                        ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}`
+                                        : defaultFemalImage
                                     }
                                     alt="Profile"
                                   />
@@ -497,8 +531,9 @@ const StudentDetails = () => {
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
                                     src={
-                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}` ||
-                                      defaultImage
+                                      formData?.father_pic
+                                        ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}`
+                                        : defaultFemalImage
                                     }
                                     alt="Profile"
                                   />
