@@ -10,6 +10,8 @@ import Loader from "@/components/common/Loader";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import PersonAdd from "@mui/icons-material/PersonAdd";
+
 import {
   Edit,
   Delete,
@@ -213,13 +215,14 @@ const StudentDetails = () => {
     </a>
   </div>
 
-  {/* One Staff Button */}
-        <button
-            className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded focus:outline-none"
-            onClick={() => router.push("/admin/staff/create")}
-          >
-            Add Staff
-          </button>
+
+  <button
+      className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded focus:outline-none"
+      onClick={() => router.push("/admin/staff/create")}
+    >
+      <PersonAdd className="text-white" /> {/* Use the PersonAdd icon */}
+      Add Staff
+    </button>
 </div>
 
 
