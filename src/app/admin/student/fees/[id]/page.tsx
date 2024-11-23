@@ -471,7 +471,7 @@ const StudentDetails = () => {
                       Category
                     </th>
                     <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.category_id}
+                      {formData.category_name}
                     </td>
                     <th className="border-b border-stroke px-4 py-2 text-left font-semibold dark:border-strokedark dark:text-white">
                       RTE
@@ -487,10 +487,7 @@ const StudentDetails = () => {
           </div>
         </div>
 
-        <div
-          className="pb-4 pl-4 pt-4 text-right dark:bg-boxdark dark:drop-shadow-none
-"
-        >
+        <div className="pb-4 pl-4 pt-4 text-right dark:bg-boxdark dark:drop-shadow-none">
           <div className="flex space-x-4">
             <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
               Print Selected

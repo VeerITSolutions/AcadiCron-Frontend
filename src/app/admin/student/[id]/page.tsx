@@ -92,6 +92,7 @@ const StudentDetails = () => {
     second_title: "",
     third_title: "",
     fourth_title: "",
+    category_name: "",
     // Add other initial fields as needed
   });
   const defaultImage = "/uploads/student_images/default_female.jpg";
@@ -109,6 +110,7 @@ const StudentDetails = () => {
             console.log("data", data);
             setFormData({
               class_name: data.data.class_name,
+
               section_name: data.data.section_name,
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
@@ -175,6 +177,7 @@ const StudentDetails = () => {
               second_title: "",
               third_title: "",
               fourth_title: "",
+              category_name: data.data.category_name,
             });
           } catch (error) {
             console.error("Error fetching student data:", error);
@@ -300,7 +303,7 @@ const StudentDetails = () => {
                                 Category
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.category_id}
+                                {formData.category_name}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
