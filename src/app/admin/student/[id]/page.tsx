@@ -66,10 +66,10 @@ const StudentDetails = () => {
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
   };
-
+  let getId = window.location.pathname.split("/").pop();
   const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
     {
-      id: window.location.pathname.split("/").pop(),
+      id: getId,
       title: "",
       timeline_date: "",
       description: "",
@@ -171,10 +171,10 @@ const StudentDetails = () => {
 
       const response2 = await createStudentTimeline(data);
 
-      if (response2.success == true) {
-        toast.success("Edit successful");
+      if (response2.status == 200) {
+        toast.success("Added successful");
       } else {
-        toast.error("Error Edit data");
+        toast.error("Error Add data");
       }
     } catch (error: any) {
       setError(error.message);
