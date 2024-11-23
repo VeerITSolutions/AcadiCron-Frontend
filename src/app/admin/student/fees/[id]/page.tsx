@@ -476,10 +476,9 @@ const StudentDetails = () => {
                     <th className="border-b border-stroke px-4 py-2 text-left font-semibold dark:border-strokedark dark:text-white">
                       RTE
                     </th>
+
                     <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      <span className="text-red-500 font-bold dark:text-white">
-                        {formData.rte}
-                      </span>
+                      {formData.rte}
                     </td>
                   </tr>
                 </tbody>
