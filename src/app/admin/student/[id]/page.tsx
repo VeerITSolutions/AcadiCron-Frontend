@@ -850,7 +850,7 @@ const StudentDetails = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {student_due_fees?.map((fee: any, index: any) => (
+                        {/*  {student_due_fees?.map((fee: any, index: any) => (
                           <tr
                             key={index}
                             className={
@@ -931,7 +931,7 @@ const StudentDetails = () => {
                             {currency_symbol}
                             {totals?.balance?.toFixed(2) || "0.00"}
                           </td>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>
