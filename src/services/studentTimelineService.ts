@@ -1,18 +1,7 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentTimelineData = async (page: number, perPage: number,selectedClass :any,
-  selectedSection :any,
-  keyword:any, selectedSessionId?:any) => {
-  const response = await apiClient.get(`/student-timeline`, {
-    params: {
-      page,
-      perPage,
-      selectedClass,
-      selectedSection,
-      keyword,
-      selectedSessionId
-    },
-  });
+export const fetchStudentTimelineData = async (id: string) => {
+  const response = await apiClient.get(`/student-timeline/${id}`);
   return response.data;
 };
 

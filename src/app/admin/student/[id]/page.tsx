@@ -11,7 +11,10 @@ import { fetchStudentSingleData } from "@/services/studentService";
 import { fetchStudentFeesData } from "@/services/studentFeesService";
 import { toast } from "react-toastify";
 import { createStudentdoc } from "@/services/studentdocService";
-import { createStudentTimeline } from "@/services/studentTimelineService";
+import {
+  createStudentTimeline,
+  fetchStudentTimelineData,
+} from "@/services/studentTimelineService";
 interface FeeData {
   fees_group: string;
   fees_code: string;
@@ -59,6 +62,7 @@ const StudentDetails = () => {
   const [isFormVisible2, setIsFormVisible2] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dataTimeline, setDataTimeline] = useState<any>(null);
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -214,6 +218,9 @@ const StudentDetails = () => {
           try {
             const data = await fetchStudentSingleData(id);
             const data2 = await fetchStudentFeesData(id);
+            const datatimeline = await fetchStudentTimelineData(id);
+
+            setDataTimeline(datatimeline);
             setFeeData(data2);
 
             setFormData({
@@ -1022,16 +1029,7 @@ const StudentDetails = () => {
                               </th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td
-                                className="text-red-600 py-4 text-center"
-                                colSpan={3}
-                              >
-                                No Record Found
-                              </td>
-                            </tr>
-                          </tbody>
+                          <tbody>{/*  */}</tbody>
                         </table>
                       </div>
                     </div>
