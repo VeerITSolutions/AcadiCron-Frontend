@@ -137,6 +137,8 @@ const StudentDetails = () => {
   };
 
   const [formData, setFormData] = useState<Record<string, any>>({
+    class_name: "",
+
     parent_id: "",
     admission_no: "",
     roll_no: "",
@@ -197,7 +199,7 @@ const StudentDetails = () => {
     disable_at: "",
 
     section_id: "",
-
+    section_name: "",
     notes: "",
     first_title: "",
     first_doc: "",
@@ -217,6 +219,8 @@ const StudentDetails = () => {
             const formattedData2 = await fetchStudentFeesData(id);
             /* setData(formattedData2); */
             setFormData({
+              class_name: data.data.class_name,
+
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
               roll_no: data.data.roll_no,
@@ -276,6 +280,7 @@ const StudentDetails = () => {
               parent_app_key: data.data.parent_app_key,
               disable_at: data.data.disable_at,
               section_id: data.data.section_id,
+              section_name: data.data.section_name,
               notes: "", // Add other fields as needed
               first_title: "",
               first_doc: "",
@@ -432,7 +437,7 @@ const StudentDetails = () => {
                       Class Section
                     </th>
                     <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.section_id}
+                      {formData.class_name} ( {formData.section_name} )
                     </td>
                   </tr>
                   <tr>
