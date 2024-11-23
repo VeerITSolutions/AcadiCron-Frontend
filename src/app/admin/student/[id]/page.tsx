@@ -25,6 +25,8 @@ const StudentDetails = () => {
     setIsFormVisible2(!isFormVisible2);
   };
   const [formData, setFormData] = useState<Record<string, any>>({
+    class_name: "",
+    section_name: "",
     parent_id: "",
     admission_no: "",
     roll_no: "",
@@ -83,21 +85,16 @@ const StudentDetails = () => {
     app_key: "",
     parent_app_key: "",
     disable_at: "",
-
     section_id: "",
-
     notes: "",
     first_title: "",
     first_doc: "",
     second_title: "",
     third_title: "",
     fourth_title: "",
+    category_name: "",
     // Add other initial fields as needed
   });
-  const defaultImage = "/uploads/student_images/default_female.jpg";
-
-  // Dynamically construct the image URL
-  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image || defaultImage}`;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -108,6 +105,9 @@ const StudentDetails = () => {
             const data = await fetchStudentSingleData(id);
             console.log("data", data);
             setFormData({
+              class_name: data.data.class_name,
+
+              section_name: data.data.section_name,
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
               roll_no: data.data.roll_no,
@@ -173,6 +173,7 @@ const StudentDetails = () => {
               second_title: "",
               third_title: "",
               fourth_title: "",
+              category_name: data.data.category_name,
             });
           } catch (error) {
             console.error("Error fetching student data:", error);
@@ -182,6 +183,15 @@ const StudentDetails = () => {
       }
     }
   }, []);
+  let defaultImage = "/uploads/student_images/default_male.jpg";
+  if (formData.gender == "male") {
+    let defaultImage = "/uploads/student_images/default_male.jpg";
+  } else {
+    let defaultImage = "/uploads/student_images/default_female.jpg";
+  }
+
+  // Dynamically construct the image URL
+  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image || defaultImage}`;
   return (
     <DefaultLayout>
       <div className="flex flex-wrap">
@@ -190,7 +200,7 @@ const StudentDetails = () => {
           <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
             <div className="text-center">
               <img
-                src={imageUrl}
+                src={imageUrl || defaultImage}
                 alt="User Profile"
                 className="mx-auto h-24 w-24 rounded-full"
               />
@@ -210,11 +220,13 @@ const StudentDetails = () => {
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Class</b>{" "}
-                <span className="text-aqua">{formData.class_id} (2024-25)</span>
+                <span className="text-aqua">
+                  {formData.class_name} (2024-25)
+                </span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Section</b>{" "}
-                <span className="text-aqua">{formData.section_id}</span>
+                <span className="text-aqua">{formData.section_name}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>RTE</b> <span className="text-aqua">{formData.rte}</span>
@@ -296,7 +308,7 @@ const StudentDetails = () => {
                                 Category
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.category_id}
+                                {formData.category_name}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
@@ -375,16 +387,6 @@ const StudentDetails = () => {
                       <div className="grid gap-5.5">
                         <div className="overflow-x-auto">
                           <table className="min-w-full border-b border-stroke bg-white dark:bg-boxdark">
-                            {/* <thead>
-          <tr>
-            <th className="px-6 py-3 text-left text-sm font-medium text-black dark:text-white border-b border-stroke">
-              Label
-            </th>
-            <th className="px-6 py-3 text-left text-sm font-medium text-black dark:text-white border-b border-stroke">
-              Details
-            </th>
-          </tr>
-        </thead> */}
                             <tbody>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
@@ -426,7 +428,10 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}`}
+                                    src={
+                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}` ||
+                                      defaultImage
+                                    }
                                     alt="Profile"
                                   />
                                 </td>
@@ -457,7 +462,10 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}`}
+                                    src={
+                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}` ||
+                                      defaultImage
+                                    }
                                     alt="Profile"
                                   />
                                 </td>
@@ -488,7 +496,10 @@ const StudentDetails = () => {
                                 <td className="px-6 py-4">
                                   <img
                                     className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}`}
+                                    src={
+                                      `${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}` ||
+                                      defaultImage
+                                    }
                                     alt="Profile"
                                   />
                                 </td>

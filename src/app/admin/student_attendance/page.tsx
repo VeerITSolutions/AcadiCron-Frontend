@@ -18,13 +18,17 @@ import { toast } from "react-toastify";
 // Define columns, including a custom render for "Attendance"
 const columns = [
   "#",
-  "Admission No", 
-  "Roll Number", 
-  "Name", 
+  "Admission No",
+  "Roll Number",
+  "Name",
   {
-    name: "Attendance", 
+    name: "Attendance",
     options: {
-      customBodyRender: (value: string, tableMeta: any, updateData: (value: string) => void) => {
+      customBodyRender: (
+        value: string,
+        tableMeta: any,
+        updateData: (value: string) => void,
+      ) => {
         const { rowIndex } = tableMeta;
         const attendance = value || "Present"; // Default value is "Present"
         return (
@@ -32,7 +36,7 @@ const columns = [
             {["Present", "Late", "Absent", "Halfday"].map((status) => (
               <label key={status} className="flex items-center gap-1">
                 <input
-                className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+                  className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
                   type="radio"
                   name={`attendance-${rowIndex}`}
                   value={status}
@@ -44,25 +48,29 @@ const columns = [
             ))}
           </div>
         );
-      }
-    }
+      },
+    },
   },
   {
     name: "Note",
     options: {
-      customBodyRender: (value: string, tableMeta: any, updateData: (value: string) => void) => {
+      customBodyRender: (
+        value: string,
+        tableMeta: any,
+        updateData: (value: string) => void,
+      ) => {
         const { rowIndex } = tableMeta;
         return (
           <input
             type="text"
             value={value || ""} // Use the note if available or empty string
             onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full p-1 border rounded dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+            className="w-full rounded border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
           />
         );
-      }
-    }
-  }
+      },
+    },
+  },
 ];
 
 // Define options for MUIDataTable
@@ -77,7 +85,7 @@ const options = {
   viewColumns: false,
   responsive: "standard",
   customToolbar: () => (
-    <div className="flex gap-2 justify-end">
+    <div className="flex justify-end gap-2">
       <button
         className="rounded bg-primary px-5 py-2 font-medium text-white hover:bg-opacity-80"
         onClick={() => console.log("Mark As Holiday clicked")}
@@ -101,8 +109,12 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
   const [keyword, setKeyword] = useState<string>("");
 
   const router = useRouter();
@@ -136,6 +148,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        localStorage.getItem("selectedSessionId"),
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);

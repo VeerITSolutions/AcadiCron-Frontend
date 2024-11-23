@@ -137,6 +137,8 @@ const StudentDetails = () => {
   };
 
   const [formData, setFormData] = useState<Record<string, any>>({
+    class_name: "",
+
     parent_id: "",
     admission_no: "",
     roll_no: "",
@@ -197,7 +199,7 @@ const StudentDetails = () => {
     disable_at: "",
 
     section_id: "",
-
+    section_name: "",
     notes: "",
     first_title: "",
     first_doc: "",
@@ -217,6 +219,8 @@ const StudentDetails = () => {
             const formattedData2 = await fetchStudentFeesData(id);
             /* setData(formattedData2); */
             setFormData({
+              class_name: data.data.class_name,
+
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
               roll_no: data.data.roll_no,
@@ -276,6 +280,7 @@ const StudentDetails = () => {
               parent_app_key: data.data.parent_app_key,
               disable_at: data.data.disable_at,
               section_id: data.data.section_id,
+              section_name: data.data.section_name,
               notes: "", // Add other fields as needed
               first_title: "",
               first_doc: "",
@@ -410,11 +415,9 @@ const StudentDetails = () => {
           <div className="flex items-start">
             <div className="flex w-1/5 items-center justify-center">
               <img
-                width="115"
-                height="115"
-                className="rounded-full"
                 src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
-                alt="No Image"
+                alt="User Profile"
+                className="mx-auto h-24 w-24 rounded-full"
               />
             </div>
 
@@ -432,7 +435,7 @@ const StudentDetails = () => {
                       Class Section
                     </th>
                     <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.section_id}
+                      {formData.class_name} ( {formData.section_name} )
                     </td>
                   </tr>
                   <tr>
@@ -468,15 +471,14 @@ const StudentDetails = () => {
                       Category
                     </th>
                     <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.category_id}
+                      {formData.category_name}
                     </td>
                     <th className="border-b border-stroke px-4 py-2 text-left font-semibold dark:border-strokedark dark:text-white">
                       RTE
                     </th>
+
                     <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      <span className="text-red-500 font-bold dark:text-white">
-                        {formData.rte}
-                      </span>
+                      {formData.rte}
                     </td>
                   </tr>
                 </tbody>
@@ -485,10 +487,7 @@ const StudentDetails = () => {
           </div>
         </div>
 
-        <div
-          className="pb-4 pl-4 pt-4 text-right dark:bg-boxdark dark:drop-shadow-none
-"
-        >
+        <div className="pb-4 pl-4 pt-4 text-right dark:bg-boxdark dark:drop-shadow-none">
           <div className="flex space-x-4">
             <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
               Print Selected

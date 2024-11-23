@@ -80,6 +80,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        localStorage.getItem("selectedSessionId"),
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);

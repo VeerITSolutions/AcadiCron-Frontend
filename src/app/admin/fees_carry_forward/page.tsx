@@ -75,7 +75,7 @@ const StudentDetails = () => {
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class_name || "N/A",
-      student.category_id,
+      student.category_name || "N/A",
       student.mobileno,
       <div key={student.id}>
         <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
@@ -109,6 +109,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        localStorage.getItem("selectedSessionId"),
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);

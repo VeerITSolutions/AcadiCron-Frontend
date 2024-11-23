@@ -90,6 +90,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        localStorage.getItem("selectedSessionId"),
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -177,7 +178,7 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div>
-          <h6 className="text-[1.25rem] leading-[1.75rem] font-satoshi font-semibold">
+          <h6 className="font-satoshi text-[1.25rem] font-semibold leading-[1.75rem]">
             {" "}
             Select Criteria{" "}
           </h6>
@@ -221,9 +222,9 @@ const StudentDetails = () => {
       </div>
       <div className={styles.filters}>
         <div>
-        <h6 className="text-[1.25rem] leading-[1.75rem] font-satoshi font-semibold">
-          Promote Students In Next Session
-        </h6>
+          <h6 className="font-satoshi text-[1.25rem] font-semibold leading-[1.75rem]">
+            Promote Students In Next Session
+          </h6>
         </div>
 
         <div className={styles.filterGroup}>
