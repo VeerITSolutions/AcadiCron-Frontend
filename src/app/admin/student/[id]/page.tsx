@@ -185,7 +185,7 @@ const StudentDetails = () => {
     >,
   ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setFormDataTimeline((prevData) => ({
       ...prevData,
       [name]: value, // For regular inputs like text or selects
     }));
@@ -201,7 +201,6 @@ const StudentDetails = () => {
             const data2 = await fetchStudentFeesData(id);
             setFeeData(data2);
 
-            console.log("data", data2);
             setFormData({
               class_name: data.data.class_name,
 
@@ -1122,6 +1121,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="title"
+                      value={formDataTimeline.title}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -1135,6 +1135,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="date"
                       name="dob"
+                      value={formDataTimeline.dob}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -1149,6 +1150,7 @@ const StudentDetails = () => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                       type="text"
                       name="description"
+                      value={formDataTimeline.description}
                       onChange={handleInputChange}
                     />
                   </div>
