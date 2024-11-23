@@ -11,6 +11,16 @@ export const fetchStaffData = async (page?: number, perPage?: number) => {
 };
 
 
+export const fetchStaffSingleData = async (id: string) => {
+  const response = await apiClient.get(`/admin/dtstafflist`, {
+    params: {
+      id
+    },
+  });
+  return response.data;
+};
+
+
 export const createStaff = async (house_name: string, description: string): Promise<any> => {
   try {
     const response = await apiClient.post("/staff", { house_name, description });
