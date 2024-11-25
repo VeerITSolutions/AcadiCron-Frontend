@@ -1,13 +1,13 @@
 import apiClient from "./apiClient";
 
-export const fetchStaffData = async (page: number, perPage: number,selectedClass :any,
+export const fetchStaffData = async (page: number, perPage: number,selectedRole :any,
   selectedSection :any,
   keyword:any, selectedSessionId?:any) => {
   const response = await apiClient.get(`/staff-by-role`, {
     params: {
       page,
       perPage,
-      selectedClass,
+      selectedRole,
       selectedSection,
       keyword,
       selectedSessionId

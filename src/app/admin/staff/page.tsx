@@ -11,7 +11,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import PersonAdd from "@mui/icons-material/PersonAdd";
-import { Search, AddCircleOutline } from '@mui/icons-material';
+import { Search, AddCircleOutline } from "@mui/icons-material";
 
 import {
   Edit,
@@ -53,13 +53,16 @@ const StudentDetails = () => {
   const [activeTab, setActiveTab] = useState("list"); // "list" or "card"
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
@@ -94,7 +97,7 @@ const StudentDetails = () => {
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
-    selectedClass?: string,
+    selectedRole?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
@@ -102,7 +105,7 @@ const StudentDetails = () => {
       const result = await fetchStaffData(
         currentPage + 1,
         rowsPerPage,
-        selectedClass,
+        selectedRole,
         selectedSection,
         keyword,
         localStorage.getItem("selectedSessionId"),
@@ -120,7 +123,6 @@ const StudentDetails = () => {
     }
   };
 
-
   const handleEdit = (id: number) => {
     router.push(`/admin/staff/edit/${id}`);
   };
@@ -129,9 +131,8 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-    
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage, selectedRole, selectedSection, keyword);
+  }, [page, rowsPerPage, selectedRole, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -142,9 +143,9 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(event.target.value);
+    console.log("selectedRole", selectedRole);
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -171,23 +172,19 @@ const StudentDetails = () => {
           <label className={styles.label}>
             Role:
             <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
+              value={selectedRole || ""}
+              onChange={handleRoleChange}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
-              {roledata.map((cls) => (
+              {roledata.map((cls: any) => (
                 <option key={cls.id} value={cls.id}>
                   {cls.name}
                 </option>
               ))}
               <option value="Class1">Admin</option>
-              
             </select>
           </label>
-          <button onClick={handleSearch} className={styles.searchButton}>
-            Search
-          </button>
 
           <div className={styles.searchGroup}>
             <input
@@ -207,38 +204,32 @@ const StudentDetails = () => {
       <div className="">
         {/* Tab Navigation */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
-  {/* Tabs */}
- 
+          {/* Tabs */}
 
+          <button
+            className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none"
+            onClick={() => router.push("/admin/staff/create")}
+          >
+            <PersonAdd className="text-white" />
+            Add Staff
+          </button>
+        </div>
 
-  <button
-      className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded focus:outline-none"
-      onClick={() => router.push("/admin/staff/create")}
-    >
-      <PersonAdd className="text-white" />
-      Add Staff
-    </button>
-</div>
-
-
-
-<ThemeProvider
-                theme={colorMode === "dark" ? darkTheme : lightTheme}
-              >
-                <MUIDataTable
-                  title={"Staff List"}
-                  data={data}
-                  columns={columns}
-                  options={{
-                    ...options,
-                    count: totalCount,
-                    page: page,
-                    rowsPerPage: rowsPerPage,
-                    onChangePage: handlePageChange,
-                    onChangeRowsPerPage: handleRowsPerPageChange,
-                  }}
-                />
-              </ThemeProvider>
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <MUIDataTable
+            title={"Staff List"}
+            data={data}
+            columns={columns}
+            options={{
+              ...options,
+              count: totalCount,
+              page: page,
+              rowsPerPage: rowsPerPage,
+              onChangePage: handlePageChange,
+              onChangeRowsPerPage: handleRowsPerPageChange,
+            }}
+          />
+        </ThemeProvider>
       </div>
     </DefaultLayout>
   );

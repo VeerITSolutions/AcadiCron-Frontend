@@ -1,12 +1,7 @@
 import apiClient from "./apiClient";
 
 export const fetchDesignationData = async (page?: number, perPage?: number) => {
-  const response = await apiClient.get(`/designation`, {
-    params: {
-      page,
-      perPage,
-    },
-  });
+  const response = await apiClient.get(`/designation`);
   return response.data;
 };
 

@@ -8,8 +8,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
 import Image from "next/image";
 import { fetchStaffSingleData } from "@/services/staffService";
-import 'font-awesome/css/font-awesome.min.css';
-
+/* import 'font-awesome/css/font-awesome.min.css'; */
 
 const StudentDetails = () => {
   const router = useRouter();
@@ -27,56 +26,55 @@ const StudentDetails = () => {
     setIsFormVisible2(!isFormVisible2);
   };
   const [formData, setFormData] = useState<Record<string, any>>({
-
-            employee_id: "",
-            lang_id: "",
-            department: "",
-            designation: "",
-            qualification: "",
-            work_exp: "",
-            name: "",
-            surname: "",
-            father_name: "",
-            mother_name: "",
-            contact_no: "",
-            emergency_contact_no: "",
-            email: "",
-            dob: "",
-            marital_status: "",
-            date_of_joining: "",
-            date_of_leaving: "",
-            local_address: "",
-            permanent_address: "",
-            note: "",
-            image: "",
-            password: "",
-            gender: "",
-            account_title: "",
-            bank_account_no: "",
-            bank_name: "",
-            ifsc_code: "",
-            bank_branch: "",
-            payscale: "",
-            basic_salary: "",
-            epf_no: "",
-            contract_type: "",
-            shift: "",
-            location: "",
-            facebook: "",
-            twitter: "",
-            linkedin: "",
-            instagram: "",
-            resume: "",
-            joining_letter: "",
-            resignation_letter: "",
-            other_document_name: "",
-            other_document_file: "",
-            user_id: "",
-            is_active: "",
-            verification_code: "",
-            disable_at: "",
-            role_id: "",
-            user_type: ""
+    employee_id: "",
+    lang_id: "",
+    department: "",
+    designation: "",
+    qualification: "",
+    work_exp: "",
+    name: "",
+    surname: "",
+    father_name: "",
+    mother_name: "",
+    contact_no: "",
+    emergency_contact_no: "",
+    email: "",
+    dob: "",
+    marital_status: "",
+    date_of_joining: "",
+    date_of_leaving: "",
+    local_address: "",
+    permanent_address: "",
+    note: "",
+    image: "",
+    password: "",
+    gender: "",
+    account_title: "",
+    bank_account_no: "",
+    bank_name: "",
+    ifsc_code: "",
+    bank_branch: "",
+    payscale: "",
+    basic_salary: "",
+    epf_no: "",
+    contract_type: "",
+    shift: "",
+    location: "",
+    facebook: "",
+    twitter: "",
+    linkedin: "",
+    instagram: "",
+    resume: "",
+    joining_letter: "",
+    resignation_letter: "",
+    other_document_name: "",
+    other_document_file: "",
+    user_id: "",
+    is_active: "",
+    verification_code: "",
+    disable_at: "",
+    role_id: "",
+    user_type: "",
   });
 
   useEffect(() => {
@@ -211,7 +209,10 @@ const StudentDetails = () => {
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Role</b>{" "}
-                <span className="text-aqua"> {formData.user_type || "N/A"}</span>
+                <span className="text-aqua">
+                  {" "}
+                  {formData.user_type || "N/A"}
+                </span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Designation</b>{" "}
@@ -224,7 +225,8 @@ const StudentDetails = () => {
                 <span className="text-aqua">{formData.department}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>EPF No</b> <span className="text-aqua">{formData.epf_no}</span>
+                <b>EPF No</b>{" "}
+                <span className="text-aqua">{formData.epf_no}</span>
               </li>
               <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                 <b>Basic Salary</b>{" "}
@@ -306,7 +308,7 @@ const StudentDetails = () => {
                           <tbody>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Phone
+                                Phone
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 col-md-5 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                 {formData.contact_no}
@@ -314,7 +316,7 @@ const StudentDetails = () => {
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Emergency Contact Number
+                                Emergency Contact Number
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                 {formData.emergency_contact_no}
@@ -330,7 +332,7 @@ const StudentDetails = () => {
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Gender
+                                Gender
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                 {formData.gender}
@@ -344,10 +346,10 @@ const StudentDetails = () => {
                                 {formData.dob}
                               </td>
                             </tr>
-                          
+
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Marital Status
+                                Marital Status
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                 {formData.marital_status}
@@ -355,7 +357,7 @@ const StudentDetails = () => {
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Father Name
+                                Father Name
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                 {formData.father_name}
@@ -363,38 +365,37 @@ const StudentDetails = () => {
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Mother Name
+                                Mother Name
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                 {formData.mother_name}
                               </td>
                             </tr>
-                           
+
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Qualification
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white" >
-                              {formData.qualification}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Work Experience
+                                Qualification
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              {formData.work_exp}
+                                {formData.qualification}
                               </td>
                             </tr>
                             <tr className="border-b border-stroke dark:border-strokedark">
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              Note
+                                Work Experience
                               </td>
                               <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                              {formData.note}
+                                {formData.work_exp}
                               </td>
                             </tr>
-                          
+                            <tr className="border-b border-stroke dark:border-strokedark">
+                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                Note
+                              </td>
+                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                {formData.note}
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -419,8 +420,8 @@ const StudentDetails = () => {
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                              Permanent Address
+                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                  Permanent Address
                                 </td>
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
                                   {formData.permanent_address}
@@ -436,7 +437,7 @@ const StudentDetails = () => {
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                       <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                         <h3 className="font-medium text-black dark:text-white">
-                        Bank Account Details
+                          Bank Account Details
                         </h3>
                       </div>
                       <div className="grid gap-5.5">
@@ -445,7 +446,7 @@ const StudentDetails = () => {
                             <tbody>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                               Account Title
+                                  Account Title
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.account_title}
@@ -453,7 +454,7 @@ const StudentDetails = () => {
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                Bank Name
+                                  Bank Name
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.bank_name}
@@ -461,7 +462,7 @@ const StudentDetails = () => {
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                Bank Branch Name
+                                  Bank Branch Name
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.bank_branch}
@@ -469,22 +470,21 @@ const StudentDetails = () => {
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                Bank Account Number
+                                  Bank Account Number
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.bank_account_no}
                                 </td>
                               </tr>
-                             
+
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                IFSC Code
+                                  IFSC Code
                                 </td>
                                 <td className="px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.ifsc_code}
                                 </td>
                               </tr>
-                             
                             </tbody>
                           </table>
                         </div>
@@ -494,7 +494,7 @@ const StudentDetails = () => {
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                       <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                         <h3 className="font-medium text-black dark:text-white">
-                        Social Media Link
+                          Social Media Link
                         </h3>
                       </div>
                       <div className="grid gap-5.5">
@@ -503,8 +503,7 @@ const StudentDetails = () => {
                             <tbody>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  
-Facebook URL
+                                  Facebook URL
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.facebook}
@@ -512,7 +511,7 @@ Facebook URL
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                Twitter URL
+                                  Twitter URL
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.twitter}
@@ -520,7 +519,7 @@ Facebook URL
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                Linkedin URL
+                                  Linkedin URL
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.linkedin}
@@ -528,13 +527,12 @@ Facebook URL
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
                                 <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                Instagram URL
+                                  Instagram URL
                                 </td>
                                 <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
                                   {formData.instagram}
                                 </td>
                               </tr>
-                             
                             </tbody>
                           </table>
                         </div>
@@ -546,373 +544,384 @@ Facebook URL
             )}
             {activeTab === "payroll" && (
               <div className="tab-content mx-auto max-w-screen-2xl">
+                <div className="mb-5 grid grid-cols-1 gap-6 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none sm:grid-cols-2 md:grid-cols-4">
+                  {/* Total Net Salary Paid */}
+                  <div className="flex flex-col items-center rounded-lg bg-white p-2 shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                    <h5 className="text-gray-600 text-sm">
+                      Total Net Salary Paid
+                    </h5>
+                    <h4 className="text-gray-900 text-xl font-semibold">
+                      ₹0.00
+                    </h4>
+                    <div className="mt-2 text-4xl text-green-500">
+                      <i className="fa fa-money"></i>
+                    </div>
+                  </div>
 
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-5 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-  {/* Total Net Salary Paid */}
-  <div className="flex flex-col items-center bg-white p-2 rounded-lg shadow-md dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-    <h5 className="text-sm text-gray-600">Total Net Salary Paid</h5>
-    <h4 className="text-xl font-semibold text-gray-900">₹0.00</h4>
-    <div className="mt-2 text-4xl text-green-500">
-      <i className="fa fa-money"></i>
-    </div>
-  </div>
+                  {/* Total Gross Salary */}
+                  <div className="flex flex-col items-center rounded-lg bg-white p-2 shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                    <h5 className="text-gray-600 text-sm">
+                      Total Gross Salary
+                    </h5>
+                    <h4 className="text-gray-900 text-xl font-semibold">
+                      ₹0.00
+                    </h4>
+                    <div className="mt-2 text-4xl text-blue-500">
+                      <i className="fa fa-money"></i>
+                    </div>
+                  </div>
 
-  {/* Total Gross Salary */}
-  <div className="flex flex-col items-center bg-white p-2 rounded-lg shadow-md dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-    <h5 className="text-sm text-gray-600">Total Gross Salary</h5>
-    <h4 className="text-xl font-semibold text-gray-900">₹0.00</h4>
-    <div className="mt-2 text-4xl text-blue-500">
-      <i className="fa fa-money"></i>
-    </div>
-  </div>
+                  {/* Total Earning */}
+                  <div className="flex flex-col items-center rounded-lg bg-white p-2 shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                    <h5 className="text-gray-600 text-sm">Total Earning</h5>
+                    <h4 className="text-gray-900 text-xl font-semibold">
+                      ₹0.00
+                    </h4>
+                    <div className="mt-2 text-4xl text-yellow-500">
+                      <i className="fa fa-money"></i>
+                    </div>
+                  </div>
 
-  {/* Total Earning */}
-  <div className="flex flex-col items-center bg-white p-2 rounded-lg shadow-md dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-    <h5 className="text-sm text-gray-600">Total Earning</h5>
-    <h4 className="text-xl font-semibold text-gray-900">₹0.00</h4>
-    <div className="mt-2 text-4xl text-yellow-500">
-      <i className="fa fa-money"></i>
-    </div>
-  </div>
-
-  {/* Total Deduction */}
-  <div className="flex flex-col items-center bg-white p-2 rounded-lg shadow-md dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-    <h5 className="text-sm text-gray-600">Total Deduction</h5>
-    <h4 className="text-xl font-semibold text-gray-900">₹0.00</h4>
-    <div className="mt-2 text-4xl text-red-500">
-      <i className="fa fa-money"></i>
-    </div>
-  </div>
-</div>
+                  {/* Total Deduction */}
+                  <div className="flex flex-col items-center rounded-lg bg-white p-2 shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                    <h5 className="text-gray-600 text-sm">Total Deduction</h5>
+                    <h4 className="text-gray-900 text-xl font-semibold">
+                      ₹0.00
+                    </h4>
+                    <div className="text-red-500 mt-2 text-4xl">
+                      <i className="fa fa-money"></i>
+                    </div>
+                  </div>
+                </div>
 
                 <div
                   className="tab-pane active flex flex-col gap-9"
                   id="activity"
                 >
-                
-                    <div className="grid gap-5.5">
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
-                          <thead>
-                            <tr className="bg-gray-100 text-left">
-                              {[
-                                "Payslip #",
-                                "Month - Year",
-                                "Date",
-                                "Mode",
-                                "Status",
-                                "Net Salary",
-                                "Action",
-                               
-                              ].map((header) => (
-                                <th
-                                  key={header}
-                                  className="border-b border-stroke px-4 py-2 text-sm font-medium text-black dark:text-white"
-                                >
-                                  {header}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr className="border-b border-stroke">
-                              <td className="px-4 py-2">
-                                Class 3 - I Installment
-                              </td>
-                              <td className="px-4 py-2">
-                                at the time of Admission
-                              </td>
-                              <td className="px-4 py-2">30-06-2024</td>
-                              <td className="px-4 py-2">
-                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
-                                  Unpaid
-                                </span>
-                              </td>
-                              <td className="px-4 py-2 text-right">
-                                10000.00{" "}
-                                <span className="text-red-600">+ 0.00</span>
-                              </td>
-                            
-                              <td className="px-4 py-2 text-right">10000.00</td>
-                            </tr>
-                            {/* Additional rows */}
-                            <tr className="border-b border-stroke">
-                              <td className="px-4 py-2">
-                                Class 3 - I Installment
-                              </td>
-                              <td className="px-4 py-2">
-                                at the time of Admission
-                              </td>
-                              <td className="px-4 py-2">30-06-2024</td>
-                              <td className="px-4 py-2">
-                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
-                                  Unpaid
-                                </span>
-                              </td>
-                              <td className="px-4 py-2 text-right">
-                                10000.00{" "}
-                                <span className="text-red-600">+ 0.00</span>
-                              </td>
-                            
-                              <td className="px-4 py-2 text-right">10000.00</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                  <div className="grid gap-5.5">
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
+                        <thead>
+                          <tr className="bg-gray-100 text-left">
+                            {[
+                              "Payslip #",
+                              "Month - Year",
+                              "Date",
+                              "Mode",
+                              "Status",
+                              "Net Salary",
+                              "Action",
+                            ].map((header) => (
+                              <th
+                                key={header}
+                                className="border-b border-stroke px-4 py-2 text-sm font-medium text-black dark:text-white"
+                              >
+                                {header}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-stroke">
+                            <td className="px-4 py-2">
+                              Class 3 - I Installment
+                            </td>
+                            <td className="px-4 py-2">
+                              at the time of Admission
+                            </td>
+                            <td className="px-4 py-2">30-06-2024</td>
+                            <td className="px-4 py-2">
+                              <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
+                                Unpaid
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                              10000.00{" "}
+                              <span className="text-red-600">+ 0.00</span>
+                            </td>
+
+                            <td className="px-4 py-2 text-right">10000.00</td>
+                          </tr>
+                          {/* Additional rows */}
+                          <tr className="border-b border-stroke">
+                            <td className="px-4 py-2">
+                              Class 3 - I Installment
+                            </td>
+                            <td className="px-4 py-2">
+                              at the time of Admission
+                            </td>
+                            <td className="px-4 py-2">30-06-2024</td>
+                            <td className="px-4 py-2">
+                              <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
+                                Unpaid
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                              10000.00{" "}
+                              <span className="text-red-600">+ 0.00</span>
+                            </td>
+
+                            <td className="px-4 py-2 text-right">10000.00</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
-                
+                  </div>
                 </div>
               </div>
             )}
-           {activeTab === "leaves" && (
+            {activeTab === "leaves" && (
               <div className="tab-content mx-auto max-w-screen-2xl">
                 <div
                   className="tab-pane active flex flex-col gap-9"
                   id="activity"
                 >
-                
-                    <div className="grid gap-5.5">
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
-                          <thead>
-                            <tr className="bg-gray-100 text-left">
-                              {[
-                                "Leave Type",
-                                "Leave Date",
-                                "Date",
-                                "Apply Date",
-                                "Status",
-                                "Action",
-                               
-                               
-                              ].map((header) => (
-                                <th
-                                  key={header}
-                                  className="border-b border-stroke px-4 py-2 text-sm font-medium text-black dark:text-white"
-                                >
-                                  {header}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr className="border-b border-stroke">
-                              <td className="px-4 py-2">
-                                Class 3 - I Installment
-                              </td>
-                              <td className="px-4 py-2">
-                                at the time of Admission
-                              </td>
-                              <td className="px-4 py-2">30-06-2024</td>
-                              <td className="px-4 py-2">
-                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
-                                  Unpaid
-                                </span>
-                              </td>
-                              <td className="px-4 py-2 text-right">
-                                10000.00{" "}
-                                <span className="text-red-600">+ 0.00</span>
-                              </td>
-                            
-                              <td className="px-4 py-2 text-right">10000.00</td>
-                            </tr>
-                            {/* Additional rows */}
-                            <tr className="border-b border-stroke">
-                              <td className="px-4 py-2">
-                                Class 3 - I Installment
-                              </td>
-                              <td className="px-4 py-2">
-                                at the time of Admission
-                              </td>
-                              <td className="px-4 py-2">30-06-2024</td>
-                              <td className="px-4 py-2">
-                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
-                                  Unpaid
-                                </span>
-                              </td>
-                              <td className="px-4 py-2 text-right">
-                                10000.00{" "}
-                                <span className="text-red-600">+ 0.00</span>
-                              </td>
-                            
-                              <td className="px-4 py-2 text-right">10000.00</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                  <div className="grid gap-5.5">
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
+                        <thead>
+                          <tr className="bg-gray-100 text-left">
+                            {[
+                              "Leave Type",
+                              "Leave Date",
+                              "Date",
+                              "Apply Date",
+                              "Status",
+                              "Action",
+                            ].map((header) => (
+                              <th
+                                key={header}
+                                className="border-b border-stroke px-4 py-2 text-sm font-medium text-black dark:text-white"
+                              >
+                                {header}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-stroke">
+                            <td className="px-4 py-2">
+                              Class 3 - I Installment
+                            </td>
+                            <td className="px-4 py-2">
+                              at the time of Admission
+                            </td>
+                            <td className="px-4 py-2">30-06-2024</td>
+                            <td className="px-4 py-2">
+                              <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
+                                Unpaid
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                              10000.00{" "}
+                              <span className="text-red-600">+ 0.00</span>
+                            </td>
+
+                            <td className="px-4 py-2 text-right">10000.00</td>
+                          </tr>
+                          {/* Additional rows */}
+                          <tr className="border-b border-stroke">
+                            <td className="px-4 py-2">
+                              Class 3 - I Installment
+                            </td>
+                            <td className="px-4 py-2">
+                              at the time of Admission
+                            </td>
+                            <td className="px-4 py-2">30-06-2024</td>
+                            <td className="px-4 py-2">
+                              <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
+                                Unpaid
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                              10000.00{" "}
+                              <span className="text-red-600">+ 0.00</span>
+                            </td>
+
+                            <td className="px-4 py-2 text-right">10000.00</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
-                
+                  </div>
                 </div>
               </div>
             )}
 
-{activeTab === "attendance" && (
+            {activeTab === "attendance" && (
               <div className="tab-content mx-auto max-w-screen-2xl">
-                <div className="tab-pane active flex flex-col gap-9" id="activity">
-               
-                
-                <div className="flex flex-wrap">
-    <div className="w-full sm:w-1/2 lg:w-1/4 p-2 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-        <div className="bg-white shadow-lg rounded-lg p-4 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-            <div className="flex justify-between items-center dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-                <div>
-                    <h5 className="text-gray-500">Total Present</h5>
-                    <h4 className="text-2xl font-bold text-gray-800">0</h4>
-                </div>
-                <div className="icon">
-                    <i className="fa fa-check-square-o text-green-500 text-3xl"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div className="w-full sm:w-1/2 lg:w-1/4 p-2 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-        <div className="bg-white shadow-lg rounded-lg p-4 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-            <div className="flex justify-between items-center dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-                <div>
-                    <h5 className="text-gray-500">Total Late</h5>
-                    <h4 className="text-2xl font-bold text-gray-800">0</h4>
-                </div>
-                <div className="icon">
-                    <i className="fa fa-check-square-o text-yellow-500 text-3xl"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div className="w-full sm:w-1/2 lg:w-1/4 p-2 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-        <div className="bg-white shadow-lg rounded-lg p-4 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-            <div className="flex justify-between items-center dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-                <div>
-                    <h5 className="text-gray-500">Total Absent</h5>
-                    <h4 className="text-2xl font-bold text-gray-800">0</h4>
-                </div>
-                <div className="icon">
-                    <i className="fa fa-check-square-o text-red-500 text-3xl"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div className="w-full sm:w-1/2 lg:w-1/4 p-2 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-        <div className="bg-white shadow-lg rounded-lg p-4 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-            <div className="flex justify-between items-center dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-                <div>
-                    <h5 className="text-gray-500">Total Half Day</h5>
-                    <h4 className="text-2xl font-bold text-gray-800">0</h4>
-                </div>
-                <div className="icon">
-                    <i className="fa fa-check-square-o text-orange-500 text-3xl"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div className="w-full sm:w-1/2 lg:w-1/4 p-2 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-        <div className="bg-white shadow-lg rounded-lg p-4 dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-            <div className="flex justify-between items-center dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-                <div>
-                    <h5 className="text-gray-500">Total Holiday</h5>
-                    <h4 className="text-2xl font-bold text-gray-800">0</h4>
-                </div>
-                <div className="icon">
-                    <i className="fa fa-check-square-o text-blue-500 text-3xl"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>  
-
-                    <div className="grid gap-5.5">
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
-                          <thead>
-                            <tr className="bg-gray-100 text-left">
-                              {[
-                                "Date | Month",
-                                "January",
-                                "February",
-                                "March",
-                                "April",
-                                "May",
-                                "June",
-                                "July",
-                                "August",
-                                "September",
-                                "October",
-                                "November",
-                                "December",
-                               
-                               
-                              ].map((header) => (
-                                <th
-                                  key={header}
-                                  className="border-b border-stroke px-4 py-2 text-sm font-medium text-black dark:text-white"
-                                >
-                                  {header}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr className="border-b border-stroke">
-                              <td className="px-4 py-2">
-                                Class 3 - I Installment
-                              </td>
-                              <td className="px-4 py-2">
-                                at the time of Admission
-                              </td>
-                              <td className="px-4 py-2">30-06-2024</td>
-                              <td className="px-4 py-2">
-                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
-                                  Unpaid
-                                </span>
-                              </td>
-                              <td className="px-4 py-2 text-right">
-                                10000.00{" "}
-                                <span className="text-red-600">+ 0.00</span>
-                              </td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">10000.00</td>
-                            </tr>
-                            {/* Additional rows */}
-                            <tr className="border-b border-stroke">
-                              <td className="px-4 py-2">
-                                Class 3 - I Installment
-                              </td>
-                              <td className="px-4 py-2">
-                                at the time of Admission
-                              </td>
-                              <td className="px-4 py-2">30-06-2024</td>
-                              <td className="px-4 py-2">
-                                <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
-                                  Unpaid
-                                </span>
-                              </td>
-                              <td className="px-4 py-2 text-right">
-                                10000.00{" "}
-                                <span className="text-red-600">+ 0.00</span>
-                              </td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">00</td>
-                              <td className="px-4 py-2 text-right">10000.00</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                <div
+                  className="tab-pane active flex flex-col gap-9"
+                  id="activity"
+                >
+                  <div className="flex flex-wrap">
+                    <div className="w-full p-2 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none sm:w-1/2 lg:w-1/4">
+                      <div className="rounded-lg bg-white p-4 shadow-lg dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                        <div className="flex items-center justify-between dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                          <div>
+                            <h5 className="text-gray-500">Total Present</h5>
+                            <h4 className="text-gray-800 text-2xl font-bold">
+                              0
+                            </h4>
+                          </div>
+                          <div className="icon">
+                            <i className="fa fa-check-square-o text-3xl text-green-500"></i>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                
+                    <div className="w-full p-2 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none sm:w-1/2 lg:w-1/4">
+                      <div className="rounded-lg bg-white p-4 shadow-lg dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                        <div className="flex items-center justify-between dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                          <div>
+                            <h5 className="text-gray-500">Total Late</h5>
+                            <h4 className="text-gray-800 text-2xl font-bold">
+                              0
+                            </h4>
+                          </div>
+                          <div className="icon">
+                            <i className="fa fa-check-square-o text-3xl text-yellow-500"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full p-2 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none sm:w-1/2 lg:w-1/4">
+                      <div className="rounded-lg bg-white p-4 shadow-lg dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                        <div className="flex items-center justify-between dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                          <div>
+                            <h5 className="text-gray-500">Total Absent</h5>
+                            <h4 className="text-gray-800 text-2xl font-bold">
+                              0
+                            </h4>
+                          </div>
+                          <div className="icon">
+                            <i className="fa fa-check-square-o text-red-500 text-3xl"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full p-2 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none sm:w-1/2 lg:w-1/4">
+                      <div className="rounded-lg bg-white p-4 shadow-lg dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                        <div className="flex items-center justify-between dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                          <div>
+                            <h5 className="text-gray-500">Total Half Day</h5>
+                            <h4 className="text-gray-800 text-2xl font-bold">
+                              0
+                            </h4>
+                          </div>
+                          <div className="icon">
+                            <i className="fa fa-check-square-o text-3xl text-orange-500"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full p-2 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none sm:w-1/2 lg:w-1/4">
+                      <div className="rounded-lg bg-white p-4 shadow-lg dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                        <div className="flex items-center justify-between dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                          <div>
+                            <h5 className="text-gray-500">Total Holiday</h5>
+                            <h4 className="text-gray-800 text-2xl font-bold">
+                              0
+                            </h4>
+                          </div>
+                          <div className="icon">
+                            <i className="fa fa-check-square-o text-3xl text-blue-500"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-5.5">
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full border-separate border-spacing-0 bg-white dark:bg-boxdark dark:drop-shadow-none">
+                        <thead>
+                          <tr className="bg-gray-100 text-left">
+                            {[
+                              "Date | Month",
+                              "January",
+                              "February",
+                              "March",
+                              "April",
+                              "May",
+                              "June",
+                              "July",
+                              "August",
+                              "September",
+                              "October",
+                              "November",
+                              "December",
+                            ].map((header) => (
+                              <th
+                                key={header}
+                                className="border-b border-stroke px-4 py-2 text-sm font-medium text-black dark:text-white"
+                              >
+                                {header}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-stroke">
+                            <td className="px-4 py-2">
+                              Class 3 - I Installment
+                            </td>
+                            <td className="px-4 py-2">
+                              at the time of Admission
+                            </td>
+                            <td className="px-4 py-2">30-06-2024</td>
+                            <td className="px-4 py-2">
+                              <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
+                                Unpaid
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                              10000.00{" "}
+                              <span className="text-red-600">+ 0.00</span>
+                            </td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">10000.00</td>
+                          </tr>
+                          {/* Additional rows */}
+                          <tr className="border-b border-stroke">
+                            <td className="px-4 py-2">
+                              Class 3 - I Installment
+                            </td>
+                            <td className="px-4 py-2">
+                              at the time of Admission
+                            </td>
+                            <td className="px-4 py-2">30-06-2024</td>
+                            <td className="px-4 py-2">
+                              <span className="bg-red-200 text-red-800 rounded-full px-2 py-1">
+                                Unpaid
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 text-right">
+                              10000.00{" "}
+                              <span className="text-red-600">+ 0.00</span>
+                            </td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">00</td>
+                            <td className="px-4 py-2 text-right">10000.00</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
-
 
             {activeTab === "documents" && (
               <div>
@@ -1052,17 +1061,15 @@ Facebook URL
                   />
                 </div>
                 <div className="mb-4">
-              
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Document
-              </label>
-              <input
-                type="file"
-                accept="image/*,video/*"
-                name="image"
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Document
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*,video/*"
+                    name="image"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
                 </div>
                 <div className="flex justify-end">
                   <button
@@ -1140,16 +1147,16 @@ Facebook URL
                     />
                   </div>
                   <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Document
-              </label>
-              <input
-                type="file"
-                accept="image/*,video/*"
-                name="image"
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Document
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*,video/*"
+                      name="image"
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
                 </div>
 
                 <div className="mt-4 flex justify-end">
