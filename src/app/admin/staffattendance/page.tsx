@@ -28,6 +28,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Span } from "next/dist/trace";
+import { fetchRoleData } from "@/services/roleService";
 const columns = [
   "#",
   "Staff ID",
@@ -123,6 +124,8 @@ const StudentDetails = () => {
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
+  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
+
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -161,6 +164,10 @@ const StudentDetails = () => {
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
+
+      const roleresult = await fetchRoleData();
+      setRoleData(roleresult.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -226,11 +233,12 @@ const StudentDetails = () => {
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
-              <option value="Class1">Admin</option>
-              <option value="Class2">Teacher</option>
-              <option value="Class2">Accountant</option>
-              <option value="Class2">Librarian</option>
-          
+
+              {roledata.map((cls: any) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
             </select>
           </label>
 
