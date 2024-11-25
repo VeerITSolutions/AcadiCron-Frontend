@@ -293,7 +293,6 @@ const User = () => {
                 onChange={handleInputChange}
               >
                 <option value="">Select</option>
-
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>

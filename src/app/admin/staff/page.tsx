@@ -691,8 +691,7 @@ const StudentDetails = () => {
                   data={data}
                   columns={columns}
                   options={{
-                    selectableRows: "none", // Disable row selection
-
+                    ...options,
                     count: totalCount,
                     page: page,
                     rowsPerPage: rowsPerPage,

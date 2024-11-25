@@ -28,14 +28,20 @@ export const fetchStaffSingleData = async (id: string) => {
 };
 
 
-export const createStaff = async (house_name: string, description: string): Promise<any> => {
-  try {
-    const response = await apiClient.post("/staff", { house_name, description });
-    return response.data;
-  } catch (error) {
-    console.error("An error occurred", error);
-    throw new Error("Failed to create student house");
-  }
+// export const createStaff = async (house_name: string, description: string): Promise<any> => {
+//   try {
+//     const response = await apiClient.post("/staff", { house_name, description });
+//     return response.data;
+//   } catch (error) {
+//     console.error("An error occurred", error);
+//     throw new Error("Failed to create student house");
+//   }
+// };
+
+export const createStaff = async ( data : any) => {
+
+  const response = await apiClient.post(`/staff`, data);
+  return response.data;
 };
 
 

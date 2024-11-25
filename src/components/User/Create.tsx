@@ -6,7 +6,7 @@ import {
 } from "@/services/sectionsService";
 import { getClasses } from "@/services/classesService";
 import styles from "./User.module.css";
-import { createStudent } from "@/services/studentService";
+import { createStaff } from "@/services/staffService";
 import { toast } from "react-toastify";
 import UploadIcon from '@mui/icons-material/Upload';
 
@@ -27,74 +27,55 @@ const User = () => {
   const [savedSessionstate, setSavedSession] = useState("");
   // State to hold all form inputs as a single object
   const [formData, setFormData] = useState<Record<string, any>>({
-    parent_id: "",
-    admission_no: "",
-    roll_no: "",
-    admission_date: "",
-    firstname: "",
-    middlename: "",
-    lastname: "",
-    rte: "",
-    image: "",
-    mobileno: "",
+    employee_id: "",
+    lang_id: "",
+    department: "",
+    designation: "",
+    qualification: "",
+    work_exp: "",
+    name: "",
+    surname: "",
+    father_name: "",
+    mother_name: "",
+    contact_no: "",
+    emergency_contact_no: "",
     email: "",
-    state: "",
-    city: "",
-    pincode: "",
-    religion: "",
-    cast: "",
     dob: "",
-    gender: "",
-    current_address: "",
+    marital_status: "",
+    date_of_joining: "",
+    date_of_leaving: "",
+    local_address: "",
     permanent_address: "",
-    category_id: "",
-
-    route_id: 0,
-    school_house_id: 0,
-    blood_group: "",
-    vehroute_id: 0,
-    hostel_room_id: 0,
-    adhar_no: "",
-    samagra_id: "",
+    note: "",
+    image: "",
+    password: "",
+    gender: "",
+    account_title: "",
     bank_account_no: "",
     bank_name: "",
     ifsc_code: "",
-    guardian_is: "",
-    father_name: "",
-    father_phone: "",
-    father_occupation: "",
-    mother_name: "",
-    mother_phone: "",
-    mother_occupation: "",
-    guardian_name: "",
-    guardian_relation: "",
-    guardian_phone: "",
-    guardian_occupation: "",
-    guardian_address: "",
-    guardian_email: "",
-    father_pic: "",
-    mother_pic: "",
-    guardian_pic: "",
+    bank_branch: "",
+    payscale: "",
+    basic_salary: "",
+    epf_no: "",
+    contract_type: "",
+    shift: "",
+    location: "",
+    facebook: "",
+    twitter: "",
+    linkedin: "",
+    instagram: "",
+    resume: "",
+    joining_letter: "",
+    resignation_letter: "",
+    other_document_name: "",
+    other_document_file: "",
+    user_id: "",
     is_active: "",
-    previous_school: "",
-    height: "",
-    weight: "",
-    measurement_date: "",
-    dis_reason: "",
-    note: "",
-    dis_note: "",
-    app_key: "",
-    parent_app_key: "",
+    verification_code: "",
     disable_at: "",
-
-    section_id: "",
-
-    first_title: "",
-    first_doc: "",
-    second_title: "",
-    third_title: "",
-    fourth_title: "",
-    // Add other initial fields as needed
+    role_id: "",
+    user_type: ""
   });
   const router = useRouter();
   const fetchClassesAndSections = async () => {
@@ -156,7 +137,7 @@ const User = () => {
         section_id: selectedSection,
       };
 
-      const response = await createStudent(data);
+      const response = await createStaff(data);
 
       if (response.status == 200) {
         toast.success("Added successful");
@@ -207,7 +188,9 @@ const User = () => {
               </label>
               <input
                 type="text"
-                name="staff_id"
+                name="employee_id"
+                value={formData.employee_id}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -216,7 +199,9 @@ const User = () => {
               Role <span className="required">*</span>
               </label>
               <select
-                name="class_id" 
+                name="user_type"
+                value={formData.user_type}
+                onChange={handleInputChange} 
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                 <option value="">Select</option>
                 <option value="">Admin</option>
@@ -231,7 +216,9 @@ const User = () => {
               Designation
               </label>
               <select
-                name="section_id"
+                name="designation"
+                value={formData.designation}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -250,7 +237,9 @@ const User = () => {
               Department
               </label>
               <select
-                name="section_id"
+                name="department"
+                value={formData.department}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -264,10 +253,11 @@ const User = () => {
                 First Name <span className="required">*</span>
               </label>
               <input
-                id="firstname"
-                name="firstname"
-                placeholder=""
+                id="name"
+                name="name"
                 type="text"
+                value={formData.name}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -276,9 +266,10 @@ const User = () => {
                 Last Name 
               </label>
               <input
-                id="lastname"
-                name="lastname"
-                placeholder=""
+                id="surname"
+                name="surname"
+                value={formData.surname}
+                onChange={handleInputChange}
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -288,8 +279,10 @@ const User = () => {
                Father Name
               </label>
               <input
-                id="fathername"
-                name="fathername"
+                id="father_name"
+                name="father_name"
+                value={formData.father_name}
+                onChange={handleInputChange}
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -299,9 +292,11 @@ const User = () => {
               Mother Name
               </label>
               <input
-                id="mothername"
-                name="mothername"
+                id="mother_name"
+                name="mother_name"
                 type="text"
+                value={formData.mother_name}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -314,6 +309,8 @@ const User = () => {
                 id="email"
                 name="email"
                 type="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -324,6 +321,8 @@ const User = () => {
               </label>
               <select
                 name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -350,9 +349,11 @@ const User = () => {
               Date Of Joining
               </label>
               <input
-                id="joining"
-                name="joining"
+                id="date_of_joining"
+                name="date_of_joining"
                 type="date"
+                value={formData.date_of_joining}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -361,9 +362,11 @@ const User = () => {
                  Phone
               </label>
               <input
-                id="phone"
-                name="phone"
+                id="contact_no"
+                name="contact_no"
                 type="text"
+                value={formData.contact_no}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -372,9 +375,11 @@ const User = () => {
 Emergency Contact Number
               </label>
               <input
-                id="phone"
-                name="phone"
+                id="emergency_contact_no"
+                name="emergency_contact_no"
                 type="text"
+                value={formData.emergency_contact_no}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -384,7 +389,9 @@ Emergency Contact Number
               Marital Status
               </label>
               <select
-                name="gender"
+                name="marital_status"
+                value={formData.marital_status}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -402,8 +409,9 @@ Emergency Contact Number
               </label>
               <input
                 type="file"
-                accept="image/*,video/*"
+                accept="image/*"
                 name="image"
+                onChange={handleFileChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -414,9 +422,11 @@ Emergency Contact Number
               Current Address
               </label>
               <input
-                id="currentaddress"
-                name="currentaddress"
+                id="local_address"
+                name="local_address"
                 type="text"
+                value={formData.local_address}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -425,9 +435,11 @@ Emergency Contact Number
               Permanent Address
               </label>
               <input
-                id="permanentaddress"
-                name="permanentaddress"
+                id="permanent_address"
+                name="permanent_address"
                 type="text"
+                value={formData.permanent_address}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -438,6 +450,8 @@ Emergency Contact Number
               <input
                 id="qualification"
                 name="qualification"
+                value={formData.qualification}
+                onChange={handleInputChange}
                 type="text"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
@@ -447,9 +461,11 @@ Emergency Contact Number
                 Work Experience
               </label>
               <input
-                id="work-experience"
-                name="work-experience"
+                id="work_exp"
+                name="work_exp"
                 type="text"
+                value={formData.work_exp}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -461,6 +477,8 @@ Emergency Contact Number
                 id="note"
                 name="note"
                 type="text"
+                value={formData.note}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -477,9 +495,11 @@ Emergency Contact Number
         EPF No
       </label>
       <input
-        id="epfno"
-        name="epfno"
+        id="epf_no"
+        name="epf_no"
         type="text"
+        value={formData.epf_no}
+                onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -491,6 +511,8 @@ Emergency Contact Number
         id="basic_salary"
         name="basic_salary"
         type="text"
+        value={formData.basic_salary}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -499,7 +521,9 @@ Emergency Contact Number
         Contract Type
       </label>
       <select
-        name="contract-type"
+        name="contract_type"
+        value={formData.contract_type}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       >
         <option value="">Select</option>
@@ -512,9 +536,11 @@ Emergency Contact Number
         Work Shift
       </label>
       <input
-        id="work-shift"
+        id="shift"
         name="shift"
         type="text"
+        value={formData.shift}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -526,6 +552,8 @@ Emergency Contact Number
         id="location"
         name="location"
         type="text"
+        value={formData.location}
+        onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -599,9 +627,11 @@ Emergency Contact Number
         Account Title
         </label>
         <input
-          id="account-title"
-          name="account-title"
+          id="account_title"
+          name="account_title"
           type="text"
+          value={formData.account_title}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -611,9 +641,11 @@ Emergency Contact Number
 Bank Account Number
         </label>
         <input
-          id="account-number"
-          name="account-number"
+          id="bank_account_no"
+          name="bank_account_no"
           type="text"
+          value={formData.bank_account_no}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -623,9 +655,11 @@ Bank Account Number
        Bank Name
         </label>
         <input
-          id="bank-name"
-          name="bank-name"
+          id="bank_name"
+          name="bank_name"
           type="text"
+          value={formData.bank_name}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -634,9 +668,11 @@ Bank Account Number
         IFSC Code
         </label>
         <input
-          id="ifsc-code"
-          name="ifsc-code"
+          id="ifsc_code"
+          name="ifsc_code"
           type="text"
+          value={formData.ifsc_code}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -645,9 +681,11 @@ Bank Account Number
        Bank Branch Name
         </label>
         <input
-          id="branch-name"
-          name="branch-name"
+          id="bank_branch"
+          name="bank_branch"
           type="text"
+          value={formData.bank_branch}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -669,9 +707,11 @@ Bank Account Number
           Facebook URL
         </label>
         <input
-          id="facebook-url"
-          name="facebook-url"
+          id="facebook"
+          name="facebook"
           type="text"
+          value={formData.facebook}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -681,9 +721,11 @@ Bank Account Number
           Twitter URL
         </label>
         <input
-          id="twitter-url"
-          name="twitter-url"
+          id="twitter"
+          name="twitter"
           type="text"
+          value={formData.twitter}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -693,9 +735,11 @@ Bank Account Number
           LinkedIn URL
         </label>
         <input
-          id="linkedin-url"
-          name="linkedin-url"
+          id="linkedin"
+          name="linkedin"
           type="text"
+          value={formData.linkedin}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -705,9 +749,11 @@ Bank Account Number
           Instagram URL
         </label>
         <input
-          id="instagram-url"
-          name="instagram-url"
+          id="instagram"
+          name="instagram"
           type="text"
+          value={formData.instagram}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -729,8 +775,9 @@ Bank Account Number
       </label>
       <input
         type="file"
-        accept="image/*,video/*"
+        accept="image/*"
         name="resume"
+        onChange={handleFileChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -740,8 +787,9 @@ Bank Account Number
       </label>
       <input
         type="file"
-        accept="image/*,video/*"
-        name="joining-letter"
+        accept="image/*"
+        name="joining_letter"
+        onChange={handleFileChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
@@ -751,8 +799,9 @@ Bank Account Number
       </label>
       <input
         type="file"
-        accept="image/*,video/*"
-        name="other-documents"
+        accept="image/*"
+        name="other_document_file"
+        onChange={handleFileChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
     </div>
