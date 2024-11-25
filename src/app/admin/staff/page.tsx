@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
+import { fetchStaffData } from "@/services/staffService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import { ThemeProvider } from "@mui/material/styles";
@@ -69,11 +69,23 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      student.employee_id,
+      `${student.name.trim()} ${student.surname.trim()}`,
+      student.user_type || "N/A",
+      student.department || "N/A",
+      student.designation || "N/A",
+      student.contact_no,
+      <div key={student.id}>
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleAddFees(student.id)}
+          aria-label="Add Fee"
+        >
+          <AttachMoney />
+        </IconButton>
+      </div>,
     ]);
   };
 
@@ -85,7 +97,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
+      const result = await fetchStaffData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
@@ -102,16 +114,13 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
+
 
   const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
+    router.push(`/admin/staff/edit/${id}`);
   };
   const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
+    router.push(`/admin/staff/profile/${id}`);
   };
 
   useEffect(() => {
