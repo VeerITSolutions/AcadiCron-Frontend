@@ -62,6 +62,9 @@ const StudentDetails = () => {
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
+  const [selectedRole, setSelectedRole] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -94,7 +97,7 @@ const StudentDetails = () => {
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
-    selectedClass?: string,
+    selectedRole?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
@@ -102,7 +105,7 @@ const StudentDetails = () => {
       const result = await fetchStaffData(
         currentPage + 1,
         rowsPerPage,
-        selectedClass,
+        selectedRole,
         selectedSection,
         keyword,
         localStorage.getItem("selectedSessionId"),
@@ -128,8 +131,8 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage, selectedRole, selectedSection, keyword);
+  }, [page, rowsPerPage, selectedRole, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -140,9 +143,9 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(event.target.value);
+    console.log("selectedRole", selectedRole);
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -169,8 +172,8 @@ const StudentDetails = () => {
           <label className={styles.label}>
             Role:
             <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
+              value={selectedRole || ""}
+              onChange={handleRoleChange}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
