@@ -1,18 +1,25 @@
 import apiClient from "./apiClient";
 
-export const fetchStaffData = async (page?: number, perPage?: number) => {
-  const response = await apiClient.get(`/staff`, {
+export const fetchStaffData = async (page: number, perPage: number,selectedClass :any,
+  selectedSection :any,
+  keyword:any, selectedSessionId?:any) => {
+  const response = await apiClient.get(`/staff-by-role`, {
     params: {
       page,
       perPage,
+      selectedClass,
+      selectedSection,
+      keyword,
+      selectedSessionId
     },
   });
   return response.data;
 };
 
 
+
 export const fetchStaffSingleData = async (id: string) => {
-  const response = await apiClient.get(`/admin/dtstafflist`, {
+  const response = await apiClient.get(`/staff-by-role`, {
     params: {
       id
     },
