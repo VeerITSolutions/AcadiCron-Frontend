@@ -75,6 +75,7 @@ const StudentDetails = () => {
   const [dataTimeline, setDataTimeline] = useState<any>(null);
   const [dataDocument, setDataDocument] = useState<any>(null);
   const [dataexamresult, setDataExamResult] = useState<any>(null);
+  const [getId, setgetId] = useState<any>(null);
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -82,97 +83,6 @@ const StudentDetails = () => {
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
   };
-  let getId = window.location.pathname.split("/").pop();
-  const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
-    {
-      id: getId,
-      title: "",
-      timeline_date: "",
-      description: "",
-      document: "",
-      status: "",
-      date: "",
-    },
-  );
-
-  const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
-    id: getId,
-    title: "",
-    doc: "",
-  });
-
-  const [formData, setFormData] = useState<Record<string, any>>({
-    class_name: "",
-    section_name: "",
-    parent_id: "",
-    admission_no: "",
-    roll_no: "",
-    admission_date: "",
-    firstname: "",
-    middlename: "",
-    lastname: "",
-    rte: "",
-    image: "",
-    mobileno: "",
-    email: "",
-    state: "",
-    city: "",
-    pincode: "",
-    religion: "",
-    cast: "",
-    dob: "",
-    gender: "",
-    current_address: "",
-    permanent_address: "",
-    category_id: "",
-    route_id: "",
-    school_house_id: "",
-    blood_group: "",
-    vehroute_id: "",
-    hostel_room_id: "",
-    adhar_no: "",
-    samagra_id: "",
-    bank_account_no: "",
-    bank_name: "",
-    ifsc_code: "",
-    guardian_is: "",
-    father_name: "",
-    father_phone: "",
-    father_occupation: "",
-    mother_name: "",
-    mother_phone: "",
-    mother_occupation: "",
-    guardian_name: "",
-    guardian_relation: "",
-    guardian_phone: "",
-    guardian_occupation: "",
-    guardian_address: "",
-    guardian_email: "",
-    father_pic: "",
-    mother_pic: "",
-    guardian_pic: "",
-    is_active: "",
-    previous_school: "",
-    height: "",
-    weight: "",
-    measurement_date: "",
-    dis_reason: "",
-    note: "",
-    dis_note: "",
-    app_key: "",
-    parent_app_key: "",
-    disable_at: "",
-    section_id: "",
-    notes: "",
-    first_title: "",
-    first_doc: "",
-    second_title: "",
-    third_title: "",
-    fourth_title: "",
-    category_name: "",
-    // Add other initial fields as needed
-  });
-  const [feeData, setFeeData] = useState<any>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
@@ -333,6 +243,7 @@ const StudentDetails = () => {
             const getdataexamresult = await fetchStudentexamData(id);
 
             setDataTimeline(datatimeline.data);
+            setgetId(data.data.id);
             setDataDocument(datadocument.data);
             setDataExamResult(getdataexamresult.data);
             console.log("dataexamresult", dataexamresult);
@@ -420,6 +331,109 @@ const StudentDetails = () => {
   }, []);
   let defaultImage = "/images/user/default_male.jpg";
 
+  useEffect(() => {
+    if (getId) {
+      setFormDataDoc((prev) => ({
+        ...prev,
+        id: getId, // Dynamically update `id` in `formDataDoc`
+      }));
+
+      setFormDataTimeline((prevData) => ({
+        ...prevData,
+        id: getId, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  }, [getId]); // Runs whenever `getId` changes
+  const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
+    {
+      id: getId,
+      title: "",
+      timeline_date: "",
+      description: "",
+      document: "",
+      status: "",
+      date: "",
+    },
+  );
+
+  const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
+    id: getId,
+    title: "",
+    doc: "",
+  });
+
+  const [formData, setFormData] = useState<Record<string, any>>({
+    class_name: "",
+    section_name: "",
+    parent_id: "",
+    admission_no: "",
+    roll_no: "",
+    admission_date: "",
+    firstname: "",
+    middlename: "",
+    lastname: "",
+    rte: "",
+    image: "",
+    mobileno: "",
+    email: "",
+    state: "",
+    city: "",
+    pincode: "",
+    religion: "",
+    cast: "",
+    dob: "",
+    gender: "",
+    current_address: "",
+    permanent_address: "",
+    category_id: "",
+    route_id: "",
+    school_house_id: "",
+    blood_group: "",
+    vehroute_id: "",
+    hostel_room_id: "",
+    adhar_no: "",
+    samagra_id: "",
+    bank_account_no: "",
+    bank_name: "",
+    ifsc_code: "",
+    guardian_is: "",
+    father_name: "",
+    father_phone: "",
+    father_occupation: "",
+    mother_name: "",
+    mother_phone: "",
+    mother_occupation: "",
+    guardian_name: "",
+    guardian_relation: "",
+    guardian_phone: "",
+    guardian_occupation: "",
+    guardian_address: "",
+    guardian_email: "",
+    father_pic: "",
+    mother_pic: "",
+    guardian_pic: "",
+    is_active: "",
+    previous_school: "",
+    height: "",
+    weight: "",
+    measurement_date: "",
+    dis_reason: "",
+    note: "",
+    dis_note: "",
+    app_key: "",
+    parent_app_key: "",
+    disable_at: "",
+    section_id: "",
+    notes: "",
+    first_title: "",
+    first_doc: "",
+    second_title: "",
+    third_title: "",
+    fourth_title: "",
+    category_name: "",
+    // Add other initial fields as needed
+  });
+  const [feeData, setFeeData] = useState<any>(null);
   // Check for gender and default image conditions
   if (
     formData?.gender === "Female" &&
