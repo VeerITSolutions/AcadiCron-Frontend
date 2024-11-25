@@ -12,6 +12,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 
 import { useRouter } from "next/navigation";
 import { fetchRoleData } from "@/services/roleService";
+import { fetchDesignationData } from "@/services/designationService";
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
@@ -25,6 +26,10 @@ const User = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [savedSessionstate, setSavedSession] = useState("");
+  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
+  const [designationdata, setDesinationResult] = useState<Array<Array<string>>>(
+    [],
+  );
   // State to hold all form inputs as a single object
   const [formData, setFormData] = useState<Record<string, any>>({
     employee_id: "",
@@ -81,6 +86,10 @@ const User = () => {
   const fetchClassesAndSections = async () => {
     const roleresult = await fetchRoleData();
     setRoleData(roleresult.data);
+
+    const desinationresult = await fetchDesignationData();
+    setDesinationResult(desinationresult.data);
+
     try {
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
@@ -151,7 +160,7 @@ const User = () => {
       setLoading(false);
     }
   };
-  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
+
   useEffect(() => {
     const session_value = localStorage.getItem("selectedSessionId");
     if (session_value) {
@@ -222,12 +231,11 @@ const User = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="">Principal</option>
-                <option value="">Faculty</option>
-                <option value="">Director</option>
-                <option value="">TGT</option>
-                <option value="">PRT</option>
-                <option value="">Account</option>
+                {designationdata.map((cls: any) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.designation}
+                  </option>
+                ))}
               </select>
             </div>
 
