@@ -91,6 +91,10 @@ thead.MuiTableHead-root {
   justify-content: left !important;
 }
 
+.tss-1fbujeu-MUIDataTableHeadCell-toolButton {
+  margin: 0px !important;
+}
+
 @media (min-width: 1024px) {
   .lg\:ml-72\.5 {
     margin-left: 0px;
