@@ -13,6 +13,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { useRouter } from "next/navigation";
 import { fetchRoleData } from "@/services/roleService";
 import { fetchDesignationData } from "@/services/designationService";
+import { fetchdeparmentData } from "@/services/deparmentService";
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
@@ -28,6 +29,10 @@ const User = () => {
   const [savedSessionstate, setSavedSession] = useState("");
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
   const [designationdata, setDesinationResult] = useState<Array<Array<string>>>(
+    [],
+  );
+
+  const [departmentdata, setDepartmentResult] = useState<Array<Array<string>>>(
     [],
   );
   // State to hold all form inputs as a single object
@@ -89,6 +94,9 @@ const User = () => {
 
     const desinationresult = await fetchDesignationData();
     setDesinationResult(desinationresult.data);
+
+    const getdepartment = await fetchdeparmentData();
+    setDepartmentResult(getdepartment.data);
 
     try {
       const classesResult = await getClasses();
@@ -250,8 +258,11 @@ const User = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="">Teaching</option>
-                <option value="">Non Teaching</option>
+                {departmentdata.map((cls: any) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.department_name}
+                  </option>
+                ))}
               </select>
             </div>
 
