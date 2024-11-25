@@ -22,6 +22,8 @@ import {
   createStudentTimeline,
   fetchStudentTimelineData,
 } from "@/services/studentTimelineService";
+import { IconButton } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 interface FeeData {
   fees_group: string;
   fees_code: string;
@@ -1094,14 +1096,13 @@ const StudentDetails = () => {
                               >
                                 <td>{item?.title}</td>
                                 <td>{item?.doc}</td>
-                                <td>
-                                  <button
-                                    onClick={() => handleDelete2(item.id)}
-                                    className="delete-button"
-                                  >
-                                    Delete
-                                  </button>
-                                </td>
+                                <IconButton
+                                  onClick={() => handleDelete2(item.id)}
+                                  aria-label="Delete"
+                                >
+                                  <Delete />
+                                </IconButton>
+                                <td></td>
                               </tr>
                             ))}
                           </tbody>
@@ -1150,13 +1151,12 @@ const StudentDetails = () => {
                                 <td>{item?.title}</td>
                                 <td>{item?.description}</td>
                                 <td>
-                                  {item?.document}
-                                  <button
+                                  <IconButton
                                     onClick={() => handleDelete(item.id)}
-                                    className="delete-button"
+                                    aria-label="Delete"
                                   >
-                                    Delete
-                                  </button>
+                                    <Delete />
+                                  </IconButton>
                                 </td>
                               </tr>
                             ))}
