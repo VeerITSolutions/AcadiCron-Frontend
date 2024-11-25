@@ -22,20 +22,20 @@ const Staff = () => {
       <div className="student_admission_form ">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-            Edit Staff Admission
+            Edit
           </h2>
         </div>
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-              Edit Basic Information
+                Edit Basic Information
               </h3>
             </div>
             <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Staff ID <span className="required">*</span>
+                  Staff ID <span className="required">*</span>
                 </label>
                 <input
                   type="text"
@@ -43,10 +43,10 @@ const Staff = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-             
+
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Role <span className="required">*</span>
+                  Role <span className="required">*</span>
                 </label>
                 <select
                   id="class_id"
@@ -64,7 +64,7 @@ const Staff = () => {
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Designation
+                  Designation
                 </label>
                 <select
                   id="class_id"
@@ -84,14 +84,14 @@ const Staff = () => {
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Department
+                  Department
                 </label>
                 <select
                   id="section_id"
                   name="section_id"
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
-                      <option value="">Select</option>
+                  <option value="">Select</option>
                   <option value="1">Teaching</option>
                   <option value="2">Non Teaching</option>
                 </select>
@@ -122,7 +122,7 @@ const Staff = () => {
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Father Name
+                  Father Name
                 </label>
                 <input
                   id="fathername"
@@ -134,8 +134,7 @@ const Staff = () => {
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  
-Mother Name
+                  Mother Name
                 </label>
                 <input
                   id="mothername"
@@ -157,10 +156,10 @@ Mother Name
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-              
+
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Gender <span className="required">*</span>
+                  Gender <span className="required">*</span>
                 </label>
                 <select
                   id="gender"
@@ -186,7 +185,7 @@ Mother Name
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Date Of Joining 
+                  Date Of Joining
                 </label>
                 <input
                   id="dob"
@@ -198,7 +197,7 @@ Mother Name
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Phone
+                  Phone
                 </label>
                 <input
                   id="phoneno"
@@ -210,7 +209,7 @@ Mother Name
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Emergency Contact Number
+                  Emergency Contact Number
                 </label>
                 <input
                   id="econtactno"
@@ -222,7 +221,7 @@ Mother Name
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Marital Status
+                  Marital Status
                 </label>
                 <select
                   id="maretial_status"
@@ -270,12 +269,10 @@ Mother Name
                   className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 ></textarea>
               </div>
-              
-            
-             
+
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Qualification
+                  Qualification
                 </label>
                 <select
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -288,10 +285,9 @@ Mother Name
                 </select>
               </div>
 
-             
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Work Experience
+                  Work Experience
                 </label>
                 <input
                   type="text"
@@ -302,7 +298,7 @@ Mother Name
 
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Note
+                  Note
                 </label>
                 <textarea
                   id="note"
@@ -311,19 +307,18 @@ Mother Name
                   className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                 ></textarea>
               </div>
-             
             </div>
           </div>
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-              Payroll
+                Payroll
               </h3>
             </div>
             <div className="grid gap-5.5 p-6.5 sm:grid-cols-3">
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                EPF No
+                  EPF No
                 </label>
                 <input
                   id="epfno"
@@ -335,7 +330,7 @@ Mother Name
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Contract Type
+                  Contract Type
                 </label>
                 <select
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -344,12 +339,11 @@ Mother Name
                   <option value="">Select</option>
                   <option value="permanent">Permanent</option>
                   <option value="probation">Probation</option>
-                 
                 </select>
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Basic Salary
+                  Basic Salary
                 </label>
                 <input
                   id="basic_salary"
@@ -361,7 +355,7 @@ Mother Name
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Work Shift
+                  Work Shift
                 </label>
                 <input
                   id="worf_shift"
@@ -371,11 +365,10 @@ Mother Name
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-              
-             
+
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Location
+                  Location
                 </label>
                 <input
                   id="location"
@@ -387,7 +380,7 @@ Mother Name
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Date Of Leaving 
+                  Date Of Leaving
                 </label>
                 <input
                   id="dol"
@@ -397,207 +390,195 @@ Mother Name
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-            
             </div>
           </div>
 
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-    <h3 className="font-medium text-black dark:text-white">
-      Leaves
-    </h3>
-  </div>
-  
-  <div className="grid gap-5.5 p-6.5 sm:grid-cols-3"> 
-    
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Medical
-      </label>
-      <input
-        id="medical"
-        name="medical"
-        placeholder="Number of leaves"
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">Leaves</h3>
+            </div>
 
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Personal
-      </label>
-      <input
-        id="personal"
-        name="personal"
-        placeholder="Number of leaves"
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-3">
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Medical
+                </label>
+                <input
+                  id="medical"
+                  name="medical"
+                  placeholder="Number of leaves"
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Maternity
-      </label>
-      <input
-        id="maternity"
-        name="maternity"
-        placeholder="Number of leaves"
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Personal
+                </label>
+                <input
+                  id="personal"
+                  name="personal"
+                  placeholder="Number of leaves"
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-  </div>
-</div>
-
-<div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-    <h3 className="font-medium text-black dark:text-white">
-      Bank Account Details
-    </h3>
-  </div>
-  <div className="grid gap-5.5 p-6.5 sm:grid-cols-3">
-    
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Account Title
-      </label>
-      <input
-        id="account_title"
-        name="account_title"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Bank Account Number
-      </label>
-      <input
-        id="bank_account_no"
-        name="bank_account_no"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Bank Name
-      </label>
-      <input
-        id="bank_name"
-        name="bank_name"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        IFSC Code
-      </label>
-      <input
-        id="ifsc_code"
-        name="ifsc_code"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Bank Branch Name
-      </label>
-      <input
-        id="branch_name"
-        name="branch_name"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-  </div>
-</div>
-
-<div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-    <h3 className="font-medium text-black dark:text-white">
-    Social Media Link
-    </h3>
-  </div>
-  <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
-    
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Facebook URL
-      </label>
-      <input
-        id="facebookurl"
-        name="facebookurl"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">   
-Twitter URL
-      </label>
-      <input
-        id="twitterurl"
-        name="twitterurl"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Linkedin URL
-      </label>
-      <input
-        id="linkedinurl"
-        name="linkedinurl"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-    <div className="field">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">     
-Instagram URL
-      </label>
-      <input
-        id="instagramurl"
-        name="instagramurl"
-        placeholder=""
-        type="text"
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-
-  </div>
-</div>
-
-
-
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Maternity
+                </label>
+                <input
+                  id="maternity"
+                  name="maternity"
+                  placeholder="Number of leaves"
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+            </div>
+          </div>
 
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-              Upload Documents
+                Bank Account Details
+              </h3>
+            </div>
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-3">
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Account Title
+                </label>
+                <input
+                  id="account_title"
+                  name="account_title"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Bank Account Number
+                </label>
+                <input
+                  id="bank_account_no"
+                  name="bank_account_no"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Bank Name
+                </label>
+                <input
+                  id="bank_name"
+                  name="bank_name"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  IFSC Code
+                </label>
+                <input
+                  id="ifsc_code"
+                  name="ifsc_code"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Bank Branch Name
+                </label>
+                <input
+                  id="branch_name"
+                  name="branch_name"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Social Media Link
+              </h3>
+            </div>
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Facebook URL
+                </label>
+                <input
+                  id="facebookurl"
+                  name="facebookurl"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Twitter URL
+                </label>
+                <input
+                  id="twitterurl"
+                  name="twitterurl"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Linkedin URL
+                </label>
+                <input
+                  id="linkedinurl"
+                  name="linkedinurl"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Instagram URL
+                </label>
+                <input
+                  id="instagramurl"
+                  name="instagramurl"
+                  placeholder=""
+                  type="text"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Upload Documents
               </h3>
             </div>
             <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">

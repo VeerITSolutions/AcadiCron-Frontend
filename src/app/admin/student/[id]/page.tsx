@@ -22,6 +22,9 @@ import {
   createStudentTimeline,
   fetchStudentTimelineData,
 } from "@/services/studentTimelineService";
+import { IconButton } from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { fetchStudentexamData } from "@/services/studentExamService";
 interface FeeData {
   fees_group: string;
   fees_code: string;
@@ -71,6 +74,8 @@ const StudentDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [dataTimeline, setDataTimeline] = useState<any>(null);
   const [dataDocument, setDataDocument] = useState<any>(null);
+  const [dataexamresult, setDataExamResult] = useState<any>(null);
+  const [getId, setgetId] = useState<any>(null);
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -78,97 +83,6 @@ const StudentDetails = () => {
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
   };
-  let getId = window.location.pathname.split("/").pop();
-  const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
-    {
-      id: getId,
-      title: "",
-      timeline_date: "",
-      description: "",
-      document: "",
-      status: "",
-      date: "",
-    },
-  );
-
-  const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
-    id: getId,
-    title: "",
-    doc: "",
-  });
-
-  const [formData, setFormData] = useState<Record<string, any>>({
-    class_name: "",
-    section_name: "",
-    parent_id: "",
-    admission_no: "",
-    roll_no: "",
-    admission_date: "",
-    firstname: "",
-    middlename: "",
-    lastname: "",
-    rte: "",
-    image: "",
-    mobileno: "",
-    email: "",
-    state: "",
-    city: "",
-    pincode: "",
-    religion: "",
-    cast: "",
-    dob: "",
-    gender: "",
-    current_address: "",
-    permanent_address: "",
-    category_id: "",
-    route_id: "",
-    school_house_id: "",
-    blood_group: "",
-    vehroute_id: "",
-    hostel_room_id: "",
-    adhar_no: "",
-    samagra_id: "",
-    bank_account_no: "",
-    bank_name: "",
-    ifsc_code: "",
-    guardian_is: "",
-    father_name: "",
-    father_phone: "",
-    father_occupation: "",
-    mother_name: "",
-    mother_phone: "",
-    mother_occupation: "",
-    guardian_name: "",
-    guardian_relation: "",
-    guardian_phone: "",
-    guardian_occupation: "",
-    guardian_address: "",
-    guardian_email: "",
-    father_pic: "",
-    mother_pic: "",
-    guardian_pic: "",
-    is_active: "",
-    previous_school: "",
-    height: "",
-    weight: "",
-    measurement_date: "",
-    dis_reason: "",
-    note: "",
-    dis_note: "",
-    app_key: "",
-    parent_app_key: "",
-    disable_at: "",
-    section_id: "",
-    notes: "",
-    first_title: "",
-    first_doc: "",
-    second_title: "",
-    third_title: "",
-    fourth_title: "",
-    category_name: "",
-    // Add other initial fields as needed
-  });
-  const [feeData, setFeeData] = useState<any>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
@@ -326,8 +240,14 @@ const StudentDetails = () => {
             const datatimeline = await fetchStudentTimelineData(id);
             const datadocument = await fetchStudentdocData(id);
 
+            const getdataexamresult = await fetchStudentexamData(id);
+
             setDataTimeline(datatimeline.data);
+            setgetId(data.data.id);
             setDataDocument(datadocument.data);
+            setDataExamResult(getdataexamresult.data);
+            console.log("dataexamresult", dataexamresult);
+
             console.log("datadocument.data", datadocument.data);
             setFeeData(data2);
 
@@ -411,6 +331,109 @@ const StudentDetails = () => {
   }, []);
   let defaultImage = "/images/user/default_male.jpg";
 
+  useEffect(() => {
+    if (getId) {
+      setFormDataDoc((prev) => ({
+        ...prev,
+        id: getId, // Dynamically update `id` in `formDataDoc`
+      }));
+
+      setFormDataTimeline((prevData) => ({
+        ...prevData,
+        id: getId, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  }, [getId]); // Runs whenever `getId` changes
+  const [formDataTimeline, setFormDataTimeline] = useState<Record<string, any>>(
+    {
+      id: getId,
+      title: "",
+      timeline_date: "",
+      description: "",
+      document: "",
+      status: "",
+      date: "",
+    },
+  );
+
+  const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
+    id: getId,
+    title: "",
+    doc: "",
+  });
+
+  const [formData, setFormData] = useState<Record<string, any>>({
+    class_name: "",
+    section_name: "",
+    parent_id: "",
+    admission_no: "",
+    roll_no: "",
+    admission_date: "",
+    firstname: "",
+    middlename: "",
+    lastname: "",
+    rte: "",
+    image: "",
+    mobileno: "",
+    email: "",
+    state: "",
+    city: "",
+    pincode: "",
+    religion: "",
+    cast: "",
+    dob: "",
+    gender: "",
+    current_address: "",
+    permanent_address: "",
+    category_id: "",
+    route_id: "",
+    school_house_id: "",
+    blood_group: "",
+    vehroute_id: "",
+    hostel_room_id: "",
+    adhar_no: "",
+    samagra_id: "",
+    bank_account_no: "",
+    bank_name: "",
+    ifsc_code: "",
+    guardian_is: "",
+    father_name: "",
+    father_phone: "",
+    father_occupation: "",
+    mother_name: "",
+    mother_phone: "",
+    mother_occupation: "",
+    guardian_name: "",
+    guardian_relation: "",
+    guardian_phone: "",
+    guardian_occupation: "",
+    guardian_address: "",
+    guardian_email: "",
+    father_pic: "",
+    mother_pic: "",
+    guardian_pic: "",
+    is_active: "",
+    previous_school: "",
+    height: "",
+    weight: "",
+    measurement_date: "",
+    dis_reason: "",
+    note: "",
+    dis_note: "",
+    app_key: "",
+    parent_app_key: "",
+    disable_at: "",
+    section_id: "",
+    notes: "",
+    first_title: "",
+    first_doc: "",
+    second_title: "",
+    third_title: "",
+    fourth_title: "",
+    category_name: "",
+    // Add other initial fields as needed
+  });
+  const [feeData, setFeeData] = useState<any>(null);
   // Check for gender and default image conditions
   if (
     formData?.gender === "Female" &&
@@ -932,12 +955,27 @@ const StudentDetails = () => {
                 </div>
               </div>
             )}
+           */}
             {activeTab === "exam" && (
-              <div>
-                <h2 className="text-xl font-semibold">Exam Results</h2>
-                <div className="alert alert-danger">No Record Found</div>
+              <div className="fees-container">
+                {dataexamresult?.length === 0 &&
+                dataexamresult?.length === 0 ? (
+                  <div className="alert alert-danger">No record found</div>
+                ) : (
+                  <div className="table-responsive">
+                    <table className="table-hover table-striped table">
+                      <thead>
+                        <tr>
+                          <th>Exam Name</th>
+                          <th>Result</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                )}
               </div>
-            )} */}
+            )}
 
             {activeTab === "fee" && (
               <div className="fees-container">
@@ -947,7 +985,7 @@ const StudentDetails = () => {
                 ) : (
                   <div className="table-responsive">
                     <table className="table-hover table-striped table">
-                      <thead>
+                      {/* <thead>
                         <tr>
                           <th>Fees Group</th>
                           <th>Fees Code</th>
@@ -962,7 +1000,7 @@ const StudentDetails = () => {
                           <th>Paid ({currency_symbol})</th>
                           <th>Balance</th>
                         </tr>
-                      </thead>
+                      </thead> */}
                       <tbody>
                         {/*  {student_due_fees?.map((fee: any, index: any) => (
                           <tr
@@ -1094,13 +1132,18 @@ const StudentDetails = () => {
                               >
                                 <td>{item?.title}</td>
                                 <td>{item?.doc}</td>
+
                                 <td>
-                                  <button
-                                    onClick={() => handleDelete2(item.id)}
-                                    className="delete-button"
-                                  >
-                                    Delete
-                                  </button>
+                                  {" "}
+                                  <td className="text-left">
+                                    <IconButton
+                                      onClick={() => handleDelete2(item.id)}
+                                      aria-label="Delete"
+                                      color="error" // Optional: Adds a red color to indicate delete action
+                                    >
+                                      <Delete />
+                                    </IconButton>
+                                  </td>
                                 </td>
                               </tr>
                             ))}
@@ -1134,9 +1177,15 @@ const StudentDetails = () => {
                         <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
                           <thead className="bg-gray-100">
                             <tr>
-                              <th>Title</th>
-                              <th>Name</th>
-                              <th>Action</th>
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                                Title
+                              </th>
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                                Name
+                              </th>
+                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium dark:border-strokedark">
+                                Action
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1149,14 +1198,14 @@ const StudentDetails = () => {
                               >
                                 <td>{item?.title}</td>
                                 <td>{item?.description}</td>
-                                <td>
-                                  {item?.document}
-                                  <button
+                                <td className="text-left">
+                                  <IconButton
                                     onClick={() => handleDelete(item.id)}
-                                    className="delete-button"
+                                    aria-label="Delete"
+                                    color="error" // Optional: Adds a red color to indicate delete action
                                   >
-                                    Delete
-                                  </button>
+                                    <Delete />
+                                  </IconButton>
                                 </td>
                               </tr>
                             ))}
