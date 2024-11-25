@@ -24,6 +24,7 @@ import {
 } from "@/services/studentTimelineService";
 import { IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { fetchStudentexamData } from "@/services/studentExamService";
 interface FeeData {
   fees_group: string;
   fees_code: string;
@@ -73,6 +74,7 @@ const StudentDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [dataTimeline, setDataTimeline] = useState<any>(null);
   const [dataDocument, setDataDocument] = useState<any>(null);
+  const [dataexamresult, setDataExamResult] = useState<any>(null);
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -328,8 +330,13 @@ const StudentDetails = () => {
             const datatimeline = await fetchStudentTimelineData(id);
             const datadocument = await fetchStudentdocData(id);
 
+            const getdataexamresult = await fetchStudentexamData(id);
+
             setDataTimeline(datatimeline.data);
             setDataDocument(datadocument.data);
+            setDataExamResult(getdataexamresult.data);
+            console.log("dataexamresult", dataexamresult);
+
             console.log("datadocument.data", datadocument.data);
             setFeeData(data2);
 
