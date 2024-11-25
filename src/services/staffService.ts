@@ -19,7 +19,7 @@ export const fetchStaffData = async (page: number, perPage: number,selectedClass
 
 
 export const fetchStaffSingleData = async (id: string) => {
-  const response = await apiClient.get(`/staff-by-role`, {
+  const response = await apiClient.get(`/staff`, {
     params: {
       id
     },
@@ -52,13 +52,13 @@ export const deleteStaff= async (id: number) => {
   return response.data;
 };
 
-// Edit a student category by ID
-export const editStaffData = async (id: number, house_name: string, description: string) => {
-  const data = { house_name, description }; // Create an object with the name field
+
+
+export const editStaffData = async (id: number, data: any) => {
+
   const response = await apiClient.post(`/staff/${id}`, data);
   return response.data;
 };
-
 
 
 
