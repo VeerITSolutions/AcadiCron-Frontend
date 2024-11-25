@@ -30,6 +30,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { fetchRoleData } from "@/services/roleService";
 const columns = [
   "Staff ID",
   "Name",
@@ -51,6 +52,8 @@ const options = {
 const StudentDetails = () => {
   const [activeTab, setActiveTab] = useState("list"); // "list" or "card"
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -107,6 +110,9 @@ const StudentDetails = () => {
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
+
+      const roleresult = await fetchRoleData();
+      setRoleData(roleresult.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -124,6 +130,7 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
@@ -169,11 +176,13 @@ const StudentDetails = () => {
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
+              {roledata.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
               <option value="Class1">Admin</option>
-              <option value="Class2">Teacher</option>
-              <option value="Class3">Accountant</option>
-              <option value="Class4">Librarian</option>
-              <option value="Class5">Receptionist</option>
+              
             </select>
           </label>
           <button onClick={handleSearch} className={styles.searchButton}>
