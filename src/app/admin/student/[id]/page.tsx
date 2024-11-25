@@ -941,12 +941,27 @@ const StudentDetails = () => {
                 </div>
               </div>
             )}
+           */}
             {activeTab === "exam" && (
-              <div>
-                <h2 className="text-xl font-semibold">Exam Results</h2>
-                <div className="alert alert-danger">No Record Found</div>
+              <div className="fees-container">
+                {dataexamresult?.length === 0 &&
+                dataexamresult?.length === 0 ? (
+                  <div className="alert alert-danger">No record found</div>
+                ) : (
+                  <div className="table-responsive">
+                    <table className="table-hover table-striped table">
+                      <thead>
+                        <tr>
+                          <th>Exam Name</th>
+                          <th>Result</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                )}
               </div>
-            )} */}
+            )}
 
             {activeTab === "fee" && (
               <div className="fees-container">
