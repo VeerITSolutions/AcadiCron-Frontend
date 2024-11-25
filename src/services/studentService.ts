@@ -46,3 +46,16 @@ export const createStudent = async ( data : any) => {
   const response = await apiClient.post(`/student`, data);
   return response.data;
 };
+
+
+// Delete a student deleteStudentDocuemnt
+export const deleteStudentDocuemnt = async (id: number) => {
+  const response = await apiClient.delete(`/student-doc/${id}`);
+  return response.data;
+};
+
+// Delete a student category by ID
+export const deleteStudentTimeline = async (id: number) => {
+  const response = await apiClient.delete(`/student-timeline/${id}`);
+  return response.data;
+};

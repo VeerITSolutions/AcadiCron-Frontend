@@ -7,7 +7,11 @@ import { useParams } from "next/navigation";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
 import Image from "next/image";
-import { fetchStudentSingleData } from "@/services/studentService";
+import {
+  deleteStudentDocuemnt,
+  deleteStudentTimeline,
+  fetchStudentSingleData,
+} from "@/services/studentService";
 import { fetchStudentFeesData } from "@/services/studentFeesService";
 import { toast } from "react-toastify";
 import { createStudentdoc } from "@/services/studentdocService";
@@ -208,6 +212,32 @@ const StudentDetails = () => {
       ...prevData,
       [name]: value, // For regular inputs like text or selects
     }));
+  };
+  const handleDelete = async (getId: number) => {
+    try {
+      await deleteStudentTimeline(getId);
+
+      toast.success("Delete successful");
+    } catch (error) {
+      console.error("Delete failed", error);
+      toast.error("Delete failed");
+    }
+  };
+
+  const handleDelete2 = async (getId: number) => {
+    try {
+      await deleteStudentDocuemnt(getId);
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        const datatimeline = await fetchStudentTimelineData(id);
+        setDataTimeline(datatimeline.data);
+      }
+
+      toast.success("Delete successful");
+    } catch (error) {
+      console.error("Delete failed", error);
+      toast.error("Delete failed");
+    }
   };
 
   useEffect(() => {
@@ -1026,14 +1056,22 @@ const StudentDetails = () => {
                           <tbody>
                             {/*  */}
 
-                            {dataTimeline?.map((index: any, value: any) => (
+                            {dataTimeline?.map((item: any, index: number) => (
                               <tr
                                 key={`discount-${index}`}
                                 className="dark-light"
                               >
-                                <td>Discount</td>
-                                <td>Discount</td>
-                                <td>Discount</td>
+                                <td>{item?.title}</td>
+                                <td>{item?.description}</td>
+                                <td>
+                                  {item?.document}
+                                  <button
+                                    onClick={() => handleDelete(item.id)}
+                                    className="delete-button"
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
