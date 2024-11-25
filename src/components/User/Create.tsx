@@ -133,15 +133,14 @@ const User = () => {
       setLoading(true);
       const data = {
         ...formData,
-        class_id: selectedClass,
-        section_id: selectedSection,
+        
       };
 
       const response = await createStaff(data);
 
       if (response.status == 200) {
         toast.success("Added successful");
-        router.push(`/admin/student_details`);
+        router.push(`/admin/staff`);
       } else {
         toast.error("Error Edit data");
       }
