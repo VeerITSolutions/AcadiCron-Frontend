@@ -41,14 +41,13 @@ const columns = [
 ];
 
 const options = {
-  filterType: false,
+  filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
-
-  selectableRows: "none", // Disable row selection
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
+
 const StudentDetails = () => {
   const [activeTab, setActiveTab] = useState("list"); // "list" or "card"
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -196,7 +195,7 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <div className="rounded-sm border border-stroke bg-white p-4.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="">
         {/* Tab Navigation */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
   {/* Tabs */}
@@ -238,55 +237,55 @@ const StudentDetails = () => {
             <div className="leading-relaxed">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 lg:grid-cols-4">
 
-             <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
-  <div className="flex items-center relative group w-full">
-    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+             <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
+  <div className="flex items-center relative group w-full dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-b border-gray-200 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <img
         alt="user"
         loading="lazy"
         width="80"
         height="80"
-        className="rounded-full object-cover object-center"
+        className="rounded-full object-cover object-center dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark"
         src="https://erp.erabesa.co.in/uploads/staff_images/1.png" // Replace with the actual image source
       />
     </div>
 
-    <div className="flex-1">
+    <div className="flex-1 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <h4 className="text-base font-medium text-black dark:text-white">
         Rashmi Shrivastav
       </h4>
       <p className="text-sm text-gray-500 dark:text-gray-400">ID: 9000</p>
       <p className="text-sm text-gray-500 dark:text-gray-400">8668338370</p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           SuperAdmin
         </span>
       </p>
     </div>
 
   
-    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <IconButton
-        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="View"
       >
-        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Visibility className="dark:text-white" />
       </IconButton>
 
       <IconButton
         className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="Edit"
       >
-        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Edit className="dark:text-white" />
       </IconButton>
     </div>
   </div>
 </div>
 
 
-<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
   <div className="flex items-center relative group w-full">
-    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-b border-gray-200">
       <img
         alt="user"
         loading="lazy"
@@ -312,37 +311,37 @@ const StudentDetails = () => {
         </span>
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Teacher
         </span>
-        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Principal
         </span>
       </p>
     </div>
 
-    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <IconButton
-        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="View"
       >
-        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Visibility className="dark:text-white dark:text-white" />
       </IconButton>
 
       <IconButton
         className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="Edit"
       >
-        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Edit className="dark:text-white dark:text-white" />
       </IconButton>
     </div>
   </div>
 </div>
 
 
-<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
   <div className="flex items-center relative group w-full">
-    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-b border-gray-2000">
       <img
         alt="user"
         loading="lazy"
@@ -368,37 +367,37 @@ const StudentDetails = () => {
         </span>
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Teacher
         </span>
-        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Faculty
         </span>
       </p>
     </div>
 
-    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <IconButton
-        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="View"
       >
-        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Visibility className="dark:text-white" />
       </IconButton>
 
       <IconButton
         className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="Edit"
       >
-        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Edit className="dark:text-white" />
       </IconButton>
     </div>
   </div>
 </div>
 
 
-<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
   <div className="flex items-center relative group w-full">
-    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-b border-gray-2000">
       <img
         alt="user"
         loading="lazy"
@@ -424,37 +423,37 @@ const StudentDetails = () => {
         </span>
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Teacher
         </span>
-        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Faculty
         </span>
       </p>
     </div>
 
-    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <IconButton
-        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="View"
       >
-        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Visibility className="dark:text-white" />
       </IconButton>
 
       <IconButton
         className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="Edit"
       >
-        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Edit className="dark:text-white" />
       </IconButton>
     </div>
   </div>
 </div>
 
 
-<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
   <div className="flex items-center relative group w-full">
-    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-b border-gray-2000">
       <img
         alt="user"
         loading="lazy"
@@ -480,37 +479,37 @@ const StudentDetails = () => {
         </span>
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Teacher
         </span>
-        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Faculty
         </span>
       </p>
     </div>
 
-    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <IconButton
-        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="View"
       >
-        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Visibility className="dark:text-white" />
       </IconButton>
 
       <IconButton
         className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="Edit"
       >
-        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Edit className="dark:text-white" />
       </IconButton>
     </div>
   </div>
 </div>
 
 
-<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
   <div className="flex items-center relative group w-full">
-    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-b border-gray-2000">
       <img
         alt="user"
         loading="lazy"
@@ -536,37 +535,37 @@ const StudentDetails = () => {
         </span>
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Teacher
         </span>
-        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Faculty
         </span>
       </p>
     </div>
 
-    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <IconButton
-        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="View"
       >
-        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Visibility className="dark:text-white" />
       </IconButton>
 
       <IconButton
         className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="Edit"
       >
-        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Edit className="dark:text-white" />
       </IconButton>
     </div>
   </div>
 </div>
 
 
- <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+ <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
   <div className="flex items-center relative group w-full">
-    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-b border-gray-2000">
       <img
         alt="user"
         loading="lazy"
@@ -592,37 +591,37 @@ const StudentDetails = () => {
         </span>
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Teacher
         </span>
-        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Faculty
         </span>
       </p>
     </div>
 
-    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <IconButton
-        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="View"
       >
-        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Visibility className="dark:text-white" />
       </IconButton>
 
       <IconButton
         className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="Edit"
       >
-        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Edit className="dark:text-white" />
       </IconButton>
     </div>
   </div>
 </div>
 
 
-<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700">
+<div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
   <div className="flex items-center relative group w-full">
-    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
+    <div className="mr-4 h-[80px] w-[80px] overflow-hidden rounded-full border-b border-gray-2000">
     <img
                         alt="user"
                         loading="lazy"
@@ -648,28 +647,28 @@ const StudentDetails = () => {
         </span>
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Role" className="cursor-pointer mr-2 bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Teacher
         </span>
-        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1">
+        <span data-toggle="tooltip" title="Designation" className="cursor-pointer bg-blue-100 dark:bg-blue-400 p-1 rounded mt-1 mb-1 dark:text-white">
           Faculty
         </span>
       </p>
     </div>
 
-    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform">
+    <div className="absolute left-1/2 top-1/2 hidden group-hover:flex space-x-2 bg-white dark:bg-gray-700 p-3 rounded-lg shadow-lg transition-all duration-200 ease-in-out transform dark:bg-boxdark dark:drop-shadow-none  dark:border-strokedark">
       <IconButton
-        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-blue-800 dark:hover:bg-blue-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
+        className="text-sm px-4 py-2 text-gray-700 bg-blue-100 hover:bg-blue-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="View"
       >
-        <Visibility className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Visibility className="dark:text-white" />
       </IconButton>
 
       <IconButton
         className="text-sm px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-150"
         aria-label="Edit"
       >
-        <Edit className="h-5 w-5 text-gray-700 dark:text-gray-200" />
+        <Edit className="dark:text-white" />
       </IconButton>
     </div>
   </div>
