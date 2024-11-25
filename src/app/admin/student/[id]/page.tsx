@@ -91,6 +91,12 @@ const StudentDetails = () => {
     },
   );
 
+  const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
+    id: getId,
+    title: "",
+    doc: "",
+  });
+
   const [formData, setFormData] = useState<Record<string, any>>({
     class_name: "",
     section_name: "",
@@ -181,7 +187,7 @@ const StudentDetails = () => {
     const file = files ? files[0] : null;
 
     if (file && name) {
-      setDataDocument((prevData: any) => ({
+      setFormDataDoc((prevData: any) => ({
         ...prevData,
         [name]: file, // Dynamically set the file in formData using the input's name attribute
       }));
@@ -195,6 +201,11 @@ const StudentDetails = () => {
       };
 
       const response2 = await createStudentTimeline(data);
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        const dataStudentTimline = await fetchStudentTimelineData(id);
+        setDataTimeline(dataStudentTimline.data);
+      }
 
       if (response2.status == 200) {
         toast.success("Added successful");
@@ -222,22 +233,24 @@ const StudentDetails = () => {
     try {
       setLoading(true);
       const data = {
-        ...formDataTimeline,
+        ...formDataDoc,
       };
 
       const response3 = await createStudentdoc(data);
 
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        const datastudentdoc = await fetchStudentdocData(id);
+        setDataDocument(datastudentdoc.data);
+      }
+
       if (response3.status == 200) {
         toast.success("Added successful");
-        /* setFormDataTimeline({
+        setFormDataDoc({
           id: getId,
           title: "",
-          timeline_date: "",
-          description: "",
-          document: "",
-          status: "",
-          date: "",
-        }); */
+          doc: "",
+        });
         handleButtonClick();
       } else {
         toast.error("Error Add data");
@@ -265,7 +278,7 @@ const StudentDetails = () => {
     >,
   ) => {
     const { name, value } = e.target;
-    setDataDocument((prevData: any) => ({
+    setFormDataDoc((prevData: any) => ({
       ...prevData,
       [name]: value, // For regular inputs like text or selects
     }));
@@ -1189,6 +1202,7 @@ const StudentDetails = () => {
                     aria-invalid="false"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                     type="text"
+                    value={formDataDoc.title}
                     name="title"
                     onChange={handleInputChange2}
                   />
