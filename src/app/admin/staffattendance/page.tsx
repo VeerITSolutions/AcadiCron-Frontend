@@ -230,7 +230,7 @@ const StudentDetails = () => {
               <option value="Class2">Teacher</option>
               <option value="Class2">Accountant</option>
               <option value="Class2">Librarian</option>
-              {/* Add more class options here */}
+          
             </select>
           </label>
 
