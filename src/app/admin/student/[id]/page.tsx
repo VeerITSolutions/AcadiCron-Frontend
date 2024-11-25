@@ -971,7 +971,7 @@ const StudentDetails = () => {
                 ) : (
                   <div className="table-responsive">
                     <table className="table-hover table-striped table">
-                      <thead>
+                      {/* <thead>
                         <tr>
                           <th>Fees Group</th>
                           <th>Fees Code</th>
@@ -986,7 +986,7 @@ const StudentDetails = () => {
                           <th>Paid ({currency_symbol})</th>
                           <th>Balance</th>
                         </tr>
-                      </thead>
+                      </thead> */}
                       <tbody>
                         {/*  {student_due_fees?.map((fee: any, index: any) => (
                           <tr
