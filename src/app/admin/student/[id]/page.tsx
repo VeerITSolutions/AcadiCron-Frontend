@@ -14,7 +14,10 @@ import {
 } from "@/services/studentService";
 import { fetchStudentFeesData } from "@/services/studentFeesService";
 import { toast } from "react-toastify";
-import { createStudentdoc } from "@/services/studentdocService";
+import {
+  createStudentdoc,
+  fetchStudentdocData,
+} from "@/services/studentdocService";
 import {
   createStudentTimeline,
   fetchStudentTimelineData,
@@ -67,6 +70,7 @@ const StudentDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dataTimeline, setDataTimeline] = useState<any>(null);
+  const [dataDocument, setDataDocument] = useState<any>(null);
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -249,8 +253,10 @@ const StudentDetails = () => {
             const data = await fetchStudentSingleData(id);
             const data2 = await fetchStudentFeesData(id);
             const datatimeline = await fetchStudentTimelineData(id);
+            const datadocument = await fetchStudentdocData(id);
 
             setDataTimeline(datatimeline.data);
+            setDataDocument(datadocument.data);
             setFeeData(data2);
 
             setFormData({
@@ -1010,14 +1016,24 @@ const StudentDetails = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td
-                                className="text-red-600 py-4 text-center"
-                                colSpan={3}
+                            {dataDocument?.map((item: any, index: number) => (
+                              <tr
+                                key={`discount-${index}`}
+                                className="dark-light"
                               >
-                                No Record Found
-                              </td>
-                            </tr>
+                                <td>{item?.id}</td>
+                                <td>{item?.id}</td>
+                                {/* <td>
+                                  {item?.id}
+                                  <button
+                                    onClick={() => handleDelete(item.id)}
+                                    className="delete-button"
+                                  >
+                                    Delete
+                                  </button>
+                                </td> */}
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
