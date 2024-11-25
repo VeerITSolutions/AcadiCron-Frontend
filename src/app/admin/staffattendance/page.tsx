@@ -29,6 +29,7 @@ import {
 import { toast } from "react-toastify";
 import { Span } from "next/dist/trace";
 import { fetchRoleData } from "@/services/roleService";
+import { fetchStaffData } from "@/services/staffService";
 const columns = [
   "#",
   "Staff ID",
@@ -129,41 +130,31 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [selectedRole, setSelectedRole] = useState<string | undefined>(
+    undefined,
+  );
   const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.staff_id || "N/A",
-      student.class || "N/A",
-      student.remark || "N/A",
-      student.staff_attendance_type_id || "N/A",
-      ,
-    ]);
-  };
-
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
-    selectedClass?: string,
+    selectedRole?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
+      const result = await fetchStaffData(
         currentPage + 1,
         rowsPerPage,
-        selectedClass,
+        selectedRole,
         selectedSection,
         keyword,
         localStorage.getItem("selectedSessionId"),
       );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
+
+      setData(result.data);
 
       const roleresult = await fetchRoleData();
       setRoleData(roleresult.data);
@@ -204,6 +195,10 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(event.target.value);
+  };
+
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
     setPage(0);
@@ -228,8 +223,8 @@ const StudentDetails = () => {
           <label className={styles.label}>
             Role:
             <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
+              value={selectedRole || ""}
+              onChange={handleRoleChange}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
