@@ -91,6 +91,12 @@ const StudentDetails = () => {
     },
   );
 
+  const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
+    id: getId,
+    title: "",
+    doc: "",
+  });
+
   const [formData, setFormData] = useState<Record<string, any>>({
     class_name: "",
     section_name: "",
@@ -175,6 +181,18 @@ const StudentDetails = () => {
       }));
     }
   };
+
+  const handleFileChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormDataDoc((prevData: any) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -183,6 +201,11 @@ const StudentDetails = () => {
       };
 
       const response2 = await createStudentTimeline(data);
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        const dataStudentTimline = await fetchStudentTimelineData(id);
+        setDataTimeline(dataStudentTimline.data);
+      }
 
       if (response2.status == 200) {
         toast.success("Added successful");
@@ -206,6 +229,38 @@ const StudentDetails = () => {
     }
   };
 
+  const handleSave2 = async () => {
+    try {
+      setLoading(true);
+      const data = {
+        ...formDataDoc,
+      };
+
+      const response3 = await createStudentdoc(data);
+
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        const datastudentdoc = await fetchStudentdocData(id);
+        setDataDocument(datastudentdoc.data);
+      }
+
+      if (response3.status == 200) {
+        toast.success("Added successful");
+        setFormDataDoc({
+          id: getId,
+          title: "",
+          doc: "",
+        });
+        handleButtonClick();
+      } else {
+        toast.error("Error Add data");
+      }
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -217,9 +272,25 @@ const StudentDetails = () => {
       [name]: value, // For regular inputs like text or selects
     }));
   };
+  const handleInputChange2 = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormDataDoc((prevData: any) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
   const handleDelete = async (getId: number) => {
     try {
       await deleteStudentTimeline(getId);
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        const datastudenttimeline = await fetchStudentTimelineData(id);
+        setDataTimeline(datastudenttimeline.data);
+      }
 
       toast.success("Delete successful");
     } catch (error) {
@@ -233,8 +304,8 @@ const StudentDetails = () => {
       await deleteStudentDocuemnt(getId);
       const id = window.location.pathname.split("/").pop();
       if (id) {
-        const datatimeline = await fetchStudentTimelineData(id);
-        setDataTimeline(datatimeline.data);
+        const datastudentdoc = await fetchStudentdocData(id);
+        setDataDocument(datastudentdoc.data);
       }
 
       toast.success("Delete successful");
@@ -257,11 +328,11 @@ const StudentDetails = () => {
 
             setDataTimeline(datatimeline.data);
             setDataDocument(datadocument.data);
+            console.log("datadocument.data", datadocument.data);
             setFeeData(data2);
 
             setFormData({
               class_name: data.data.class_name,
-
               section_name: data.data.section_name,
               parent_id: data.data.parent_id,
               admission_no: data.data.admission_no,
@@ -1021,17 +1092,16 @@ const StudentDetails = () => {
                                 key={`discount-${index}`}
                                 className="dark-light"
                               >
-                                <td>{item?.id}</td>
-                                <td>{item?.id}</td>
-                                {/* <td>
-                                  {item?.id}
+                                <td>{item?.title}</td>
+                                <td>{item?.doc}</td>
+                                <td>
                                   <button
-                                    onClick={() => handleDelete(item.id)}
+                                    onClick={() => handleDelete2(item.id)}
                                     className="delete-button"
                                   >
                                     Delete
                                   </button>
-                                </td> */}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -1132,7 +1202,9 @@ const StudentDetails = () => {
                     aria-invalid="false"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                     type="text"
+                    value={formDataDoc.title}
                     name="title"
+                    onChange={handleInputChange2}
                   />
                 </div>
                 <div className="mb-4">
@@ -1141,15 +1213,16 @@ const StudentDetails = () => {
                   </label>
                   <input
                     type="file"
-                    accept="image/*,video/*"
+                    accept="image/*"
                     name="doc" // Optional: Include name for form data
-                    onChange={handleFileChange} // Handle file change separately
+                    onChange={handleFileChange2} // Handle file change separately
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
                 <div className="flex justify-end">
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleSave2}
                     className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
                   >
                     Submit
