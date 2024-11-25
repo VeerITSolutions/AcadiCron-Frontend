@@ -1096,13 +1096,19 @@ const StudentDetails = () => {
                               >
                                 <td>{item?.title}</td>
                                 <td>{item?.doc}</td>
-                                <IconButton
-                                  onClick={() => handleDelete2(item.id)}
-                                  aria-label="Delete"
-                                >
-                                  <Delete />
-                                </IconButton>
-                                <td></td>
+
+                                <td>
+                                  {" "}
+                                  <td className="text-left">
+                                    <IconButton
+                                      onClick={() => handleDelete2(item.id)}
+                                      aria-label="Delete"
+                                      color="error" // Optional: Adds a red color to indicate delete action
+                                    >
+                                      <Delete />
+                                    </IconButton>
+                                  </td>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -1135,9 +1141,15 @@ const StudentDetails = () => {
                         <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
                           <thead className="bg-gray-100">
                             <tr>
-                              <th>Title</th>
-                              <th>Name</th>
-                              <th>Action</th>
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                                Title
+                              </th>
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                                Name
+                              </th>
+                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium dark:border-strokedark">
+                                Action
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1150,10 +1162,11 @@ const StudentDetails = () => {
                               >
                                 <td>{item?.title}</td>
                                 <td>{item?.description}</td>
-                                <td>
+                                <td className="text-left">
                                   <IconButton
                                     onClick={() => handleDelete(item.id)}
                                     aria-label="Delete"
+                                    color="error" // Optional: Adds a red color to indicate delete action
                                   >
                                     <Delete />
                                   </IconButton>
