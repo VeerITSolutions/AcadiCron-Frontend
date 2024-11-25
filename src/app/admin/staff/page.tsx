@@ -11,7 +11,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import PersonAdd from "@mui/icons-material/PersonAdd";
-import { Search, AddCircleOutline } from '@mui/icons-material';
+import { Search, AddCircleOutline } from "@mui/icons-material";
 
 import {
   Edit,
@@ -53,7 +53,7 @@ const StudentDetails = () => {
   const [activeTab, setActiveTab] = useState("list"); // "list" or "card"
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -120,7 +120,6 @@ const StudentDetails = () => {
     }
   };
 
-
   const handleEdit = (id: number) => {
     router.push(`/admin/staff/edit/${id}`);
   };
@@ -130,7 +129,6 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-    
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
@@ -176,18 +174,14 @@ const StudentDetails = () => {
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
-              {roledata.map((cls) => (
+              {roledata.map((cls: any) => (
                 <option key={cls.id} value={cls.id}>
                   {cls.name}
                 </option>
               ))}
               <option value="Class1">Admin</option>
-              
             </select>
           </label>
-          <button onClick={handleSearch} className={styles.searchButton}>
-            Search
-          </button>
 
           <div className={styles.searchGroup}>
             <input
@@ -207,38 +201,32 @@ const StudentDetails = () => {
       <div className="">
         {/* Tab Navigation */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
-  {/* Tabs */}
- 
+          {/* Tabs */}
 
+          <button
+            className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none"
+            onClick={() => router.push("/admin/staff/create")}
+          >
+            <PersonAdd className="text-white" />
+            Add Staff
+          </button>
+        </div>
 
-  <button
-      className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded focus:outline-none"
-      onClick={() => router.push("/admin/staff/create")}
-    >
-      <PersonAdd className="text-white" />
-      Add Staff
-    </button>
-</div>
-
-
-
-<ThemeProvider
-                theme={colorMode === "dark" ? darkTheme : lightTheme}
-              >
-                <MUIDataTable
-                  title={"Staff List"}
-                  data={data}
-                  columns={columns}
-                  options={{
-                    ...options,
-                    count: totalCount,
-                    page: page,
-                    rowsPerPage: rowsPerPage,
-                    onChangePage: handlePageChange,
-                    onChangeRowsPerPage: handleRowsPerPageChange,
-                  }}
-                />
-              </ThemeProvider>
+        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <MUIDataTable
+            title={"Staff List"}
+            data={data}
+            columns={columns}
+            options={{
+              ...options,
+              count: totalCount,
+              page: page,
+              rowsPerPage: rowsPerPage,
+              onChangePage: handlePageChange,
+              onChangeRowsPerPage: handleRowsPerPageChange,
+            }}
+          />
+        </ThemeProvider>
       </div>
     </DefaultLayout>
   );
