@@ -9,7 +9,7 @@ import { fetchRoleData } from "@/services/roleService";
 import { fetchDesignationData } from "@/services/designationService";
 import { fetchdeparmentData } from "@/services/deparmentService";
 const Staff = () => {
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -75,7 +75,7 @@ const Staff = () => {
     staff_leave_details: [],
   });
 
-  
+
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -107,7 +107,7 @@ const Staff = () => {
       setLoading(true);
       const data = {
         ...formData,
-        
+
       };
 
       const response = await editStaffData(formData.id, data);
@@ -142,7 +142,7 @@ const Staff = () => {
 
             const getdepartment = await fetchdeparmentData();
             setDepartmentResult(getdepartment.data);
-            
+
             setFormData({
               id: data.data.id,
               employee_id: data.data.employee_id || "",
@@ -197,7 +197,7 @@ const Staff = () => {
 
               staff_leave_details : data.data.staff_leave_details,
 
-              
+
             });
           } catch (error) {
             console.error("Error fetching student data:", error);
@@ -245,7 +245,7 @@ const Staff = () => {
               <select
                 name="role_id"
                 value={formData.role_id}
-                onChange={handleInputChange} 
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
@@ -254,7 +254,7 @@ const Staff = () => {
                     {cls.name}
                   </option>
                 ))}
-                
+
               </select>
             </div>
             <div className="field">
@@ -442,9 +442,9 @@ const Staff = () => {
                                                                                                                         <option value="Widowed">Widowed</option>
                                                                                                                         <option value="Separated">Separated</option>
                                                                                                                         <option value="Not Specified">Not Specified</option>
-                                                             
 
-                                                  
+
+
               </select>
             </div>
             <div className="field">
@@ -613,13 +613,13 @@ const Staff = () => {
   <div className="px-6.5 py-4">
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 
-      
+
 
       {formData.staff_leave_details.map((cls: any) => (
-                  <div className="field">
+                  <div  key={cls.id} className="field">
 
-      
-                 
+
+
 
                   {cls.leave_type?.map((leave: any, subIndex: number) => (
      <>
@@ -638,13 +638,13 @@ const Staff = () => {
 /></>
 
     ))}
-                   
-                 
+
+
                 </div>
                 ))}
-      
 
-     
+
+
     </div>
   </div>
 </div>
@@ -688,7 +688,7 @@ Bank Account Number
       </div>
 
       <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">    
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
        Bank Name
         </label>
         <input
@@ -701,7 +701,7 @@ Bank Account Number
         />
       </div>
       <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">    
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
         IFSC Code
         </label>
         <input
@@ -714,7 +714,7 @@ Bank Account Number
         />
       </div>
       <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">    
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
        Bank Branch Name
         </label>
         <input
@@ -768,7 +768,7 @@ Bank Account Number
       </div>
 
       <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">    
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
           LinkedIn URL
         </label>
         <input
@@ -782,7 +782,7 @@ Bank Account Number
       </div>
 
       <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">    
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
           Instagram URL
         </label>
         <input
