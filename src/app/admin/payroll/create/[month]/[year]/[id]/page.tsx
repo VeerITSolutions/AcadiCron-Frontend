@@ -304,7 +304,7 @@ const StudentDetails = () => {
   {/* Right Section */}
   <div className="w-3/12 flex-grow">
     <div className="bg-gray-100 p-4 rounded-lg border border-stroke border-gray-300 h-full dark:border-strokedark">
-      <div className="font-semibold text-lg mb-4 text-gray-700 dark:text-white">Attendance</div>
+     {/*  <div className="font-semibold text-lg mb-4 text-gray-700 dark:text-white">Attendance</div> */}
       <table className="table-auto w-full text-sm text-gray-600 border-collapse">
         <thead>
           <tr className="bg-gray-200">
