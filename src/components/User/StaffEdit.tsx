@@ -630,6 +630,7 @@ const Staff = () => {
  <input
  id={leave?.type }
  name={leave?.type }
+ value={cls?.alloted_leave}
  onChange={handleInputChange}
  type="text"
  placeholder="Number of Leaves"
