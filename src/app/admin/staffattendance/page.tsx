@@ -31,7 +31,6 @@ import { Span } from "next/dist/trace";
 import { fetchRoleData } from "@/services/roleService";
 import { fetchStaffData } from "@/services/staffService";
 const columns = [
-  "#",
   "Staff ID",
   "Name",
   "Role",
@@ -136,7 +135,13 @@ const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
-
+  const formatStudentData = (students: any[]) => {
+    return students.map((student: any) => [
+      student.id,
+      `${student.name} ${student.surname}`,
+      student.user_type || "N/A",
+    ]);
+  };
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -154,7 +159,8 @@ const StudentDetails = () => {
         localStorage.getItem("selectedSessionId"),
       );
 
-      setData(result.data);
+      const formattedData = formatStudentData(result.data);
+      setData(formattedData);
 
       const roleresult = await fetchRoleData();
       setRoleData(roleresult.data);
