@@ -19,11 +19,7 @@ export const fetchStaffData = async (page: number, perPage: number,selectedRole 
 
 
 export const fetchStaffSingleData = async (id: string) => {
-  const response = await apiClient.get(`/staff`, {
-    params: {
-      id
-    },
-  });
+  const response = await apiClient.get(`/staff/${id}`);
   return response.data;
 };
 

@@ -214,8 +214,8 @@ const User = () => {
                 Role <span className="required">*</span>
               </label>
               <select
-                name="user_type"
-                value={formData.user_type}
+                name="role_id"
+                value={formData.role_id}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
@@ -344,8 +344,8 @@ const User = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="">Male</option>
-                <option value="">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
 
@@ -413,11 +413,11 @@ const User = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="">Single</option>
-                <option value="">Married</option>
-                <option value="">Widowed</option>
-                <option value="">Separated</option>
-                <option value="">Not Specified</option>
+                <option value="Single">Single</option>
+                                                                                                                        <option value="Married">Married</option>
+                                                                                                                        <option value="Widowed">Widowed</option>
+                                                                                                                        <option value="Separated">Separated</option>
+                                                                                                                        <option value="Not Specified">Not Specified</option>
               </select>
             </div>
 

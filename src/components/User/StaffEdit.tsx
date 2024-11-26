@@ -5,11 +5,21 @@ import {
   fetchStaffSingleData,
 } from "@/services/staffService";
 import { toast } from "react-toastify";
+import { fetchRoleData } from "@/services/roleService";
+import { fetchDesignationData } from "@/services/designationService";
+import { fetchdeparmentData } from "@/services/deparmentService";
 const Staff = () => {
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
+  const [designationdata, setDesinationResult] = useState<Array<Array<string>>>(
+    [],
+  );
+  const [departmentdata, setDepartmentResult] = useState<Array<Array<string>>>(
+    [],
+  );
   // State to hold all form inputs as a single object
   const [formData, setFormData] = useState<Record<string, any>>({
     id: "",
@@ -61,7 +71,8 @@ const Staff = () => {
     verification_code: "",
     disable_at: "",
     role_id: "",
-    user_type: ""
+    user_type: "",
+    staff_leave_details: [],
   });
 
   
@@ -96,8 +107,7 @@ const Staff = () => {
       setLoading(true);
       const data = {
         ...formData,
-        /* class_id: selectedClass,
-        section_id: selectedSection, */
+        
       };
 
       const response = await editStaffData(formData.id, data);
@@ -123,6 +133,15 @@ const Staff = () => {
         const getData = async () => {
           try {
             const data = await fetchStaffSingleData(id);
+
+            const roleresult = await fetchRoleData();
+            setRoleData(roleresult.data);
+
+            const desinationresult = await fetchDesignationData();
+            setDesinationResult(desinationresult.data);
+
+            const getdepartment = await fetchdeparmentData();
+            setDepartmentResult(getdepartment.data);
             
             setFormData({
               id: data.data.id,
@@ -175,6 +194,10 @@ const Staff = () => {
               disable_at: data.data.disable_at || "",
               role_id: data.data.role_id || "",
               user_type: data.data.user_type || "",
+
+              staff_leave_details : data.data.staff_leave_details,
+
+              
             });
           } catch (error) {
             console.error("Error fetching student data:", error);
@@ -220,18 +243,18 @@ const Staff = () => {
                 Role <span className="required">*</span>
               </label>
               <select
-                name="user_type"
-                value={formData.user_type}
+                name="role_id"
+                value={formData.role_id}
                 onChange={handleInputChange} 
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="1">Admin</option>
-                <option value="2">Teacher</option>
-                <option value="3">Accountant</option>
-                <option value="4">Librarian</option>
-                <option value="5">Receptionist</option>
-                <option value="6">Super Admin</option>
+                {roledata.map((cls: any) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+                
               </select>
             </div>
             <div className="field">
@@ -245,14 +268,11 @@ const Staff = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="1">Principal</option>
-                <option value="2">Faculty</option>
-                <option value="3">Director</option>
-                <option value="4">TGT</option>
-                <option value="5">PRT</option>
-                <option value="6">Account</option>
-                <option value="7">Admin A/c</option>
-                <option value="8">Admin</option>
+                {designationdata.map((cls: any) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.designation}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="field">
@@ -266,8 +286,11 @@ const Staff = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="1">Teaching</option>
-                <option value="2">Non Teaching</option>
+                {departmentdata.map((cls: any) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.department_name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="field">
@@ -347,8 +370,8 @@ const Staff = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="1">Male</option>
-                <option value="2">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
             <div className="field">
@@ -414,11 +437,14 @@ const Staff = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select</option>
-                <option value="1">Single</option>
-                <option value="2">Married</option>
-                <option value="3">Widowed</option>
-                <option value="4">Separated</option>
-                <option value="5">Not Specified</option>
+                <option value="Single">Single</option>
+                                                                                                                        <option value="Married">Married</option>
+                                                                                                                        <option value="Widowed">Widowed</option>
+                                                                                                                        <option value="Separated">Separated</option>
+                                                                                                                        <option value="Not Specified">Not Specified</option>
+                                                             
+
+                                                  
               </select>
             </div>
             <div className="field">
@@ -586,44 +612,38 @@ const Staff = () => {
 
   <div className="px-6.5 py-4">
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-      <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-          Medical
-        </label>
-        <input
-          id="medical"
-          name="medical"
-          type="text"
-          placeholder="Number of Leaves"
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
-      </div>
 
-      <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-          Personal
-        </label>
-        <input
-          id="personal"
-          name="personal"
-          type="text"
-          placeholder="Number of Leaves"
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
-      </div>
+      
 
-      <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-          Maternity
-        </label>
-        <input
-          id="maternity"
-          name="maternity"
-          type="text"
-          placeholder="Number of Leaves"
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
-      </div>
+      {formData.staff_leave_details.map((cls: any) => (
+                  <div className="field">
+
+      
+                 
+
+                  {cls.leave_type?.map((leave: any, subIndex: number) => (
+     <>
+
+<label key={subIndex} className="mb-3 block text-sm font-medium text-black dark:text-white">
+{leave?.type || "N/A"}
+</label>
+ <input
+ id={leave?.type }
+ name={leave?.type }
+ onChange={handleInputChange}
+ type="text"
+ placeholder="Number of Leaves"
+ className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+/></>
+
+    ))}
+                   
+                 
+                </div>
+                ))}
+      
+
+     
     </div>
   </div>
 </div>
