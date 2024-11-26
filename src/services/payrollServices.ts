@@ -1,12 +1,18 @@
 import apiClient from "./apiClient";
 
-export const fetchPayrollData = async (page: number, perPage: number,selectedClass?: string,
-  selectedSection?: string,
+export const fetchPayrollData = async (page: number, perPage: number,
+  selectedRole?: string,
+  selectedMonth?: string,
+  selectedYear?: string,
   keyword?: string) => {
   const response = await apiClient.get(`/staff-payroll`, {
     params: {
       page,
       perPage,
+      selectedRole,
+      selectedMonth,
+      selectedYear,
+      keyword
     },
   });
   return response.data;

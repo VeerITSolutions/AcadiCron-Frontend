@@ -33,6 +33,7 @@ import {
   deletePayroll,
   editpayroll,
 } from "@/services/payrollServices";
+import { fetchRoleData } from "@/services/roleService";
 const columns = [
   "Staff ID",
   "Name",
@@ -60,10 +61,21 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
+
+  const [selectedMonth, setSelectedMonth] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedYear, setSelectedYear] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
   const [colorMode, setColorMode] = useColorMode();
@@ -73,17 +85,16 @@ const StudentDetails = () => {
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.employee_id,
-
-      student.name || "N/A",
-      student.name || "N/A",
+      `${student.name.trim()} ${student.surname.trim()}`,
+      student.user_type || "N/A",
       student.department || "N/A",
       student.designation || "N/A",
-      student.contact_no || "N/A",
+      student.contact_no,
       student.status || "N/A",
       <div key={student.id}>
-        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
-          <Edit />
-        </IconButton>
+        <button onClick={() => handleEdit(student.id)} className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4">
+          Generate Payroll
+        </button>
       </div>,
     ]);
   };
@@ -91,21 +102,26 @@ const StudentDetails = () => {
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
+    selectedRole?: string,
+    selectedMonth?: string,
+    selectedYear?: string,
     keyword?: string,
   ) => {
     try {
       const result = await fetchPayrollData(
         currentPage + 1,
         rowsPerPage,
-        selectedClass,
-        selectedSection,
+        selectedRole,
+        selectedMonth,
+        selectedYear,
         keyword,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
+
+      const roleresult = await fetchRoleData();
+      setRoleData(roleresult.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -122,8 +138,8 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage, selectedRole, selectedMonth, selectedYear, keyword);
+  }, [page, rowsPerPage, selectedRole,selectedMonth, selectedYear, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -134,14 +150,15 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
+  const handleselectedMonth = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMonth(event.target.value);
+    
   };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
+  
+  
+  const handleselectedYear = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear(event.target.value);
+    
   };
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,15 +167,19 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage, selectedRole, selectedMonth, selectedYear, keyword);
   };
 
   const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
     setKeyword("");
+    setSelectedMonth("");
+    setSelectedYear("");
+    setSelectedRole("");
   };
-
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(event.target.value);
+    console.log("selectedRole", selectedRole);
+  };
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
@@ -167,49 +188,60 @@ const StudentDetails = () => {
     <DefaultLayout>
        <div className={styles.filters}>
       <div className={styles.filterGroup}>
-        <label className={styles.label}>
-          Role:
-          <select
-          value={selectedClass || ""}
-          onChange={handleClassChange}
-          className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-        >
-          <option value="">Select</option>
-          <option value="Class1">Admin</option>
-          <option value="Class2">Teacher</option>
-          <option value="Class3">Accountant</option>
-          <option value="Class4">Librarian</option>
-          <option value="Class5">Receptionist</option>
-          {/* Add more class options here */}
-        </select>
-        </label>
+      <label className={styles.label}>
+            Role:
+            <select
+              value={selectedRole || ""}
+              onChange={handleRoleChange}
+              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+            >
+              <option value="">Select</option>
+              {roledata.map((cls: any) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
+              <option value="Class1">Admin</option>
+            </select>
+          </label>
         <label className={styles.label}>
           Month:
           <select
-          value={selectedSection || ""}
-          onChange={handleSectionChange}
+          value={selectedMonth || ""}
+          onChange={handleselectedMonth}
           className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
         >
           <option value="">Select</option>
-          <option value="SectionA">January</option>
-          <option value="SectionB">February</option>
-          <option value="SectionC">March</option>
-          <option value="SectionD">April</option>
-          <option value="SectionE">May</option>
-          {/* Add more section options here */}
+        
+                                                                                            <option value="January">January</option>
+                                                                                                        <option value="February">February</option>
+                                                                                                        <option value="March">March</option>
+                                                                                                        <option value="April">April</option>
+                                                                                                        <option value="May">May</option>
+                                                                                                        <option value="June">June</option>
+                                                                                                        <option value="July">July</option>
+                                                                                                        <option value="August">August</option>
+                                                                                                        <option value="September">September</option>
+                                                                                                        <option value="October" >October</option>
+                                                                                                        <option value="November">November</option>
+                                                                                                        <option value="December">December</option>
+                                                            
+
+                                      
+         
         </select>
         </label>
 
         <label className={styles.label}>
         Year:
         <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
+              value={selectedYear || ""}
+              onChange={handleselectedYear}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
-              <option value="SectionA">2023</option>
-              <option value="SectionB">2024</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
               {/* Add more section options here */}
             </select>
       </label>
