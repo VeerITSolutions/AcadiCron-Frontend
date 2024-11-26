@@ -108,11 +108,9 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
+    "1",
   );
   const [keyword, setKeyword] = useState<string>("");
   const getDefaultDate = () => {
@@ -207,9 +205,9 @@ const StudentDetails = () => {
   };
 
   const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
-    setKeyword("");
+    setSelectedClass("1");
+    setSelectedSection("1");
+
     setattendancedate(getDefaultDate());
   };
 
