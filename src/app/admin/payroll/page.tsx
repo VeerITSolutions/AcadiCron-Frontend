@@ -70,7 +70,7 @@ const StudentDetails = () => {
   );
 
   const [selectedMonth, setSelectedMonth] = useState<string | undefined>(
-    undefined,
+    'January',
   );
   const [selectedYear, setSelectedYear] = useState<string | undefined>(
     undefined,
@@ -134,7 +134,7 @@ const StudentDetails = () => {
   };
 
   const handleEdit = (id: number) => {
-    router.push(`/admin/payroll/create/${id}/${id}/${id}`);
+    router.push(`/admin/payroll/create/${selectedMonth}/${selectedYear}/${id}`);
   };
 
   useEffect(() => {
