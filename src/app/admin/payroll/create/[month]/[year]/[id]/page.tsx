@@ -260,13 +260,14 @@ const StudentDetails = () => {
   {/* Left Section */}
   <div className="w-8/12 flex-grow">
     <div className="flex bg-gray-100 p-4 rounded-lg border border-stroke border-gray-300 h-full dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-      <div className="w-1/5">
-        <img
-        src={imageUrl || defaultImage}
-          className="rounded-lg w-28 h-28 object-cover"
-          alt="No Image"
-        />
-      </div>
+    <div className="w-1/5 flex items-center justify-center">
+  <img
+    src={imageUrl || defaultImage}
+    className="rounded-lg w-28 h-28 object-cover"
+    alt="No Image"
+  />
+</div>
+
       <div className="w-4/5 pl-4">
       <table className="table-auto w-full text-sm text-gray-600">
   <tbody>

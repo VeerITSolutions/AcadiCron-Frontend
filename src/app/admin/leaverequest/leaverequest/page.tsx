@@ -11,6 +11,7 @@ import Close from "@mui/icons-material/Close"; // Import the Close icon
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
+import { fetchRoleData } from "@/services/roleService";
 import {
   fetchLeaveData,
   createLeave,
@@ -55,6 +56,7 @@ const options = {
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
+  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -64,6 +66,9 @@ const StudentDetails = () => {
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
   const [keyword, setKeyword] = useState<string>("");
@@ -162,6 +167,10 @@ const StudentDetails = () => {
     try {
       const result = await fetchLeaveTypeData();
       setLeaveTypeData(result.data);
+
+      const roleresult = await fetchRoleData();
+      setRoleData(roleresult.data);
+      setLoading(false);
     } catch (error: any) {
       setError(error.message);
     }
@@ -269,6 +278,11 @@ const StudentDetails = () => {
     setEditing(false); // Reset editing state
   };
 
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(event.target.value);
+    console.log("selectedRole", selectedRole);
+  };
+
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
@@ -333,14 +347,15 @@ const StudentDetails = () => {
             Role <span className="required">*</span> </label>
             <select
               value={selectedClass || ""}
-              onChange={handleClassChange}
+              onChange={handleRoleChange}
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             >
               <option value="">Select</option>
-              <option value="Class1">Admin</option>
-              <option value="Class2">Teacher</option>
-              <option value="Class2">Accountant</option>
-              <option value="Class2">Librarian</option>
+              {roledata.map((cls: any) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
             </select>
         </div>
 

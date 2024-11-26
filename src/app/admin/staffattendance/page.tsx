@@ -245,12 +245,13 @@ const StudentDetails = () => {
           </label>
 
           <label className={styles.label}>
-            Attendance Date:
-            <input
-              type="date"
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-            />
-          </label>
+                Attendance Date:
+                <input
+                  type="date"
+                  className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none p-0`} 
+                />
+              </label>
+
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
