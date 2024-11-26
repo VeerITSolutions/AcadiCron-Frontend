@@ -17,7 +17,6 @@ import { toast } from "react-toastify";
 
 // Define columns, including a custom render for "Attendance"
 const columns = [
-  "#",
   "Admission No",
   "Roll Number",
   "Name",
@@ -77,7 +76,7 @@ const columns = [
 const options = {
   filter: false,
   search: false,
-  pagination: false,
+  pagination: true,
   sort: false,
   selectableRows: "none",
   download: false,
@@ -126,8 +125,9 @@ const StudentDetails = () => {
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.admission_no,
+
+      student.roll_no || "N/A",
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
       "Present", // Default attendance to "Present"
       student.note || "",
     ]);
