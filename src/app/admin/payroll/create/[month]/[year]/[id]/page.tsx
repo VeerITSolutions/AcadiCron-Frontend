@@ -7,6 +7,7 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
 import { Delete, Edit, Add, Remove, Calculate } from "@mui/icons-material";  // Import Calculate icon
+import { fetchStaffSingleData } from "@/services/staffService";
 
 const StudentDetails = () => {
   const router = useRouter();
@@ -14,6 +15,59 @@ const StudentDetails = () => {
   // Salary state
   const [allowances, setAllowances] = useState([{ type: "", amount: 0 }]);
   const [deductions, setDeductions] = useState([{ type: "", amount: 0 }]);
+  const [formData, setFormData] = useState<Record<string, any>>({
+    employee_id: "",
+    lang_id: "",
+    department: "",
+    designation: "",
+    qualification: "",
+    work_exp: "",
+    name: "",
+    surname: "",
+    father_name: "",
+    mother_name: "",
+    contact_no: "",
+    emergency_contact_no: "",
+    email: "",
+    dob: "",
+    marital_status: "",
+    date_of_joining: "",
+    date_of_leaving: "",
+    local_address: "",
+    permanent_address: "",
+    note: "",
+    image: "",
+    password: "",
+    gender: "",
+    account_title: "",
+    bank_account_no: "",
+    bank_name: "",
+    ifsc_code: "",
+    bank_branch: "",
+    payscale: "",
+    basic_salary: "",
+    epf_no: "",
+    contract_type: "",
+    shift: "",
+    location: "",
+    facebook: "",
+    twitter: "",
+    linkedin: "",
+    instagram: "",
+    resume: "",
+    joining_letter: "",
+    resignation_letter: "",
+    other_document_name: "",
+    other_document_file: "",
+    user_id: "",
+    is_active: "",
+    verification_code: "",
+    department_name: "",
+    designation_name: "",
+    disable_at: "",
+    role_id: "",
+    user_type: "",
+  });
   const [salary, setSalary] = useState({
     basic: 0,
     totalAllowance: 0,
@@ -22,6 +76,81 @@ const StudentDetails = () => {
     net: 0,
     tax: 0,
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        const getData = async () => {
+          try {
+            const data = await fetchStaffSingleData(id);
+
+            setFormData({
+              id: data.data.id,
+              employee_id: data.data.employee_id || "",
+              lang_id: data.data.lang_id || "",
+              department: data.data.department || "",
+              designation: data.data.designation || "",
+              department_name:data.data.department_name || "",
+    designation_name:data.data.designation_name || "",
+              qualification: data.data.qualification || "",
+              work_exp: data.data.work_exp || "",
+              name: data.data.name || "",
+              surname: data.data.surname || "",
+              father_name: data.data.father_name || "",
+              mother_name: data.data.mother_name || "",
+              contact_no: data.data.contact_no || "",
+              emergency_contact_no: data.data.emergency_contact_no || "",
+              email: data.data.email || "",
+              dob: data.data.dob || "",
+              marital_status: data.data.marital_status || "",
+              date_of_joining: data.data.date_of_joining || "",
+              date_of_leaving: data.data.date_of_leaving || "",
+              local_address: data.data.local_address || "",
+              permanent_address: data.data.permanent_address || "",
+              note: data.data.note || "",
+              image: data.data.image || "",
+              password: data.data.password || "",
+              gender: data.data.gender || "",
+              account_title: data.data.account_title || "",
+              bank_account_no: data.data.bank_account_no || "",
+              bank_name: data.data.bank_name || "",
+              ifsc_code: data.data.ifsc_code || "",
+              bank_branch: data.data.bank_branch || "",
+              payscale: data.data.payscale || "",
+              basic_salary: data.data.basic_salary || "",
+              epf_no: data.data.epf_no || "",
+              contract_type: data.data.contract_type || "",
+              shift: data.data.shift || "",
+              location: data.data.location || "",
+              facebook: data.data.facebook || "",
+              twitter: data.data.twitter || "",
+              linkedin: data.data.linkedin || "",
+              instagram: data.data.instagram || "",
+              resume: data.data.resume || "",
+              joining_letter: data.data.joining_letter || "",
+              resignation_letter: data.data.resignation_letter || "",
+              other_document_name: data.data.other_document_name || "",
+              other_document_file: data.data.other_document_file || "",
+              user_id: data.data.user_id || "",
+              is_active: data.data.is_active || "",
+              verification_code: data.data.verification_code || "",
+              disable_at: data.data.disable_at || "",
+              role_id: data.data.role_id || "",
+              user_type: data.data.user_type || "",
+
+              staff_leave_details : data.data.staff_leave_details,
+
+
+            });
+          } catch (error) {
+            console.error("Error fetching student data:", error);
+          }
+        };
+        getData();
+      }
+    }
+  }, []);
 
   // Calculating total salary components
   const calculateTotal = () => {
@@ -123,27 +252,27 @@ const StudentDetails = () => {
   <tbody>
     <tr className="border-b border-stroke dark:border-strokedark">
       <th className="text-left pr-4 py-2 font-bold dark:text-white">Name</th>
-      <td className="py-2 dark:text-white">Rashmi Shrivastav</td>
+      <td className="py-2 dark:text-white">{formData.name } {formData.surname }</td>
       <th className="text-left pr-4 py-2 font-bold dark:text-white">Staff ID</th>
-      <td className="py-2 dark:text-white">19024</td>
+      <td className="py-2 dark:text-white">{formData.employee_id}</td>
     </tr>
     <tr className="border-b border-stroke dark:border-strokedark">
       <th className="text-left pr-4 py-2 font-bold dark:text-white">Phone</th>
-      <td className="py-2 dark:text-white">8668338370</td>
+      <td className="py-2 dark:text-white">{formData.contact_no}</td>
       <th className="text-left pr-4 py-2 font-bold dark:text-white">Email</th>
-      <td className="py-2 dark:text-white">rashmi.shri18@gmail.com</td>
+      <td className="py-2 dark:text-white">{formData.email}</td>
     </tr>
     <tr className="border-b border-stroke dark:border-strokedark">
       <th className="text-left pr-4 py-2 font-bold dark:text-white">EPF No</th>
-      <td className="py-2 dark:text-white"></td>
+      <td className="py-2 dark:text-white">{formData.epf_no}</td>
       <th className="text-left pr-4 py-2 font-bold dark:text-white">Role</th>
-      <td className="py-2 dark:text-white">Admin</td>
+      <td className="py-2 dark:text-white">{formData.user_type}</td>
     </tr>
     <tr className="border-b border-stroke dark:border-strokedark">
       <th className="text-left pr-4 py-2 font-bold dark:text-white">Department</th>
-      <td className="py-2 dark:text-white">Non Teaching</td>
+      <td className="py-2 dark:text-white">{formData.department_name}</td>
       <th className="text-left pr-4 py-2 font-bold dark:text-white">Designation</th>
-      <td className="py-2 dark:text-white">Admin A/c</td>
+      <td className="py-2 dark:text-white">{formData.designation_name}</td>
     </tr>
   </tbody>
 </table>
