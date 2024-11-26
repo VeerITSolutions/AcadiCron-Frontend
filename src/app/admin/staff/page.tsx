@@ -161,6 +161,10 @@ const StudentDetails = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
+  const handleRefresh = () => {
+    setSelectedRole("");
+    setKeyword("");
+  };
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
@@ -197,17 +201,20 @@ const StudentDetails = () => {
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
+            </button>
           </div>
         </div>
       </div>
 
       <div className="">
         {/* Tab Navigation */}
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-5 sm:gap-10">
           {/* Tabs */}
 
           <button
-            className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none"
+            className="ml-auto bg-blue-500 text-white px-4 py-2 rounded"
             onClick={() => router.push("/admin/staff/create")}
           >
             <PersonAdd className="text-white" />
