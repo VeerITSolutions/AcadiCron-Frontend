@@ -119,6 +119,7 @@ const StudentDetails = () => {
   const router = useRouter();
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [attendancedate, setattendancedate] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
 
   // Function to format the student data, with a default attendance value
@@ -192,10 +193,17 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+  const handleAttendancedateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setattendancedate(event.target.value);
+  };
+
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
+    setattendancedate("");
   };
 
   useEffect(() => {
@@ -228,7 +236,7 @@ const StudentDetails = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-            Class:
+            Class: <span className="required">*</span>
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
@@ -243,7 +251,7 @@ const StudentDetails = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Section:
+            Section: <span className="required">*</span>
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
@@ -258,18 +266,17 @@ const StudentDetails = () => {
               ))}
             </select>
           </label>
-
-          <div className={styles.searchGroup}>
+          <label className={styles.label}>
+            Date:
             <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
+              type="date"
+              value={attendancedate}
+              onChange={handleAttendancedateChange}
               className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             />
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
+          </label>
+
+          <div className={styles.searchGroup}>
             <button onClick={handleRefresh} className={styles.searchButton}>
               Reset
             </button>
