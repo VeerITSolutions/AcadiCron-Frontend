@@ -152,6 +152,26 @@ const StudentDetails = () => {
     }
   }, []);
 
+  let defaultImage = "/images/user/default_male.jpg";
+  let id = window.location.pathname.split("/").pop();
+  // Check for gender and default image conditions
+  if (
+    formData?.gender === "Female" &&
+    formData?.image === "uploads/student_images/default_female.jpg"
+  ) {
+    defaultImage = "/images/user/default_female.jpg";
+  } else if (
+    formData?.gender === "Male" &&
+    formData?.image === "uploads/student_images/default_male.jpg"
+  ) {
+    defaultImage = "/images/user/default_male.jpg";
+  } else {
+     defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/staff_documents/${id}/${formData?.image}`;
+
+  }
+
+ // Dynamically construct the image URL
+ const imageUrl = `${defaultImage}`;
   // Calculating total salary components
   const calculateTotal = () => {
     const totalAllowance = allowances.reduce((acc, curr) => acc + Number(curr.amount), 0);
@@ -242,7 +262,7 @@ const StudentDetails = () => {
     <div className="flex bg-gray-100 p-4 rounded-lg border border-stroke border-gray-300 h-full dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
       <div className="w-1/5">
         <img
-          src="https://erp.erabesa.co.in/uploads/staff_images/no_image.png"
+        src={imageUrl || defaultImage}
           className="rounded-lg w-28 h-28 object-cover"
           alt="No Image"
         />
