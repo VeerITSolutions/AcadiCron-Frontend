@@ -115,11 +115,18 @@ const StudentDetails = () => {
     undefined,
   );
   const [keyword, setKeyword] = useState<string>("");
-
+  const getDefaultDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
   const router = useRouter();
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [attendancedate, setattendancedate] = useState<string>("");
+  const [attendancedate, setattendancedate] =
+    useState<string>(getDefaultDate());
   const [colorMode, setColorMode] = useColorMode();
 
   // Function to format the student data, with a default attendance value
@@ -203,7 +210,7 @@ const StudentDetails = () => {
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
-    setattendancedate("");
+    setattendancedate(getDefaultDate());
   };
 
   useEffect(() => {
