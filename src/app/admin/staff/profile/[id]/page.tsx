@@ -145,7 +145,7 @@ const StudentDetails = () => {
     }
   }, []);
   let defaultImage = "/images/user/default_male.jpg";
-
+  let id = window.location.pathname.split("/").pop();
   // Check for gender and default image conditions
   if (
     formData?.gender === "Female" &&
@@ -158,7 +158,8 @@ const StudentDetails = () => {
   ) {
     defaultImage = "/images/user/default_male.jpg";
   } else {
-    defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image}`;
+     defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/staff_documents/${id}/${formData?.image}`;
+
   }
 
   // Dynamically construct the image URL
