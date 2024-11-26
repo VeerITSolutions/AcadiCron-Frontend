@@ -158,8 +158,9 @@ const StudentDetails = () => {
         keyword,
         localStorage.getItem("selectedSessionId"),
       );
-
+      setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
+
       setData(formattedData);
 
       const roleresult = await fetchRoleData();
