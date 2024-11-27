@@ -496,7 +496,7 @@ const StudentDetails = () => {
 
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Apply Date
+                    Apply Date <span className="required">*</span>{" "}
                   </label>
                   <div className="relative">
                     <Flatpickr
@@ -641,7 +641,7 @@ const StudentDetails = () => {
 
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Attach Document
+                    Attach Document <span className="required">*</span>{" "}
                   </label>
 
                   <input
@@ -656,7 +656,7 @@ const StudentDetails = () => {
 
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Status
+                    Status <span className="required">*</span>{" "}
                   </label>
                   <div className="flex flex-col space-y-2">
                     <label className="flex items-center space-x-3">
