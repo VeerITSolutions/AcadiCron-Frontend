@@ -1,12 +1,13 @@
 import apiClient from "./apiClient";
 
-export const fetchLeaveData = async (page: number, perPage: number,selectedClass?: string,
+export const fetchLeaveData = async (page: any, perPage: number,selectedClass?: string,
   selectedSection?: string,
-  keyword?: string) => {
+  keyword?: string , id?: any) => {
   const response = await apiClient.get(`/leave-request`, {
     params: {
       page,
       perPage,
+      id
     },
   });
   return response.data;

@@ -123,18 +123,36 @@ const StudentDetails = () => {
     }
   };
 
-  const handleEdit = (id: number, leaveData: any) => {
+  const handleEdit = async (id: number, leaveData: any) => {
     setEditing(true);
     setCurrentLeaveId(id);
-    /* setFormData({
-      date: leaveData.date || "",
-      leave_type_id: leaveData.leave_type_id || "",
-      leave_from: leaveData.leave_from || "",
-      leave_to: leaveData.leave_to || "",
-      employee_remark: leaveData.employee_remark || "",
-      admin_remark: leaveData.admin_remark || "",
-      document_file: null,
-    }); */
+
+    try {
+      const result = await fetchLeaveData(
+        "",
+        rowsPerPage,
+        selectedClass,
+        selectedSection,
+        keyword,
+        id,
+      );
+
+      setFormData({
+        date: result.data.date,
+        leave_type_id: result.data.leave_type_id,
+        leave_from: result.data.leave_from,
+        leave_to: result.data.leave_to,
+        employee_remark: result.data.employee_remark,
+        admin_remark: result.data.admin_remark,
+        status: result.data.status,
+        document_file: null,
+      });
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+
     setOpen(true); // Open the modal
   };
   const formatDate = (dateString: any) => {
