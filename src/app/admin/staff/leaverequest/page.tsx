@@ -167,53 +167,6 @@ const StudentDetails = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      let result;
-      if (editing) {
-        result = await editLeaveData(
-          currentLeaveId!,
-          formData.date,
-          formData.leave_type_id,
-          formData.leave_from,
-          formData.leave_to,
-          formData.reason,
-          formData.document_file,
-        );
-      } else {
-        result = await createLeave(
-          formData.date,
-          formData.leave_type_id,
-          formData.leave_from,
-          formData.leave_to,
-          formData.reason,
-          formData.document_file,
-        );
-      }
-      if (result.success) {
-        toast.success(
-          editing ? "Leave updated successfully" : "Leave applied successfully",
-        );
-        setFormData({
-          date: "",
-          leave_type_id: "",
-          leave_from: "",
-          leave_to: "",
-          reason: "",
-          document_file: null,
-        });
-        setOpen(false); // Close the modal
-        setEditing(false); // Reset editing state
-        fetchData(page, rowsPerPage); // Refresh data after submit
-      } else {
-        toast.error("Failed to save leave");
-      }
-    } catch (error) {
-      console.error("An error occurred", error);
-      toast.error("An error occurred while saving leave");
-    }
-  };
-
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -278,12 +231,14 @@ const StudentDetails = () => {
         <div
           className="mb-4 pl-4 pt-4 text-right"
           style={{
-            display: "flex", justifyContent: "flex-end", alignItems: "center",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
           }}
         >
           <button
             type="submit"
-            className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"
+            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
             onClick={handleClickOpen}
           >
             {editing ? "Edit Leave" : "Apply Leave"}
@@ -455,17 +410,16 @@ const StudentDetails = () => {
                   />
                 </div>
 
-               
                 <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Attach Document
-                </label>
-                <input
-                  type="file"
-                  className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"
-                  //onFileChange={handleFileChange}
-                />
-              </div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Attach Document
+                  </label>
+                  <input
+                    type="file"
+                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    //onFileChange={handleFileChange}
+                  />
+                </div>
 
                 {/* Send Message Button */}
                 <div className="col-span-full">
