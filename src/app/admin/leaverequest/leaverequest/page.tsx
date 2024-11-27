@@ -57,11 +57,14 @@ const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
+  const [roleleavedata, setRoleLeaveData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+
+  
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -69,6 +72,9 @@ const StudentDetails = () => {
     undefined,
   );
   const [selectedRole, setSelectedRole] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedRoleLeave, setSelectedRoleLeave] = useState<string | undefined>(
     undefined,
   );
   const [keyword, setKeyword] = useState<string>("");
@@ -80,6 +86,9 @@ const StudentDetails = () => {
     leave_to: "",
     reason: "",
     document_file: null,
+    
+    
+    
   });
   const [editing, setEditing] = useState(false); // Add state for editing
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
@@ -154,8 +163,11 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        
+        
       );
       setTotalCount(result.totalCount);
+      setRoleLeaveData(result.roleleavedata);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
       setLoading(false);
@@ -170,7 +182,15 @@ const StudentDetails = () => {
 
       const roleresult = await fetchRoleData();
       setRoleData(roleresult.data);
+
+      // const leaveresult = await fetchLeaveData();
+      // setRoleLeaveData(leaveresult.data);
+
+    
+
       setLoading(false);
+
+
     } catch (error: any) {
       setError(error.message);
     }
@@ -282,7 +302,10 @@ const StudentDetails = () => {
     setSelectedRole(event.target.value);
     console.log("selectedRole", selectedRole);
   };
-
+  const handleRoleLeaveChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRoleLeave(event.target.value);
+    console.log("selectedRoleLeave", selectedRoleLeave);
+  };
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
@@ -364,14 +387,18 @@ const StudentDetails = () => {
           Name <span className="required">*</span> </label>
             <select
               value={selectedClass || ""}
-              onChange={handleClassChange}
+              onChange={handleRoleLeaveChange}
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             >
               <option value="">Select</option>
-              <option value="Class1">Priya Ronghe (19001)</option>
-              <option value="Class2">Rushali Patil (19003)</option>
-              <option value="Class2">Tabassum Firdous (19005)</option>
-              <option value="Class2">Harshalata Khante (19002)</option>
+           
+
+{roleleavedata.map((cls: any) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
+
             </select>
         </div>
      
