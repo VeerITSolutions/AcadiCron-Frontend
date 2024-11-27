@@ -137,16 +137,9 @@ const StudentDetails = () => {
         id,
       );
 
-      setFormData({
-        date: result.data.date,
-        leave_type_id: result.data.leave_type_id,
-        leave_from: result.data.leave_from,
-        leave_to: result.data.leave_to,
-        employee_remark: result.data.employee_remark,
-        admin_remark: result.data.admin_remark,
-        status: result.data.status,
-        document_file: null,
-      });
+      console.log("result", result);
+
+      setFormData(result.data[0]);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
