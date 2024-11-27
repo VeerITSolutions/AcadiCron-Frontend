@@ -33,6 +33,7 @@ import {
 import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
+import { fetchStaffData } from "@/services/staffService";
 
 const columns = [
   "Staff",
@@ -57,6 +58,9 @@ const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
+
+  const [staffData, setStaffData] = useState<Array<Array<string>>>([]);
+
   const [roleleavedata, setRoleLeaveData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,19 +68,20 @@ const StudentDetails = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
 
-  
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [selectedRole, setSelectedRole] = useState<string | undefined>(
+
+  const [selectedRoleLeave, setSelectedRoleLeave] = useState<
+    string | undefined
+  >(undefined);
+  const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     undefined,
   );
-  const [selectedRoleLeave, setSelectedRoleLeave] = useState<string | undefined>(
-    undefined,
-  );
+
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
@@ -86,9 +91,6 @@ const StudentDetails = () => {
     leave_to: "",
     reason: "",
     document_file: null,
-    
-    
-    
   });
   const [editing, setEditing] = useState(false); // Add state for editing
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
@@ -155,7 +157,25 @@ const StudentDetails = () => {
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
+    selectedRoleLeave?: string,
   ) => {
+    try {
+      const resultStaffData = await fetchStaffData(
+        currentPage + 1,
+        rowsPerPage,
+        null,
+        selectedSection,
+        keyword,
+        localStorage.getItem("selectedSessionId"),
+        selectedRoleLeave,
+      );
+      setStaffData(resultStaffData.data);
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+
     try {
       const result = await fetchLeaveData(
         currentPage + 1,
@@ -163,11 +183,10 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
-        
-        
       );
+
       setTotalCount(result.totalCount);
-      setRoleLeaveData(result.roleleavedata);
+
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
       setLoading(false);
@@ -186,11 +205,7 @@ const StudentDetails = () => {
       // const leaveresult = await fetchLeaveData();
       // setRoleLeaveData(leaveresult.data);
 
-    
-
       setLoading(false);
-
-
     } catch (error: any) {
       setError(error.message);
     }
@@ -282,12 +297,33 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(
+      page,
+      rowsPerPage,
+      selectedClass,
+      selectedSection,
+      keyword,
+      selectedRoleLeave,
+    );
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(
+      page,
+      rowsPerPage,
+      selectedClass,
+      selectedSection,
+      keyword,
+      selectedRoleLeave,
+    );
+  }, [
+    page,
+    rowsPerPage,
+    selectedClass,
+    selectedSection,
+    keyword,
+    selectedRoleLeave,
+  ]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -298,14 +334,14 @@ const StudentDetails = () => {
     setEditing(false); // Reset editing state
   };
 
+  const handleStaffChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedStaff(event.target.value);
+  };
+
   const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedRole(event.target.value);
-    console.log("selectedRole", selectedRole);
-  };
-  const handleRoleLeaveChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRoleLeave(event.target.value);
-    console.log("selectedRoleLeave", selectedRoleLeave);
   };
+
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
@@ -322,7 +358,7 @@ const StudentDetails = () => {
         >
           <button
             type="submit"
-            className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"
+            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
             onClick={handleClickOpen}
           >
             {editing ? "Edit Leave" : "Add Leave Request"}
@@ -365,43 +401,45 @@ const StudentDetails = () => {
           <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
-        <div className="field">
-          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Role <span className="required">*</span> </label>
-            <select
-              value={selectedClass || ""}
-              onChange={handleRoleChange}
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="">Select</option>
-              {roledata.map((cls: any) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.name}
-                </option>
-              ))}
-            </select>
-        </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Role <span className="required">*</span>{" "}
+                  </label>
+                  <select
+                    value={selectedRoleLeave || ""}
+                    onChange={handleRoleChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {roledata.map((cls: any) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-        <div className="field">
-          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-          Name <span className="required">*</span> </label>
-            <select
-              value={selectedClass || ""}
-              onChange={handleRoleLeaveChange}
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="">Select</option>
-           
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Name <span className="required">*</span>{" "}
+                  </label>
+                  <select
+                    value={selectedStaff || ""}
+                    onChange={handleStaffChange}
+                    disabled={!selectedRoleLeave}
+                    className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                      !selectedRoleLeave ? "cursor-not-allowed opacity-50" : ""
+                    }`}
+                  >
+                    <option value="">Select</option>
+                    {staffData.map((cls: any) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name} {cls.surname} ( {cls.employee_id})
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-{roleleavedata.map((cls: any) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.name}
-                </option>
-              ))}
-
-            </select>
-        </div>
-     
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Apply Date
@@ -433,19 +471,18 @@ const StudentDetails = () => {
                   </div>
                 </div>
 
-
                 <div className="field">
-          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-          Leave Type <span className="required">*</span> </label>
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="">Select</option>
-
-            </select>
-        </div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Leave Type <span className="required">*</span>{" "}
+                  </label>
+                  <select
+                    value={selectedClass || ""}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                  </select>
+                </div>
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Leave From Date <span className="required">*</span>
@@ -455,7 +492,7 @@ const StudentDetails = () => {
                       /* value={formData.date} */
                       onChange={handleDateChange}
                       options={{
-                        dateFormat: "m/d/Y", 
+                        dateFormat: "m/d/Y",
                       }}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
@@ -477,7 +514,6 @@ const StudentDetails = () => {
                   </div>
                 </div>
 
-               
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Leave To Date <span className="required">*</span>
@@ -487,7 +523,7 @@ const StudentDetails = () => {
                       /* value={formData.date} */
                       onChange={handleDateChange}
                       options={{
-                        dateFormat: "m/d/Y", 
+                        dateFormat: "m/d/Y",
                       }}
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
@@ -520,7 +556,7 @@ const StudentDetails = () => {
                     value={formData.reason}
                     onChange={handleChange}
                   />
-                </div> 
+                </div>
 
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -536,58 +572,57 @@ const StudentDetails = () => {
                 </div>
 
                 <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Attach Document
-                </label>
-                <input
-                  type="file"
-                  className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"
-                  //onFileChange={handleFileChange}
-                />
-              </div>
-
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Status
-                </label>
-                <div className="flex flex-col space-y-2">
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="radio"
-                      value="pending"
-                      name="addstatus"
-                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
-                    />
-                    <span className="text-sm font-medium text-black dark:text-white">
-                      Pending
-                    </span>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Attach Document
                   </label>
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="radio"
-                      value="approve"
-                      name="addstatus"
-                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
-                    />
-                    <span className="text-sm font-medium text-black dark:text-white">
-                      Approve
-                    </span>
-                  </label>
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="radio"
-                      value="disapprove"
-                      name="addstatus"
-                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
-                    />
-                    <span className="text-sm font-medium text-black dark:text-white">
-                      Disapprove
-                    </span>
-                  </label>
+                  <input
+                    type="file"
+                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    //onFileChange={handleFileChange}
+                  />
                 </div>
-              </div>
 
-          
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Status
+                  </label>
+                  <div className="flex flex-col space-y-2">
+                    <label className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        value="pending"
+                        name="addstatus"
+                        className="border-gray-300 h-4 w-4 rounded text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
+                      />
+                      <span className="text-sm font-medium text-black dark:text-white">
+                        Pending
+                      </span>
+                    </label>
+                    <label className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        value="approve"
+                        name="addstatus"
+                        className="border-gray-300 h-4 w-4 rounded text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
+                      />
+                      <span className="text-sm font-medium text-black dark:text-white">
+                        Approve
+                      </span>
+                    </label>
+                    <label className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        value="disapprove"
+                        name="addstatus"
+                        className="border-gray-300 h-4 w-4 rounded text-primary focus:ring-primary dark:border-form-strokedark dark:focus:ring-primary"
+                      />
+                      <span className="text-sm font-medium text-black dark:text-white">
+                        Disapprove
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
                 <div className="col-span-full">
                   <button
                     type="submit"

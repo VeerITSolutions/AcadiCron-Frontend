@@ -2,7 +2,7 @@ import apiClient from "./apiClient";
 
 export const fetchStaffData = async (page: number, perPage: number,selectedRole :any,
   selectedSection :any,
-  keyword:any, selectedSessionId?:any) => {
+  keyword:any, selectedSessionId?:any, selectedRoleLeave?:any) => {
   const response = await apiClient.get(`/staff-by-role`, {
     params: {
       page,
@@ -10,7 +10,8 @@ export const fetchStaffData = async (page: number, perPage: number,selectedRole 
       selectedRole,
       selectedSection,
       keyword,
-      selectedSessionId
+      selectedSessionId,
+      selectedRoleLeave
     },
   });
   return response.data;
