@@ -17,7 +17,6 @@ import { toast } from "react-toastify";
 
 // Define columns, including a custom render for "Attendance"
 const columns = [
-  "#",
   "Admission No",
   "Roll Number",
   "Name",
@@ -77,7 +76,7 @@ const columns = [
 const options = {
   filter: false,
   search: false,
-  pagination: false,
+  pagination: true,
   sort: false,
   selectableRows: "none",
   download: false,
@@ -109,25 +108,32 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
+    "1",
   );
   const [keyword, setKeyword] = useState<string>("");
-
+  const getDefaultDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
   const router = useRouter();
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [attendancedate, setattendancedate] =
+    useState<string>(getDefaultDate());
   const [colorMode, setColorMode] = useColorMode();
 
   // Function to format the student data, with a default attendance value
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.admission_no,
+
+      student.roll_no || "N/A",
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
       "Present", // Default attendance to "Present"
       student.note || "",
     ]);
@@ -192,10 +198,17 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+  const handleAttendancedateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setattendancedate(event.target.value);
+  };
+
   const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
-    setKeyword("");
+    setSelectedClass("1");
+    setSelectedSection("1");
+
+    setattendancedate(getDefaultDate());
   };
 
   useEffect(() => {
@@ -228,7 +241,7 @@ const StudentDetails = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-            Class:
+            Class: <span className="required">*</span>
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
@@ -243,7 +256,7 @@ const StudentDetails = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Section:
+            Section: <span className="required">*</span>
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
@@ -258,18 +271,17 @@ const StudentDetails = () => {
               ))}
             </select>
           </label>
-
-          <div className={styles.searchGroup}>
+          <label className={styles.label}>
+            Date:
             <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
+              type="date"
+              value={attendancedate}
+              onChange={handleAttendancedateChange}
               className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             />
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
+          </label>
+
+          <div className={styles.searchGroup}>
             <button onClick={handleRefresh} className={styles.searchButton}>
               Reset
             </button>

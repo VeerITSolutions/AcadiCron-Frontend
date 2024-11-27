@@ -132,6 +132,10 @@ const StudentDetails = () => {
   const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
+
+  const [selectedAttendacne, setAttendance] = useState<string | undefined>(
+    undefined,
+  );
   const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
@@ -146,7 +150,7 @@ const StudentDetails = () => {
     currentPage: number,
     rowsPerPage: number,
     selectedRole?: string,
-    selectedSection?: string,
+    selectedAttendacne?: string,
     keyword?: string,
   ) => {
     try {
@@ -185,7 +189,7 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
@@ -197,29 +201,23 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
-
   const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRole(event.target.value);
   };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
-  };
-
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
+  const handleAttendanceChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setAttendance(event.target.value);
   };
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
   };
-
+  const handleRefresh = () => {
+    setSelectedRole("");
+    setAttendance("");
+  };
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
@@ -245,16 +243,22 @@ const StudentDetails = () => {
           </label>
 
           <label className={styles.label}>
-                Attendance Date:
-                <input
-                  type="date"
-                  className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none p-0`} 
-                />
-              </label>
-
+            Attendance Date:
+            <input
+              type="date"
+              value={selectedAttendacne || ""}
+              /* onChange={handleAttendanceChange} */
+              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+            />
+          </label>
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
+            </button>
+          </div>
+          <div className={styles.searchGroup}>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
             </button>
           </div>
         </div>
