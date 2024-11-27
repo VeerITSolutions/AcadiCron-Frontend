@@ -140,7 +140,7 @@ const StudentDetails = () => {
   const formatDate = (dateString: any) => {
     if (!dateString) return "N/A"; // Handle null/undefined dates
     const date = new Date(dateString);
-    if (isNaN(date)) return "N/A"; // Handle invalid dates
+    if (isNaN(date.getTime())) return "N/A"; // Handle invalid dates
     return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
       date,
     );
@@ -161,7 +161,7 @@ const StudentDetails = () => {
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       `${student.name} ${student.surname}` || "N/A",
-      student.leave_type_id || "N/A",
+      student.type || "N/A",
       `${formatDate(student.leave_from)} - ${formatDate(student.leave_to) || "N/A"}`,
       student.leave_days || "N/A",
       formatDate(student.date) || "N/A",
