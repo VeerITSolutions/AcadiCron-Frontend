@@ -339,12 +339,14 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
         <div
           className="mb-4 pl-4 pt-4 text-right"
           style={{
-            display: "flex", justifyContent: "flex-end", alignItems: "center",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
           }}
         >
           <button
             type="submit"
-            className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"
+            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
             onClick={handleClickOpen}
           >
             {editing ? "Edit Leave" : "Apply Leave"}
@@ -526,19 +528,14 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
                   />
                 </div>
 
-               
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Attach Document <span className="required">*</span>{" "}
+                    Attach Document
                   </label>
-
                   <input
-                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                     type="file"
-                    accept="image/*"
-                    name="document_file" // Optional: Include name for form data
-                    onChange={handleFileChange} // Handle file change separately
-                    id="file"
+                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    //onFileChange={handleFileChange}
                   />
                 </div>
 
