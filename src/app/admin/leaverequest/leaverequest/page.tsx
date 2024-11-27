@@ -140,6 +140,8 @@ const StudentDetails = () => {
       console.log("result", result);
 
       setFormData(result.data[0]);
+      setSelectedRoleLeave(result.data[0].leave_type_id);
+      setSelectedStaff(result.data.staff_id);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
