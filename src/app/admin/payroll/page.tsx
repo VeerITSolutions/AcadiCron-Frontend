@@ -70,11 +70,9 @@ const StudentDetails = () => {
   );
 
   const [selectedMonth, setSelectedMonth] = useState<string | undefined>(
-    'January',
+    "January",
   );
-  const [selectedYear, setSelectedYear] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedYear, setSelectedYear] = useState<string | undefined>("2024");
   const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
@@ -92,7 +90,10 @@ const StudentDetails = () => {
       student.contact_no,
       student.status || "N/A",
       <div key={student.id}>
-        <button onClick={() => handleEdit(student.id)} className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4">
+        <button
+          onClick={() => handleEdit(student.id)}
+          className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+        >
           Generate Payroll
         </button>
       </div>,
@@ -138,8 +139,15 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedRole, selectedMonth, selectedYear, keyword);
-  }, [page, rowsPerPage, selectedRole,selectedMonth, selectedYear, keyword]);
+    fetchData(
+      page,
+      rowsPerPage,
+      selectedRole,
+      selectedMonth,
+      selectedYear,
+      keyword,
+    );
+  }, [page, rowsPerPage, selectedRole, selectedMonth, selectedYear, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -152,13 +160,10 @@ const StudentDetails = () => {
 
   const handleselectedMonth = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedMonth(event.target.value);
-    
   };
-  
-  
+
   const handleselectedYear = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(event.target.value);
-    
   };
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,13 +172,20 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedRole, selectedMonth, selectedYear, keyword);
+    fetchData(
+      page,
+      rowsPerPage,
+      selectedRole,
+      selectedMonth,
+      selectedYear,
+      keyword,
+    );
   };
 
   const handleRefresh = () => {
     setKeyword("");
-    setSelectedMonth("");
-    setSelectedYear("");
+    setSelectedMonth("January");
+    setSelectedYear("2024");
     setSelectedRole("");
   };
   const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -186,9 +198,9 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-       <div className={styles.filters}>
-      <div className={styles.filterGroup}>
-      <label className={styles.label}>
+      <div className={styles.filters}>
+        <div className={styles.filterGroup}>
+          <label className={styles.label}>
             Role:
             <select
               value={selectedRole || ""}
@@ -204,37 +216,33 @@ const StudentDetails = () => {
               <option value="Class1">Admin</option>
             </select>
           </label>
-        <label className={styles.label}>
-          Month:
-          <select
-          value={selectedMonth || ""}
-          onChange={handleselectedMonth}
-          className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-        >
-          <option value="">Select</option>
-        
-                                                                                            <option value="January">January</option>
-                                                                                                        <option value="February">February</option>
-                                                                                                        <option value="March">March</option>
-                                                                                                        <option value="April">April</option>
-                                                                                                        <option value="May">May</option>
-                                                                                                        <option value="June">June</option>
-                                                                                                        <option value="July">July</option>
-                                                                                                        <option value="August">August</option>
-                                                                                                        <option value="September">September</option>
-                                                                                                        <option value="October" >October</option>
-                                                                                                        <option value="November">November</option>
-                                                                                                        <option value="December">December</option>
-                                                            
+          <label className={styles.label}>
+            Month:
+            <select
+              value={selectedMonth || ""}
+              onChange={handleselectedMonth}
+              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+            >
+              <option value="">Select</option>
 
-                                      
-         
-        </select>
-        </label>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+          </label>
 
-        <label className={styles.label}>
-        Year:
-        <select
+          <label className={styles.label}>
+            Year:
+            <select
               value={selectedYear || ""}
               onChange={handleselectedYear}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
@@ -244,24 +252,24 @@ const StudentDetails = () => {
               <option value="2024">2024</option>
               {/* Add more section options here */}
             </select>
-      </label>
-        <div className={styles.searchGroup}>
-          <input
-            type="text"
-            placeholder="Search By Keyword"
-            value={keyword}
-            onChange={handleKeywordChange}
-            className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
-          />
-          <button onClick={handleSearch} className={styles.searchButton}>
-            Search
-          </button>
-          <button onClick={handleRefresh} className={styles.searchButton}>
-            Reset
-          </button>
+          </label>
+          <div className={styles.searchGroup}>
+            <input
+              type="text"
+              placeholder="Search By Keyword"
+              value={keyword}
+              onChange={handleKeywordChange}
+              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+            />
+            <button onClick={handleSearch} className={styles.searchButton}>
+              Search
+            </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
+            </button>
+          </div>
         </div>
       </div>
-    </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Staff List"}
