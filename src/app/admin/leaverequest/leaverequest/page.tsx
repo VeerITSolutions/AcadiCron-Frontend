@@ -137,15 +137,40 @@ const StudentDetails = () => {
     }); */
     setOpen(true); // Open the modal
   };
+  const formatDate = (dateString: any) => {
+    if (!dateString) return "N/A"; // Handle null/undefined dates
+    const date = new Date(dateString);
+    if (isNaN(date)) return "N/A"; // Handle invalid dates
+    return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
+      date,
+    );
+  };
 
+  const getStatusColor = (status: string | undefined) => {
+    switch (status?.toLowerCase()) {
+      case "pending":
+        return "orange";
+      case "approve":
+        return "green";
+      case "disapprove":
+        return "red";
+      default:
+        return "gray"; // Default for "N/A" or unknown statuses
+    }
+  };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.name || "N/A",
+      `${student.name} ${student.surname}` || "N/A",
       student.leave_type_id || "N/A",
-      student.leave_from + "-" + student.leave_to || "N/A",
+      `${formatDate(student.leave_from)} - ${formatDate(student.leave_to) || "N/A"}`,
       student.leave_days || "N/A",
-      student.date || "N/A",
-      student.status || "N/A",
+      formatDate(student.date) || "N/A",
+
+      <span
+        style={{ color: getStatusColor(student.status), fontWeight: "bold" }}
+      >
+        {student.status || "N/A"}
+      </span>,
       <div key={student.id}>
         <IconButton
           onClick={() => handleEdit(student.id, student)}
