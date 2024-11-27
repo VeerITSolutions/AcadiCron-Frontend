@@ -14,14 +14,25 @@ export const fetchLeaveData = async (page: number, perPage: number,selectedClass
 
 
 
-export const createLeave = async (date: string,
+export const createLeave = async (
+  selectedRoleLeave : any,
+  selectedStaff : any,
+  selectedLeaveType : any,
+  date: any,
   leave_type_id: string,
-  leave_from: string,
-  leave_to: string,
-  reason: string,
-  document_file: any): Promise<any> => {
+  leave_from: any,
+  leave_to: any,
+  employee_remark: string,
+  admin_remark: string,
+  document_file: any,
+  status: any): Promise<any> => {
   try {
-    const response = await apiClient.post("/leave-request", { date, leave_type_id, leave_from, leave_to, reason, document_file });
+    const response = await apiClient.post("/leave-request", { date, selectedLeaveType,
+
+
+      selectedRoleLeave,
+selectedStaff,
+leave_from, leave_to, employee_remark, admin_remark, document_file  ,status});
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -38,13 +49,25 @@ export const deleteLeaveData = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editLeaveData = async (id: number,date: string,
+export const editLeaveData = async (
+  selectedRoleLeave : any,
+  selectedStaff : any,
+  selectedLeaveType : any,
+  date: any,
   leave_type_id: string,
-  leave_from: string,
-  leave_to: string,
-  reason: string,
-  document_file: any) => {
-  const data = { date, leave_type_id, leave_from, leave_to, reason, document_file }; // Create an object with the name field
+  leave_from: any,
+  leave_to: any,
+  employee_remark: string,
+  admin_remark: string,
+  document_file: any,
+  status: any,
+id: any) => {
+  const data = {  date, selectedLeaveType,
+
+
+    selectedRoleLeave,
+selectedStaff,
+leave_from, leave_to, employee_remark, admin_remark, document_file  ,status }; // Create an object with the name field
   const response = await apiClient.post(`/leave-request/${id}`, data);
   return response.data;
 };

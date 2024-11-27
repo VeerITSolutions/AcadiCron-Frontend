@@ -4,7 +4,7 @@ declare module 'react-flatpickr' {
     interface FlatpickrProps {
       options?: any; // You can define more specific types here if needed
       onChange?: (date: Date[]) => void;
-      value?: Date | Date[];
+      value?: Date | null;
       [key: string]: any; // Allow additional props
     }
 
