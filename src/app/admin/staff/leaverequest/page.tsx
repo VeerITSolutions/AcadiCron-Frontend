@@ -66,14 +66,25 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [selectedRoleLeave, setSelectedRoleLeave] = useState<
+  string | undefined
+>(undefined);
+const [selectedLeaveType, setSelectedLeaveselectedLeaveType] = useState<
+  string | undefined
+>(undefined);
+const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
+  undefined,
+);
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
-    date: "",
+    date: null as Date | null,
     leave_type_id: "",
-    leave_from: "",
-    leave_to: "",
-    reason: "",
+    leave_from: null as Date | null,
+    leave_to: null as Date | null,
+    employee_remark: "",
+    admin_remark: "",
+    status: "",
     document_file: null,
   });
   const [editing, setEditing] = useState(false); // Add state for editing
@@ -92,21 +103,53 @@ const StudentDetails = () => {
     }
   };
 
-  const handleDateChange = (selectedDates: any) => {
-    setFormData({ ...formData, date: selectedDates[0] });
+  const handleDateChange = (selectedDates: Date[], name: string) => {
+    if (selectedDates.length > 0) {
+      const formattedDate = selectedDates[0].toISOString().split("T")[0]; // Format to YYYY-MM-DD
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: formattedDate, // Update the specific field dynamically
+      }));
+    }
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
 
   const handleEdit = (id: number, leaveData: any) => {
     setEditing(true);
     setCurrentLeaveId(id);
-    setFormData({
-      date: leaveData.date || "",
-      leave_type_id: leaveData.leave_type_id || "",
-      leave_from: leaveData.leave_from || "",
-      leave_to: leaveData.leave_to || "",
-      reason: leaveData.reason || "",
-      document_file: null,
-    });
+    // setFormData({
+    //   date: leaveData.date || "",
+    //   leave_type_id: leaveData.leave_type_id || "",
+    //   leave_from: leaveData.leave_from || "",
+    //   leave_to: leaveData.leave_to || "",
+    //   employee_remark: leaveData.employee_remark || "",
+    //   admin_remark: leaveData.admin_remark || "",
+    //   document_file: null,
+    // });
     setOpen(true); // Open the modal
   };
 
@@ -167,41 +210,68 @@ const StudentDetails = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSave = async () => {
+    if (
+      !selectedRoleLeave &&
+      !selectedStaff &&
+      !formData.leave_from &&
+      !formData.leave_to &&
+      !formData.status
+    ) {
+      toast.error("Please fill all required fields before submitting.");
+      return;
+    }
     try {
       let result;
       if (editing) {
         result = await editLeaveData(
-          currentLeaveId!,
+          selectedRoleLeave,
+          selectedStaff,
+          selectedLeaveType,
           formData.date,
           formData.leave_type_id,
           formData.leave_from,
           formData.leave_to,
-          formData.reason,
+          formData.employee_remark,
+          formData.admin_remark,
           formData.document_file,
+          formData.status,
+          "1",
         );
       } else {
         result = await createLeave(
+          selectedRoleLeave,
+          selectedStaff,
+          selectedLeaveType,
           formData.date,
           formData.leave_type_id,
           formData.leave_from,
           formData.leave_to,
-          formData.reason,
+          formData.employee_remark,
+          formData.admin_remark,
           formData.document_file,
+          formData.status,
         );
       }
-      if (result.success) {
+
+      if (result.status == 200) {
         toast.success(
           editing ? "Leave updated successfully" : "Leave applied successfully",
         );
         setFormData({
-          date: "",
+          date: null as Date | null,
           leave_type_id: "",
-          leave_from: "",
-          leave_to: "",
-          reason: "",
+          leave_from: null as Date | null,
+          leave_to: null as Date | null,
+          employee_remark: "",
+          admin_remark: "",
+          status: "",
           document_file: null,
         });
+
+        setSelectedRoleLeave("");
+        setSelectedStaff("");
+        setSelectedLeaveselectedLeaveType("");
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
         fetchData(page, rowsPerPage); // Refresh data after submit
@@ -214,19 +284,7 @@ const StudentDetails = () => {
     }
   };
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value, type } = event.target;
 
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]:
-        type === "file" && "files" in event.target
-          ? (event.target as HTMLInputElement).files?.[0]
-          : value,
-    }));
-  };
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -269,6 +327,9 @@ const StudentDetails = () => {
     setEditing(false); // Reset editing state
   };
 
+  const handleLeaveType = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedLeaveselectedLeaveType(event.target.value);
+  };
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
@@ -332,11 +393,15 @@ const StudentDetails = () => {
                     Apply Date <span className="required">*</span>
                   </label>
                   <div className="relative">
-                    <Flatpickr
-                      onChange={handleDateChange}
+                  <Flatpickr
+                      value={formData.date}
+                      onChange={(selectedDates) =>
+                        handleDateChange(selectedDates, "date")
+                      }
                       options={{
                         dateFormat: "m/d/Y",
                       }}
+                      name="date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -360,18 +425,17 @@ const StudentDetails = () => {
                 {/* Available Leave Type */}
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Available Leave <span className="required">*</span>
+                  Available Leave <span className="required">*</span>{" "}
                   </label>
                   <select
-                    name="leave_type_id"
+                    value={selectedLeaveType || ""}
+                    onChange={handleLeaveType}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value={formData.leave_type_id}
-                    onChange={handleChange}
                   >
                     <option value="">Select</option>
-                    {dataleavetype.map((type) => (
-                      <option key={type.id} value={type.id}>
-                        {type.type}
+                    {dataleavetype.map((cls: any) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.type}
                       </option>
                     ))}
                   </select>
@@ -383,12 +447,15 @@ const StudentDetails = () => {
                     Leave From Date <span className="required">*</span>
                   </label>
                   <div className="relative">
-                    <Flatpickr
-                      /* value={formData.date} */
-                      onChange={handleDateChange}
+                  <Flatpickr
+                      value={formData.leave_from}
+                      onChange={(selectedDates) =>
+                        handleDateChange(selectedDates, "leave_from")
+                      }
                       options={{
-                        dateFormat: "m/d/Y", // Customize date format if necessary
+                        dateFormat: "m/d/Y",
                       }}
+                      name="leave_from"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -416,11 +483,15 @@ const StudentDetails = () => {
                   </label>
                   <div className="relative">
                     <Flatpickr
-                      /* value={formData.date} */
-                      onChange={handleDateChange}
-                      options={{
-                        dateFormat: "m/d/Y", // Customize date format if necessary
-                      }}
+                    
+                     value={formData.leave_to}
+                     onChange={(selectedDates) =>
+                       handleDateChange(selectedDates, "leave_to")
+                     }
+                     options={{
+                       dateFormat: "m/d/Y",
+                     }}
+                     name="leave_to"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -447,31 +518,35 @@ const StudentDetails = () => {
                     Reason
                   </label>
                   <input
-                    name="reason"
+                    name="employee_remark"
                     type="text"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value={formData.reason}
-                    onChange={handleChange}
+                    value={formData.employee_remark}
+                    onChange={handleInputChange}
                   />
                 </div>
 
                
                 <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Attach Document
-                </label>
-                <input
-                  type="file"
-                  className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"
-                  //onFileChange={handleFileChange}
-                />
-              </div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Attach Document <span className="required">*</span>{" "}
+                  </label>
+
+                  <input
+                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    type="file"
+                    accept="image/*"
+                    name="document_file" // Optional: Include name for form data
+                    onChange={handleFileChange} // Handle file change separately
+                    id="file"
+                  />
+                </div>
 
                 {/* Send Message Button */}
                 <div className="col-span-full">
-                  <button
-                    type="submit"
-                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                <button
+                    onClick={handleSave}
+                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >
                     Save
                   </button>
