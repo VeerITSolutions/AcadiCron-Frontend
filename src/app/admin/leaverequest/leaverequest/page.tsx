@@ -137,8 +137,6 @@ const StudentDetails = () => {
         id,
       );
 
-      console.log("result", result);
-
       setFormData(result.data[0]);
       setSelectedRoleLeave(result.data[0].leave_type_id);
       setSelectedStaff(result.data[0].staff_id);
@@ -290,7 +288,6 @@ const StudentDetails = () => {
           formData.admin_remark,
           formData.document_file,
           formData.status,
-          "1",
         );
       } else {
         result = await createLeave(
