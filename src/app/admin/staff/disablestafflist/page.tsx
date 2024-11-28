@@ -10,10 +10,8 @@ import Loader from "@/components/common/Loader";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  fetchsectionByClassData,
-  fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
+import { fetchRoleData } from "@/services/roleService";
+import { fetchStaffData } from "@/services/staffService";
 import { getClasses } from "@/services/classesService"; // Import your classes API service
 
 import {
@@ -35,10 +33,11 @@ import {
 import { toast } from "react-toastify";
 
 const columns = [
-  "Admission No",
-  "Student Name",
-  "Class",
-  "Category",
+  "Staff ID",
+  "Name",
+  "Role",
+  "Department",
+  "Designation",
   "Mobile Number",
   "Action",
 ];
@@ -58,13 +57,9 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [classes, setClassessData] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
   const [colorMode, setColorMode] = useColorMode();
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+  const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
   const [keyword, setKeyword] = useState<string>("");
@@ -72,18 +67,21 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class_name || "N/A",
-      student.category_name || "N/A",
-      student.mobileno,
+      student.employee_id,
+      // `${student.name.trim()} ${student.surname.trim()}`,
+
+      <span
+      key={student.id}
+      onClick={() => router.push(`/admin/staff/profile/${student.id}`)}
+      className="cursor-pointer text-blue-500 hover:text-blue-700"
+    >
+      {`${student.name.trim()} ${student.surname.trim()}`}
+    </span>,
+      student.user_type || "N/A",
+      student.department || "N/A",
+      student.designation || "N/A",
+      student.contact_no,
       <div key={student.id}>
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
-          <Visibility />
-        </IconButton>
-        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
-          <Edit />
-        </IconButton>
         <IconButton
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
@@ -94,19 +92,19 @@ const StudentDetails = () => {
     ]);
   };
 
+
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
-    selectedClass?: string,
+    selectedRole?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
     try {
-      // Pass selectedClass and selectedSection as parameters to filter data
-      const result = await fetchStudentData(
+      const result = await fetchStaffData(
         currentPage + 1,
         rowsPerPage,
-        selectedClass,
+        selectedRole,
         selectedSection,
         keyword,
         localStorage.getItem("selectedSessionId"),
@@ -114,6 +112,9 @@ const StudentDetails = () => {
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
+
+      const roleresult = await fetchRoleData();
+      setRoleData(roleresult.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -121,44 +122,20 @@ const StudentDetails = () => {
     }
   };
 
-  const fetchClassesAndSections = async () => {
-    try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]); // Clear sections if no class is selected
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async (id: number) => {
     // Assuming id is the student_id
     router.push(`/admin/student/${id}`);
   };
 
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
 
   const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
+    router.push(`/admin/staff/profile/${id}`);
   };
 
   useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
-
-  useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage, selectedRole, keyword);
+  }, [page, rowsPerPage, selectedRole, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -168,15 +145,9 @@ const StudentDetails = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(event.target.value);
+    console.log("selectedRole", selectedRole);
   };
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,11 +156,10 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage, selectedRole, keyword);
   };
   const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
+    setSelectedRole("");
     setKeyword("");
   };
 
@@ -200,20 +170,19 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-          <label className={styles.label}>
+        <label className={styles.label}>
             Role:
             <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
+              value={selectedRole || ""}
+              onChange={handleRoleChange}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
-              <option value="Class1">Admin</option>
-              <option value="Class2">Teacher</option>
-              <option value="Class3">Accountant</option>
-              <option value="Class4">Librarian</option>
-              <option value="Class5">Receptionist</option>
-              {/* Add more class options here */}
+              {roledata.map((cls: any) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -236,7 +205,7 @@ const StudentDetails = () => {
       </div>
       <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
-          title={"Student Details"}
+          title={"Disable Staff List"}
           data={data}
           columns={columns}
           options={{

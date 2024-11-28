@@ -148,10 +148,6 @@ const StudentDetails = () => {
     console.log("selectedRole", selectedRole);
   };
 
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
-  };
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
@@ -173,7 +169,7 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-          <label className={styles.label}>
+        <label className={styles.label}>
             Role:
             <select
               value={selectedRole || ""}
@@ -186,7 +182,6 @@ const StudentDetails = () => {
                   {cls.name}
                 </option>
               ))}
-              <option value="Class1">Admin</option>
             </select>
           </label>
 
