@@ -60,12 +60,8 @@ export const editLeaveData = async (
   employee_remark: string,
   admin_remark: string,
   document_file: any,
-  status: any,
-id: any) => {
-  const data = { currentLeaveId, date, selectedLeaveType,
-selectedRoleLeave,
-selectedStaff,
-leave_from, leave_to, employee_remark, admin_remark, document_file  ,status }; // Create an object with the name field
+  status: any) => {
+  const data = { currentLeaveId,date, selectedLeaveType,selectedRoleLeave,selectedStaff,leave_from, leave_to, employee_remark, admin_remark, document_file ,leave_type_id ,status };
   const response = await apiClient.post(`/leave-request/${currentLeaveId}`, data);
   return response.data;
 };
