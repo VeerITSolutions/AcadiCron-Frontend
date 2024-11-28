@@ -237,7 +237,6 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
           formData.admin_remark,
           formData.document_file,
           formData.status,
-          "1",
         );
       } else {
         result = await createLeave(

@@ -232,7 +232,7 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-      <div className="container mx-auto p-4 dark:bg-boxdark dark:drop-shadow-none">
+      <div className="container mx-auto dark:bg-boxdark dark:drop-shadow-none">
         <div className="bg-white flex justify-between items-center p-6 pb-0 dark:bg-boxdark dark:drop-shadow-none">
           <h2 className="text-lg font-bold dark:text-white">Staff Details</h2>
           <a href="/admin/payroll" className="btn-primary text-xs flex items-center">
