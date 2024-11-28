@@ -51,6 +51,7 @@ export const deleteLeaveData = async (id: number) => {
 
 // Edit a student category by ID
 export const editLeaveData = async (
+  currentLeaveId: any,
   selectedRoleLeave : any,
   selectedStaff : any,
   selectedLeaveType : any,
@@ -63,12 +64,10 @@ export const editLeaveData = async (
   document_file: any,
   status: any,
 id: any) => {
-  const data = {  date, selectedLeaveType,
-
-
-    selectedRoleLeave,
+  const data = { currentLeaveId, date, selectedLeaveType,
+selectedRoleLeave,
 selectedStaff,
 leave_from, leave_to, employee_remark, admin_remark, document_file  ,status }; // Create an object with the name field
-  const response = await apiClient.post(`/leave-request/${id}`, data);
+  const response = await apiClient.post(`/leave-request/${currentLeaveId}`, data);
   return response.data;
 };

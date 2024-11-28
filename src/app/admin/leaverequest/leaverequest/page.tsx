@@ -141,7 +141,9 @@ const StudentDetails = () => {
 
       setFormData(result.data[0]);
       setSelectedRoleLeave(result.data[0].leave_type_id);
-      setSelectedStaff(result.data.staff_id);
+      setSelectedStaff(result.data[0].staff_id);
+      setSelectedLeaveselectedLeaveType(result.data[0].leave_type_id);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -276,6 +278,7 @@ const StudentDetails = () => {
       let result;
       if (editing) {
         result = await editLeaveData(
+          currentLeaveId,
           selectedRoleLeave,
           selectedStaff,
           selectedLeaveType,
