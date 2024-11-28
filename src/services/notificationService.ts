@@ -1,8 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchNotificationData = async (page: number, perPage: number,selectedClass?: string,
-  selectedSection?: string,
-  keyword?: string,) => {
+export const fetchNotificationData = async (page: number, perPage: number,) => {
   const response = await apiClient.get(`/notification`, {
     params: {
       page,
@@ -13,14 +11,12 @@ export const fetchNotificationData = async (page: number, perPage: number,select
 };
 
 
-export const createNotification = async (title: string, publish_date: string, date: string, message: string, message_to: string, file: File | null): Promise<any> => {
-  try {
-    const response = await apiClient.post("/notification", { title, publish_date, date, message,  message_to, file});
-    return response.data;
-  } catch (error) {
-    console.error("An error occurred", error);
-    throw new Error("Failed to create notification");
-  }
+
+// Edit a student category by ID
+export const createNotification = async ( data : any) => {
+
+  const response = await apiClient.post(`/notification`, data);
+  return response.data;
 };
 
 
@@ -31,9 +27,10 @@ export const deleteNotificationData = async (id: number) => {
   return response.data;
 };
 
-// Edit a student category by ID
-export const editNotificationData = async (id: number, title: string, publish_date: string, date: string, message: string) => {
-  const data = { title, publish_date, date, message  }; // Create an object with the name field
+
+
+export const editNotificationData = async (id: number, data: any) => {
+
   const response = await apiClient.post(`/notification/${id}`, data);
   return response.data;
 };

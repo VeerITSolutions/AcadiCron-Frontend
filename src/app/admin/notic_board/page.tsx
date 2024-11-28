@@ -75,9 +75,6 @@ const StudentDetails = () => {
       const result = await fetchNotificationData(
         currentPage + 1,
         rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -98,7 +95,7 @@ const StudentDetails = () => {
                 <i className="fa fa-commenting-o mr-2" />
                 Notice Board
               </h3>
-              <Link href="/admin/StudentDetails/add">
+              <Link href="/admin/notic_board/add">
                 <button className="btn btn-primary rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600">
                   <i className="fa fa-plus mr-2" />
                   Post New Message
@@ -108,22 +105,22 @@ const StudentDetails = () => {
 
             <div className="p-4 dark:bg-boxdark dark:drop-shadow-none">
               {data.map((notice: any, index) => (
-                <div key={notice.id} className="mb-4 rounded-lg border">
+                <div key={notice.id} className="mb-4 rounded-lg border border-stroke bg-transparent text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark">
                   <div
-                    className="bg-gray-200 flex cursor-pointer items-center justify-between p-4"
+                    className="bg-gray-200 flex cursor-pointer items-center justify-between p-4 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
                     onClick={() => toggleAccordion(index)}
                   >
-                    <h4 className="text-md font-semibold">{notice.title}</h4>
-                    <div className="space-x-4">
+                    <h4 className="font-medium text-black dark:text-white ">{notice.title}</h4>
+                    <div className="space-x-4 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
                       <Link href={`/admin/notification/edit/${notice.id}`}>
                         <i
-                          className="fa fa-pencil text-blue-500 hover:text-blue-700"
+                          className="fa fa-pencil text-blue-500 hover:text-blue-700 dark:text-white"
                           title="Edit"
                         />
                       </Link>
                       <Link href={`/admin/notification/delete/${notice.id}`}>
                         <i
-                          className="fa fa-remove text-red-500 hover:text-red-700"
+                          className="fa fa-remove text-red-500 hover:text-red-700 dark:text-white"
                           title="Delete"
                           onClick={(e) => {
                             if (!confirm("Delete Confirm?")) e.preventDefault();
@@ -133,37 +130,41 @@ const StudentDetails = () => {
                     </div>
                   </div>
                   {activeIndex === index && (
-                    <div className="p-4">
-                      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                        <div>
-                          <p>{notice.title}</p>
-                        </div>
-                        <div className="col-span-1 md:col-span-1">
-                          <div className="rounded border p-4">
-                            <ul className="space-y-2">
-                              <li>
-                                <i className="fa fa-calendar-check-o mr-2" />
-                                Publish Date: {notice.publish_date}
-                              </li>
-                              <li>
-                                <i className="fa fa-calendar mr-2" />
-                                Notice Date: {notice.date}
-                              </li>
-                              <li>
-                                <i className="fa fa-user mr-2" />
-                                Created By: {notice.created_by}
-                              </li>
-                            </ul>
-                            <h4 className="mt-4 text-blue-500">Message To</h4>
-                            <ul className="space-y-2">
-                              <li>
-                                <i className="fa fa-user mr-2" />
-                                {notice.id}
-                              </li>
-                            </ul>
-                          </div>
+                    <div className="p-4 border-t border-stroke dark:border-strokedark ">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+                      {/* Left Column */}
+                      <div>
+                        <p>{notice.title}</p>
+                      </div>
+
+                      {/* Right Column */}
+                      <div className="col-span-1">
+                        <div className="rounded border p-4 border-stroke dark:border-strokedark">
+                          <ul className="space-y-2">
+                            <li>
+                              <i className="fa fa-calendar-check-o mr-2 dark:text-white" />
+                              Publish Date: {notice.publish_date}
+                            </li>
+                            <li>
+                              <i className="fa fa-calendar mr-2 dark:text-white" />
+                              Notice Date: {notice.date}
+                            </li>
+                            <li>
+                              <i className="fa fa-user mr-2 dark:text-white" />
+                              Created By: {notice.created_by}
+                            </li>
+                          </ul>
+                          <h4 className="mt-4 text-blue-500 dark:text-white">Message To</h4>
+                          <ul className="space-y-2 dark:text-white">
+                            <li>
+                              <i className="fa fa-user mr-2 dark:text-white" />
+                              {notice.id}
+                            </li>
+                          </ul>
                         </div>
                       </div>
+                    </div>
+
                     </div>
                   )}
                 </div>
