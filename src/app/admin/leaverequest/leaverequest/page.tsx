@@ -404,6 +404,21 @@ const StudentDetails = () => {
   };
 
   const handleClose = () => {
+    setFormData({
+      date: null as Date | null,
+
+      leave_type_id: "",
+      leave_from: null as Date | null,
+      leave_to: null as Date | null,
+      employee_remark: "",
+      admin_remark: "",
+      status: "",
+      document_file: null,
+    });
+
+    setSelectedRoleLeave("");
+    setSelectedStaff("");
+    setSelectedLeaveselectedLeaveType("");
     setOpen(false);
     setEditing(false); // Reset editing state
   };
