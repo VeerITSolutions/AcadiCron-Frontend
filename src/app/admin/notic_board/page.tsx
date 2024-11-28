@@ -7,6 +7,14 @@ import React from "react";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
+import {
+  Edit,
+  Delete,
+  Visibility,
+  TextFields,
+  AttachMoney,
+} from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
 const StudentDetails = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -51,6 +59,16 @@ const StudentDetails = () => {
     },
   ];
 
+  const handleDelete = async (id: number) => {
+    // Assuming id is the student_id
+    router.push(`/admin/notic_board/${id}`);
+  };
+
+  const handleEdit = (id: number) => {
+    router.push(`/admin/notic_board/edit/${id}`);
+  };
+
+
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
@@ -61,6 +79,16 @@ const StudentDetails = () => {
       student.visible_student,
       student.visible_staff,
       student.visible_parent,
+
+      <div key={student.id}>
+        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+          <Visibility />
+        </IconButton>
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+          <Edit />
+        </IconButton>
+      
+      </div>,
     ]);
   };
 
@@ -110,7 +138,18 @@ const StudentDetails = () => {
                     className="bg-gray-200 flex cursor-pointer items-center justify-between p-4 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
                     onClick={() => toggleAccordion(index)}
                   >
+                    <div>
                     <h4 className="font-medium text-black dark:text-white ">{notice.title}</h4>
+                    </div>
+
+                    {/* <div key={notice.id}>
+                    <IconButton onClick={() => handleDelete(notice.id)} aria-label="Show">
+                      <Visibility />
+                    </IconButton>
+                    <IconButton onClick={() => handleEdit(notice.id)} aria-label="Edit">
+                      <Edit />
+                    </IconButton>
+                  </div> */}
                     <div className="space-x-4 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
                       <Link href={`/admin/notification/edit/${notice.id}`}>
                         <i

@@ -91,6 +91,34 @@ const NoticeForm = () => {
   };
   
 
+ 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const id = window.location.pathname.split("/").pop();
+      if (id) {
+        const getData = async () => {
+          try {
+            const response = await fetch(`/api/endpoint/${id}`); // Replace with your API endpoint
+            const data = await response.json();
+
+            setFormData({
+              id: data.id, // Ensure these keys match your API response
+              title: data.title,
+              publish_date: data.publish_date,
+              date: data.date,
+              message: data.message,
+              message_to: data.message_to,
+            });
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        };
+
+        getData();
+      }
+    }
+  }, []);
+
   
 
   const handleDelete = async (id: number) => {
