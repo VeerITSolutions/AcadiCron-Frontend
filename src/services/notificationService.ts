@@ -30,7 +30,6 @@ export const deleteNotificationData = async (id: number) => {
 
 
 export const editNotificationData = async (id: number, data: any) => {
-
   const response = await apiClient.post(`/notification/${id}`, data);
   return response.data;
 };

@@ -74,7 +74,6 @@ const NoticeForm = () => {
       const data = {
         ...formData,
       };
-
       const response = await editNotificationData(formData.id, data);
 
       if (response.success == true) {
@@ -90,14 +89,21 @@ const NoticeForm = () => {
   };
   
 
- 
   useEffect(() => {
+    // Check if window object is available (for server-side rendering compatibility)
     if (typeof window !== "undefined") {
       const id = window.location.pathname.split("/").pop();
+      
       if (id) {
         const getData = async () => {
           try {
-            const response = await fetch(`/api/endpoint/${id}`); // Replace with your API endpoint
+            const response = await fetch(`/api/notification/${id}`);
+            
+            // Ensure response is OK before parsing JSON
+            if (!response.ok) {
+              throw new Error("Failed to fetch data");
+            }
+
             const data = await response.json();
 
             setFormData({
@@ -116,7 +122,7 @@ const NoticeForm = () => {
         getData();
       }
     }
-  }, []);
+  }, []); 
 
   
 

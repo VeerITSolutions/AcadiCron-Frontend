@@ -32,7 +32,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit, Visibility, } from "@mui/icons-material";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 
 const columns = [
@@ -132,7 +132,20 @@ const StudentDetails = () => {
       student.submit_date || "N/A",
       student.evaluation_date || "N/A",
       student.created_by || "N/A",
-      "Action",
+      <div key={student.id}>
+      <IconButton
+        onClick={() => handleEdit(student.id, student.category)}
+        aria-label="edit"
+      >
+        <Edit />
+      </IconButton>
+      <IconButton
+        onClick={() => handleDelete(student.id)}
+        aria-label="delete"
+      >
+        <Delete />
+      </IconButton>
+    </div>
     ]);
   };
 
@@ -308,7 +321,7 @@ const StudentDetails = () => {
 <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-            Class:
+            Class
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
@@ -323,7 +336,7 @@ const StudentDetails = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Section:
+            Section
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
@@ -336,6 +349,31 @@ const StudentDetails = () => {
                   {sec.section_name}
                 </option>
               ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+          Subject Group
+            <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+              disabled={!selectedClass} // Disable section dropdown if no class is selected
+            >
+              <option value="">Select</option>
+              
+            </select>
+          </label>
+
+          <label className={styles.label}>
+          Subject
+            <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+              disabled={!selectedClass} // Disable section dropdown if no class is selected
+            >
+              <option value="">Select</option>
+              
             </select>
           </label>
           <div className={styles.searchGroup}>
@@ -368,7 +406,7 @@ const StudentDetails = () => {
 >
   <button
     type="submit"
-    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 mr-4"  // Added margin-right for spacing
+    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"  // Added margin-right for spacing
     onClick={handleClickOpen}
   >
     {editing ? "Edit Homework" : "Add Homework"}
