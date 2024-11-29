@@ -1,10 +1,10 @@
-"use client"; // Add this at the top of the file
+"use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
+import { useRouter } from "next/navigation"; 
 import LogoutButton from "@/components/LogoutButton";
-import { fetchNotificationData } from "@/services/notificationService";
+import { fetchNotificationData, deleteNotificationData } from "@/services/notificationService";
 import React from "react";
-
+import toast from "react-hot-toast";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import {
@@ -37,8 +37,8 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage]);
   console.log(data);
   const notices = [
     {
@@ -60,44 +60,48 @@ const StudentDetails = () => {
   ];
 
   const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/notic_board/${id}`);
+    try {
+      await deleteNotificationData(id);
+      toast.success("Delete successful");
+      fetchData(page, rowsPerPage);
+    } catch (error) {
+      console.error("Delete failed", error);
+    }
   };
+
 
   const handleEdit = (id: number) => {
     router.push(`/admin/notic_board/edit/${id}`);
   };
 
 
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.id,
-      student.title || "N/A",
-      student.publish_date,
-      student.date,
-      student.created_by,
-      student.visible_student,
-      student.visible_staff,
-      student.visible_parent,
+  // const formatStudentData = (students: any[]) => {
+  //   return students.map((student: any) => [
+  //     student.id,
+  //     student.title || "N/A",
+  //     student.publish_date,
+  //     student.date,
+  //     student.created_by,
+  //     student.visible_student,
+  //     student.visible_staff,
+  //     student.visible_parent,
 
-      <div key={student.id}>
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
-          <Visibility />
-        </IconButton>
-        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
-          <Edit />
-        </IconButton>
+  //     <div key={student.id}>
+  //       <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+  //         <Visibility />
+  //       </IconButton>
+  //       <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+  //         <Edit />
+  //       </IconButton>
+        
       
-      </div>,
-    ]);
-  };
+  //     </div>,
+  //   ]);
+  // };
 
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
   ) => {
     try {
       const result = await fetchNotificationData(
@@ -105,7 +109,6 @@ const StudentDetails = () => {
         rowsPerPage,
       );
       setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
       setData(result.data);
       setLoading(false);
     } catch (error: any) {
@@ -135,39 +138,27 @@ const StudentDetails = () => {
               {data.map((notice: any, index) => (
                 <div key={notice.id} className="mb-4 rounded-lg border border-stroke bg-transparent text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark">
                   <div
-                    className="bg-gray-200 flex cursor-pointer items-center justify-between p-4 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
-                    onClick={() => toggleAccordion(index)}
+                    className="bg-gray-200 flex items-center justify-between p-3 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+                   
                   >
-                    <div>
+                    <div className="cursor-pointer" onClick={() => toggleAccordion(index)}>
                     <h4 className="font-medium text-black dark:text-white ">{notice.title}</h4>
                     </div>
 
-                    {/* <div key={notice.id}>
-                    <IconButton onClick={() => handleDelete(notice.id)} aria-label="Show">
-                      <Visibility />
-                    </IconButton>
-                    <IconButton onClick={() => handleEdit(notice.id)} aria-label="Edit">
+                  <div key={notice.id}>
+                    <IconButton className="dark:text-white" onClick={() => handleEdit(notice.id)} aria-label="Edit">
                       <Edit />
                     </IconButton>
-                  </div> */}
-                    <div className="space-x-4 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-                      <Link href={`/admin/notification/edit/${notice.id}`}>
-                        <i
-                          className="fa fa-pencil text-blue-500 hover:text-blue-700 dark:text-white"
-                          title="Edit"
-                        />
-                      </Link>
-                      <Link href={`/admin/notification/delete/${notice.id}`}>
-                        <i
-                          className="fa fa-remove text-red-500 hover:text-red-700 dark:text-white"
-                          title="Delete"
-                          onClick={(e) => {
-                            if (!confirm("Delete Confirm?")) e.preventDefault();
-                          }}
-                        />
-                      </Link>
-                    </div>
+                    <IconButton className="dark:text-white"
+                      onClick={() => handleDelete(notice.id)}
+                      aria-label="delete"
+                    >
+                      <Delete />
+                    </IconButton>
                   </div>
+                  </div>
+
+
                   {activeIndex === index && (
                     <div className="p-4 border-t border-stroke dark:border-strokedark ">
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
