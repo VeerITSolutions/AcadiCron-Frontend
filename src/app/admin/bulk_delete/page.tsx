@@ -46,12 +46,14 @@ const columns = [
 const options = {
   filterType: "checkbox",
   serverSide: true,
+  pagination: false,
   responsive: "standard",
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
 
 const StudentDetails = () => {
+  const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +73,38 @@ const StudentDetails = () => {
   const router = useRouter();
 
   /* const token = localStorage.getItem("authToken") || ""; */
+  const handleDelete = async () => {
+    try {
+      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
 
+      console.log(selectedData); // Handle response
+
+      if (
+        window.confirm("Are you sure you want to delete the selected items?")
+      ) {
+        try {
+          /*  const response = await apiClient.post("/delete-endpoint", {
+            ids: selectedData.map((item) => item.id),
+          });
+          */
+        } catch (error) {
+          console.error("Error deleting data:", error);
+          alert("Failed to delete selected data.");
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
+      alert("Failed to delete selected data.");
+    }
+  };
+
+  const handleRowSelectionChange = (
+    curRowSelected: { dataIndex: number; index: number }[],
+    allRowsSelected: { dataIndex: number; index: number }[],
+    rowsSelected: [],
+  ) => {
+    setSelectedRows(rowsSelected); // Update selected rows
+  };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.admission_no,
@@ -81,7 +114,7 @@ const StudentDetails = () => {
       student.gender || "N/A",
       student.category_id,
       student.mobileno,
-      <div key={student.id}>
+      /*  <div key={student.id}>
         <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
           <Visibility />
         </IconButton>
@@ -94,13 +127,11 @@ const StudentDetails = () => {
         >
           <AttachMoney />
         </IconButton>
-      </div>,
+      </div>, */
     ]);
   };
 
   const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
@@ -109,12 +140,13 @@ const StudentDetails = () => {
       // Pass selectedClass and selectedSection as parameters to filter data
       if (selectedClass && selectedSection) {
         const result = await fetchStudentData(
-          currentPage + 1,
-          rowsPerPage,
+          0,
+          0,
           selectedClass,
           selectedSection,
           keyword,
           localStorage.getItem("selectedSessionId"),
+          1,
         );
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
@@ -148,26 +180,13 @@ const StudentDetails = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
-
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
-
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(selectedClass, selectedSection, keyword);
+  }, [selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -194,7 +213,7 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(selectedClass, selectedSection, keyword);
   };
   const handleRefresh = () => {
     setSelectedClass("");
@@ -274,6 +293,9 @@ const StudentDetails = () => {
             rowsPerPage: rowsPerPage,
             onChangePage: handlePageChange,
             onChangeRowsPerPage: handleRowsPerPageChange,
+            onRowSelectionChange: handleRowSelectionChange, // Handle row selection
+            selectableRows: "multiple", // Allow multiple selection
+            onRowsDelete: handleDelete,
           }}
         />
       </ThemeProvider>
