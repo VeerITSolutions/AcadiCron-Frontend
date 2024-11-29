@@ -107,18 +107,23 @@ const StudentDetails = () => {
   ) => {
     try {
       // Pass selectedClass and selectedSection as parameters to filter data
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        localStorage.getItem("selectedSessionId"),
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
-      setLoading(false);
+      if (selectedClass && selectedSection) {
+        const result = await fetchStudentData(
+          currentPage + 1,
+          rowsPerPage,
+          selectedClass,
+          selectedSection,
+          keyword,
+          localStorage.getItem("selectedSessionId"),
+        );
+        setTotalCount(result.totalCount);
+        const formattedData = formatStudentData(result.data);
+        setData(formattedData);
+        setLoading(false);
+      } else {
+        setData([]);
+        setLoading(false);
+      }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -236,13 +241,14 @@ const StudentDetails = () => {
             </select>
           </label>
           <div className={styles.searchGroup}>
-            <input
+            {/*  <input
               type="text"
               placeholder="Search By Keyword"
               value={keyword}
               onChange={handleKeywordChange}
               className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             />
+             */}
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
