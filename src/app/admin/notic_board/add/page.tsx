@@ -31,6 +31,8 @@ const NoticeForm = () => {
     ],
   };
 
+
+  
   const handleInputChange = (
     e:
       | React.ChangeEvent<
@@ -110,6 +112,7 @@ const NoticeForm = () => {
   useEffect(() => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage, token]);
+  
 
   const handleSave = async () => {
     try {

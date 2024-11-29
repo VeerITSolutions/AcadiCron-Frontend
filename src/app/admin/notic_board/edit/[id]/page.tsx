@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import styles from "./User.module.css"; // Assuming this has your styles
 import {
   editNotificationData,
-  fetchNotificationData,
   deleteNotificationData,
 } from "@/services/notificationService";
 import "react-quill/dist/quill.snow.css";
@@ -102,7 +101,7 @@ const NoticeForm = () => {
             const data = await response.json();
 
             setFormData({
-              id: data.id, // Ensure these keys match your API response
+              id: data.id,
               title: data.title,
               publish_date: data.publish_date,
               date: data.date,
