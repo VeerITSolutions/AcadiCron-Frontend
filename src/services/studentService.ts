@@ -33,6 +33,14 @@ export const deleteStudent = async (id: number) => {
   return response.data;
 };
 
+export const deleteStudentBluk = async (data: any) => {
+
+  const response = await apiClient.post(`/admin/deletestudentbulk`, data);
+  return response.data;
+};
+
+
+
 // Edit a student category by ID
 export const editStudent = async (id: number, data: any) => {
 

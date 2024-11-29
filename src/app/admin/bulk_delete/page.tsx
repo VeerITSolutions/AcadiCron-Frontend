@@ -4,7 +4,11 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchStudentData } from "@/services/studentService";
+import {
+  deleteStudentBluck,
+  deleteStudentBluk,
+  fetchStudentData,
+} from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -77,7 +81,9 @@ const StudentDetails = () => {
     try {
       const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
 
-      console.log(selectedData); // Handle response
+      const idsToDelete = selectedData.map((row) => row[0]);
+
+      console.log(idsToDelete); // Handle response
 
       if (
         window.confirm("Are you sure you want to delete the selected items?")
@@ -87,6 +93,7 @@ const StudentDetails = () => {
             ids: selectedData.map((item) => item.id),
           });
           */
+          const response = await deleteStudentBluk(idsToDelete);
         } catch (error) {
           console.error("Error deleting data:", error);
           alert("Failed to delete selected data.");
