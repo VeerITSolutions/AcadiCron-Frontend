@@ -62,6 +62,7 @@ const NoticeForm = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [roleName, setRoleName] = useState("");
+  const [roleId, setRoleId] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [value, setValue] = useState<string>(""); // State for message content
   const [formData, setFormData] = useState({
@@ -119,6 +120,10 @@ const NoticeForm = () => {
     if (roleName) {
       setRoleName(roleName);
     }
+    const roleId = localStorage.getItem("role_id");
+    if (roleId) {
+      setRoleId(roleId);
+    }
 
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage, token]);
@@ -129,6 +134,7 @@ const NoticeForm = () => {
       const data = {
         ...formData,
         created_by: roleName,
+        created_id: roleId,
       };
 
       const response = await createNotification(data);
