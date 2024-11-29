@@ -38,6 +38,7 @@ import {
 import { toast } from "react-toastify";
 
 const columns = [
+  "Student Id",
   "Admission No",
   "Student Name",
   "Class",
@@ -114,6 +115,7 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
+      student.id,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class_name || "N/A",
