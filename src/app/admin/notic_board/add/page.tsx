@@ -164,7 +164,7 @@ const NoticeForm = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Message
                   </label>
-                  <ReactQuill
+                  <ReactQuill className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
                     value={formData.message} // Controlled value
                     onChange={
                       (content) =>
