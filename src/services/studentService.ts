@@ -2,7 +2,7 @@ import apiClient from "./apiClient";
 
 export const fetchStudentData = async (page: number, perPage: number,selectedClass :any,
   selectedSection :any,
-  keyword:any, selectedSessionId?:any) => {
+  keyword:any, selectedSessionId?:any ,bulkDelete?:any) => {
   const response = await apiClient.get(`/admin/dtstudentlist`, {
     params: {
       page,
@@ -10,7 +10,8 @@ export const fetchStudentData = async (page: number, perPage: number,selectedCla
       selectedClass,
       selectedSection,
       keyword,
-      selectedSessionId
+      selectedSessionId,
+      bulkDelete
     },
   });
   return response.data;
@@ -31,6 +32,14 @@ export const deleteStudent = async (id: number) => {
   const response = await apiClient.delete(`/admin/dtstudentlist/${id}`);
   return response.data;
 };
+
+export const deleteStudentBluk = async (data: any) => {
+
+  const response = await apiClient.post(`/admin/deletestudentbulk`, data);
+  return response.data;
+};
+
+
 
 // Edit a student category by ID
 export const editStudent = async (id: number, data: any) => {
