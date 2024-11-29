@@ -208,7 +208,7 @@ const StudentDetails = () => {
       <div className="grid grid-cols-2 gap-6 mb-6 ">
     
       <form
-  action="https://erp.erabesa.co.in/student/savemulticlass"
+  action=""
   method="POST"
   className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-[400px] dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white" 
 >

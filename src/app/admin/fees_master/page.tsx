@@ -235,12 +235,7 @@ const FeesMaster = () => {
     filterType: "checkbox",
     serverSide: true,
     responsive: "standard",
-    selectableRows: "none",
-    count: totalCount,
-    page: page,
-    rowsPerPage: rowsPerPage,
-    onChangePage: handlePageChange,
-    onChangeRowsPerPage: handleRowsPerPageChange,
+    selectableRows: "none", // Disable row selection
     filter: false, // Disable filter,
     viewColumns: false, // Disable view columns button
   };
@@ -418,7 +413,7 @@ const FeesMaster = () => {
               title={"Add Fees Master : 2024-25"}
               data={data}
               columns={columns}
-              // options={options}
+              options={options}
             />
           </ThemeProvider>
         </div>

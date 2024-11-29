@@ -64,7 +64,7 @@ const columns = [
             type="text"
             value={value || ""} // Use the note if available or empty string
             onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full rounded border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+            className="w-full rounded border p-1 dark:border-strokedark dark:text-white dark:drop-shadow-none bg-transparent"
           />
         );
       },
@@ -86,13 +86,13 @@ const options = {
   customToolbar: () => (
     <div className="flex justify-end gap-2">
       <button
-        className="rounded bg-primary px-5 py-2 font-medium text-white hover:bg-opacity-80"
+        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"
         onClick={() => console.log("Mark As Holiday clicked")}
       >
         Mark As Holiday
       </button>
       <button
-        className="rounded bg-primary px-5 py-2 font-medium text-white hover:bg-opacity-80"
+        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"
         onClick={() => console.log("Save Attendance clicked")}
       >
         Save Attendance
@@ -241,7 +241,7 @@ const StudentDetails = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-            Class: <span className="required">*</span>
+            Class:
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
@@ -256,7 +256,7 @@ const StudentDetails = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Section: <span className="required">*</span>
+            Section:
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
@@ -271,13 +271,13 @@ const StudentDetails = () => {
               ))}
             </select>
           </label>
-          <label className={styles.label}>
+          <label className={styles.label} >
             Date:
             <input
               type="date"
               value={attendancedate}
               onChange={handleAttendancedateChange}
-              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             />
           </label>
 

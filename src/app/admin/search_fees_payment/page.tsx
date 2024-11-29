@@ -85,7 +85,7 @@ const SearchFeesPayment = () => {
             </label>
             <input
               name="firstName"
-              className="border-gray-300 text-gray-900 dark:border-gray-600 dark:bg-gray-700 mt-2 w-full rounded-md border bg-transparent px-4 py-3 text-sm shadow-sm transition-shadow duration-300 ease-in-out focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:text-white"
+              className="border-stroke dark:border-strokedark text-gray-900 mt-2 w-full rounded-md border bg-transparent px-4 py-3 text-sm dark:text-white outline-none transition focus:border-primary active:border-primary"
               type="text"
               value={formData.firstName}
               onChange={handleInputChange}

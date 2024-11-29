@@ -824,7 +824,7 @@ const User = () => {
               Student Address Details
             </h3>
           </div>
-          <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
+          <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
             <div className="field">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Current Address
