@@ -69,8 +69,17 @@ const NoticeForm = () => {
     publish_date: "",
     date: "",
     message: "",
-    message_to: [],
-    path: null,
+    visible_student: "",
+    visible_staff: "",
+    visible_parent: "",
+    created_by: "",
+    created_id: "",
+    is_active: "",
+    created_at: "",
+    updated_at: "",
+    path: "",
+    class_id: "",
+    secid: "",
   });
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
