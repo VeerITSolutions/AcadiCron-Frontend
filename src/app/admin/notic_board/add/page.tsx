@@ -15,10 +15,8 @@ import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 
-
 // Dynamic import for ReactQuill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
 
 const NoticeForm = () => {
   // Quill editor modules
@@ -31,8 +29,6 @@ const NoticeForm = () => {
     ],
   };
 
-
-  
   const handleInputChange = (
     e:
       | React.ChangeEvent<
@@ -65,6 +61,7 @@ const NoticeForm = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [roleName, setRoleName] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [value, setValue] = useState<string>(""); // State for message content
   const [formData, setFormData] = useState({
@@ -108,17 +105,21 @@ const NoticeForm = () => {
   //   setFormData({ ...formData, title: title_value, publish_date: publish_date, message: message, date: date, message_to: message_to});
   // };
 
-
   useEffect(() => {
+    const roleName = localStorage.getItem("role_name");
+    if (roleName) {
+      setRoleName(roleName);
+    }
+
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage, token]);
-  
 
   const handleSave = async () => {
     try {
       setLoading(true);
       const data = {
         ...formData,
+        created_by: roleName,
       };
 
       const response = await createNotification(data);
@@ -144,7 +145,7 @@ const NoticeForm = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-              Compose New Message
+                Compose New Message
               </h3>
             </div>
             <div className="grid grid-cols-3 gap-6 pl-6 pr-6 pt-6">
@@ -167,7 +168,8 @@ const NoticeForm = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Message
                   </label>
-                  <ReactQuill className="dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+                  <ReactQuill
+                    className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
                     value={formData.message} // Controlled value
                     onChange={
                       (content) =>
