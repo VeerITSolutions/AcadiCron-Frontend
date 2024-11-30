@@ -10,7 +10,7 @@ const CategoryManagement = () => {
     deleteCategoryAndRemoveItem,
     editCategoryAndUpdateItem,
   } = useCrudStore();
-  console.log("Item", items);
+
   const [newCategory, setNewCategory] = useState("");
   const [editCategory, setEditCategory] = useState({ id: 0, name: "" });
 
