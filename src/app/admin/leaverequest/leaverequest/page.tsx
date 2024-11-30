@@ -180,6 +180,7 @@ const StudentDetails = () => {
       formatDate(student.date) || "N/A",
 
       <span
+        key={student.id}
         style={{ color: getStatusColor(student.status), fontWeight: "bold" }}
       >
         {student.status || "N/A"}

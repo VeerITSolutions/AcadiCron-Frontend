@@ -1,10 +1,11 @@
 import apiClient from "./apiClient";
 
-export const fetchNotificationData = async (page: number, perPage: number,) => {
+export const fetchNotificationData = async (page: any, perPage:  any, id?:  any) => {
   const response = await apiClient.get(`/notification`, {
     params: {
       page,
       perPage,
+      id
     },
   });
   return response.data;

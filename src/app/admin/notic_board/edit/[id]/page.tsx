@@ -6,17 +6,15 @@ import styles from "./User.module.css"; // Assuming this has your styles
 import {
   editNotificationData,
   deleteNotificationData,
+  fetchNotificationData,
 } from "@/services/notificationService";
 import "react-quill/dist/quill.snow.css";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-
-
+import { useRouter } from "next/navigation";
 // Dynamic import for ReactQuill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-
 const NoticeForm = () => {
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<Record<string, any>>({
@@ -40,7 +38,7 @@ const NoticeForm = () => {
       ["link", "image"],
     ],
   };
-
+  const router = useRouter();
   const handleInputChange = (
     e:
       | React.ChangeEvent<
@@ -76,8 +74,9 @@ const NoticeForm = () => {
       };
       const response = await editNotificationData(formData.id, data);
 
-      if (response.success == true) {
+      if (response.status == 200) {
         toast.success("Edit successful");
+        router.push(`/admin/notic_board`);
       } else {
         toast.error("Error Edit data");
       }
@@ -87,44 +86,29 @@ const NoticeForm = () => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     // Check if window object is available (for server-side rendering compatibility)
     if (typeof window !== "undefined") {
-      const id = window.location.pathname.split("/").pop();
-      
+      let id = window.location.pathname.split("/").pop();
+
       if (id) {
         const getData = async () => {
           try {
-            const response = await fetch(`/api/notification/${id}`);
-            
-            // Ensure response is OK before parsing JSON
-            if (!response.ok) {
-              throw new Error("Failed to fetch data");
-            }
+            const result = await fetchNotificationData("", "", id);
 
-            const data = await response.json();
-
-            setFormData({
-              id: data.id,
-              title: data.title,
-              publish_date: data.publish_date,
-              date: data.date,
-              message: data.message,
-              message_to: data.message_to,
-            });
-          } catch (error) {
-            console.error("Error fetching data:", error);
+            setFormData(result.data);
+            setLoading(false);
+          } catch (error: any) {
+            setError(error.message);
+            setLoading(false);
           }
         };
 
         getData();
       }
     }
-  }, []); 
-
-  
+  }, []);
 
   const handleDelete = async (id: number) => {
     try {
@@ -134,9 +118,7 @@ const NoticeForm = () => {
       console.error("Delete failed", error);
     }
   };
- 
 
-  
   return (
     <DefaultLayout>
       <div className="student_admission_form">
@@ -145,7 +127,7 @@ const NoticeForm = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-              Edit Message
+                Edit Message
               </h3>
             </div>
             <div className="grid grid-cols-3 gap-6 pl-6 pr-6 pt-6">

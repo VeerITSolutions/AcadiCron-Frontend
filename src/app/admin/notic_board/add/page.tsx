@@ -57,12 +57,14 @@ const NoticeForm = () => {
   };
 
   const [error, setError] = useState<string | null>(null);
+
+  const [roleId, setRoleId] = useState("");
   const [data, setData] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [roleName, setRoleName] = useState("");
-  const [roleId, setRoleId] = useState("");
+
   const [totalCount, setTotalCount] = useState(0);
   const [value, setValue] = useState<string>(""); // State for message content
   const [formData, setFormData] = useState({
@@ -99,30 +101,14 @@ const NoticeForm = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteNotificationData(id);
-      toast.success("Delete successful");
-      fetchData(page, rowsPerPage);
-    } catch (error) {
-      console.error("Delete failed", error);
-    }
-  };
-  // Handle edit action
-  // const handleEdit = (id: number, title_value: string, publish_date: string, message: string, date:string, message_to:string) => {
-  //   setIsEditing(true);
-  //   setEditCategoryId(id);
-  //   setFormData({ ...formData, title: title_value, publish_date: publish_date, message: message, date: date, message_to: message_to});
-  // };
-
   useEffect(() => {
     const roleName = localStorage.getItem("role_name");
     if (roleName) {
       setRoleName(roleName);
     }
-    const roleId = localStorage.getItem("role_id");
-    if (roleId) {
-      setRoleId(roleId);
+    const getroleId = localStorage.getItem("role_id");
+    if (getroleId) {
+      setRoleId(getroleId);
     }
 
     fetchData(page, rowsPerPage);
@@ -220,7 +206,9 @@ const NoticeForm = () => {
                   <input
                     id="date"
                     name="date"
-                    value={formData.date}
+                    value={
+                      formData.date || new Date().toISOString().split("T")[0]
+                    }
                     onChange={handleInputChange}
                     type="date"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -234,7 +222,10 @@ const NoticeForm = () => {
                   <input
                     id="publish_date"
                     name="publish_date"
-                    value={formData.publish_date}
+                    value={
+                      formData.publish_date ||
+                      new Date().toISOString().split("T")[0]
+                    }
                     onChange={handleInputChange}
                     type="date"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
