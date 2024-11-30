@@ -150,6 +150,17 @@ const StudentDetails = () => {
                         {/* Left Column */}
                         <div>
                           <p>{notice.title}</p>
+                          {notice.path ? (
+                            <img
+                              src={
+                                process.env.NEXT_PUBLIC_BASE_URL + notice.path
+                              }
+                              className="h-28 w-28 rounded-lg object-cover"
+                              alt="No Image"
+                            />
+                          ) : (
+                            ""
+                          )}
                         </div>
 
                         {/* Right Column */}
