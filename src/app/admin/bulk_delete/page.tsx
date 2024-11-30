@@ -4,11 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import {
-  deleteStudentBluck,
-  deleteStudentBluk,
-  fetchStudentData,
-} from "@/services/studentService";
+import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {

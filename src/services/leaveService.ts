@@ -16,17 +16,17 @@ export const fetchLeaveData = async (page: any, perPage: number,selectedClass?: 
 
 
 export const createLeave = async (
-  selectedRoleLeave : any,
-  selectedStaff : any,
-  selectedLeaveType : any,
-  date: any,
-  leave_type_id: string,
-  leave_from: any,
-  leave_to: any,
-  employee_remark: string,
-  admin_remark: string,
-  document_file: any,
-  status: any): Promise<any> => {
+  selectedRoleLeave ?: any,
+  selectedStaff ?: any,
+  selectedLeaveType ?: any,
+  date?: any,
+  leave_type_id?: string,
+  leave_from?: any,
+  leave_to?: any,
+  employee_remark?: string,
+  admin_remark?: string,
+  document_file?: any,
+  status?: any): Promise<any> => {
   try {
     const response = await apiClient.post("/leave-request", { date, selectedLeaveType,
  selectedRoleLeave,
@@ -49,18 +49,18 @@ export const deleteLeaveData = async (id: number) => {
 
 // Edit a student category by ID
 export const editLeaveData = async (
-  currentLeaveId: any,
-  selectedRoleLeave : any,
-  selectedStaff : any,
-  selectedLeaveType : any,
-  date: any,
-  leave_type_id: string,
-  leave_from: any,
-  leave_to: any,
-  employee_remark: string,
-  admin_remark: string,
-  document_file: any,
-  status: any) => {
+  currentLeaveId?: any,
+  selectedRoleLeave ?: any,
+  selectedStaff ?: any,
+  selectedLeaveType ?: any,
+  date?: any,
+  leave_type_id?: string,
+  leave_from?: any,
+  leave_to?: any,
+  employee_remark?: string,
+  admin_remark?: string,
+  document_file?: any,
+  status?: any) => {
   const data = { currentLeaveId,date, selectedLeaveType,selectedRoleLeave,selectedStaff,leave_from, leave_to, employee_remark, admin_remark, document_file ,leave_type_id ,status };
   const response = await apiClient.post(`/leave-request/${currentLeaveId}`, data);
   return response.data;

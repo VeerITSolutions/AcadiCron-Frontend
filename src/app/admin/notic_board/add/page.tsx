@@ -64,7 +64,7 @@ const NoticeForm = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [roleName, setRoleName] = useState("");
-  const [roleId, setRoleId] = useState("");
+
   const [totalCount, setTotalCount] = useState(0);
   const [value, setValue] = useState<string>(""); // State for message content
   const [formData, setFormData] = useState({
@@ -122,14 +122,14 @@ const NoticeForm = () => {
     if (roleName) {
       setRoleName(roleName);
     }
-    const roleId = localStorage.getItem("role_id");
-    if (roleId) {
-      setRoleId(roleId);
+    const getroleId = localStorage.getItem("role_id");
+    if (getroleId) {
+      setRoleId(getroleId);
     }
 
     fetchData(page, rowsPerPage);
-    let roleId = localStorage.getItem("role_name") || "";
-    setRoleId(roleId);
+    let roleIdName = localStorage.getItem("role_name") || "";
+    setRoleId(roleIdName);
   }, [page, rowsPerPage, token]);
 
   const handleSave = async () => {
