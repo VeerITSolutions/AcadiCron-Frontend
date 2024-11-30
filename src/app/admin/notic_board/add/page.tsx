@@ -128,8 +128,6 @@ const NoticeForm = () => {
     }
 
     fetchData(page, rowsPerPage);
-    let roleIdName = localStorage.getItem("role_name") || "";
-    setRoleId(roleIdName);
   }, [page, rowsPerPage, token]);
 
   const handleSave = async () => {
