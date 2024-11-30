@@ -63,6 +63,8 @@ const NoticeForm = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [roleName, setRoleName] = useState("");
+  const [roleId, setRoleId] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [value, setValue] = useState<string>(""); // State for message content
   const [formData, setFormData] = useState({
@@ -70,8 +72,17 @@ const NoticeForm = () => {
     publish_date: "",
     date: "",
     message: "",
-    message_to: [],
-    path: null,
+    visible_student: "",
+    visible_staff: "",
+    visible_parent: "",
+    created_by: "",
+    created_id: "",
+    is_active: "",
+    created_at: "",
+    updated_at: "",
+    path: "",
+    class_id: "",
+    secid: "",
   });
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -107,6 +118,15 @@ const NoticeForm = () => {
   // };
 
   useEffect(() => {
+    const roleName = localStorage.getItem("role_name");
+    if (roleName) {
+      setRoleName(roleName);
+    }
+    const roleId = localStorage.getItem("role_id");
+    if (roleId) {
+      setRoleId(roleId);
+    }
+
     fetchData(page, rowsPerPage);
     let roleId = localStorage.getItem("role_name") || "";
     setRoleId(roleId);
@@ -117,7 +137,8 @@ const NoticeForm = () => {
       setLoading(true);
       const data = {
         ...formData,
-        created_by: roleId,
+        created_by: roleName,
+        created_id: roleId,
       };
 
       const response = await createNotification(data);
