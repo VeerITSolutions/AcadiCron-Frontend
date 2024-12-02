@@ -207,7 +207,6 @@ const StudentDetails = () => {
               onChange={handleRoleChange}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
-              <option value="">Select</option>
               {roledata.map((cls: any) => (
                 <option key={cls.id} value={cls.id}>
                   {cls.name}
