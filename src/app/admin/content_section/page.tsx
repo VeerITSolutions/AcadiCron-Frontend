@@ -40,11 +40,9 @@ const StudentCategories = () => {
   const [isSuperAdminChecked, setIsSuperAdminChecked] = useState(false);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
+    "0",
   );
   const [roleId, setRoleId] = useState<string | undefined>("");
   const [roleName, setRoleName] = useState("");
@@ -71,7 +69,7 @@ const StudentCategories = () => {
     if (e.target.checked) {
       // Reset class and section selection when disabling them
       setSelectedClass("");
-      setSelectedSection("");
+      setSelectedSection("0");
     }
   };
 
@@ -148,8 +146,9 @@ const StudentCategories = () => {
       student.type || "N/A",
       student.date || "N/A",
       student.class ? student.content_for_role : "All",
+      `${student.class ?? ""} ${student.section ? `(${student.section})` : "-"}` ||
+        "N/A",
 
-      `${student.class.trim()} (  ${student.section.trim()} )` || "N/A",
       <div key={student.id}>
         <IconButton
           onClick={() =>
@@ -246,7 +245,7 @@ const StudentCategories = () => {
         });
         fetchData(page, rowsPerPage);
 
-        setSelectedSection("");
+        setSelectedSection("0");
         setSelectedClass("");
         setAllsuperadmin(false);
         setAllstudents(false);
