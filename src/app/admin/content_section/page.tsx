@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import {
-  fetchContentSectionData,
-  createContentSectionForUpload,
-  deleteContentSectionForUpload,
-  editContentSectionForUpload,
-} from "@/services/ContentSectionService";
+  fetchContentData,
+  createContentForUpload,
+  deleteContentForUpload,
+  editContentForUpload,
+} from "@/services/ContentService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -41,24 +41,32 @@ const StudentCategories = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [roleId, setRoleId] = useState<string | undefined>(
+    ''
+  );
 
   const [formData, setFormData] = useState({
-    title: "",
-    type: "",
-    date: "",
-    cls_sec_id: "",
-    class_id: "",
-    role: "",
-    note: "",
-    file: "",
+    title: '',
+    type: '',
+    is_public: '',
+    class_id: selectedClass,
+    cls_sec_id: selectedSection,
+    file: '',
+    created_by: '',
+    note: '',
+    is_active: '',
+    created_at: '',
+    updated_at: '',
+    date: ''
   });
+  
 
   // State for modal visibility
   const [open, setOpen] = useState<boolean>(false);
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchContentSectionData(
+      const result = await fetchContentData(
         currentPage + 1,
         rowsPerPage,
       );
@@ -78,9 +86,38 @@ const StudentCategories = () => {
     }
   };
 
+
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<
+          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        >
+      | { target: { name: string; value: string } }, // Extend type to include Quill's custom events
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+   // Function to handle file input changes
+   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+
   const handleDelete = async (id: number) => {
     try {
-      await deleteContentSectionForUpload(id);
+      await deleteContentForUpload(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -112,7 +149,7 @@ const StudentCategories = () => {
       student.type || "N/A",
       student.date || "N/A",
       student.class || "N/A",
-
+      student.class || "N/A",
       <div key={student.id}>
         <IconButton
           onClick={() =>
@@ -146,82 +183,50 @@ const StudentCategories = () => {
   };
 
   useEffect(() => {
+    const getroleId = localStorage.getItem("role_id");
+    if (getroleId) {
+      setRoleId(getroleId);
+    }
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value, type } = event.target;
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]:
-        type === "file" && "files" in event.target
-          ? (event.target as HTMLInputElement).files?.[0]
-          : value,
-    }));
-  };
-
-  const handleSubmit = async () => {
+  const handleSave = async () => {
     try {
-      let result;
+      setLoading(true);
+      const data = {
+        ...formData,
+        class_id: selectedClass,
+        cls_sec_id: selectedSection,
+        created_by: roleId
+      };
 
-      if (isEditing && editCategoryId !== null) {
-        result = await editContentSectionForUpload(
-          editCategoryId,
-          formData.title,
-        );
-      } else {
-        result = await createContentSectionForUpload(
-          formData.title,
-          formData.type,
-          formData.date,
-          formData.class_id,
-          formData.cls_sec_id,
-        );
-      }
+      const response = await createContentForUpload(data);
 
-      if (result.success) {
-        toast.success(
-          isEditing
-            ? "Fees type updated successfully"
-            : "Fees type saved successfully",
-        );
+      if (response.status == 200) {
+        toast.success("Added successful");
         setFormData({
-          title: "",
-          type: "",
-          date: "",
-          cls_sec_id: "",
-          class_id: "",
-          role: "",
-          note: "",
-          file: "",
-        });
-        setIsEditing(false);
-        setEditCategoryId(null);
-        fetchData(page, rowsPerPage); // Refresh data after submit
+          title: '',
+          type: '',
+          is_public: '',
+          class_id: selectedClass,
+          cls_sec_id: selectedSection,
+          file: '',
+          created_by: '',
+          note: '',
+          is_active: '',
+          created_at: '',
+          updated_at: '',
+          date: ''
+        })
+        fetchData(page, rowsPerPage);
+        
       } else {
-        // If the API response includes error messages, display them using toast
-        const errorMessage = result.message || "An error occurred";
-        const errors = result.errors || {};
-
-        toast.error(errorMessage); // Show the main error message
-
-        // Display individual field errors (optional)
-        if (errors.type) {
-          toast.error(`Type: ${errors.type.join(", ")}`);
-        }
-        if (errors.code) {
-          toast.error(`Code: ${errors.code.join(", ")}`);
-        }
-        if (errors.description) {
-          toast.error(`Description: ${errors.description.join(", ")}`);
-        }
+        toast.error("Error Edit data");
       }
-    } catch (error) {
-      console.error("An error occurred", error);
-      toast.error("An unexpected error occurred. Please try again.");
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -308,7 +313,7 @@ const StudentCategories = () => {
                   name="title"
                   type="text"
                   value={formData.title}
-                  /* onChange={handleInputChange} */
+                  onChange={handleInputChange} 
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
@@ -319,7 +324,7 @@ const StudentCategories = () => {
                 <select
                   name="type"
                   value={formData.type}
-                  /* onChange={handleInputChange} */
+                  onChange={handleInputChange} 
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select</option>
@@ -329,7 +334,7 @@ const StudentCategories = () => {
                   <option value="otherdownload">Other Download</option>
                 </select>
               </div>
-              <div>
+              {/* <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Available For *{" "}
                 </label>
@@ -338,8 +343,8 @@ const StudentCategories = () => {
                     className=" User_radio__EmAK7"
                     type="checkbox"
                     name="role"
-                    value={formData.role}
-                    /* onChange={handleInputChange} */
+                    // value={formData.role}
+                    onChange={handleInputChange} 
                   />{" "}
                   All Super Admin{" "}
                 </label>
@@ -361,7 +366,7 @@ const StudentCategories = () => {
                   />{" "}
                   Available For All Classes{" "}
                 </label>
-              </div>
+              </div> */}
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Class:
@@ -405,10 +410,11 @@ const StudentCategories = () => {
                 <input
                   id="date"
                   name="date"
+                  type="date"
                   value={formData.date}
-                  /* onChange={handleInputChange} */
+                  onChange={handleInputChange} 
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  type="text"
+                 
                 />
               </div>
 
@@ -420,7 +426,7 @@ const StudentCategories = () => {
                   name="note"
                   type="text"
                   value={formData.note}
-                  /* onChange={handleInputChange} */
+                  onChange={handleInputChange} 
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
@@ -433,13 +439,13 @@ const StudentCategories = () => {
                   className="form-control User_f-13__35loD mt-2 w-full"
                   name="file"
                   type="file"
-                  /* onChange={handleInputChange} */
+                  onChange={handleFileChange} 
                 />
               </div>
 
               <div>
                 <button
-                  type="submit"
+                  onClick={handleSave}
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                 >
                   {isEditing ? "Update" : "Save"}
