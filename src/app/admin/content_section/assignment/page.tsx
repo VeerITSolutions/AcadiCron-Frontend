@@ -16,6 +16,7 @@ import {
   Visibility,
   TextFields,
   AttachMoney,
+  FileDownload,
 } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import {
@@ -27,6 +28,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { fetchContentData } from "@/services/ContentService";
 const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
 
 const options = {
@@ -66,26 +68,59 @@ const StudentDetails = () => {
       student.mobileno,
     ]);
   };
-
-  const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
-  ) => {
+  const handleDownload = (url: string) => {
     try {
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        localStorage.getItem("selectedSessionId"),
-      );
+      // Create an anchor element
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Set the 'download' attribute to trigger the file download
+      // This forces the file to be downloaded rather than displayed in the browser
+      link.setAttribute("download", "");
+
+      // Append the link, trigger click, and clean up
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error initiating the download:", error);
+    }
+  };
+  const formatStudentCategoryData = (students: any[]) => {
+    if (!Array.isArray(students)) return []; // Fallback to an empty array if not an array
+
+    return students.map((student: any) => [
+      student.title || "N/A",
+      student.type || "N/A",
+      student.date || "N/A",
+      student.class ? student.content_for_role : "All",
+      `${student.class ?? ""} ${student.section ? `(${student.section})` : "-"}` ||
+        "N/A",
+
+      <div key={student.id}>
+        <IconButton
+          onClick={() =>
+            handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
+          }
+          aria-label="edit"
+        >
+          {student.file ? <FileDownload /> : ""}
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
+    ]);
+  };
+
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
+    try {
+      const result = await fetchContentData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
+      setData(formatStudentCategoryData(result.data));
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -105,7 +140,7 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
@@ -117,23 +152,9 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
-  };
-
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage);
   };
 
   if (loading) return <Loader />;

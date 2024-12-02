@@ -201,7 +201,7 @@ const StudentDetails = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-            Role:
+            Role: <span className="required">*</span>
             <select
               value={selectedRole || ""}
               onChange={handleRoleChange}
@@ -217,14 +217,12 @@ const StudentDetails = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Month:
+            Month: <span className="required">*</span>
             <select
               value={selectedMonth || ""}
               onChange={handleselectedMonth}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
-              <option value="">Select</option>
-
               <option value="January">January</option>
               <option value="February">February</option>
               <option value="March">March</option>
@@ -241,7 +239,7 @@ const StudentDetails = () => {
           </label>
 
           <label className={styles.label}>
-            Year:
+            Year: <span className="required">*</span>
             <select
               value={selectedYear || ""}
               onChange={handleselectedYear}
