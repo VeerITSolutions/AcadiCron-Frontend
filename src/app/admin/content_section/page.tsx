@@ -41,51 +41,37 @@ const StudentCategories = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [roleId, setRoleId] = useState<string | undefined>(
-    ''
-  );
+  const [roleId, setRoleId] = useState<string | undefined>("");
 
   const [formData, setFormData] = useState({
-    title: '',
-    type: '',
-    is_public: '',
+    title: "",
+    type: "",
+    is_public: "",
     class_id: selectedClass,
     cls_sec_id: selectedSection,
-    file: '',
-    created_by: '',
-    note: '',
-    is_active: '',
-    created_at: '',
-    updated_at: '',
-    date: ''
+    file: "",
+    created_by: "",
+    note: "",
+    is_active: "",
+    created_at: "",
+    updated_at: "",
+    date: new Date().toISOString().slice(0, 10),
   });
-  
 
   // State for modal visibility
   const [open, setOpen] = useState<boolean>(false);
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchContentData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchContentData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
-
-      // Check if result.data is defined and is an array
-      if (Array.isArray(result.data)) {
-        setData(formatStudentCategoryData(result.data));
-      } else {
-        setData([]); // Fallback to an empty array
-      }
-
+      setData(formatStudentCategoryData(result.data));
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
-
 
   const handleInputChange = (
     e:
@@ -101,8 +87,8 @@ const StudentCategories = () => {
     }));
   };
 
-   // Function to handle file input changes
-   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Function to handle file input changes
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     const file = files ? files[0] : null;
 
@@ -113,7 +99,6 @@ const StudentCategories = () => {
       }));
     }
   };
-
 
   const handleDelete = async (id: number) => {
     try {
@@ -197,7 +182,7 @@ const StudentCategories = () => {
         ...formData,
         class_id: selectedClass,
         cls_sec_id: selectedSection,
-        created_by: roleId
+        created_by: roleId,
       };
 
       const response = await createContentForUpload(data);
@@ -205,21 +190,23 @@ const StudentCategories = () => {
       if (response.status == 200) {
         toast.success("Added successful");
         setFormData({
-          title: '',
-          type: '',
-          is_public: '',
+          title: "",
+          type: "",
+          is_public: "",
           class_id: selectedClass,
           cls_sec_id: selectedSection,
-          file: '',
-          created_by: '',
-          note: '',
-          is_active: '',
-          created_at: '',
-          updated_at: '',
-          date: ''
-        })
+          file: "",
+          created_by: "",
+          note: "",
+          is_active: "",
+          created_at: "",
+          updated_at: "",
+          date: new Date().toISOString().slice(0, 10),
+        });
         fetchData(page, rowsPerPage);
-        
+
+        setSelectedSection("");
+        setSelectedClass("");
       } else {
         toast.error("Error Edit data");
       }
@@ -313,7 +300,7 @@ const StudentCategories = () => {
                   name="title"
                   type="text"
                   value={formData.title}
-                  onChange={handleInputChange} 
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
@@ -324,7 +311,7 @@ const StudentCategories = () => {
                 <select
                   name="type"
                   value={formData.type}
-                  onChange={handleInputChange} 
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select</option>
@@ -344,7 +331,7 @@ const StudentCategories = () => {
                     type="checkbox"
                     name="role"
                     // value={formData.role}
-                    onChange={handleInputChange} 
+                    onChange={handleInputChange}
                   />{" "}
                   All Super Admin{" "}
                 </label>
@@ -412,9 +399,8 @@ const StudentCategories = () => {
                   name="date"
                   type="date"
                   value={formData.date}
-                  onChange={handleInputChange} 
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                 
                 />
               </div>
 
@@ -426,7 +412,7 @@ const StudentCategories = () => {
                   name="note"
                   type="text"
                   value={formData.note}
-                  onChange={handleInputChange} 
+                  onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
@@ -439,7 +425,7 @@ const StudentCategories = () => {
                   className="form-control User_f-13__35loD mt-2 w-full"
                   name="file"
                   type="file"
-                  onChange={handleFileChange} 
+                  onChange={handleFileChange}
                 />
               </div>
 
