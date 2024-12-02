@@ -23,6 +23,10 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+  const [contentavailable, setContentavailable] = useState<Array<Array<any>>>(
+    [],
+  );
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -32,7 +36,7 @@ const StudentCategories = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [colorMode, setColorMode] = useColorMode();
-
+  const [isSuperAdminChecked, setIsSuperAdminChecked] = useState(false);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
@@ -60,6 +64,15 @@ const StudentCategories = () => {
 
   // State for modal visibility
   const [open, setOpen] = useState<boolean>(false);
+
+  const handleSuperAdminChange = (e: any) => {
+    setIsSuperAdminChecked(e.target.checked);
+    if (e.target.checked) {
+      // Reset class and section selection when disabling them
+      setSelectedClass("");
+      setSelectedSection("");
+    }
+  };
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -183,6 +196,7 @@ const StudentCategories = () => {
         class_id: selectedClass,
         cls_sec_id: selectedSection,
         created_by: roleId,
+        content_available: contentavailable,
       };
 
       const response = await createContentForUpload(data);
@@ -294,7 +308,7 @@ const StudentCategories = () => {
             <div className="flex flex-col gap-5.5 p-6.5">
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Content Title *
+                  Content Title <span className="required">*</span>
                 </label>
                 <input
                   name="title"
@@ -306,7 +320,7 @@ const StudentCategories = () => {
               </div>
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Content Type *
+                  Content Type <span className="required">*</span>
                 </label>
                 <select
                   name="type"
@@ -321,17 +335,17 @@ const StudentCategories = () => {
                   <option value="otherdownload">Other Download</option>
                 </select>
               </div>
-              {/* <div>
+              <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Available For *{" "}
+                  Available For <span className="required">*</span>
                 </label>
                 <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
                   <input
                     className=" User_radio__EmAK7"
                     type="checkbox"
-                    name="role"
-                    // value={formData.role}
-                    onChange={handleInputChange}
+                    value="add_super_admin"
+                    name="add_super_admin"
+                    /* onChange={handleSuperAdminChange} */
                   />{" "}
                   All Super Admin{" "}
                 </label>
@@ -339,55 +353,69 @@ const StudentCategories = () => {
                   <input
                     className=" User_radio__EmAK7"
                     type="checkbox"
-                    value="add_student"
-                    name="add_student"
+                    value="add_all_student"
+                    name="add_all_student"
+                    onChange={handleSuperAdminChange}
                   />{" "}
                   All Student{" "}
                 </label>
-                <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                  <input
-                    className=" User_radio__EmAK7"
-                    type="checkbox"
-                    value="allclasses"
-                    name="allclasses"
-                  />{" "}
-                  Available For All Classes{" "}
-                </label>
-              </div> */}
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Class:
-                </label>
-                <select
-                  value={selectedClass || ""}
-                  onChange={handleClassChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {classes.map((cls) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.class}
-                    </option>
-                  ))}
-                </select>
               </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Section:
-                </label>
-                <select
-                  value={selectedSection || ""}
-                  onChange={handleSectionChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  disabled={!selectedClass} // Disable section dropdown if no class is selected
-                >
-                  <option value="">Select</option>
-                  {section.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
-                    </option>
-                  ))}
-                </select>
+              <div
+                className={`mt-2 px-2 ${isSuperAdminChecked ? "bg-gray" : ""}`}
+              >
+                <div className="field">
+                  <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                    <input
+                      className="User_radio__EmAK7"
+                      type="checkbox"
+                      value="add_all_classes"
+                      name="add_all_classes"
+                    />{" "}
+                    Available For All Classes{" "}
+                  </label>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Class:
+                  </label>
+                  <select
+                    value={selectedClass || ""}
+                    onChange={handleClassChange}
+                    className={`mb w-full rounded-lg border-[1.5px] border-stroke px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                      isSuperAdminChecked
+                        ? "bg-gray disabled:cursor-default"
+                        : ""
+                    }`}
+                    disabled={isSuperAdminChecked}
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Section:
+                  </label>
+                  <select
+                    value={selectedSection || ""}
+                    onChange={handleSectionChange}
+                    className={`w-full rounded-lg border-[1.5px] border-stroke px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                      isSuperAdminChecked
+                        ? "bg-gray disabled:cursor-default"
+                        : ""
+                    }`}
+                    disabled={isSuperAdminChecked}
+                  >
+                    <option value="">Select</option>
+                    {section.map((sec) => (
+                      <option key={sec.section_id} value={sec.section_id}>
+                        {sec.section_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div>
