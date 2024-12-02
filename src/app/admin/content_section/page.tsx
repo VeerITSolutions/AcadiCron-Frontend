@@ -175,7 +175,7 @@ const StudentCategories = () => {
           }
           aria-label="edit"
         >
-          <FileDownload />
+          {student.file ? <FileDownload /> : ""}
         </IconButton>
         <IconButton
           onClick={() => handleDelete(student.id)}
