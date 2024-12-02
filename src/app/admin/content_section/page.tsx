@@ -9,7 +9,7 @@ import {
   deleteContentForUpload,
   editContentForUpload,
 } from "@/services/ContentService";
-import { Edit, Delete } from "@mui/icons-material";
+import { Edit, Delete, FileDownload } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
@@ -138,6 +138,25 @@ const StudentCategories = () => {
     setOpen(true); // Open the modal
   };
 
+  const handleDownload = (url: string) => {
+    try {
+      // Create an anchor element
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Set the 'download' attribute to trigger the file download
+      // This forces the file to be downloaded rather than displayed in the browser
+      link.setAttribute("download", "");
+
+      // Append the link, trigger click, and clean up
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error initiating the download:", error);
+    }
+  };
+
   const formatStudentCategoryData = (students: any[]) => {
     if (!Array.isArray(students)) return []; // Fallback to an empty array if not an array
 
@@ -152,20 +171,11 @@ const StudentCategories = () => {
       <div key={student.id}>
         <IconButton
           onClick={() =>
-            handleEdit(
-              student.id,
-              student.title,
-              student.type,
-              student.class,
-              student.date,
-              student.date,
-              student.date,
-              student.date,
-            )
+            handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
           }
           aria-label="edit"
         >
-          <Edit />
+          <FileDownload />
         </IconButton>
         <IconButton
           onClick={() => handleDelete(student.id)}
