@@ -23,9 +23,10 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
-  const [contentavailable, setContentavailable] = useState<Array<Array<any>>>(
-    [],
-  );
+
+  const [allsuperadmin, setAllsuperadmin] = useState(false);
+  const [allstudents, setAllstudents] = useState(false);
+  const [allclasses, setAllclasses] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -46,7 +47,7 @@ const StudentCategories = () => {
     undefined,
   );
   const [roleId, setRoleId] = useState<string | undefined>("");
-
+  const [roleName, setRoleName] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     type: "",
@@ -146,8 +147,9 @@ const StudentCategories = () => {
       student.title || "N/A",
       student.type || "N/A",
       student.date || "N/A",
-      student.class || "N/A",
-      student.class || "N/A",
+      student.class ? student.content_for_role : "All",
+
+      `${student.class.trim()} (  ${student.section.trim()} )` || "N/A",
       <div key={student.id}>
         <IconButton
           onClick={() =>
@@ -176,8 +178,22 @@ const StudentCategories = () => {
     ]);
   };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
+  const handleSuperAdminChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setAllsuperadmin(e.target.checked);
+  };
+
+  const handleAllStudentChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setAllstudents(e.target.checked);
+  };
+
+  const handleClassessChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setAllclasses(e.target.checked);
   };
 
   useEffect(() => {
@@ -185,7 +201,15 @@ const StudentCategories = () => {
     if (getroleId) {
       setRoleId(getroleId);
     }
+
+    const roleName = localStorage.getItem("role_name");
+    if (roleName) {
+      setRoleName(roleName);
+    }
     fetchData(page, rowsPerPage);
+    setAllsuperadmin(false);
+    setAllstudents(false);
+    setAllclasses(false);
   }, [page, rowsPerPage]);
 
   const handleSave = async () => {
@@ -196,7 +220,10 @@ const StudentCategories = () => {
         class_id: selectedClass,
         cls_sec_id: selectedSection,
         created_by: roleId,
-        content_available: contentavailable,
+        role: roleName,
+        allsuperadmin: allsuperadmin,
+        allstudents: allstudents,
+        allclasses: allclasses,
       };
 
       const response = await createContentForUpload(data);
@@ -221,6 +248,9 @@ const StudentCategories = () => {
 
         setSelectedSection("");
         setSelectedClass("");
+        setAllsuperadmin(false);
+        setAllstudents(false);
+        setAllclasses(false);
       } else {
         toast.error("Error Edit data");
       }
@@ -345,7 +375,7 @@ const StudentCategories = () => {
                     type="checkbox"
                     value="add_super_admin"
                     name="add_super_admin"
-                    /* onChange={handleSuperAdminChange} */
+                    onChange={handleSuperAdminChangeforcheckbox}
                   />{" "}
                   All Super Admin{" "}
                 </label>
@@ -355,7 +385,7 @@ const StudentCategories = () => {
                     type="checkbox"
                     value="add_all_student"
                     name="add_all_student"
-                    onChange={handleSuperAdminChange}
+                    onChange={handleAllStudentChangeforcheckbox}
                   />{" "}
                   All Student{" "}
                 </label>
@@ -370,6 +400,7 @@ const StudentCategories = () => {
                       type="checkbox"
                       value="add_all_classes"
                       name="add_all_classes"
+                      onChange={handleClassessChangeforcheckbox}
                     />{" "}
                     Available For All Classes{" "}
                   </label>
