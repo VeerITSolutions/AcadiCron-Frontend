@@ -113,6 +113,15 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     }
   };
 
+  const formatDate = (dateString: any) => {
+    if (!dateString) return "N/A"; // Handle null/undefined dates
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "N/A"; // Handle invalid dates
+    return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
+      date,
+    );
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     const file = files ? files[0] : null;
@@ -157,9 +166,9 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     return students.map((student: any) => [
       student.name || "N/A",
       student.leave_type_id || "N/A",
-      student.leave_from + "-" + student.leave_to || "N/A",
+      `${formatDate(student.leave_from)} - ${formatDate(student.leave_to) || "N/A"}`,
       student.leave_days || "N/A",
-      student.date || "N/A",
+      formatDate(student.date) || "N/A",
       student.status || "N/A",
       <div key={student.id}>
         <IconButton
