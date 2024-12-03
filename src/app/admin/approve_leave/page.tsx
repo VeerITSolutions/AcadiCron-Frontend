@@ -87,12 +87,16 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
-    date: "",
-    leave_type_id: "",
-    leave_from: "",
-    leave_to: "",
+    student_session_id: "",
+    from_date: null as Date | null,
+    to_date: null as Date | null,
+    apply_date: null as Date | null,
+    status: "",
+    created_at: "",
+    docs: "",
     reason: "",
-    document_file: null,
+    approve_by: "",
+    request_type: "",
   });
   const [editing, setEditing] = useState(false); // Add state for editing
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
@@ -105,11 +109,15 @@ const StudentDetails = () => {
   };
 
 
-  const handleDateChange = (selectedDates: any) => {
-    setFormData({ ...formData, date: selectedDates[0] });
+  const handleDateChange = (selectedDates: Date[], name: string) => {
+    if (selectedDates.length > 0) {
+      const formattedDate = selectedDates[0].toISOString().split("T")[0]; // Format to YYYY-MM-DD
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: formattedDate, // Update the specific field dynamically
+      }));
+    }
   };
-
- 
 
   const handleEdit = (id: number) => {
     router.push(`/admin/student/edit/${id}`);
@@ -120,34 +128,6 @@ const StudentDetails = () => {
   };
 
 
-
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.class || "N/A",
-      student.section || "N/A",
-      student. student_session_id || "N/A",
-      student.from_date || "N/A",
-      student.to_date || "N/A",
-      student.apply_date || "N/A",
-      student.docs || "N/A",
-      student.approve_by || "N/A",
-      <div key={student.id}>
-      <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
-        <Visibility />
-      </IconButton>
-      <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
-        <Edit />
-      </IconButton>
-      <IconButton
-        onClick={() => handleAddFees(student.id)}
-        aria-label="Add Fee"
-      >
-        <AttachMoney />
-      </IconButton>
-    </div>,
-     
-    ]);
-  };
 
   const fetchData = async (
     currentPage: number,
@@ -160,7 +140,9 @@ const StudentDetails = () => {
       const result = await fetchApproveLeaveData(
         currentPage + 1,
         rowsPerPage,
-       
+        selectedClass,
+        selectedSection,
+        keyword,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -179,35 +161,66 @@ const StudentDetails = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSave = async () => {
+    if (
+      !formData.apply_date &&
+      !formData.from_date &&
+      !formData.to_date &&
+      !formData.status
+    ) {
+      toast.error("Please fill all required fields before submitting.");
+      return;
+    }
     try {
       let result;
       if (editing) {
         result = await editApproveLeaveData(
-          currentLeaveId!,
-          formData.date,
-         
-         
+          currentLeaveId,
+          formData.student_session_id,
+          formData.from_date,
+          formData.to_date,
+          formData.apply_date,
+          formData.status,
+          formData.created_at,
+          formData.docs,  
+          formData.status,
+          formData.created_at,
+          formData.request_type,
+   
         );
       } else {
         result = await createApproveLeave(
-          formData.date,
-         
-          
+          formData.student_session_id,
+          formData.from_date,
+          formData.to_date,
+          formData.apply_date,
+          formData.created_at,
+          formData.docs,
+          formData.reason,
+          formData.status,
+          formData.approve_by,
+          formData.request_type,
         );
       }
-      if (result.success) {
+
+      if (result.status == 200) {
         toast.success(
           editing ? "Leave updated successfully" : "Leave applied successfully",
         );
         setFormData({
-          date: "",
-          leave_type_id: "",
-          leave_from: "",
-          leave_to: "",
+          student_session_id: "",
+          from_date: null as Date | null,
+          to_date: null as Date | null,
+          apply_date: null as Date | null,
+          status: "",
+          created_at: "",
+          docs: "",
           reason: "",
-          document_file: null,
+          approve_by: "",
+          request_type: "",
         });
+
+     
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
         fetchData(page, rowsPerPage); // Refresh data after submit
@@ -220,18 +233,28 @@ const StudentDetails = () => {
     }
   };
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
-    const { name, value, type } = event.target;
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]:
-        type === "file" && "files" in event.target
-          ? (event.target as HTMLInputElement).files?.[0]
-          : value,
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
     }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
   };
 
   const handlePageChange = (newPage: number) => {
@@ -282,7 +305,33 @@ const StudentDetails = () => {
     setSelectedSection("");
     setKeyword("");
   };
-
+  const formatStudentData = (students: any[]) => {
+    return students.map((student: any) => [
+      student.class || "N/A",
+      student.section || "N/A",
+      student. student_session_id || "N/A",
+      student.from_date || "N/A",
+      student.to_date || "N/A",
+      student.apply_date || "N/A",
+      student.docs || "N/A",
+      student.approve_by || "N/A",
+      <div key={student.id}>
+      <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+        <Visibility />
+      </IconButton>
+      <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+        <Edit />
+      </IconButton>
+      <IconButton
+        onClick={() => handleAddFees(student.id)}
+        aria-label="Add Fee"
+      >
+        <AttachMoney />
+      </IconButton>
+    </div>,
+     
+    ]);
+  };
 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
@@ -477,11 +526,15 @@ const StudentDetails = () => {
                   Apply Date <span className="required">*</span>
                   </label>
                   <div className="relative">
-                    <Flatpickr
-                      onChange={handleDateChange}
+                  <Flatpickr
+                      value={formData.apply_date}
+                      onChange={(selectedDates) =>
+                        handleDateChange(selectedDates, "apply_date")
+                      }
                       options={{
                         dateFormat: "m/d/Y",
                       }}
+                      name="apply_date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -509,10 +562,14 @@ const StudentDetails = () => {
                   </label>
                   <div className="relative">
                     <Flatpickr
-                      onChange={handleDateChange}
-                      options={{
-                        dateFormat: "m/d/Y",
-                      }}
+                     value={formData.from_date}
+                     onChange={(selectedDates) =>
+                       handleDateChange(selectedDates, "from_date")
+                     }
+                     options={{
+                       dateFormat: "m/d/Y",
+                     }}
+                     name="from_date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -540,10 +597,14 @@ const StudentDetails = () => {
                   </label>
                   <div className="relative">
                     <Flatpickr
-                      onChange={handleDateChange}
+                      value={formData.to_date}
+                      onChange={(selectedDates) =>
+                        handleDateChange(selectedDates, "to_date")
+                      }
                       options={{
                         dateFormat: "m/d/Y",
                       }}
+                      name="to_date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -570,8 +631,10 @@ const StudentDetails = () => {
         Reason 
         </label>
         <input
-          name="description"
+          name="reason"
           type="text"
+          value={formData.reason}
+          onChange={handleInputChange}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
       </div>
@@ -580,12 +643,17 @@ const StudentDetails = () => {
      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
       Attach Document
       </label>
-      <input className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white" type="file" />
+      <input className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"   
+      type="file"
+      accept="image/*"
+      name="docs" // Optional: Include name for form data
+      onChange={handleFileChange} // Handle file change separately
+      id="file" />
       </div>
      
       <div className="col-span-full">
       <button
-        type="submit"
+         onClick={handleSave}
         className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
       >
         Save

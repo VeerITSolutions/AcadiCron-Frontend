@@ -345,16 +345,16 @@ const FeesMaster = () => {
                   </label>
                   <div className="flex gap-5">
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="guardian_is" value="father" />{" "}
-                      Father
+                      <input type="radio" name="none" value="none" />{" "}
+                      None
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="guardian_is" value="mother" />{" "}
-                      Mother
+                      <input type="radio" name="percentage" value="percentage" />{" "}
+                      Percentage
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="guardian_is" value="other" />{" "}
-                      Other
+                      <input type="radio" name="fix_amount" value="fix" />{" "}
+                      Fix Amount
                     </label>
                   </div>
                 </div>

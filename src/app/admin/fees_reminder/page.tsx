@@ -89,7 +89,7 @@ const StudentDetails = () => {
                               name="isactive_2"
                               value={section.is_active}
                               defaultChecked
-                              className="form-checkbox h-4 w-4 text-blue-600"
+                              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                             <span className="text-gray-900 ml-2 text-sm">
                               {section.is_active ? "Active" : "Inactive"}
@@ -101,6 +101,7 @@ const StudentDetails = () => {
                             type="hidden"
                             name="ids[]"
                             value={section.id}
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                           />
                           <span className="text-gray-900 text-sm">
                             {" "}
@@ -112,7 +113,7 @@ const StudentDetails = () => {
                             type="number"
                             name="days2"
                             defaultValue={section.day}
-                            className="form-input border-gray-300 mt-1 block w-full rounded-md shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none bg-[#F1F5F9]"
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                           />
                         </td>
                       </tr>
