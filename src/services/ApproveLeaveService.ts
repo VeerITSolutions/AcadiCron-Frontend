@@ -58,7 +58,16 @@ export const createApproveLeave = async (
   }
 };
 
-
+export const changeStatus = async (
+  id: string): Promise<any> => {
+  try {
+    const response = await apiClient.get(`/approve-leave-change-status/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create leave request");
+  }
+};
 
 // Delete a student category by ID
 export const deleteApproveLeaveData = async (id: number) => {

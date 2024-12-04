@@ -19,6 +19,7 @@ import {
   createApproveLeave,
   deleteApproveLeaveData,
   editApproveLeaveData,
+  changeStatus,
 
 } from "@/services/ApproveLeaveService";
 
@@ -202,12 +203,14 @@ const StudentDetails = () => {
           formData.staff_name,
           formData.staff_surname,
         );
+
+        setSelectedClass("");
+        setSelectedSection("");
+        setSelectedStudent("")
       }
 
       if (result.status == 200) {
-        toast.success(
-          editing ? "Leave updated successfully" : "Leave applied successfully",
-        );
+        
         setFormData({
           student_session_id: "",
           from_date: null as Date | null,
@@ -324,12 +327,27 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setSelectedStudent("")
     setKeyword("");
   };
 
-  const handleApprove = (id: any) => {
+  const handleApprove =  async (id: any) => {
     setStatus("Approved"); // Update status to Approved
-    console.log("Approving student with ID:", id);
+
+   const result = await changeStatus(
+      
+    id
+    );
+
+    if(result.data == 200)
+    {
+      toast.success(
+        'success',
+      );
+    }
+
+    
+    fetchData(page, rowsPerPage); 
   };
 
   const handleDisapprove = (id: any) => {
@@ -387,15 +405,20 @@ const StudentDetails = () => {
         </IconButton>
         {
           parseInt(student.status) === 1 ? (
-            <IconButton onClick={() => handleApprove(student.id)} aria-label="Approve">
-              <ThumbUp />
-            </IconButton>
+            <IconButton onClick={() => handleApprove(student.id)} aria-label="Disapprove">
+            <ThumbDown   style={{ color: 'red' }} />
+          </IconButton>
+           
           ) : parseInt(student.status) === 0 ? (
-            <IconButton onClick={() => handleDisapprove(student.id)} aria-label="Disapprove">
-              <ThumbDown />
+            <IconButton onClick={() => handleApprove(student.id)} aria-label="Approve">
+              <ThumbUp  style={{ color: 'green' }}/>
             </IconButton>
+           
           ) : "N/A"
         }
+
+
+
       </div>
     ]);
   };
