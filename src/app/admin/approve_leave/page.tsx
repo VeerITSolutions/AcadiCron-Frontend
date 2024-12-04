@@ -308,7 +308,7 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student. student_session_id || "N/A",
+      student. student_name || "N/A",
       student.class_name || "N/A",
       student.section_name || "N/A",
       student.from_date || "N/A",
