@@ -8,7 +8,10 @@ export const fetchApproveLeaveData = async (page: any, perPage: number,selectedC
     params: {
       page,
       perPage,
-      id
+      id,
+      selectedClass,
+      selectedSection,
+      keyword,
     },
   });
   return response.data;

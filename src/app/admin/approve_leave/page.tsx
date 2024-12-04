@@ -143,6 +143,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
+        localStorage.getItem("selectedSessionId"),
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -307,13 +308,13 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.class || "N/A",
-      student.section || "N/A",
       student. student_session_id || "N/A",
+      student.class_name || "N/A",
+      student.section_name || "N/A",
       student.from_date || "N/A",
       student.to_date || "N/A",
       student.apply_date || "N/A",
-      student.docs || "N/A",
+      student.status || "N/A",
       student.approve_by || "N/A",
       <div key={student.id}>
       <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
