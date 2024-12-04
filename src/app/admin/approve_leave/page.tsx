@@ -41,6 +41,8 @@ import {
   Visibility,
   TextFields,
   AttachMoney,
+  ThumbDown, 
+  ThumbUp,
 } from "@mui/icons-material";
 
 const columns = [
@@ -80,9 +82,6 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
- 
- 
- 
 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
@@ -99,15 +98,12 @@ const StudentDetails = () => {
     request_type: "",
   });
   const [editing, setEditing] = useState(false); // Add state for editing
+  const [status, setStatus] = useState("Pending");
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
-
+ 
 
   const handleDateChange = (selectedDates: Date[], name: string) => {
     if (selectedDates.length > 0) {
@@ -285,10 +281,10 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpen = (isEditing: any) => {
+    setEditing(isEditing); // Set editing state based on action
+    setOpen(true); // Open the dialog/modal
   };
-
   const handleClose = () => {
     setOpen(false);
     setEditing(false); // Reset editing state
@@ -300,40 +296,65 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteApproveLeaveData(id);
+      toast.success("Delete successful");
+      fetchData(page, rowsPerPage);
+    } catch (error) {
+      console.error("Delete failed", error);
+    }
+  };
 
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
   };
+
+  const handleApprove = (id: any) => {
+    setStatus("Approved"); // Update status to Approved
+    console.log("Approving student with ID:", id);
+  };
+
+  const handleDisapprove = (id: any) => {
+    setStatus("Pending"); // Update status to Pending
+    console.log("Disapproving student with ID:", id);
+  };
+
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student. student_name || "N/A",
+      student.student_name || "N/A",
       student.class_name || "N/A",
       student.section_name || "N/A",
       student.from_date || "N/A",
       student.to_date || "N/A",
       student.apply_date || "N/A",
-      student.status || "N/A",
-      student.approve_by || "N/A",
+      (parseInt(student.status) === 1) ? "Approve" : (parseInt(student.status) === 0) ? "Pending" : "N/A",
+      `${student.staff_name || ''} ${student.staff_surname || ''}` || "N/A",
+
       <div key={student.id}>
-      <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
-        <Visibility />
-      </IconButton>
-      <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
-        <Edit />
-      </IconButton>
-      <IconButton
-        onClick={() => handleAddFees(student.id)}
-        aria-label="Add Fee"
-      >
-        <AttachMoney />
-      </IconButton>
-    </div>,
-     
+        <IconButton onClick={() => handleClickOpen(true)} aria-label="Edit">
+          <Edit />
+        </IconButton>
+        <IconButton onClick={() => handleDelete(student.id)} aria-label="delete">
+          <Delete />
+        </IconButton>
+        {
+          parseInt(student.status) === 1 ? (
+            <IconButton onClick={() => handleApprove(student.id)} aria-label="Approve">
+              <ThumbUp />
+            </IconButton>
+          ) : parseInt(student.status) === 0 ? (
+            <IconButton onClick={() => handleDisapprove(student.id)} aria-label="Disapprove">
+              <ThumbDown />
+            </IconButton>
+          ) : "N/A"
+        }
+      </div>
     ]);
   };
-
+  
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
@@ -428,7 +449,7 @@ const StudentDetails = () => {
   <button
     type="submit"
     className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"  // Added margin-right for spacing
-    onClick={handleClickOpen}
+    onClick={() => handleClickOpen(false)}
   >
     {editing ? "Edit Leave" : "Add Leave"}
   </button>
