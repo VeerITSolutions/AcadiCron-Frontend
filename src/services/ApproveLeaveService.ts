@@ -19,6 +19,9 @@ export const fetchApproveLeaveData = async (page: any, perPage: number,selectedC
 
 
 export const createApproveLeave = async (
+  selectedClass ?: any,
+  selectedSection ?: any,
+  selectedStudent ?: any,
   student_session_id?: string,
   from_date?: any,
   to_date?: any,
@@ -28,9 +31,14 @@ export const createApproveLeave = async (
   reason?: any,
   status?: any,
   approve_by?: string,
-  request_type?: string): Promise<any> => {
+  request_type?: string,
+  staff_name?: string,
+  staff_surname?: string,): Promise<any> => {
   try {
-    const response = await apiClient.post("/approve-leave", {  
+    const response = await apiClient.post("/approve-leave", { 
+      selectedClass,
+      selectedSection,
+      selectedStudent, 
       student_session_id,
       from_date,
       to_date,
@@ -40,7 +48,9 @@ export const createApproveLeave = async (
       reason,
       status,
       approve_by,
-      request_type,});
+      request_type,
+      staff_name,
+      staff_surname });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -58,7 +68,10 @@ export const deleteApproveLeaveData = async (id: number) => {
 
 
 export const editApproveLeaveData = async (
-  currentLeaveId?: any,
+  currentLeaveId ?: any,
+  selectedClass ?: any,
+  selectedSection ?: any,
+  selectedStudent ?: any,
   student_session_id ?: any,
   from_date ?: any,
   to_date ?: any,
@@ -69,9 +82,15 @@ export const editApproveLeaveData = async (
   status?: any,
   approve_by?: string,
   request_type?: string,
+  staff_name?: string,
+  staff_surname?: string,
 
  ) => {
-  const data = { currentLeaveId,student_session_id,
+  const data = { currentLeaveId,
+    selectedClass,
+    selectedSection,
+    selectedStudent,
+    student_session_id,
     from_date,
     to_date,
     apply_date,
@@ -80,7 +99,9 @@ export const editApproveLeaveData = async (
     reason,
     status,
     approve_by,
-    request_type, };
+    request_type,
+    staff_name,
+    staff_surname };
   const response = await apiClient.post(`/approve-leave/${currentLeaveId}`, data);
   return response.data;
 };

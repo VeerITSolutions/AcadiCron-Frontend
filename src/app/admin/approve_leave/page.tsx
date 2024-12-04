@@ -76,10 +76,14 @@ const StudentDetails = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [studentName, setStudentName] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedStudent, setSelectedStudent] = useState<string | undefined>(
     undefined,
   );
 
@@ -96,14 +100,18 @@ const StudentDetails = () => {
     reason: "",
     approve_by: "",
     request_type: "",
+    class_name:"",
+    section_name: "",
+    staff_name:"",
+    staff_surname:"",
+
+
   });
   const [editing, setEditing] = useState(false); // Add state for editing
   const [status, setStatus] = useState("Pending");
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
- 
 
   const handleDateChange = (selectedDates: Date[], name: string) => {
     if (selectedDates.length > 0) {
@@ -113,14 +121,6 @@ const StudentDetails = () => {
         [name]: formattedDate, // Update the specific field dynamically
       }));
     }
-  };
-
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
   };
 
 
@@ -141,6 +141,7 @@ const StudentDetails = () => {
         keyword,
         localStorage.getItem("selectedSessionId"),
       );
+      setStudentName(result.data);
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
@@ -148,13 +149,6 @@ const StudentDetails = () => {
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
-    }
-
-    try {
-      const result = await fetchLeaveTypeData();
-      setLeaveTypeData(result.data);
-    } catch (error: any) {
-      setError(error.message);
     }
   };
 
@@ -173,6 +167,9 @@ const StudentDetails = () => {
       if (editing) {
         result = await editApproveLeaveData(
           currentLeaveId,
+          selectedClass,
+          selectedSection,
+          selectedStudent,
           formData.student_session_id,
           formData.from_date,
           formData.to_date,
@@ -183,10 +180,15 @@ const StudentDetails = () => {
           formData.status,
           formData.created_at,
           formData.request_type,
+          formData.staff_name,
+          formData.staff_surname,
    
         );
       } else {
         result = await createApproveLeave(
+          selectedClass,
+          selectedSection,
+          selectedStudent,
           formData.student_session_id,
           formData.from_date,
           formData.to_date,
@@ -197,6 +199,8 @@ const StudentDetails = () => {
           formData.status,
           formData.approve_by,
           formData.request_type,
+          formData.staff_name,
+          formData.staff_surname,
         );
       }
 
@@ -215,6 +219,10 @@ const StudentDetails = () => {
           reason: "",
           approve_by: "",
           request_type: "",
+          class_name:"",
+          section_name: "",
+          staff_name:"",
+          staff_surname:"",
         });
 
      
@@ -296,6 +304,13 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+
+
+  const handleStudentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedStudent(event.target.value);
+  };
+
+
   const handleDelete = async (id: number) => {
     try {
       await deleteApproveLeaveData(id);
@@ -322,6 +337,38 @@ const StudentDetails = () => {
     console.log("Disapproving student with ID:", id);
   };
 
+  const  handleEdit = async (id: number, data: any) => {
+    setEditing(true);
+   
+
+    console.log('data', data)
+   
+    setFormData({
+      student_session_id: data.id,
+      from_date: data.from_date,
+      to_date: data.to_date,
+      apply_date: data.apply_date,
+      status: data.status,
+      created_at: data.created_at,
+      docs: data.docs,
+      reason: data.reason,
+      approve_by: data.approve_by,
+      request_type: data.request_type,
+      class_name:'',
+      section_name: '',
+      staff_name:'',
+      staff_surname:'',
+    });
+
+    
+
+          setSelectedClass('');
+          setSelectedSection('');
+          setSelectedStudent('');
+
+    setOpen(true); // Open the modal
+  };
+
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.student_name || "N/A",
@@ -334,9 +381,7 @@ const StudentDetails = () => {
       `${student.staff_name || ''} ${student.staff_surname || ''}` || "N/A",
 
       <div key={student.id}>
-        <IconButton onClick={() => handleClickOpen(true)} aria-label="Edit">
-          <Edit />
-        </IconButton>
+        
         <IconButton onClick={() => handleDelete(student.id)} aria-label="delete">
           <Delete />
         </IconButton>
@@ -355,9 +400,11 @@ const StudentDetails = () => {
     ]);
   };
   
+
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
+
   
   const fetchClassesAndSections = async () => {
     try {
@@ -537,9 +584,17 @@ const StudentDetails = () => {
         Student <span className="required">*</span>
         </label>
         <select
-          name="modal_subject_group_id"
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input">
+         value={selectedStudent || ""}
+         onChange={handleStudentChange}
+         
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          disabled={!selectedClass || !selectedSection}>
           <option value="">Select</option>
+          {studentName.map((sec) => (
+          <option key={sec.student_id} value={sec.student_id}>
+            {sec.student_name}
+          </option>
+        ))}
         </select>
       </div>
 
