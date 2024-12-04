@@ -59,9 +59,9 @@ export const createApproveLeave = async (
 };
 
 export const changeStatus = async (
-  id: string): Promise<any> => {
+  id: string, role_id: any): Promise<any> => {
   try {
-    const response = await apiClient.get(`/approve-leave-change-status/${id}`);
+    const response = await apiClient.get(`/approve-leave-change-status/${id}/${role_id}`);
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);

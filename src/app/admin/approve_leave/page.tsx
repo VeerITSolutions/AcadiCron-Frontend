@@ -45,6 +45,7 @@ import {
   ThumbDown, 
   ThumbUp,
 } from "@mui/icons-material";
+import { useLoginDetails, useLogoStore } from "@/store/logoStore";
 
 const columns = [
   "Student Name",
@@ -87,6 +88,7 @@ const StudentDetails = () => {
   const [selectedStudent, setSelectedStudent] = useState<string | undefined>(
     undefined,
   );
+  const [getRoleId, SetGetRoleId] = useState("");
 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
@@ -289,6 +291,14 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
+    let roleId = localStorage.getItem("role_id");
+    if (roleId) {
+      SetGetRoleId(roleId);
+    }
+  },[]);
+
+  useEffect(() => {
+    
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
@@ -331,12 +341,14 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
+  const getRoleId2 = useLoginDetails((state) => state.roleId);
   const handleApprove =  async (id: any) => {
     setStatus("Approved"); // Update status to Approved
 
    const result = await changeStatus(
       
-    id
+    id,getRoleId2  
+   
     );
 
     if(result.data == 200)
