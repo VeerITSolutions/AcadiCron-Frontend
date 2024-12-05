@@ -41,7 +41,9 @@ const FeesMaster = () => {
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
+  // const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
+  const [selectedSection, setSelectedSection] = useState<string[]>([]);
+
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -94,6 +96,7 @@ const FeesMaster = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name,
+      subject.description || "N/A",
       subject.description || "N/A",
       <div key={subject.id}>
         <IconButton onClick={() => handleEdit(subject.id, subject.name, subject.description)} aria-label="edit">
@@ -169,10 +172,16 @@ const FeesMaster = () => {
     if (event.target.value) await fetchSections(event.target.value);
   };
 
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
+  const handleSectionChange = (event: React.ChangeEvent<HTMLInputElement>, sectionId: string) => {
+    if (event.target.checked) {
+      setSelectedSection((prev) => [...prev, sectionId]);
+    } else {
+      setSelectedSection((prev) => prev.filter((id) => id !== sectionId));
+    }
     setPage(0);
   };
+  
+  
 
   const fetchClassesAndSections = async () => {
     try {
@@ -264,23 +273,31 @@ const FeesMaster = () => {
                   </select>
                 </div>
 
-                <div className="field">
+               
+
+                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Section:
                   </label>
-                  <select
-                    value={selectedSection || ""}
-                    onChange={handleSectionChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-                    disabled={!selectedClass} // Disable section dropdown if no class is selected
-                  >
-                    <option value="">Select</option>
+                  <div className={`flex flex-wrap gap-4 ${!selectedClass ? "opacity-50 pointer-events-none" : ""}`}>
                     {section.map((sec) => (
-                      <option key={sec.section_id} value={sec.section_id}>
+                      <label
+                        key={sec.section_id}
+                        className="flex items-center gap-2 text-black dark:text-white"
+                      >
+                     <input
+                      type="checkbox"
+                      value={sec.section_id}
+                      checked={selectedSection.includes(sec.section_id)} 
+                      onChange={(e) => handleSectionChange(e, sec.section_id)}
+                      disabled={!selectedClass} 
+                      className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
+                    />
+
                         {sec.section_name}
-                      </option>
+                      </label>
                     ))}
-                  </select>
+                  </div>
                 </div>
 
                 <div className="field">

@@ -11,19 +11,25 @@ export const fetchStudentFeesMasterData = async (page?: number, perPage?: number
 };
 
 
-export const createFeesMaster = async (house_name: string, description?: string
-,
+export const createFeesMaster = async (
+fees_group?:any,
+fees_type?:any,
+due_date?:any,
+amount?:any,
+fine_type?:any,
+percentage?:any,
+fine_amount?:string
 
-fees_group?:string,
-fees_type?:string,
-due_date?:string,
-amount?:string,
-fine_type?:string,
-percentage?:string,
-fine_amount?:string,
 ): Promise<any> => {
   try {
-    const response = await apiClient.post("/fees-master", { house_name, description });
+    const response = await apiClient.post("/fees-master", { 
+      fees_group,
+      fees_type,
+      due_date,
+      amount,
+      fine_type,
+      percentage,
+      fine_amount });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);

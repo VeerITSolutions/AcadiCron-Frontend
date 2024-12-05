@@ -847,7 +847,7 @@ const User = () => {
               Student Address Details
             </h3>
           </div>
-          <div className="grid gap-5.5 p-6.5 sm:grid-cols-4">
+          <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
             <div className="field">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Current Address
@@ -875,6 +875,7 @@ const User = () => {
               ></textarea>
             </div>
           </div>
+
         </div>
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">

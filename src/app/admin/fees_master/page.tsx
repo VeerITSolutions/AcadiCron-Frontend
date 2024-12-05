@@ -32,6 +32,8 @@ const FeesMaster = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
 
@@ -189,9 +191,15 @@ const FeesMaster = () => {
         }
       } else {
         const result = await createFeesMaster(
-          formData.description,
-          formData.description,
+          formData.fees_group,
+          formData.fees_type,
+          formData.due_date,
+          formData.amount,
+          formData.fine_type,
+          formData.percentage,
+          formData.fine_amount
         );
+        
         if (result.success) {
           toast.success("Student House saved successfully");
         } else {
