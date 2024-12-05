@@ -215,6 +215,22 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       ))}
     </select>
   </label>
+  <label className={styles.label}>
+  Subject Group:
+    <select
+      // value={selectedSection || ""}
+      // onChange={handleSectionChange}
+      className={styles.select}
+      disabled={!selectedClass} // Disable section dropdown if no class is selected
+    >
+      <option value="">Select</option>
+      {/* {section.map((sec) => (
+        <option key={sec.section_id} value={sec.section_id}>
+          {sec.section_name}
+        </option>
+      ))} */}
+    </select>
+  </label>
   <div className={styles.searchGroup}>
   
     <button onClick={handleSearch} className={styles.searchButton}>
