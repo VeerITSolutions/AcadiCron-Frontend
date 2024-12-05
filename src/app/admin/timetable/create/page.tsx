@@ -1,286 +1,377 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import React from "react";
 import MUIDataTable from "mui-datatables";
-import {
-  createFeesMaster,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
-import { Edit, Delete } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import { toast } from "react-toastify";
+import { fetchtimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
-import styles from "./User.module.css";
-import { fetchsectionData } from "@/services/sectionsService";
-import { fetchclassesSectionData } from "@/services/classesSectionService";
+import { toast } from "react-toastify";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Tabs from "@mui/material/Tabs";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { TextField } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your classes API service
+import styles from "./StudentDetails.module.css"; // Import CSS module
 
-interface Section {
-  id: number;
-  section: string;
-}
+const columns = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-interface FormData {
-  fees_group: string;
-  fees_type: string;
-  due_date: string;
-  amount: string;
-  fine_type: string;
-  percentage: string;
-  description: string;
-  fine_amount: string;
-}
+const options = {
+  filter: false,
+  search: false,
+  pagination: false,
+  sort: false,
+  selectableRows: "none",
+  download: false,
+  print: false,
+  viewColumns: false,
+  responsive: "standard",
+};
 
-const FeesMaster = () => {
+const StudentDetails = () => {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<any[][]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [totalCount, setTotalCount] = useState<number>(0);
-  const [sections, setSections] = useState<Section[]>([]);
-  const [colorMode] = useColorMode();
-  const [formData, setFormData] = useState<FormData>({
-    fees_group: "",
-    fees_type: "",
-    due_date: "",
-    amount: "",
-    fine_type: "",
-    percentage: "",
-    description: "",
-    fine_amount: "",
-  });
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+  const [value, setValue] = useState("Monday");
+  const [page, setPage] = useState(0);
+  const [keyword, setKeyword] = useState<string>("");
+  const [colorMode, setColorMode] = useColorMode();
 
-  const fetchData = async (currentPage: number, rowsPerPage: number) => {
-    setLoading(true);
+
+  
+const [classes, setClassessData] = useState<Array<any>>([]);
+const [section, setSections] = useState<Array<any>>([]);
+const [selectedClass, setSelectedClass] = useState<string | undefined>(
+  undefined,
+);
+const [selectedSection, setSelectedSection] = useState<string | undefined>(
+  undefined,);
+
+
+  const [rows, setRows] = useState<{ [key: string]: any[] }>({
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+    Sunday: [],
+  });
+
+useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+  
+const fetchClassesAndSections = async () => {
     try {
-      const result = await fetchclassesSectionData(
-        currentPage + 1,
-        rowsPerPage,
-      );
-      setTotalCount(result.totalCount);
-      setData(formatStudentCategoryData(result.data));
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
     } catch (error: any) {
       setError(error.message);
-    } finally {
       setLoading(false);
     }
-
-    try {
-      const sectionResult = await fetchsectionData(
-        currentPage + 1,
-        rowsPerPage,
-      );
-      setSections(sectionResult.data);
-    } catch (error) {
-      console.error("Failed to fetch sections", error);
-    }
   };
+ const token = localStorage.getItem("authToken") || "";
 
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteFeesMasterData(id);
-      toast.success("Delete successful");
-      fetchData(page, rowsPerPage);
-    } catch (error) {
-      console.error("Delete failed", error);
-    }
-  };
-
-  const handleEdit = (id: number, fees_group_value: string) => {
-    setIsEditing(true);
-    setEditCategoryId(id);
-    setFormData({
-      ...formData,
-      fees_group: fees_group_value,
-    });
-  };
-
-  const handleCancel = () => {
-    setFormData({
-      fees_group: "",
-      fees_type: "",
-      due_date: "",
-      amount: "",
-      fine_type: "",
-      percentage: "",
-      description: "",
-      fine_amount: "",
-    });
-    setIsEditing(false);
-    setEditCategoryId(null);
-  };
-
-  const formatStudentCategoryData = (students: any[]) =>
-    students.map((student: any) => [
-      student.class_name,
-      student.section_name || "N/A",
-      <div key={student.id}>
-        <IconButton
-          onClick={() => handleEdit(student.id, student.category)}
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
-    ]);
-
-  useEffect(() => {
-    fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async () => {
-    try {
-      setFormData({
-        fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
-      });
-      setIsEditing(false);
-      setEditCategoryId(null);
-      fetchData(page, rowsPerPage);
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  };
-
-  const handlePageChange = (newPage: number) => setPage(newPage);
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
+const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
     setPage(0);
   };
 
-  if (loading) return <Loader />;
-  if (error) return <p>{error}</p>;
-
-  const columns = ["Class", "Section", "Action"];
-  const options = {
-    filterType: "checkbox",
-    serverSide: true,
-    responsive: "standard",
-    count: totalCount,
-    selectableRows: "none",
-    page,
-    rowsPerPage,
-    onChangePage: handlePageChange,
-    onChangeRowsPerPage: handleRowsPerPageChange,
-    filter: false,
-    viewColumns: false,
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
   };
+
+  // const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setKeyword(event.target.value);
+  // };
+
+  const handleSave = (day: string) => {
+    const timetableData = {
+      classId: selectedClass,
+      sectionId: selectedSection,
+      day,
+      rows: rows[day],
+    };
+
+    // Store in local storage
+    localStorage.setItem(`timetable_${day}`, JSON.stringify(timetableData));
+
+    console.log(`Saving data for ${day}:`, timetableData);
+    toast.success(`Data for ${day} saved successfully!`);
+  };
+  const handleSearch = () => {
+    setPage(0); // Reset to first page on search
+    fetchData();
+  };
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
+
+
+
+  const addRow = (day: string) => {
+    setRows({
+      ...rows,
+      [day]: [
+        ...rows[day],
+        { subject: "", teacher: "", timeFrom: "", timeTo: "", roomNo: "" },
+      ],
+    });
+  };
+
+  const handleInputChange = (day: string, index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const updatedRows = [...rows[day]];
+    updatedRows[index][name] = value;
+    setRows({ ...rows, [day]: updatedRows });
+  };
+
+  const removeRow = (day: string, index: number) => {
+    const updatedRows = rows[day].filter((_, i) => i !== index);
+    setRows({ ...rows, [day]: updatedRows });
+  };
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const result = await fetchtimeTableData(token);
+      if (result && result.success) {
+        setData(result.data);
+      } else {
+        setError("Failed to load timetable data.");
+      }
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+
+  if (loading) return <Loader />;
+  if (error) return <div>{error}</div>;
 
   return (
     <DefaultLayout>
-     <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
-  <div className="flex flex-col gap-9">
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-        <h3 className="font-medium text-black dark:text-white">
-          {isEditing ? "Edit Class" : "Add Class"}
-        </h3>
-      </div>
-      <div className="flex flex-col gap-5.5 p-6.5">
-        <div>
-          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Class<span className="required">*</span>
-          </label>
-          <input
-            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            type="text"
-            name="class_id"
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label className=" mb-3 block text-sm font-medium text-black dark:text-white">
-            Sections<span className="required">*</span>
-          </label>
-          {sections.length > 0 ? (
-            sections.map((section) => (
-              <label
-                key={section.id}
-                className="mb-2 radio-inline block text-sm font-medium text-black dark:text-white"
-              >
-                <input
-                  type="radio"
-                  value={section.id}
-                  name="section_id"
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                {section.section}
-              </label>
-            ))
-          ) : (
-            <p>No sections available</p>
-          )}
-        </div>
-
-        <div className="flex gap-2">
-          <button
-            type="submit"
-            className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-            onClick={handleSubmit}
-          >
-            {isEditing ? "Update" : "Save"}
-          </button>
-
-          {isEditing && (
-    <button
-      type="button"
-      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80" // Adjust color as needed
-      onClick={handleCancel}
+      <div className={styles.filters}>
+<div className={styles.filterGroup}>
+  <label className={styles.label}>
+    Class:
+    <select
+      value={selectedClass || ""}
+      onChange={handleClassChange}
+      className={styles.select}
     >
-      Cancel
+      <option value="">Select</option>
+      {classes.map((cls) => (
+        <option key={cls.id} value={cls.id}>
+          {cls.class}
+        </option>
+      ))}
+    </select>
+  </label>
+  <label className={styles.label}>
+    Section:
+    <select
+      value={selectedSection || ""}
+      onChange={handleSectionChange}
+      className={styles.select}
+      disabled={!selectedClass} // Disable section dropdown if no class is selected
+    >
+      <option value="">Select</option>
+      {section.map((sec) => (
+        <option key={sec.section_id} value={sec.section_id}>
+          {sec.section_name}
+        </option>
+      ))}
+    </select>
+  </label>
+  <div className={styles.searchGroup}>
+  
+    <button onClick={handleSearch} className={styles.searchButton}>
+      Search
     </button>
-  )}
-        
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div className="flex flex-col gap-9">
-    <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-      <MUIDataTable
-        title={"Class List"}
-        data={data}
-        columns={columns}
-        options={options}
-      />
-    </ThemeProvider>
+    <button onClick={handleRefresh} className={styles.searchButton}>
+      Reset
+    </button>
   </div>
 </div>
+</div>
+<ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <TabList
+          onChange={handleChange}
+          aria-label="Timetable Tabs"
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{
+            "& .MuiTab-root": {
+              textTransform: "none", // Optional: Remove uppercase
+              fontWeight: 400, // Default font weight
+            },
+            "& .MuiTabs-indicator": {
+              backgroundColor: "lightblue !important", // Active tab indicator color
+            },
+          }}
+        >
+          {columns.map((day) => (
+            <Tab key={day} label={day} value={day} />
+          ))}
+        </TabList>
+        </Box>
 
+        {columns.map((day) => (
+        <TabPanel key={day} value={day}>
+        <div className="container mx-auto">
+          {/* Add Row Button */}
+          <div className="flex justify-end">
+          <button
+            onClick={() => addRow(day)}
+            className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+          >
+            Add Row
+          </button>
+        </div>
+
+      
+          {/* Timetable */}
+          <table className="min-w-full table-auto border-collapse shadow mt-5 mb-5">
+            <thead className="bg-gray-200 text-gray-700">
+              <tr>
+                <th className="px-4 py-4 text-left font-semibold">Subject</th>
+                <th className="px-4 py-4 text-left font-semibold">Teacher</th>
+                <th className="px-4 py-4 text-left font-semibold">Time From</th>
+                <th className="px-4 py-4 text-left font-semibold">Time To</th>
+                <th className="px-4 py-4 text-left font-semibold">Room No</th>
+                <th className="px-4 py-4 text-left font-semibold">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows[day].map((row, index) => (
+                <tr
+                  key={index}
+                  className="hover:bg-gray-100 transition duration-200 ease-in-out"
+                >
+                  {/* Subject */}
+                  <td className="px-4 py-3">
+                    <TextField
+                      variant="outlined"
+                      size="small"
+                      name="subject"
+                      className="dark:border-form-strokedark dark:text-white"
+                      value={row.subject}
+                      onChange={(e: any) => handleInputChange(day, index, e)}
+                      fullWidth
+                    />
+                  </td>
+                  {/* Teacher */}
+                  <td className="px-4 py-3">
+                    <TextField
+                      variant="outlined"
+                      size="small"
+                      name="teacher"
+                      value={row.teacher}
+                      onChange={(e: any) => handleInputChange(day, index, e)}
+                      fullWidth
+                    />
+                  </td>
+                  {/* Time From */}
+                  <td className="px-4 py-3">
+                    <TextField
+                      variant="outlined"
+                      type="time"
+                      size="small"
+                      name="timeFrom"
+                      value={row.timeFrom}
+                      onChange={(e: any) => handleInputChange(day, index, e)}
+                      fullWidth
+                    />
+                  </td>
+                  {/* Time To */}
+                  <td className="px-4 py-3">
+                    <TextField
+                      variant="outlined"
+                      type="time"
+                      size="small"
+                      name="timeTo"
+                      value={row.timeTo}
+                      onChange={(e: any) => handleInputChange(day, index, e)}
+                      fullWidth
+                    />
+                  </td>
+                  {/* Room No */}
+                  <td className="px-4 py-3">
+                    <TextField
+                      variant="outlined"
+                      size="small"
+                      name="roomNo"
+                      value={row.roomNo}
+                      onChange={(e: any) => handleInputChange(day, index, e)}
+                      fullWidth
+                    />
+                  </td>
+                  {/* Action */}
+                  <td className="px-4 py-3">
+                    <IconButton color="error" onClick={() => removeRow(day, index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+      
+          {/* Save Button */}
+          <button
+            onClick={() => handleSave(day)}
+            className={`rounded px-4.5 py-2 font-medium hover:bg-opacity-80 ${
+              selectedClass && selectedSection
+                ? "bg-primary text-white"
+                : "bg-gray-400 text-gray-700 cursor-not-allowed border-[1.5px] border-stroke bg-transparent dark:border-form-strokedark"
+            }`}
+            disabled={!selectedClass || !selectedSection}
+          >
+            Save
+          </button>
+        </div>
+      </TabPanel>
+      
+        ))}
+      </TabContext>
+</ThemeProvider>
     </DefaultLayout>
+    
   );
 };
 
-export default FeesMaster;
+export default StudentDetails;
