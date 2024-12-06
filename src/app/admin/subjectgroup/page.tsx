@@ -109,7 +109,7 @@ const FeesMaster = () => {
           {classSection?.class_section?.section?.section || "No Section"}
         </div>
       )),
-      
+
       subject.subjects.map((subject: any, index: number) => (
         <p key={index}>{subject.name}</p>
       )),
@@ -172,6 +172,17 @@ const FeesMaster = () => {
           selectedSection,
           savedSessionstate,
         );
+
+        setFormData({
+          name: "",
+          description: "",
+          session_id: savedSessionstate,
+        });
+
+        setSelectedClass("");
+        setSelectedSection([]);
+        setSelectedSubject([]);
+
         if (result.success) {
           toast.success("Subject group created successfully");
         } else {
@@ -229,7 +240,6 @@ const FeesMaster = () => {
     } else {
       setSelectedSubject((prev) => prev.filter((id) => id !== sectionId));
     }
-    setPage(0);
   };
 
   const fetchClassesAndSections = async () => {
