@@ -14,12 +14,9 @@ import {
   deleteSubjectGroup,
   editSubjectGroup,
   createSubjectGroupAdd,
-  
 } from "@/services/subjectGroupService";
 
-import {
-  fetchSubjectData
-} from "@/services/subjectsService";
+import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -32,21 +29,20 @@ const FeesMaster = () => {
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
 
-             
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
 
- 
-
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
@@ -54,7 +50,7 @@ const FeesMaster = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    session_id: savedSessionstate
+    session_id: savedSessionstate,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -62,8 +58,7 @@ const FeesMaster = () => {
 
       const resultSubjectData = await fetchSubjectData();
 
-      
-      setTotalCount(result.totalCount);
+      setTotalCount(result.total);
       setData(formatSubjectData(result.data));
       setDataSubject(resultSubjectData.data);
       setLoading(false);
@@ -84,19 +79,14 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (
-    id: number,
-    name: string,
-    description: string,
-   
-  ) => {
+  const handleEdit = (id: number, name: string, description: string) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
       name: "",
       description: "",
-      session_id: savedSessionstate
+      session_id: savedSessionstate,
     });
   };
 
@@ -104,8 +94,7 @@ const FeesMaster = () => {
     setFormData({
       name: "",
       description: "",
-      session_id: savedSessionstate
-     
+      session_id: savedSessionstate,
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -114,13 +103,25 @@ const FeesMaster = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name,
-      `${subject.class_name || ''} - ${subject.section_name || ''}` || "N/A",
-      subject.subject_name || "N/A",
+      subject?.class_sections?.class_section?.class.map(
+        (subject: any, index: number) => <p key={index}>{subject.name}</p>,
+      ),
+      subject.subjects.map((subject: any, index: number) => (
+        <p key={index}>{subject.name}</p>
+      )),
       <div key={subject.id}>
-        <IconButton onClick={() => handleEdit(subject.id, subject.name, subject.description)} aria-label="edit">
+        <IconButton
+          onClick={() =>
+            handleEdit(subject.id, subject.name, subject.description)
+          }
+          aria-label="edit"
+        >
           <Edit />
         </IconButton>
-        <IconButton onClick={() => handleDelete(subject.id)} aria-label="delete">
+        <IconButton
+          onClick={() => handleDelete(subject.id)}
+          aria-label="delete"
+        >
           <Delete />
         </IconButton>
       </div>,
@@ -139,8 +140,6 @@ const FeesMaster = () => {
     }
   }, []);
 
-  
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -148,9 +147,7 @@ const FeesMaster = () => {
       [name]: value,
     }));
   };
-  
 
-  
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
@@ -166,10 +163,10 @@ const FeesMaster = () => {
         }
       } else {
         const result = await createSubjectGroupAdd(
-          formData, 
+          formData,
           selectedSubject,
           selectedSection,
-          savedSessionstate  
+          savedSessionstate,
         );
         if (result.success) {
           toast.success("Subject group created successfully");
@@ -180,8 +177,8 @@ const FeesMaster = () => {
       // Reset form after successful action
       setFormData({
         name: "",
-      description: "",
-      session_id: savedSessionstate
+        description: "",
+        session_id: savedSessionstate,
       });
 
       setIsEditing(false);
@@ -199,13 +196,18 @@ const FeesMaster = () => {
     setPage(0);
   };
 
-  const handleClassChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleClassChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     setSelectedClass(event.target.value);
     setPage(0);
     if (event.target.value) await fetchSections(event.target.value);
   };
 
-  const handleSectionChange = (event: React.ChangeEvent<HTMLInputElement>, sectionId: string) => {
+  const handleSectionChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    sectionId: string,
+  ) => {
     if (event.target.checked) {
       setSelectedSection((prev) => [...prev, sectionId]);
     } else {
@@ -214,7 +216,10 @@ const FeesMaster = () => {
     setPage(0);
   };
 
-  const handleSubjectChange = (event: React.ChangeEvent<HTMLInputElement>, sectionId: string) => {
+  const handleSubjectChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    sectionId: string,
+  ) => {
     if (event.target.checked) {
       setSelectedSubject((prev) => [...prev, sectionId]);
     } else {
@@ -222,8 +227,6 @@ const FeesMaster = () => {
     }
     setPage(0);
   };
-  
-  
 
   const fetchClassesAndSections = async () => {
     try {
@@ -317,26 +320,28 @@ const FeesMaster = () => {
                   </select>
                 </div>
 
-               
-
-                 <div className="field">
+                <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Section: <span className="required">*</span>
                   </label>
-                  <div className={`flex flex-wrap gap-4 ${!selectedClass ? "opacity-50 pointer-events-none" : ""}`}>
+                  <div
+                    className={`flex flex-wrap gap-4 ${!selectedClass ? "pointer-events-none opacity-50" : ""}`}
+                  >
                     {section.map((sec) => (
                       <label
                         key={sec.section_id}
                         className="flex items-center gap-2 text-black dark:text-white"
                       >
-                     <input
-                      type="checkbox"
-                      value={sec.section_id}
-                      checked={selectedSection.includes(sec.section_id)} 
-                      onChange={(e) => handleSectionChange(e, sec.section_id)}
-                      disabled={!selectedClass} 
-                      className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
-                    />
+                        <input
+                          type="checkbox"
+                          value={sec.section_id}
+                          checked={selectedSection.includes(sec.section_id)}
+                          onChange={(e) =>
+                            handleSectionChange(e, sec.section_id)
+                          }
+                          disabled={!selectedClass}
+                          className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
+                        />
 
                         {sec.section_name}
                       </label>
@@ -386,14 +391,14 @@ const FeesMaster = () => {
                     {isEditing ? "Update" : "Save"}
                   </button>
                   {isEditing && (
-                      <button
-                        type="button"
-                        onClick={handleCancel} // Call the cancel function
-                        className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                      >
-                        Cancel
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={handleCancel} // Call the cancel function
+                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    >
+                      Cancel
+                    </button>
+                  )}
                 </div>
               </div>
             </form>
