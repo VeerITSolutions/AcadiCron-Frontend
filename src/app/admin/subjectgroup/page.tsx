@@ -88,6 +88,19 @@ const FeesMaster = () => {
       description: subject.description,
       session_id: savedSessionstate,
     });
+
+    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
+    setSelectedSection(
+      subject.class_sections.map(
+        (classSection: any) => classSection?.class_section?.section?.id,
+      ),
+    );
+
+    setSelectedClass(
+      subject.class_sections.map(
+        (classSection: any) => classSection?.class_section?.class?.id,
+      ),
+    );
   };
 
   const handleCancel = () => {
