@@ -21,6 +21,16 @@ export const createclasses = async (house_name: string, description: string): Pr
   }
 };
 
+export const createclassesAdd = async (data: any, sections: any): Promise<any> => {
+  try {
+    const response = await apiClient.post("/classes-add", { data, sections });
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create class section");
+  }
+};
+
 
 
 // Delete a student category by ID
