@@ -103,9 +103,9 @@ const FeesMaster = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name,
-      subject?.class_sections?.class_section?.class.map(
-        (subject: any, index: number) => <p key={index}>{subject.name}</p>,
-      ),
+      subject?.class_sections?.map((classSection: any, index: number) => (
+        <div key={index}>{classSection.id}</div>
+      )),
       subject.subjects.map((subject: any, index: number) => (
         <p key={index}>{subject.name}</p>
       )),
