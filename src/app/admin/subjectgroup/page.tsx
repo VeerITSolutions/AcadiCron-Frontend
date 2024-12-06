@@ -13,6 +13,7 @@ import {
   createSubjectGroup,
   deleteSubjectGroup,
   editSubjectGroup,
+  createSubjectGroupAdd,
   
 } from "@/services/subjectGroupService";
 
@@ -29,16 +30,16 @@ const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
+  const [createdata, setcreatedata] = useState<Array<any>>([]);
+
+             
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-  });
+ 
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
@@ -46,10 +47,15 @@ const FeesMaster = () => {
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined);
-  // const [selectedSection, setSelectedSection] = useState<string | undefined>(undefined);
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const [savedSessionstate, setSavedSession] = useState("");
 
-
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    session_id: savedSessionstate
+  });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
@@ -88,8 +94,9 @@ const FeesMaster = () => {
     setEditCategoryId(id);
 
     setFormData({
-      name,
-      description,
+      name: "",
+      description: "",
+      session_id: savedSessionstate
     });
   };
 
@@ -97,6 +104,7 @@ const FeesMaster = () => {
     setFormData({
       name: "",
       description: "",
+      session_id: savedSessionstate
      
     });
     setIsEditing(false);
@@ -123,6 +131,16 @@ const FeesMaster = () => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSessionId");
+    if (savedSession) {
+      setSavedSession(savedSession);
+      // Use this value in your logic
+    }
+  }, []);
+
+  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -130,6 +148,8 @@ const FeesMaster = () => {
       [name]: value,
     }));
   };
+  
+
   
   const handleSubmit = async () => {
     try {
@@ -145,9 +165,11 @@ const FeesMaster = () => {
           toast.error("Failed to update subject group");
         }
       } else {
-        const result = await createSubjectGroup(
-          formData.name,
-          formData.description,
+        const result = await createSubjectGroupAdd(
+          formData, 
+          selectedSubject,
+          selectedSection,
+          savedSessionstate  
         );
         if (result.success) {
           toast.success("Subject group created successfully");
@@ -158,7 +180,8 @@ const FeesMaster = () => {
       // Reset form after successful action
       setFormData({
         name: "",
-        description: "",
+      description: "",
+      session_id: savedSessionstate
       });
 
       setIsEditing(false);
@@ -187,6 +210,15 @@ const FeesMaster = () => {
       setSelectedSection((prev) => [...prev, sectionId]);
     } else {
       setSelectedSection((prev) => prev.filter((id) => id !== sectionId));
+    }
+    setPage(0);
+  };
+
+  const handleSubjectChange = (event: React.ChangeEvent<HTMLInputElement>, sectionId: string) => {
+    if (event.target.checked) {
+      setSelectedSubject((prev) => [...prev, sectionId]);
+    } else {
+      setSelectedSubject((prev) => prev.filter((id) => id !== sectionId));
     }
     setPage(0);
   };
@@ -326,6 +358,7 @@ const FeesMaster = () => {
                         type="checkbox"
                         value={subject.id}
                         name="subject_id"
+                        onChange={(e) => handleSubjectChange(e, subject.id)}
                       />
                       {subject.name}
                     </label>

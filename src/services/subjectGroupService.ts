@@ -21,6 +21,17 @@ export const createSubjectGroup = async (name: string, description: string): Pro
   }
 };
 
+export const createSubjectGroupAdd = async (data: any, subject_group: any, section_group: any,session_id : any ): Promise<any> => {
+  try {
+   
+    const response = await apiClient.post("/subject-groups-create", { data, subject_group, section_group, session_id});
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create subject group");
+  }
+};
+
 
 
 // Delete a student category by ID
