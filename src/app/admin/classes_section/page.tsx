@@ -9,6 +9,8 @@ import {
   editFeesMasterData,
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
+
+import { createclassesAdd } from "@/services/classesService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -124,14 +126,32 @@ const FeesMaster = () => {
 
   const handleSubmit = async () => {
     try {
-      setFormData({
-        class_id: "",
-        section_id: "",
-      });
+      if (isEditing && editCategoryId !== null) {
+      } else {
+        const result = await createclassesAdd(
+          formData.class_id,
+          formData.section_id,
+        );
+        if (result.success) {
+          toast.success("updated successfully");
+        } else {
+          toast.error("Failed to update subject group");
+        }
 
-      setIsEditing(false);
-      setEditCategoryId(null);
-      fetchData(page, rowsPerPage);
+        setFormData({
+          class_id: "",
+          section_id: "",
+        });
+
+        if (result.success) {
+          toast.success("created successfully");
+        } else {
+          toast.error("Failed to create subject group");
+        }
+      }
+      // Reset form after successful action
+
+      fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
     }
@@ -214,7 +234,7 @@ const FeesMaster = () => {
                           className="flex items-center text-sm font-medium text-black dark:text-white"
                         >
                           <input
-                            type="radio"
+                            type="checkbox"
                             value={section.id}
                             name="section_id"
                             onChange={handleInputChange}
