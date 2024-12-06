@@ -375,6 +375,7 @@ const FeesMaster = () => {
                       <input
                         className="mr-2"
                         type="checkbox"
+                        checked={selectedSubject.includes(subject.id)}
                         value={subject.id}
                         name="subject_id"
                         onChange={(e) => handleSubjectChange(e, subject.id)}
