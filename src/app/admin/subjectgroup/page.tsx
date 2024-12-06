@@ -104,8 +104,12 @@ const FeesMaster = () => {
     return subjects.map((subject: any) => [
       subject.name,
       subject?.class_sections?.map((classSection: any, index: number) => (
-        <div key={index}>{classSection.id}</div>
+        <div key={index}>
+          {classSection?.class_section?.class?.class || "No Class"} -{" "}
+          {classSection?.class_section?.section?.section || "No Section"}
+        </div>
       )),
+      
       subject.subjects.map((subject: any, index: number) => (
         <p key={index}>{subject.name}</p>
       )),
