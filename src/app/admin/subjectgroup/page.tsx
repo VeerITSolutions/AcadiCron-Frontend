@@ -60,7 +60,7 @@ const FeesMaster = () => {
     try {
       const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
 
-      const resultSubjectData = await fetchSubjectData(currentPage + 1, rowsPerPage);
+      const resultSubjectData = await fetchSubjectData();
 
       
       setTotalCount(result.totalCount);
@@ -114,8 +114,8 @@ const FeesMaster = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name,
-      subject.description || "N/A",
-      subject.description || "N/A",
+      `${subject.class_name || ''} - ${subject.section_name || ''}` || "N/A",
+      subject.subject_name || "N/A",
       <div key={subject.id}>
         <IconButton onClick={() => handleEdit(subject.id, subject.name, subject.description)} aria-label="edit">
           <Edit />
