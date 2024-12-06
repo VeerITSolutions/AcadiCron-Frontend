@@ -47,6 +47,7 @@ const FeesMaster = () => {
   });
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+  const [selectedSection, setSelectedSection] = useState<string[]>([]);
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     setLoading(true);
@@ -90,6 +91,18 @@ const FeesMaster = () => {
     setFormData({
       ...formData,
     });
+  };
+
+  const handleSectionChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    sectionId: string,
+  ) => {
+    setSelectedSection((prev) => [...prev, sectionId]);
+    /* if (event.target.checked) {
+
+    } else {
+      setSelectedSection((prev) => prev.filter((id) => id !== sectionId));
+    } */
   };
 
   const formatStudentCategoryData = (students: any[]) =>
@@ -140,8 +153,10 @@ const FeesMaster = () => {
 
         setFormData({
           class_id: "",
-          section_id: "",
+          section_id: selectedSection,
         });
+
+        setSelectedSection([]);
 
         if (result.success) {
           toast.success("created successfully");
@@ -184,7 +199,7 @@ const FeesMaster = () => {
   const handleCancel = () => {
     setFormData({
       class_id: "",
-      section_id: "",
+      section_id: selectedSection,
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -227,27 +242,24 @@ const FeesMaster = () => {
                     Sections<span className="text-red-500"> *</span>
                   </label>
                   <div className="flex flex-col gap-2">
-                    {sections.length > 0 ? (
-                      sections.map((section) => (
-                        <label
-                          key={section.id}
-                          className="flex items-center text-sm font-medium text-black dark:text-white"
-                        >
-                          <input
-                            type="checkbox"
-                            value={section.id}
-                            name="section_id"
-                            onChange={handleInputChange}
-                            className="mr-2 h-4 w-4"
-                          />
-                          {section.section}
-                        </label>
-                      ))
-                    ) : (
-                      <p className="text-gray-500 dark:text-gray-400 text-sm">
-                        No sections available
-                      </p>
-                    )}
+                    {sections.map((sec: any) => (
+                      <label
+                        key={sec.section_id}
+                        className="flex items-center gap-2 text-black dark:text-white"
+                      >
+                        <input
+                          type="checkbox"
+                          value={sec.section_id}
+                          checked={selectedSection.includes(sec.section_id)}
+                          onChange={(e) =>
+                            handleSectionChange(e, sec.section_id)
+                          }
+                          className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
+                        />
+
+                        {sec.section}
+                      </label>
+                    ))}
                   </div>
                 </div>
 
