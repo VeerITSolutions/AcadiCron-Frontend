@@ -64,7 +64,7 @@ const columns = [
             type="text"
             value={value || ""} // Use the note if available or empty string
             onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full rounded border p-1 dark:border-strokedark dark:text-white dark:drop-shadow-none bg-transparent"
+            className="w-full rounded border-[1.5px] border-stroke bg-transparent outline-none transition focus:border-primary active:border-primary dark:focus:border-primary p-1.5 dark:border-strokedark dark:text-white dark:drop-shadow-none bg-transparent"
           />
         );
       },

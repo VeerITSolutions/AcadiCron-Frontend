@@ -78,7 +78,8 @@ const columns = [
             type="text"
             value={value || ""} // Use the note if available or empty string
             onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full rounded border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+            className="w-full rounded border-[1.5px] border-stroke bg-transparent outline-none transition focus:border-primary active:border-primary dark:focus:border-primary p-1.5 dark:border-strokedark dark:text-white dark:drop-shadow-none bg-transparent"
+     
           />
         );
       },
@@ -132,6 +133,15 @@ const StudentDetails = () => {
   const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
+  const getDefaultDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const [attendancedate, setattendancedate] =
+  useState<string>(getDefaultDate());
 
   const [selectedAttendacne, setAttendance] = useState<string | undefined>(
     undefined,
@@ -214,9 +224,17 @@ const StudentDetails = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
   };
+
+  const handleAttendancedateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setattendancedate(event.target.value);
+  };
+
   const handleRefresh = () => {
     setSelectedRole("");
     setAttendance("");
+    setattendancedate(getDefaultDate());
   };
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
@@ -246,8 +264,8 @@ const StudentDetails = () => {
             Attendance Date:
             <input
               type="date"
-              value={selectedAttendacne || ""}
-              /* onChange={handleAttendanceChange} */
+              value={attendancedate}
+              onChange={handleAttendancedateChange}
               className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             />
           </label>
