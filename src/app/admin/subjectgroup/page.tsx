@@ -79,13 +79,13 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (id: number, name: string, description: string) => {
+  const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      name: "",
-      description: "",
+      name: subject.name,
+      description: subject.description,
       session_id: savedSessionstate,
     });
   };
@@ -115,9 +115,7 @@ const FeesMaster = () => {
       )),
       <div key={subject.id}>
         <IconButton
-          onClick={() =>
-            handleEdit(subject.id, subject.name, subject.description)
-          }
+          onClick={() => handleEdit(subject.id, subject)}
           aria-label="edit"
         >
           <Edit />
