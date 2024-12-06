@@ -15,6 +15,10 @@ import {
   editSubjectGroup,
   
 } from "@/services/subjectGroupService";
+
+import {
+  fetchSubjectData
+} from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -24,6 +28,7 @@ import styles from "./User.module.css";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
+  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -48,8 +53,13 @@ const FeesMaster = () => {
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
+
+      const resultSubjectData = await fetchSubjectData(currentPage + 1, rowsPerPage);
+
+      
       setTotalCount(result.totalCount);
       setData(formatSubjectData(result.data));
+      setDataSubject(resultSubjectData.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -217,6 +227,8 @@ const FeesMaster = () => {
     count: totalCount,
     page,
     rowsPerPage,
+    selectableRows: "none", // Disable row selection
+
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
     filter: false,
@@ -243,7 +255,7 @@ const FeesMaster = () => {
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Name
+                    Name <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -257,7 +269,7 @@ const FeesMaster = () => {
 
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Class:
+                    Class: <span className="required">*</span>
                   </label>
                   <select
                     value={selectedClass || ""}
@@ -277,7 +289,7 @@ const FeesMaster = () => {
 
                  <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Section:
+                    Section: <span className="required">*</span>
                   </label>
                   <div className={`flex flex-wrap gap-4 ${!selectedClass ? "opacity-50 pointer-events-none" : ""}`}>
                     {section.map((sec) => (
@@ -304,18 +316,18 @@ const FeesMaster = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Subject<span className="required">*</span>
                   </label>
-                  {["Maths", "English", "Hindi"].map((subject) => (
+                  {dataSubject.map((subject) => (
                     <label
-                      key={subject}
+                      key={subject.id}
                       className="radio-inline mb-2 block text-sm font-medium text-black dark:text-white"
                     >
                       <input
                         className="mr-2"
                         type="checkbox"
-                        value={subject.toLowerCase()}
-                        name="class_teacher"
+                        value={subject.id}
+                        name="subject_id"
                       />
-                      {subject}
+                      {subject.name}
                     </label>
                   ))}
                 </div>
