@@ -19,6 +19,12 @@ import {
   deleteHomeWorkData,
   editHomeWorkData,
 } from "@/services/homeworkServices";
+import {
+  fetchSubjectGroupData,
+} from "@/services/subjectGroupService";
+import {
+  fetchSubjectData,
+} from "@/services/subjectsService";
 
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -66,16 +72,21 @@ const StudentDetails = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
+  const [subject, setSubject] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
+    undefined,
+  );
  
- 
- 
-
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
@@ -125,13 +136,12 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.class_name || "N/A",
       student.section_name || "N/A",
-      student.subject_group_subject_id || "N/A",
+      student.name || "N/A",
       student.subject_name || "N/A",
-
       student.homework_date || "N/A",
       student.submit_date || "N/A",
       student.evaluation_date || "N/A",
-      student.created_by || "N/A",
+      `${student.staff_name || ''} ${student.staff_surname || ''}` || "N/A",
       <div key={student.id}>
       <IconButton
         onClick={() => handleEdit(student.id, student.category)}
@@ -154,6 +164,8 @@ const StudentDetails = () => {
     rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
+    selectedSubjectGroup?: string,
+    selectedSubject?: string,
     keyword?: string,
   ) => {
     try {
@@ -162,11 +174,22 @@ const StudentDetails = () => {
         rowsPerPage,
         selectedClass,
         selectedSection,
+        selectedSubjectGroup,
+        selectedSubject,
         keyword,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
+
+      const subjectgroupresult = await fetchSubjectGroupData("", "", selectedClass, selectedSection);
+      
+      setSubjectGroup(subjectgroupresult.data);
+
+      const subjectresult = await fetchSubjectData();
+      setSubject(subjectresult.data);
+
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -252,18 +275,29 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+  const handleSubjectGroupChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubjectGroup(event.target.value);
+    console.log("selectedSubjectGroup", selectedSubjectGroup);
+  };
+
+  const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubject(event.target.value);
+    console.log("selectedSubject", selectedSubject);
+  };
+
+
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, keyword);
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, keyword);
+  }, [page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, keyword]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -284,6 +318,7 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setSelectedSubjectGroup("");
     setKeyword("");
   };
 
@@ -352,27 +387,37 @@ const StudentDetails = () => {
             </select>
           </label>
           <label className={styles.label}>
-          Subject Group
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
-              disabled={!selectedClass}
-            >
-              <option value="">Select</option>
-              
-            </select>
-          </label>
+              Subject Group
+              <select
+                value={selectedSubjectGroup || ""}
+                onChange={handleSubjectGroupChange}
+                className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+                disabled={!selectedClass || !selectedSection}
+              >
+                <option value="">Select</option>
+                {subjectGroup.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
 
           <label className={styles.label}>
           Subject
             <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
+              value={selectedSubject || ""}
+              onChange={handleSubjectChange}
               className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              disabled={!selectedClass || !selectedSection || !selectedSubjectGroup}
             >
               <option value="">Select</option>
+              {subject.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
               
             </select>
           </label>
@@ -496,9 +541,14 @@ const StudentDetails = () => {
         </label>
         <select
           name="modal_subject_group_id"
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input">
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
+          disabled={!selectedClass || !selectedSection}>
           <option value="">Select</option>
-          {/* Subject groups will be listed here */}
+          {subjectGroup.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
         </select>
       </div>
 
@@ -510,10 +560,15 @@ const StudentDetails = () => {
         <select
           name="modal_subject_id"
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
+          disabled={!selectedClass || !selectedSection || !selectedSubjectGroup}
         
         >
           <option value="">Select</option>
-          {/* Subject options */}
+          {subject.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
         </select>
       </div>
 

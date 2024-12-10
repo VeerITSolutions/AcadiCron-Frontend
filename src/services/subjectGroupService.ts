@@ -1,10 +1,12 @@
 import apiClient from "./apiClient";
 
-export const fetchSubjectGroupData = async (page?: number, perPage?: number) => {
+export const fetchSubjectGroupData = async (page?: any, perPage?: any, class_id?: any, section_id?: any) => {
   const response = await apiClient.get(`/subject-groups`, {
     params: {
       page,
       perPage,
+      class_id,
+      section_id
     },
   });
   return response.data;
