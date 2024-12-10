@@ -70,10 +70,20 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+
+
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
+
+
+  
+  const [classes2, setClassessData2] = useState<Array<any>>([]);
+  const [section2, setSections2] = useState<Array<any>>([]);
+  const [subjectGroup2, setSubjectGroup2] = useState<Array<any>>([]);
+  const [subject2, setSubject2] = useState<Array<any>>([]);
+
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -84,6 +94,20 @@ const StudentDetails = () => {
     undefined,
   );
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
+    undefined,
+  );
+
+
+  const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSubjectGroup2, setSelectedSubjectGroup2] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSubject2, setSelectedSubject2] = useState<string | undefined>(
     undefined,
   );
  
@@ -189,6 +213,8 @@ const StudentDetails = () => {
       const subjectresult = await fetchSubjectData();
       setSubject(subjectresult.data);
 
+      setSubject2(subjectresult.data);
+
 
       setLoading(false);
     } catch (error: any) {
@@ -204,7 +230,7 @@ const StudentDetails = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSave = async () => {
     try {
       let result;
       if (editing) {
@@ -286,6 +312,22 @@ const StudentDetails = () => {
   };
 
 
+  const handleSectionChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection2(event.target.value);
+    
+  };
+
+  const handleSubjectGroupChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubjectGroup2(event.target.value);
+    
+  };
+
+  const handleSubjectChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubject2(event.target.value);
+    
+  };
+
+
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
@@ -315,6 +357,11 @@ const StudentDetails = () => {
   };
 
 
+  const handleClassChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass2(event.target.value);
+    
+  };
+
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
@@ -326,11 +373,17 @@ const StudentDetails = () => {
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
+
+  useEffect(() => {
+    fetchClassesAndSections2(); // Fetch classes and sections on initial render
+  }, [selectedClass2, selectedSection2]);
   
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
+
+      setClassessData2(classesResult.data);
 
       // Fetch sections if a class is selected
       if (selectedClass) {
@@ -343,6 +396,30 @@ const StudentDetails = () => {
       setError(error.message);
       setLoading(false);
     }
+  };
+
+  const fetchClassesAndSections2 = async () => {
+    try {
+      const classesResult = await getClasses();
+      
+
+      setClassessData2(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass2) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass2);
+        setSections2(sectionsResult.data);
+      } else {
+        setSections2([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+
+    const subjectgroupresult = await fetchSubjectGroupData("", "", selectedClass2, selectedSection2);
+      
+      setSubjectGroup2(subjectgroupresult.data);
   };
 
   if (loading) return <Loader />;
@@ -501,12 +578,13 @@ const StudentDetails = () => {
                         Class:
                       </label>
                       <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
+                        value={selectedClass2 || ""}
+                        onChange={handleClassChange2}
+                        
                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
                         <option value="">Select</option>
-                        {classes.map((cls) => (
+                        {classes2.map((cls) => (
                           <option key={cls.id} value={cls.id}>
                             {cls.class}
                           </option>
@@ -520,13 +598,13 @@ const StudentDetails = () => {
                         Section:
                       </label>
                       <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
+                        value={selectedSection2 || ""}
+                        onChange={handleSectionChange2}
                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
+                        disabled={!selectedClass2} // Disable section dropdown if no class is selected
                       >
                         <option value="">Select</option>
-                        {section.map((sec) => (
+                        {section2.map((sec) => (
                           <option key={sec.section_id} value={sec.section_id}>
                             {sec.section_name}
                           </option>
@@ -541,10 +619,11 @@ const StudentDetails = () => {
         </label>
         <select
           name="modal_subject_group_id"
+          onChange={handleSubjectGroupChange2}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
-          disabled={!selectedClass || !selectedSection}>
+          disabled={!selectedClass2 || !selectedSection2}>
           <option value="">Select</option>
-          {subjectGroup.map((cls) => (
+          {subjectGroup2.map((cls) => (
                   <option key={cls.id} value={cls.id}>
                     {cls.name}
                   </option>
@@ -560,11 +639,11 @@ const StudentDetails = () => {
         <select
           name="modal_subject_id"
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
-          disabled={!selectedClass || !selectedSection || !selectedSubjectGroup}
+          disabled={!selectedClass2 || !selectedSection2 || !selectedSubjectGroup2}
         
         >
           <option value="">Select</option>
-          {subject.map((cls) => (
+          {subject2.map((cls) => (
                   <option key={cls.id} value={cls.id}>
                     {cls.name}
                   </option>
@@ -660,11 +739,11 @@ const StudentDetails = () => {
       {/* Submit Button */}
       <div className="col-span-full">
       <button
-        type="submit"
-        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
-      >
-        Save
-      </button>
+            onClick={handleSave}
+            className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+          >
+            Save
+          </button>
       </div>
     </div>
             </div>
