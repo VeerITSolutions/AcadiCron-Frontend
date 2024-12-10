@@ -21,9 +21,9 @@ export const createclasses = async (house_name: string, description: string): Pr
   }
 };
 
-export const createclassesAdd = async (data: any, sections: any): Promise<any> => {
+export const createclassesAdd = async (name: any, sections: any): Promise<any> => {
   try {
-    const response = await apiClient.post("/classes-add", { data, sections });
+    const response = await apiClient.post("/classes-add", { name, sections });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
