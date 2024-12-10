@@ -357,7 +357,7 @@ const StudentDetails = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              disabled={!selectedClass}
             >
               <option value="">Select</option>
               

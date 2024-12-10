@@ -59,33 +59,8 @@ const StudentDetails = () => {
 
   const [colorMode, setColorMode] = useColorMode();
 
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
-    ]);
-  };
-  const handleDownload = (url: string) => {
-    try {
-      // Create an anchor element
-      const link = document.createElement("a");
-      link.href = url;
 
-      // Set the 'download' attribute to trigger the file download
-      // This forces the file to be downloaded rather than displayed in the browser
-      link.setAttribute("download", "");
-
-      // Append the link, trigger click, and clean up
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error initiating the download:", error);
-    }
-  };
+ 
   const formatStudentCategoryData = (students: any[]) => {
     if (!Array.isArray(students)) return []; // Fallback to an empty array if not an array
 
@@ -94,17 +69,16 @@ const StudentDetails = () => {
       student.type || "N/A",
       student.date || "N/A",
       student.class ? student.content_for_role : "All",
-      `${student.class ?? ""} ${student.section ? `(${student.section})` : "-"}` ||
-        "N/A",
+    
 
       <div key={student.id}>
-        <IconButton
+         <IconButton
           onClick={() =>
             handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
           }
-          aria-label="edit"
+          aria-label="download"
         >
-          {student.file ? <FileDownload /> : ""}
+           {student.file ? <FileDownload /> : ""}
         </IconButton>
         <IconButton
           onClick={() => handleDelete(student.id)}
@@ -116,9 +90,27 @@ const StudentDetails = () => {
     ]);
   };
 
+  const handleDownload = (url: string) => {
+    try {
+      // Create an anchor element
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute("download", "");
+
+      // Append the link, trigger click, and clean up
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error initiating the download:", error);
+    }
+  };
+
+
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchContentData(currentPage + 1, rowsPerPage);
+      const result = await fetchContentData(currentPage + 1, rowsPerPage, "assignments");
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);

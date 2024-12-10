@@ -12,6 +12,7 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Edit, Delete, FileDownload } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
+
 import {
   Dialog,
   DialogActions,
@@ -21,6 +22,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { fetchContentData } from "@/services/ContentService";
 const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
 
 const options = {
@@ -50,28 +52,32 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-  const formatStudentData = (students: any[]) => {
+  const formatStudentCategoryData = (students: any[]) => {
+    if (!Array.isArray(students)) return []; // Fallback to an empty array if not an array
+
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
+      student.title || "N/A",
+      student.type || "N/A",
+      student.date || "N/A",
+      student.class ? student.content_for_role : "All",
+    
+
       <div key={student.id}>
-      <IconButton
+         <IconButton
           onClick={() =>
             handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
           }
           aria-label="download"
         >
-           <FileDownload />
+           {student.file ? <FileDownload /> : ""}
         </IconButton>
-      <IconButton
-        onClick={() => handleDelete(student.id)}
-        aria-label="delete"
-      >
-        <Delete />
-      </IconButton>
-    </div>,
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
     ]);
   };
 
@@ -92,31 +98,18 @@ const StudentDetails = () => {
     }
   };
 
-  const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
-  ) => {
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        localStorage.getItem("selectedSessionId"),
-      );
+      const result = await fetchContentData(currentPage + 1, rowsPerPage, "otherdownload");
       setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
+      setData(formatStudentCategoryData(result.data));
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
+
   const handleDelete = async (id: number) => {
     // Assuming id is the student_id
     router.push(`/admin/student/${id}`);
@@ -130,8 +123,8 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -158,7 +151,7 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage,);
   };
 
   if (loading) return <Loader />;
