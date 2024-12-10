@@ -173,7 +173,7 @@ const StudentCategories = () => {
           onClick={() =>
             handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
           }
-          aria-label="edit"
+          aria-label="download"
         >
           {student.file ? <FileDownload /> : ""}
         </IconButton>

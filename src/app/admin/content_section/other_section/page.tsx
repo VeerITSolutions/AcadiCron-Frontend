@@ -10,13 +10,7 @@ import Loader from "@/components/common/Loader";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
+import { Edit, Delete, FileDownload } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import {
   Dialog,
@@ -62,8 +56,40 @@ const StudentDetails = () => {
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class || "N/A",
       student.category_id,
-      student.mobileno,
+      <div key={student.id}>
+      <IconButton
+          onClick={() =>
+            handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
+          }
+          aria-label="download"
+        >
+           <FileDownload />
+        </IconButton>
+      <IconButton
+        onClick={() => handleDelete(student.id)}
+        aria-label="delete"
+      >
+        <Delete />
+      </IconButton>
+    </div>,
     ]);
+  };
+
+  const handleDownload = (url: string) => {
+    try {
+      // Create an anchor element
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.setAttribute("download", "");
+
+      // Append the link, trigger click, and clean up
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error initiating the download:", error);
+    }
   };
 
   const fetchData = async (
