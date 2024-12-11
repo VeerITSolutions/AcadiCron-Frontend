@@ -195,8 +195,8 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.class_name || "N/A",
       student.section_name || "N/A",
-      student.name || "N/A",
-      student.subject_name || "N/A",
+      student.subject_group_subject_id || "N/A",
+      student.subject_id || "N/A",
       // student.homework_date || "N/A",
       formatDate(student.homework_date) || "N/A",
       formatDate(student.submit_date) || "N/A",
@@ -247,10 +247,10 @@ const StudentDetails = () => {
       
       setSubjectGroup(subjectgroupresult.data);
 
-      const subjectresult = await fetchSubjectData();
+      const subjectresult = await fetchSubjectData('','', selectedSubjectGroup);
       setSubject(subjectresult.data);
-
-      setSubject2(subjectresult.data);
+      const subjectresult2 = await fetchSubjectData('', '', selectedSubjectGroup2);
+      setSubject2(subjectresult2.data);
 
 
       setLoading(false);
@@ -313,10 +313,10 @@ const StudentDetails = () => {
  
          
         });
-        setSelectedClass2(""),
-        setSelectedSection2(""),
-        setSelectedSubjectGroup2(""),
-        setSelectedSubject2(""),
+        setSelectedClass2("");
+        setSelectedSection2("");
+        setSelectedSubjectGroup2("");
+        setSelectedSubject2("");
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
         fetchData(page, rowsPerPage); // Refresh data after submit
@@ -443,8 +443,8 @@ const StudentDetails = () => {
   }, [page, 
     rowsPerPage, 
     selectedClass, 
-    selectedSection, 
-    selectedSubjectGroup, 
+    selectedSection, selectedSection2,
+    selectedSubjectGroup, selectedSubjectGroup2,
     selectedSubject, 
     keyword]);
 
