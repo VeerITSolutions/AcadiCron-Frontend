@@ -114,12 +114,16 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
-    date: "",
-    leave_type_id: "",
-    leave_from: "",
-    leave_to: "",
-    reason: "",
-    document_file: null,
+    // selectedClass2,
+    // selectedSection2,
+    // selectedSubjectGroup2,
+    // selectedSubject2,
+    homework_date: null as Date | null,
+    submit_date: null as Date | null,
+    description: "",
+    document: null,
+
+
   });
   const [editing, setEditing] = useState(false); // Add state for editing
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
@@ -137,24 +141,45 @@ const StudentDetails = () => {
     }
   };
 
-  const handleDateChange = (selectedDates: any) => {
-    setFormData({ ...formData, date: selectedDates[0] });
+  const handleDateChange = (selectedDates: Date[], name: string) => {
+    if (selectedDates.length > 0) {
+      const formattedDate = selectedDates[0].toISOString().split("T")[0]; // Format to YYYY-MM-DD
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: formattedDate, // Update the specific field dynamically
+      }));
+    }
   };
 
-  const handleEdit = (id: number, leaveData: any) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+  
+  const handleEdit = (id: number, homeworkdate: any) => {
     setEditing(true);
     setCurrentLeaveId(id);
     setFormData({
-      date: leaveData.date || "",
-      leave_type_id: leaveData.leave_type_id || "",
-      leave_from: leaveData.leave_from || "",
-      leave_to: leaveData.leave_to || "",
-      reason: leaveData.reason || "",
-      document_file: null,
+      // selectedClass2,
+      // selectedSection2,
+      // selectedSubjectGroup2,
+      // selectedSubject2,
+      homework_date: homeworkdate.date || "",
+      submit_date: homeworkdate.submit_date || "",
+      description: homeworkdate.description || "",
+      document: null, 
     });
-    setOpen(true); // Open the modal
+    setOpen(true);
   };
 
+  
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
@@ -236,29 +261,49 @@ const StudentDetails = () => {
       if (editing) {
         result = await editHomeWorkData(
           currentLeaveId!,
-          formData.date,
-          formData.leave_type_id,
+          selectedClass2,
+          selectedSection2,
+          selectedSubjectGroup2,
+          selectedSubject2,
+          formData.homework_date,
+          formData.submit_date,
+          formData.document,
+          formData.description,
          
         );
       } else {
         result = await createHomeWork(
-          formData.date,
-          formData.leave_type_id,
+          selectedClass2,
+          selectedSection2,
+          selectedSubjectGroup2,
+          selectedSubject2,
+          formData.homework_date,
+          formData.submit_date,
+          formData.document,
+          formData.description,
           
         );
       }
       if (result.success) {
         toast.success(
-          editing ? "Leave updated successfully" : "Leave applied successfully",
+          editing ? "Homework updated successfully" : "Homework applied successfully",
         );
         setFormData({
-          date: "",
-          leave_type_id: "",
-          leave_from: "",
-          leave_to: "",
-          reason: "",
-          document_file: null,
+          // selectedClass2,
+          // selectedSection2,
+          // selectedSubjectGroup2,
+          // selectedSubject2,
+          homework_date: null as Date | null,
+          submit_date: null as Date | null,
+          description: "",
+          document: null,
+ 
+         
         });
+        setSelectedClass2(""),
+        setSelectedSection2(""),
+        setSelectedSubjectGroup2(""),
+        setSelectedSubject2(""),
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
         fetchData(page, rowsPerPage); // Refresh data after submit
@@ -271,19 +316,17 @@ const StudentDetails = () => {
     }
   };
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
-    const { name, value, type } = event.target;
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]:
-        type === "file" && "files" in event.target
-          ? (event.target as HTMLInputElement).files?.[0]
-          : value,
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
     }));
-  };
+  }
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -334,18 +377,29 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, keyword);
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, selectedSubject, keyword);
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, keyword]);
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, selectedSubject, keyword);
+  }, [page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, selectedSubject, keyword]);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setFormData({
+    homework_date: null as Date | null,
+    submit_date: null as Date | null,
+    description: "",
+    document: null,
+    });
+
+    setSelectedClass2("");
+    setSelectedSection2("");
+        setSelectedSubjectGroup2("");
+        setSelectedSubject2("");
     setOpen(false);
     setEditing(false); // Reset editing state
   };
@@ -618,7 +672,6 @@ const StudentDetails = () => {
           Subject Group <span className="required">*</span>
         </label>
         <select
-          name="modal_subject_group_id"
           onChange={handleSubjectGroupChange2}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
           disabled={!selectedClass2 || !selectedSection2}>
@@ -637,7 +690,7 @@ const StudentDetails = () => {
           Subject <span className="required">*</span>
         </label>
         <select
-          name="modal_subject_id"
+            onChange={handleSubjectChange2}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
           disabled={!selectedClass2 || !selectedSection2 || !selectedSubjectGroup2}
         
@@ -652,17 +705,20 @@ const StudentDetails = () => {
       </div>
 
       {/* Homework Date */}
-      <div className="field mb-3">
+      <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Homework Date <span className="required">*</span>
+                  Homework Date <span className="required">*</span>{" "}
                   </label>
                   <div className="relative">
                     <Flatpickr
-                      /* value={formData.date} */
-                      onChange={handleDateChange}
+                      // value={formData.homework_date}
+                      onChange={(selectedDates) =>
+                        handleDateChange(selectedDates, "homework_date")
+                      }
                       options={{
-                        dateFormat: "m/d/Y", // Customize date format if necessary
+                        dateFormat: "m/d/Y",
                       }}
+                      name="homework_date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -683,21 +739,23 @@ const StudentDetails = () => {
                   </div>
                 </div>
 
-      {/* Submit Date */}
-      <div className="field mb-6">
+                <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Submission Date<span className="required">*</span>
+                  Submission Date <span className="required">*</span>
                   </label>
                   <div className="relative">
-                    <Flatpickr
-                      /* value={formData.date} */
-                      onChange={handleDateChange}
-                      options={{
-                        dateFormat: "m/d/Y", // Customize date format if necessary
-                      }}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      placeholder="mm/dd/yyyy"
-                    />
+                  <Flatpickr
+                        // value={formData.submit_date} 
+                        onChange={(selectedDates) =>
+                          handleDateChange(selectedDates, "submit_date")
+                        }
+                        options={{
+                          dateFormat: "m/d/Y",
+                        }}
+                        name="submit_date"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        placeholder="mm/dd/yyyy"
+                      />
                     <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
                       <svg
                         width="18"
@@ -720,7 +778,12 @@ const StudentDetails = () => {
      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
       Attach Document
       </label>
-      <input className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white" type="file" />
+      <input className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"
+       type="file"
+       accept="image/*"
+       name="document"
+       onChange={handleFileChange}
+       id="file" />
       </div>
      
 
@@ -732,6 +795,8 @@ const StudentDetails = () => {
         <textarea
           name="description"
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          value={formData.description}
+          onChange={handleInputChange}
          
         />
       </div>
