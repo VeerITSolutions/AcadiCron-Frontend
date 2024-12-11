@@ -1,16 +1,30 @@
 import apiClient from "./apiClient";
 
-export const fetchHomeWorkData = async (page: number, perPage: number,selectedClass?: string,
-  selectedSection?: string, selectedSubjectGroup?: string, selectedSubject?: string, 
-  keyword?: string) => {
+export const fetchHomeWorkData = async (
+  page: number,
+  perPage: number,
+  selectedClass2?: string,
+  selectedSection2?: string,
+  selectedSubjectGroup2?: string,
+  selectedSubject2?: string,
+  keyword?: string,
+  id?: any
+) => {
   const response = await apiClient.get(`/homework`, {
     params: {
       page,
       perPage,
+      selectedClass2, 
+      selectedSection2, 
+      selectedSubjectGroup2, 
+      selectedSubject2, 
+      keyword, 
+      id,
     },
   });
   return response.data;
 };
+
 
 
 export const createHomeWork = async (
@@ -41,7 +55,9 @@ export const deleteHomeWorkData = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editHomeWorkData = async (id: number,selectedClass2 ?: any, 
+export const editHomeWorkData = async (
+  currentLeaveId?: any,
+  selectedClass2 ?: any, 
   selectedSection2 ?: any, 
   selectedSubjectGroup2 ?: any, 
   selectedSubject2 ?: any, 
@@ -49,7 +65,7 @@ export const editHomeWorkData = async (id: number,selectedClass2 ?: any,
   submit_date?: any, 
   document?: any, 
   description?: string) => {
-  const data = { id, selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, homework_date, submit_date, document,  description }; // Create an object with the name field
-  const response = await apiClient.post(`/homework/${id}`, data);
+  const data = { currentLeaveId, selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, homework_date, submit_date, document,  description }; // Create an object with the name field
+  const response = await apiClient.post(`/homework/${currentLeaveId}`, data);
   return response.data;
 };

@@ -126,7 +126,8 @@ const StudentDetails = () => {
 
   });
   const [editing, setEditing] = useState(false); // Add state for editing
-  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
+  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being 
+  
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -162,24 +163,33 @@ const StudentDetails = () => {
       }));
     }
   };
-  
-  const handleEdit = (id: number, homeworkdate: any) => {
-    setEditing(true);
-    setCurrentLeaveId(id);
-    setFormData({
-      // selectedClass2,
-      // selectedSection2,
-      // selectedSubjectGroup2,
-      // selectedSubject2,
-      homework_date: homeworkdate.date || "",
-      submit_date: homeworkdate.submit_date || "",
-      description: homeworkdate.description || "",
-      document: null, 
-    });
-    setOpen(true);
-  };
+
 
   
+  // const handleEdit = (id: number, homeworkdate: any) => {
+  //   setEditing(true);
+  //   setCurrentLeaveId(id);
+  //   setFormData({
+  //     // selectedClass2,
+  //     // selectedSection2,
+  //     // selectedSubjectGroup2,
+  //     // selectedSubject2,
+  //     homework_date: homeworkdate.date || "",
+  //     submit_date: homeworkdate.submit_date || "",
+  //     description: homeworkdate.description || "",
+  //     document: null, 
+  //   });
+  //   setOpen(true);
+  // };
+
+  const formatDate = (dateString: any) => {
+    if (!dateString) return "N/A"; // Handle null/undefined dates
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "N/A"; // Handle invalid dates
+    return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
+      date,
+    );
+  };
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
@@ -187,13 +197,14 @@ const StudentDetails = () => {
       student.section_name || "N/A",
       student.name || "N/A",
       student.subject_name || "N/A",
-      student.homework_date || "N/A",
-      student.submit_date || "N/A",
+      // student.homework_date || "N/A",
+      formatDate(student.homework_date) || "N/A",
+      formatDate(student.submit_date) || "N/A",
       student.evaluation_date || "N/A",
       `${student.staff_name || ''} ${student.staff_surname || ''}` || "N/A",
       <div key={student.id}>
       <IconButton
-        onClick={() => handleEdit(student.id, student.category)}
+        onClick={() => handleEdit(student.id, student)}
         aria-label="edit"
       >
         <Edit />
@@ -216,6 +227,7 @@ const StudentDetails = () => {
     selectedSubjectGroup?: string,
     selectedSubject?: string,
     keyword?: string,
+    
   ) => {
     try {
       const result = await fetchHomeWorkData(
@@ -260,7 +272,7 @@ const StudentDetails = () => {
       let result;
       if (editing) {
         result = await editHomeWorkData(
-          currentLeaveId!,
+          currentLeaveId,
           selectedClass2,
           selectedSection2,
           selectedSubjectGroup2,
@@ -282,7 +294,8 @@ const StudentDetails = () => {
           formData.document,
           formData.description,
           
-        );
+        ); 
+        fetchData(page, rowsPerPage); // Refresh data after submit
       }
       if (result.success) {
         toast.success(
@@ -315,6 +328,39 @@ const StudentDetails = () => {
       toast.error("An error occurred while saving leave");
     }
   };
+
+
+  const handleEdit = async (id: number, homeworkData: any) => {
+    setEditing(true);
+    setCurrentLeaveId(id);
+  
+    try {
+      const result = await fetchHomeWorkData(
+        1, 
+        rowsPerPage, 
+        selectedClass2,
+        selectedSection2, 
+        selectedSubjectGroup2, 
+        selectedSubject2, 
+        keyword, 
+        id 
+      );
+  
+      setFormData(result.data[0]);
+      setSelectedClass2(result.data[0].selectedClass2);
+      setSelectedSection2(result.data[0].selectedSection2);
+      setSelectedSubjectGroup2(result.data[0].selectedSubjectGroup2);
+      setSelectedSubject2(result.data[0].selectedSubject2);
+  
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  
+    setOpen(true); // Open the modal
+  };
+  
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -377,12 +423,30 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, selectedSubject, keyword);
+    fetchData(page, 
+      rowsPerPage, 
+      selectedClass, 
+      selectedSection, 
+      selectedSubjectGroup, 
+      selectedSubject, 
+      keyword);
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, selectedSubject, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, selectedSubjectGroup, selectedSubject, keyword]);
+    fetchData(page, 
+      rowsPerPage, 
+      selectedClass, 
+      selectedSection, 
+      selectedSubjectGroup,
+      selectedSubject, 
+      keyword);
+  }, [page, 
+    rowsPerPage, 
+    selectedClass, 
+    selectedSection, 
+    selectedSubjectGroup, 
+    selectedSubject, 
+    keyword]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -398,8 +462,8 @@ const StudentDetails = () => {
 
     setSelectedClass2("");
     setSelectedSection2("");
-        setSelectedSubjectGroup2("");
-        setSelectedSubject2("");
+    setSelectedSubjectGroup2("");
+    setSelectedSubject2("");
     setOpen(false);
     setEditing(false); // Reset editing state
   };
@@ -634,9 +698,7 @@ const StudentDetails = () => {
                       <select
                         value={selectedClass2 || ""}
                         onChange={handleClassChange2}
-                        
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                         <option value="">Select</option>
                         {classes2.map((cls) => (
                           <option key={cls.id} value={cls.id}>
