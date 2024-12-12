@@ -195,7 +195,7 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.class_name || "N/A",
       student.section_name || "N/A",
-      student.subject_group_subject_id || "N/A",
+      student.subject_groups_name || "N/A",
       student.subject_id || "N/A",
       // student.homework_date || "N/A",
       formatDate(student.homework_date) || "N/A",
