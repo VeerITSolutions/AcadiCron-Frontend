@@ -39,7 +39,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Delete, Edit, Visibility, } from "@mui/icons-material";
-import { fetchLeaveTypeData } from "@/services/leaveTypeService";
+
 
 const columns = [
   "Class",
@@ -258,13 +258,6 @@ const StudentDetails = () => {
       setError(error.message);
       setLoading(false);
     }
-
-    try {
-      const result = await fetchLeaveTypeData();
-      setLeaveTypeData(result.data);
-    } catch (error: any) {
-      setError(error.message);
-    }
   };
 
   const handleSave = async () => {
@@ -330,7 +323,7 @@ const StudentDetails = () => {
   };
 
 
-  const handleEdit = async (id: number, homeworkData: any) => {
+  const handleEdit = async (id: number, data: any) => {
     setEditing(true);
     setCurrentLeaveId(id);
   
