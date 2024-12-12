@@ -3,10 +3,10 @@ import apiClient from "./apiClient";
 export const fetchHomeWorkData = async (
   page: number,
   perPage: number,
-  selectedClass2?: string,
-  selectedSection2?: string,
-  selectedSubjectGroup2?: string,
-  selectedSubject2?: string,
+  selectedClass?: string,
+  selectedSection?: string,
+  selectedSubjectGroup?: string,
+  selectedSubject?: string,
   keyword?: string,
   id?: any
 ) => {
@@ -14,10 +14,10 @@ export const fetchHomeWorkData = async (
     params: {
       page,
       perPage,
-      selectedClass2, 
-      selectedSection2, 
-      selectedSubjectGroup2, 
-      selectedSubject2, 
+      selectedClass, 
+      selectedSection, 
+      selectedSubjectGroup, 
+      selectedSubject, 
       keyword, 
       id,
     },
