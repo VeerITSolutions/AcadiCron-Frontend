@@ -146,21 +146,47 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     }));
   };
 
+  const getStatusColor = (status: string | undefined) => {
+    switch (status?.toLowerCase()) {
+      case "pending":
+        return "orange";
+      case "approve":
+        return "green";
+      case "disapprove":
+        return "red";
+      default:
+        return "gray"; // Default for "N/A" or unknown statuses
+    }
+  };
 
-  const handleEdit = (id: number, leaveData: any) => {
+  const handleEdit = async (id: number, leaveData: any) => {
     setEditing(true);
     setCurrentLeaveId(id);
-    // setFormData({
-    //   date: leaveData.date || "",
-    //   leave_type_id: leaveData.leave_type_id || "",
-    //   leave_from: leaveData.leave_from || "",
-    //   leave_to: leaveData.leave_to || "",
-    //   employee_remark: leaveData.employee_remark || "",
-    //   admin_remark: leaveData.admin_remark || "",
-    //   document_file: null,
-    // });
+
+    try {
+      const result = await fetchLeaveData(
+        "",
+        rowsPerPage,
+        selectedClass,
+        selectedSection,
+        keyword,
+        id,
+      );
+
+      setFormData(result.data[0]);
+      setSelectedRoleLeave(result.data[0].leave_type_id);
+      setSelectedStaff(result.data[0].staff_id);
+      setSelectedLeaveselectedLeaveType(result.data[0].leave_type_id);
+
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+
     setOpen(true); // Open the modal
   };
+
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
@@ -169,7 +195,12 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
       `${formatDate(student.leave_from)} - ${formatDate(student.leave_to) || "N/A"}`,
       student.leave_days || "N/A",
       formatDate(student.date) || "N/A",
-      student.status || "N/A",
+      <span
+      key={student.id}
+      style={{ color: getStatusColor(student.status), fontWeight: "bold" }}
+    >
+      {student.status || "N/A"}
+    </span>,
       <div key={student.id}>
         <IconButton
           onClick={() => handleEdit(student.id, student)}

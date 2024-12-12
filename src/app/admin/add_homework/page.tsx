@@ -19,8 +19,12 @@ import {
   deleteHomeWorkData,
   editHomeWorkData,
 } from "@/services/homeworkServices";
-import { fetchSubjectGroupData } from "@/services/subjectGroupService";
-import { fetchSubjectData } from "@/services/subjectsService";
+import {
+  fetchSubjectGroupData,
+} from "@/services/subjectGroupService";
+import {
+  fetchSubjectData,
+} from "@/services/subjectsService";
 
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -34,7 +38,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { Delete, Edit, Visibility } from "@mui/icons-material";
+import { Delete, Edit, Visibility, } from "@mui/icons-material";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 
 const columns = [
@@ -67,11 +71,14 @@ const StudentDetails = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
 
+
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
 
+
+  
   const [classes2, setClassessData2] = useState<Array<any>>([]);
   const [section2, setSections2] = useState<Array<any>>([]);
   const [subjectGroup2, setSubjectGroup2] = useState<Array<any>>([]);
@@ -83,12 +90,13 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<
-    string | undefined
-  >(undefined);
+  const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
     undefined,
   );
+
 
   const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
     undefined,
@@ -96,13 +104,13 @@ const StudentDetails = () => {
   const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
     undefined,
   );
-  const [selectedSubjectGroup2, setSelectedSubjectGroup2] = useState<
-    string | undefined
-  >(undefined);
+  const [selectedSubjectGroup2, setSelectedSubjectGroup2] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedSubject2, setSelectedSubject2] = useState<string | undefined>(
     undefined,
   );
-
+ 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
@@ -114,10 +122,12 @@ const StudentDetails = () => {
     submit_date: null as Date | null,
     description: "",
     document: null,
+
+
   });
   const [editing, setEditing] = useState(false); // Add state for editing
-  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being
-
+  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being 
+  
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -154,6 +164,8 @@ const StudentDetails = () => {
     }
   };
 
+
+  
   // const handleEdit = (id: number, homeworkdate: any) => {
   //   setEditing(true);
   //   setCurrentLeaveId(id);
@@ -165,7 +177,7 @@ const StudentDetails = () => {
   //     homework_date: homeworkdate.date || "",
   //     submit_date: homeworkdate.submit_date || "",
   //     description: homeworkdate.description || "",
-  //     document: null,
+  //     document: null, 
   //   });
   //   setOpen(true);
   // };
@@ -189,21 +201,21 @@ const StudentDetails = () => {
       formatDate(student.homework_date) || "N/A",
       formatDate(student.submit_date) || "N/A",
       student.evaluation_date || "N/A",
-      `${student.staff_name || ""} ${student.staff_surname || ""}` || "N/A",
+      `${student.staff_name || ''} ${student.staff_surname || ''}` || "N/A",
       <div key={student.id}>
-        <IconButton
-          onClick={() => handleEdit(student.id, student)}
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
+      <IconButton
+        onClick={() => handleEdit(student.id, student)}
+        aria-label="edit"
+      >
+        <Edit />
+      </IconButton>
+      <IconButton
+        onClick={() => handleDelete(student.id)}
+        aria-label="delete"
+      >
+        <Delete />
+      </IconButton>
+    </div>
     ]);
   };
 
@@ -215,6 +227,7 @@ const StudentDetails = () => {
     selectedSubjectGroup?: string,
     selectedSubject?: string,
     keyword?: string,
+    
   ) => {
     try {
       const result = await fetchHomeWorkData(
@@ -230,27 +243,15 @@ const StudentDetails = () => {
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
 
-      const subjectgroupresult = await fetchSubjectGroupData(
-        "",
-        "",
-        selectedClass,
-        selectedSection,
-      );
-
+      const subjectgroupresult = await fetchSubjectGroupData("", "", selectedClass, selectedSection);
+      
       setSubjectGroup(subjectgroupresult.data);
 
-      const subjectresult = await fetchSubjectData(
-        "",
-        "",
-        selectedSubjectGroup,
-      );
+      const subjectresult = await fetchSubjectData('','', selectedSubjectGroup);
       setSubject(subjectresult.data);
-      const subjectresult2 = await fetchSubjectData(
-        "",
-        "",
-        selectedSubjectGroup2,
-      );
+      const subjectresult2 = await fetchSubjectData('', '', selectedSubjectGroup2);
       setSubject2(subjectresult2.data);
+
 
       setLoading(false);
     } catch (error: any) {
@@ -280,6 +281,7 @@ const StudentDetails = () => {
           formData.submit_date,
           formData.document,
           formData.description,
+         
         );
       } else {
         result = await createHomeWork(
@@ -291,14 +293,13 @@ const StudentDetails = () => {
           formData.submit_date,
           formData.document,
           formData.description,
-        );
+          
+        ); 
         fetchData(page, rowsPerPage); // Refresh data after submit
       }
       if (result.success) {
         toast.success(
-          editing
-            ? "Homework updated successfully"
-            : "Homework applied successfully",
+          editing ? "Homework updated successfully" : "Homework applied successfully",
         );
         setFormData({
           // selectedClass2,
@@ -309,6 +310,8 @@ const StudentDetails = () => {
           submit_date: null as Date | null,
           description: "",
           document: null,
+ 
+         
         });
         setSelectedClass2("");
         setSelectedSection2("");
@@ -326,36 +329,38 @@ const StudentDetails = () => {
     }
   };
 
+
   const handleEdit = async (id: number, homeworkData: any) => {
     setEditing(true);
     setCurrentLeaveId(id);
-
+  
     try {
       const result = await fetchHomeWorkData(
-        1,
-        rowsPerPage,
+        1, 
+        rowsPerPage, 
         selectedClass2,
-        selectedSection2,
-        selectedSubjectGroup2,
-        selectedSubject2,
-        keyword,
-        id,
+        selectedSection2, 
+        selectedSubjectGroup2, 
+        selectedSubject2, 
+        keyword, 
+        id 
       );
-
+  
       setFormData(result.data[0]);
       setSelectedClass2(result.data[0].selectedClass2);
       setSelectedSection2(result.data[0].selectedSection2);
       setSelectedSubjectGroup2(result.data[0].selectedSubjectGroup2);
       setSelectedSubject2(result.data[0].selectedSubject2);
-
+  
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
-
+  
     setOpen(true); // Open the modal
   };
+  
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -367,7 +372,7 @@ const StudentDetails = () => {
       ...prevData,
       [name]: value, // For regular inputs like text or selects
     }));
-  };
+  }
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -378,14 +383,14 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+
+
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
     setPage(0);
   };
 
-  const handleSubjectGroupChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleSubjectGroupChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSubjectGroup(event.target.value);
     console.log("selectedSubjectGroup", selectedSubjectGroup);
   };
@@ -395,23 +400,22 @@ const StudentDetails = () => {
     console.log("selectedSubject", selectedSubject);
   };
 
-  const handleSectionChange2 = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+
+  const handleSectionChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection2(event.target.value);
+    
   };
 
-  const handleSubjectGroupChange2 = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleSubjectGroupChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSubjectGroup2(event.target.value);
+    
   };
 
-  const handleSubjectChange2 = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleSubjectChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSubject2(event.target.value);
+    
   };
+
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
@@ -419,38 +423,30 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
-    fetchData(
-      page,
-      rowsPerPage,
-      selectedClass,
-      selectedSection,
-      selectedSubjectGroup,
-      selectedSubject,
-      keyword,
-    );
+    fetchData(page, 
+      rowsPerPage, 
+      selectedClass, 
+      selectedSection, 
+      selectedSubjectGroup, 
+      selectedSubject, 
+      keyword);
   };
 
   useEffect(() => {
-    fetchData(
-      page,
-      rowsPerPage,
-      selectedClass,
-      selectedSection,
+    fetchData(page, 
+      rowsPerPage, 
+      selectedClass, 
+      selectedSection, 
       selectedSubjectGroup,
-      selectedSubject,
-      keyword,
-    );
-  }, [
-    page,
-    rowsPerPage,
-    selectedClass,
-    selectedSection,
-    selectedSection2,
-    selectedSubjectGroup,
-    selectedSubjectGroup2,
-    selectedSubject,
-    keyword,
-  ]);
+      selectedSubject, 
+      keyword);
+  }, [page, 
+    rowsPerPage, 
+    selectedClass, 
+    selectedSection, selectedSection2,
+    selectedSubjectGroup, selectedSubjectGroup2,
+    selectedSubject, 
+    keyword]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -458,10 +454,10 @@ const StudentDetails = () => {
 
   const handleClose = () => {
     setFormData({
-      homework_date: null as Date | null,
-      submit_date: null as Date | null,
-      description: "",
-      document: null,
+    homework_date: null as Date | null,
+    submit_date: null as Date | null,
+    description: "",
+    document: null,
     });
 
     setSelectedClass2("");
@@ -472,13 +468,16 @@ const StudentDetails = () => {
     setEditing(false); // Reset editing state
   };
 
+
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
     setPage(0);
   };
 
+
   const handleClassChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass2(event.target.value);
+    
   };
 
   const handleRefresh = () => {
@@ -488,14 +487,15 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
+
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
 
   useEffect(() => {
-    fetchOnlyForFormChange(); // Fetch classes and sections on initial render
-  }, [selectedClass2, selectedSection2, selectedSubjectGroup2]);
-
+    fetchClassesAndSections2(); // Fetch classes and sections on initial render
+  }, [selectedClass2, selectedSection2]);
+  
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -516,9 +516,10 @@ const StudentDetails = () => {
     }
   };
 
-  const fetchOnlyForFormChange = async () => {
+  const fetchClassesAndSections2 = async () => {
     try {
       const classesResult = await getClasses();
+      
 
       setClassessData2(classesResult.data);
 
@@ -533,31 +534,28 @@ const StudentDetails = () => {
       setError(error.message);
       setLoading(false);
     }
-    if (selectedClass2 && selectedSection2) {
-      const subjectgroupresult = await fetchSubjectGroupData(
-        "",
-        "",
-        selectedClass2,
-        selectedSection2,
-      );
 
+    const subjectgroupresult = await fetchSubjectGroupData("", "", selectedClass2, selectedSection2);
+      
       setSubjectGroup2(subjectgroupresult.data);
-    }
   };
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (
+
+
     <DefaultLayout>
-      <div className={styles.filters}>
+
+<div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
             Class
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             >
               <option value="">Select</option>
               {classes.map((cls) => (
@@ -572,7 +570,7 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
               disabled={!selectedClass} // Disable section dropdown if no class is selected
             >
               <option value="">Select</option>
@@ -584,38 +582,38 @@ const StudentDetails = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Subject Group
-            <select
-              value={selectedSubjectGroup || ""}
-              onChange={handleSubjectGroupChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-              disabled={!selectedClass || !selectedSection}
-            >
-              <option value="">Select</option>
-              {subjectGroup.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.name}
-                </option>
-              ))}
-            </select>
-          </label>
+              Subject Group
+              <select
+                value={selectedSubjectGroup || ""}
+                onChange={handleSubjectGroupChange}
+                className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+                disabled={!selectedClass || !selectedSection}
+              >
+                <option value="">Select</option>
+                {subjectGroup.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
 
           <label className={styles.label}>
-            Subject
+          Subject
             <select
               value={selectedSubject || ""}
               onChange={handleSubjectChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-              disabled={
-                !selectedClass || !selectedSection || !selectedSubjectGroup
-              }
+              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+              disabled={!selectedClass || !selectedSection || !selectedSubjectGroup}
             >
               <option value="">Select</option>
               {subject.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.name}
-                </option>
-              ))}
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+              
             </select>
           </label>
           <div className={styles.searchGroup}>
@@ -624,7 +622,7 @@ const StudentDetails = () => {
               placeholder="Search By Keyword"
               value={keyword}
               onChange={handleKeywordChange}
-              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
@@ -636,23 +634,24 @@ const StudentDetails = () => {
         </div>
       </div>
 
+
       <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
-        <div
-          className="mb-4 pl-4 pt-4 text-right"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
-          <button
-            type="submit"
-            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" // Added margin-right for spacing
-            onClick={handleClickOpen}
-          >
-            {editing ? "Edit Homework" : "Add Homework"}
-          </button>
-        </div>
+      <div
+  className="mb-4 pl-4 pt-4 text-right"
+  style={{
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  }}
+>
+  <button
+    type="submit"
+    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"  // Added margin-right for spacing
+    onClick={handleClickOpen}
+  >
+    {editing ? "Edit Homework" : "Add Homework"}
+  </button>
+</div>
 
         <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
@@ -690,92 +689,87 @@ const StudentDetails = () => {
           </DialogTitle>
           <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
-                {/* Class */}
-                <div className="field mb-3">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Class:
-                  </label>
-                  <select
-                    value={selectedClass2 || ""}
-                    onChange={handleClassChange2}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {classes2.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
+      {/* Class */}
+      <div className="field mb-3">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Class:
+                      </label>
+                      <select
+                        value={selectedClass2 || ""}
+                        onChange={handleClassChange2}
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                        <option value="">Select</option>
+                        {classes2.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+      </div>
 
-                {/* Section */}
-                <div className="field mb-3">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Section:
-                  </label>
-                  <select
-                    value={selectedSection2 || ""}
-                    onChange={handleSectionChange2}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={!selectedClass2} // Disable section dropdown if no class is selected
-                  >
-                    <option value="">Select</option>
-                    {section2.map((sec) => (
-                      <option key={sec.section_id} value={sec.section_id}>
-                        {sec.section_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+      {/* Section */}
+      <div className="field mb-3">
+      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Section:
+                      </label>
+                      <select
+                        value={selectedSection2 || ""}
+                        onChange={handleSectionChange2}
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        disabled={!selectedClass2} // Disable section dropdown if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {section2.map((sec) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
+      </div>
 
-                {/* Subject Group */}
-                <div className="field mb-3">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Subject Group <span className="required">*</span>
-                  </label>
-                  <select
-                    onChange={handleSubjectGroupChange2}
-                    className="flatpickr-input w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={!selectedClass2 || !selectedSection2}
-                  >
-                    <option value="">Select</option>
-                    {subjectGroup2.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+      {/* Subject Group */}
+      <div className="field mb-3">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Subject Group <span className="required">*</span>
+        </label>
+        <select
+          onChange={handleSubjectGroupChange2}
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
+          disabled={!selectedClass2 || !selectedSection2}>
+          <option value="">Select</option>
+          {subjectGroup2.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+        </select>
+      </div>
 
-                {/* Subject */}
-                <div className="field mb-3">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Subject <span className="required">*</span>
-                  </label>
-                  <select
-                    onChange={handleSubjectChange2}
-                    className="flatpickr-input w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={
-                      !selectedClass2 ||
-                      !selectedSection2 ||
-                      !selectedSubjectGroup2
-                    }
-                  >
-                    <option value="">Select</option>
-                    {subject2.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+      {/* Subject */}
+      <div className="field mb-3">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Subject <span className="required">*</span>
+        </label>
+        <select
+            onChange={handleSubjectChange2}
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
+          disabled={!selectedClass2 || !selectedSection2 || !selectedSubjectGroup2}
+        
+        >
+          <option value="">Select</option>
+          {subject2.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+        </select>
+      </div>
 
-                {/* Homework Date */}
-                <div className="field">
+      {/* Homework Date */}
+      <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Homework Date <span className="required">*</span>{" "}
+                  Homework Date <span className="required">*</span>{" "}
                   </label>
                   <div className="relative">
                     <Flatpickr
@@ -809,21 +803,21 @@ const StudentDetails = () => {
 
                 <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Submission Date <span className="required">*</span>
+                  Submission Date <span className="required">*</span>
                   </label>
                   <div className="relative">
-                    <Flatpickr
-                      // value={formData.submit_date}
-                      onChange={(selectedDates) =>
-                        handleDateChange(selectedDates, "submit_date")
-                      }
-                      options={{
-                        dateFormat: "m/d/Y",
-                      }}
-                      name="submit_date"
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      placeholder="mm/dd/yyyy"
-                    />
+                  <Flatpickr
+                        // value={formData.submit_date} 
+                        onChange={(selectedDates) =>
+                          handleDateChange(selectedDates, "submit_date")
+                        }
+                        options={{
+                          dateFormat: "m/d/Y",
+                        }}
+                        name="submit_date"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        placeholder="mm/dd/yyyy"
+                      />
                     <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
                       <svg
                         width="18"
@@ -841,44 +835,44 @@ const StudentDetails = () => {
                   </div>
                 </div>
 
-                {/* Attach Document */}
-                <div className="field mb-3">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Attach Document
-                  </label>
-                  <input
-                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                    type="file"
-                    accept="image/*"
-                    name="document"
-                    onChange={handleFileChange}
-                    id="file"
-                  />
-                </div>
+      {/* Attach Document */}
+      <div className="field mb-3">
+     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Attach Document
+      </label>
+      <input className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"
+       type="file"
+       accept="image/*"
+       name="document"
+       onChange={handleFileChange}
+       id="file" />
+      </div>
+     
 
-                {/* Description */}
-                <div className="field mb-3">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Description <span className="required">*</span>
-                  </label>
-                  <textarea
-                    name="description"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                  />
-                </div>
+      {/* Description */}
+      <div className="field mb-3">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Description <span className="required">*</span>
+        </label>
+        <textarea
+          name="description"
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          value={formData.description}
+          onChange={handleInputChange}
+         
+        />
+      </div>
 
-                {/* Submit Button */}
-                <div className="col-span-full">
-                  <button
-                    onClick={handleSave}
-                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
+      {/* Submit Button */}
+      <div className="col-span-full">
+      <button
+            onClick={handleSave}
+            className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+          >
+            Save
+          </button>
+      </div>
+    </div>
             </div>
           </DialogContent>
         </Dialog>
