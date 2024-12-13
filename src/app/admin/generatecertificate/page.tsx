@@ -82,11 +82,10 @@ const StudentDetails = () => {
     null,
   );
 
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   useEffect(() => {
-    const getselectedSessionId = useLoginDetails(
-      (state) => state.selectedSessionId,
-    );
-
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
