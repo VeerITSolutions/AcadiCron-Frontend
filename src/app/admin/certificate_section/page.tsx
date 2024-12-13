@@ -249,22 +249,22 @@ const StudentCategories = () => {
         // Reset form data
         setFormData({
           certificate_name: "",
-    certificate_text: "",
-    left_header: "",
-    center_header: "",
-    right_header: "",
-    left_footer: "",
-    right_footer: "",
-    center_footer: "",
-    background_image: "",
-    created_for: "", 
-    status: "", 
-    header_height: "",
-    content_height: "",
-    footer_height: "",
-    content_width: "",
-    enable_student_image: 0,
-    enable_image_height: ""
+          certificate_text: "",
+          left_header: "",
+          center_header: "",
+          right_header: "",
+          left_footer: "",
+          right_footer: "",
+          center_footer: "",
+          background_image: "",
+          created_for: "", 
+          status: "", 
+          header_height: "",
+          content_height: "",
+          footer_height: "",
+          content_width: "",
+          enable_student_image: 0,
+          enable_image_height: ""
         });
         setIsEditing(false);
         setEditCategoryId(null);
