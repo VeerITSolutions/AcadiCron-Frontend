@@ -135,7 +135,7 @@ const StudentCategories = () => {
       ) : (
         "N/A"
       ),
-      <div key={student.id}>
+      <div key={student.id} className="flex items-center space-x-2">
           <IconButton aria-label="Show">
           <Visibility />
         </IconButton>

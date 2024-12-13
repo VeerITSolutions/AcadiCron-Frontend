@@ -201,7 +201,7 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     >
       {student.status || "N/A"}
     </span>,
-      <div key={student.id}>
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() => handleEdit(student.id, student)}
           aria-label="edit"

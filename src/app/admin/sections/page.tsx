@@ -94,7 +94,7 @@ const FeesMaster = () => {
     return students.map((student: any) => [
       student.section,
 
-      <div key={student.id}>
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() =>
             handleEdit(student.id, student.fees_group, student.section)

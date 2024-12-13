@@ -89,7 +89,7 @@ const StudentDetails = () => {
       student.designation || "N/A",
       student.contact_no,
       student.status || "N/A",
-      <div key={student.id}>
+      <div key={student.id} className="flex">
         <button
           onClick={() => handleEdit(student.id)}
           className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"

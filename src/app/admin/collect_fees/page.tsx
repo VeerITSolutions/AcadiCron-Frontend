@@ -84,7 +84,7 @@ const StudentDetails = () => {
       student.dob || "N/A",
 
       student.mobileno,
-      <div key={student.id}>
+      <div key={student.id} className="flex items-center space-x-2">
         <button
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"

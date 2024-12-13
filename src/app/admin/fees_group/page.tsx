@@ -84,7 +84,7 @@ const GroupMaster = () => {
     return students.map((student: any) => [
       student.name || "N/A",
       student.description || "N/A",
-      <div key={student.id}>
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() =>
             handleEdit(

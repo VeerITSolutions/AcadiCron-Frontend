@@ -90,7 +90,7 @@ const FeesMaster = () => {
       student.code || "N/A",
       student.amount || "N/A",
 
-      <div key={student.id}>
+      <div key={student.id} className="flex items-center space-x-2">
         <IconButton
           onClick={() =>
             handleEdit(

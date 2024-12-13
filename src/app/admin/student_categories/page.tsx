@@ -63,7 +63,7 @@ const StudentCategories = () => {
     return students.map((student: any) => [
       student.category || "N/A",
       student.id,
-      <div key={student.id}>
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() => handleEdit(student.id, student.category)}
           aria-label="edit"

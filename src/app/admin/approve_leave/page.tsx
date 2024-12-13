@@ -396,7 +396,7 @@ const StudentDetails = () => {
           : "N/A",
       `${student.staff_name || ""} ${student.staff_surname || ""}` || "N/A",
 
-      <div key={student.id}>
+      <div key={student.id} className="flex items-center space-x-2">
         <IconButton
           onClick={() => handleDelete(student.id)}
           aria-label="delete"

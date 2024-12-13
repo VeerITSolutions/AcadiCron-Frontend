@@ -62,7 +62,7 @@ const StudentDetails = () => {
       student.class ? student.content_for_role : "All",
     
 
-      <div key={student.id}>
+      <div key={student.id} className="flex items-center space-x-2">
          <IconButton
           onClick={() =>
             handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)

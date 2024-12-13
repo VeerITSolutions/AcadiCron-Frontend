@@ -83,7 +83,7 @@ const StudentDetails = () => {
       student.gender || "N/A",
       student.mobileno,
 
-      <div key={student.id}>
+      <div key={student.id} className="flex items-center space-x-2">
         <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
           <Visibility />
         </IconButton>

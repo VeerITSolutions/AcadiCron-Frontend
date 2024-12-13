@@ -215,7 +215,7 @@ const StudentDetails = () => {
       formatDate(student.submit_date) || "N/A",
       formatDate(student.evaluation_date) || "N/A",
       `${student.staff_name || ''} ${student.staff_surname || ''}` || "N/A",
-      <div key={student.id}>
+      <div key={student.id} className="flex items-center space-x-2">
       <IconButton
         onClick={() => handleEdit(student.id, student)}
         aria-label="edit"

@@ -112,7 +112,7 @@ const StudentDetails = () => {
       student.leave_days || "N/A",
       student.date || "N/A",
       student.status || "N/A",
-      <div key={student.id}>
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() => handleEdit(student.id, student)}
           aria-label="edit"

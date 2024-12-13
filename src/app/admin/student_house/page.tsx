@@ -67,7 +67,7 @@ const StudentHouse = () => {
       student.house_name || "N/A",
       student.description || "N/A",
       student.id,
-      <div key={student.id}>
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() =>
             handleEdit(student.id, student.house_name, student.description)

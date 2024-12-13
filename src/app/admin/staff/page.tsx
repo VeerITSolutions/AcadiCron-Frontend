@@ -81,7 +81,7 @@ const StudentDetails = () => {
       student.department || "N/A",
       student.designation || "N/A",
       student.contact_no,
-      <div key={student.id}>
+      <div key={student.id} className="flex">
         <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
           <Edit />
         </IconButton>

@@ -168,7 +168,7 @@ const StudentCategories = () => {
       `${student.class ?? ""} ${student.section ? `(${student.section})` : "-"}` ||
         "N/A",
 
-      <div key={student.id}>
+      <div key={student.id} className="flex items-center space-x-2">
         <IconButton
           onClick={() =>
             handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
