@@ -96,32 +96,32 @@ const StudentCategories = () => {
     content_height: string,
     footer_height: string,
     content_width: string,
-    background_image: string,
+    background_image: string
   ) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
-      certificate_name: "",
-    certificate_text: "",
-    left_header: "",
-    center_header: "",
-    right_header: "",
-    left_footer: "",
-    right_footer: "",
-    center_footer: "",
-    background_image: "",
-    created_for: "", 
-    status: "", 
-    header_height: "",
-    content_height: "",
-    footer_height: "",
-    content_width: "",
-    enable_student_image: 0,
-    enable_image_height: ""
+      certificate_name: certificate_name,
+      certificate_text: certificate_text,
+      left_header: left_header,
+      center_header: center_header,
+      right_header: right_header,
+      left_footer: left_footer,
+      right_footer: right_footer,
+      center_footer: center_footer,
+      background_image: background_image,
+      created_for: "", 
+      status: "", 
+      header_height: header_height,
+      content_height: content_height,
+      footer_height: footer_height,
+      content_width: content_width,
+      enable_student_image: 0,
+      enable_image_height: "" 
     });
-    
   };
+  
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
@@ -184,6 +184,18 @@ const StudentCategories = () => {
       [name]: value,
     }));
   };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, files } = e.target;
+      const file = files ? files[0] : null;
+  
+      if (file && name) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: file, // Dynamically set the file in formData using the input's name attribute
+        }));
+      }
+    };
 
    const handleSubmit = async () => {
     try {
@@ -532,15 +544,15 @@ const handleCancel = () => {
       </div>
     </div>
 
-
-
-
     <div>
       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
         Background Image
       </label>
       <input
         type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        id="file"
         name="background_image"
         className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"
       />
