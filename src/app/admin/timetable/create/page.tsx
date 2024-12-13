@@ -48,7 +48,7 @@ const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
 
 
-  
+
 const [classes, setClassessData] = useState<Array<any>>([]);
 const [section, setSections] = useState<Array<any>>([]);
 const [selectedClass, setSelectedClass] = useState<string | undefined>(
@@ -67,12 +67,12 @@ const [selectedSection, setSelectedSection] = useState<string | undefined>(
     Saturday: [{ subject: "", teacher: "", timeFrom: "", timeTo: "", roomNo: "" }],
     Sunday: [{ subject: "", teacher: "", timeFrom: "", timeTo: "", roomNo: "" }],
   });
-  
+
 
 useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
-  
+
 const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -90,7 +90,7 @@ const fetchClassesAndSections = async () => {
       setLoading(false);
     }
   };
- const token = localStorage.getItem("authToken") || "";
+
 
 const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
@@ -157,7 +157,7 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const result = await fetchtimeTableData(token);
+      const result = await fetchtimeTableData();
       if (result && result.success) {
         setData(result.data);
       } else {
@@ -233,7 +233,7 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     </select>
   </label>
   <div className={styles.searchGroup}>
-  
+
     <button onClick={handleSearch} className={styles.searchButton}>
       Search
     </button>
@@ -280,7 +280,7 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
           </button>
         </div>
 
-      
+
           {/* Timetable */}
           <table className="min-w-full table-auto border-collapse shadow mt-5 mb-5">
           <thead className="bg-gray-200 text-gray-700">
@@ -368,7 +368,7 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
           </tbody>
         </table>
 
-      
+
           {/* Save Button */}
           <button
             onClick={() => handleSave(day)}
@@ -383,12 +383,12 @@ const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
           </button>
         </div>
       </TabPanel>
-      
+
         ))}
       </TabContext>
 </ThemeProvider>
     </DefaultLayout>
-    
+
   );
 };
 

@@ -64,7 +64,7 @@ const columns = [
             type="text"
             value={value || ""} // Use the note if available or empty string
             onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full rounded border-[1.5px] border-stroke bg-transparent outline-none transition focus:border-primary active:border-primary dark:focus:border-primary p-1.5 dark:border-strokedark dark:text-white dark:drop-shadow-none bg-transparent"
+            className="w-full rounded border-[1.5px] border-stroke bg-transparent bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
           />
         );
       },
@@ -86,13 +86,13 @@ const options = {
   customToolbar: () => (
     <div className="flex justify-end gap-2">
       <button
-        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"
+        className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
         onClick={() => console.log("Mark As Holiday clicked")}
       >
         Mark As Holiday
       </button>
       <button
-        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"
+        className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
         onClick={() => console.log("Save Attendance clicked")}
       >
         Save Attendance
@@ -138,7 +138,13 @@ const StudentDetails = () => {
       student.note || "",
     ]);
   };
+const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+    }
+  }, []);
   // Function to fetch student data
   const fetchData = async (
     currentPage: number,
@@ -154,7 +160,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
-        localStorage.getItem("selectedSessionId"),
+        selectedSessionId,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -271,7 +277,7 @@ const StudentDetails = () => {
               ))}
             </select>
           </label>
-          <label className={styles.label} >
+          <label className={styles.label}>
             Date:
             <input
               type="date"

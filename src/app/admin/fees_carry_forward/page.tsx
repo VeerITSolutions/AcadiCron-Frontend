@@ -93,7 +93,15 @@ const StudentDetails = () => {
       </div>,
     ]);
   };
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+    }
+  }, []);
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -109,7 +117,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
-        localStorage.getItem("selectedSessionId"),
+        selectedSessionId,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);

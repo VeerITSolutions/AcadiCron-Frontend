@@ -71,12 +71,12 @@ const StudentDetails = () => {
       // `${student.name.trim()} ${student.surname.trim()}`,
 
       <span
-      key={student.id}
-      onClick={() => router.push(`/admin/staff/profile/${student.id}`)}
-      className="cursor-pointer text-blue-500 hover:text-blue-700"
-    >
-      {`${student.name.trim()} ${student.surname.trim()}`}
-    </span>,
+        key={student.id}
+        onClick={() => router.push(`/admin/staff/profile/${student.id}`)}
+        className="cursor-pointer text-blue-500 hover:text-blue-700"
+      >
+        {`${student.name.trim()} ${student.surname.trim()}`}
+      </span>,
       student.user_type || "N/A",
       student.department || "N/A",
       student.designation || "N/A",
@@ -91,8 +91,13 @@ const StudentDetails = () => {
       </div>,
     ]);
   };
+const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
 
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+    }
+  }, []);
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -107,7 +112,7 @@ const StudentDetails = () => {
         selectedRole,
         selectedSection,
         keyword,
-        localStorage.getItem("selectedSessionId"),
+        selectedSessionId,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -122,12 +127,10 @@ const StudentDetails = () => {
     }
   };
 
-
   const handleDelete = async (id: number) => {
     // Assuming id is the student_id
     router.push(`/admin/student/${id}`);
   };
-
 
   const handleAddFees = (id: number) => {
     router.push(`/admin/staff/profile/${id}`);
@@ -170,7 +173,7 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-        <label className={styles.label}>
+          <label className={styles.label}>
             Role:
             <select
               value={selectedRole || ""}

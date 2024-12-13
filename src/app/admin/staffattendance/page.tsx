@@ -78,8 +78,7 @@ const columns = [
             type="text"
             value={value || ""} // Use the note if available or empty string
             onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full rounded border-[1.5px] border-stroke bg-transparent outline-none transition focus:border-primary active:border-primary dark:focus:border-primary p-1.5 dark:border-strokedark dark:text-white dark:drop-shadow-none bg-transparent"
-     
+            className="w-full rounded border-[1.5px] border-stroke bg-transparent bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
           />
         );
       },
@@ -141,7 +140,7 @@ const StudentDetails = () => {
     return `${year}-${month}-${day}`;
   };
   const [attendancedate, setattendancedate] =
-  useState<string>(getDefaultDate());
+    useState<string>(getDefaultDate());
 
   const [selectedAttendacne, setAttendance] = useState<string | undefined>(
     undefined,
@@ -149,6 +148,14 @@ const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+      }
+    }, []);
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
@@ -170,7 +177,7 @@ const StudentDetails = () => {
         selectedRole,
         selectedSection,
         keyword,
-        localStorage.getItem("selectedSessionId"),
+        selectedSessionId,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);

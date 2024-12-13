@@ -14,13 +14,11 @@ import "flatpickr/dist/flatpickr.css"; // You can use other themes too
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
 import {
-
   fetchApproveLeaveData,
   createApproveLeave,
   deleteApproveLeaveData,
   editApproveLeaveData,
   changeStatus,
-
 } from "@/services/ApproveLeaveService";
 
 import styles from "./StudentDetails.module.css"; // Import CSS module
@@ -42,7 +40,7 @@ import {
   Visibility,
   TextFields,
   AttachMoney,
-  ThumbDown, 
+  ThumbDown,
   ThumbUp,
 } from "@mui/icons-material";
 import { useLoginDetails, useLogoStore } from "@/store/logoStore";
@@ -103,12 +101,10 @@ const StudentDetails = () => {
     reason: "",
     approve_by: "",
     request_type: "",
-    class_name:"",
+    class_name: "",
     section_name: "",
-    staff_name:"",
-    staff_surname:"",
-
-
+    staff_name: "",
+    staff_surname: "",
   });
   const [editing, setEditing] = useState(false); // Add state for editing
   const [status, setStatus] = useState("Pending");
@@ -125,9 +121,15 @@ const StudentDetails = () => {
       }));
     }
   };
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
-
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+    }
+  }, []);
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -142,7 +144,7 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
-        localStorage.getItem("selectedSessionId"),
+        selectedSessionId,
       );
       setStudentName(result.data);
       setTotalCount(result.totalCount);
@@ -179,13 +181,12 @@ const StudentDetails = () => {
           formData.apply_date,
           formData.status,
           formData.created_at,
-          formData.docs,  
+          formData.docs,
           formData.status,
           formData.created_at,
           formData.request_type,
           formData.staff_name,
           formData.staff_surname,
-   
         );
       } else {
         result = await createApproveLeave(
@@ -208,11 +209,10 @@ const StudentDetails = () => {
 
         setSelectedClass("");
         setSelectedSection("");
-        setSelectedStudent("")
+        setSelectedStudent("");
       }
 
       if (result.status == 200) {
-        
         setFormData({
           student_session_id: "",
           from_date: null as Date | null,
@@ -224,13 +224,12 @@ const StudentDetails = () => {
           reason: "",
           approve_by: "",
           request_type: "",
-          class_name:"",
+          class_name: "",
           section_name: "",
-          staff_name:"",
-          staff_surname:"",
+          staff_name: "",
+          staff_surname: "",
         });
 
-     
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
         fetchData(page, rowsPerPage); // Refresh data after submit
@@ -295,10 +294,9 @@ const StudentDetails = () => {
     if (roleId) {
       SetGetRoleId(roleId);
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
-    
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
@@ -311,18 +309,14 @@ const StudentDetails = () => {
     setEditing(false); // Reset editing state
   };
 
-
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
     setPage(0);
   };
 
-
-
   const handleStudentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedStudent(event.target.value);
   };
-
 
   const handleDelete = async (id: number) => {
     try {
@@ -337,29 +331,21 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
-    setSelectedStudent("")
+    setSelectedStudent("");
     setKeyword("");
   };
 
   const getRoleId2 = useLoginDetails((state) => state.roleId);
-  const handleApprove =  async (id: any) => {
+  const handleApprove = async (id: any) => {
     setStatus("Approved"); // Update status to Approved
 
-   const result = await changeStatus(
-      
-    id,getRoleId2  
-   
-    );
+    const result = await changeStatus(id, getRoleId2);
 
-    if(result.data == 200)
-    {
-      toast.success(
-        'success',
-      );
+    if (result.data == 200) {
+      toast.success("success");
     }
 
-    
-    fetchData(page, rowsPerPage); 
+    fetchData(page, rowsPerPage);
   };
 
   const handleDisapprove = (id: any) => {
@@ -367,12 +353,11 @@ const StudentDetails = () => {
     console.log("Disapproving student with ID:", id);
   };
 
-  const  handleEdit = async (id: number, data: any) => {
+  const handleEdit = async (id: number, data: any) => {
     setEditing(true);
-   
 
-    console.log('data', data)
-   
+    console.log("data", data);
+
     setFormData({
       student_session_id: data.id,
       from_date: data.from_date,
@@ -384,17 +369,15 @@ const StudentDetails = () => {
       reason: data.reason,
       approve_by: data.approve_by,
       request_type: data.request_type,
-      class_name:'',
-      section_name: '',
-      staff_name:'',
-      staff_surname:'',
+      class_name: "",
+      section_name: "",
+      staff_name: "",
+      staff_surname: "",
     });
 
-    
-
-          setSelectedClass('');
-          setSelectedSection('');
-          setSelectedStudent('');
+    setSelectedClass("");
+    setSelectedSection("");
+    setSelectedStudent("");
 
     setOpen(true); // Open the modal
   };
@@ -407,40 +390,45 @@ const StudentDetails = () => {
       student.from_date || "N/A",
       student.to_date || "N/A",
       student.apply_date || "N/A",
-      (parseInt(student.status) === 1) ? "Approve" : (parseInt(student.status) === 0) ? "Pending" : "N/A",
-      `${student.staff_name || ''} ${student.staff_surname || ''}` || "N/A",
+      parseInt(student.status) === 1
+        ? "Approve"
+        : parseInt(student.status) === 0
+          ? "Pending"
+          : "N/A",
+      `${student.staff_name || ""} ${student.staff_surname || ""}` || "N/A",
 
       <div key={student.id}>
-        
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="delete">
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
           <Delete />
         </IconButton>
-        {
-          parseInt(student.status) === 1 ? (
-            <IconButton onClick={() => handleApprove(student.id)} aria-label="Disapprove">
-            <ThumbDown   style={{ color: 'red' }} />
+        {parseInt(student.status) === 1 ? (
+          <IconButton
+            onClick={() => handleApprove(student.id)}
+            aria-label="Disapprove"
+          >
+            <ThumbDown style={{ color: "red" }} />
           </IconButton>
-           
-          ) : parseInt(student.status) === 0 ? (
-            <IconButton onClick={() => handleApprove(student.id)} aria-label="Approve">
-              <ThumbUp  style={{ color: 'green' }}/>
-            </IconButton>
-           
-          ) : "N/A"
-        }
-
-
-
-      </div>
+        ) : parseInt(student.status) === 0 ? (
+          <IconButton
+            onClick={() => handleApprove(student.id)}
+            aria-label="Approve"
+          >
+            <ThumbUp style={{ color: "green" }} />
+          </IconButton>
+        ) : (
+          "N/A"
+        )}
+      </div>,
     ]);
   };
-  
 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass]);
 
-  
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
@@ -463,18 +451,15 @@ const StudentDetails = () => {
   if (error) return <p>{error}</p>;
 
   return (
-
-
     <DefaultLayout>
-
-<div className={styles.filters}>
+      <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
             Class:
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             >
               <option value="">Select</option>
               {classes.map((cls) => (
@@ -489,7 +474,7 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={`${styles.select} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
               disabled={!selectedClass} // Disable section dropdown if no class is selected
             >
               <option value="">Select</option>
@@ -506,7 +491,7 @@ const StudentDetails = () => {
               placeholder="Search By Keyword"
               value={keyword}
               onChange={handleKeywordChange}
-              className={`${styles.searchInput} dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark`}
+              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
@@ -518,24 +503,23 @@ const StudentDetails = () => {
         </div>
       </div>
 
-
       <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
-      <div
-  className="mb-4 pl-4 pt-4 text-right"
-  style={{
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  }}
->
-  <button
-    type="submit"
-    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] mr-4"  // Added margin-right for spacing
-    onClick={() => handleClickOpen(false)}
-  >
-    {editing ? "Edit Leave" : "Add Leave"}
-  </button>
-</div>
+        <div
+          className="mb-4 pl-4 pt-4 text-right"
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <button
+            type="submit"
+            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" // Added margin-right for spacing
+            onClick={() => handleClickOpen(false)}
+          >
+            {editing ? "Edit Leave" : "Add Leave"}
+          </button>
+        </div>
 
         <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
@@ -573,72 +557,72 @@ const StudentDetails = () => {
           </DialogTitle>
           <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
-      {/* Class */}
-      <div className="field mb-3">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Class:
-                      </label>
-                      <select
-                        value={selectedClass || ""}
-                        onChange={handleClassChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="">Select</option>
-                        {classes.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
-      </div>
-
-      {/* Section */}
-      <div className="field mb-3">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Section:
-                      </label>
-                      <select
-                        value={selectedSection || ""}
-                        onChange={handleSectionChange}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        disabled={!selectedClass} // Disable section dropdown if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {section.map((sec) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-      </div>
-
-      {/* Subject Group */}
-      <div className="field mb-3">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Student <span className="required">*</span>
-        </label>
-        <select
-         value={selectedStudent || ""}
-         onChange={handleStudentChange}
-         
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-          disabled={!selectedClass || !selectedSection}>
-          <option value="">Select</option>
-          {studentName.map((sec) => (
-          <option key={sec.student_id} value={sec.student_id}>
-            {sec.student_name}
-          </option>
-        ))}
-        </select>
-      </div>
-
-      <div className="field mb-3">
+              <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
+                {/* Class */}
+                <div className="field mb-3">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Apply Date <span className="required">*</span>
+                    Class:
+                  </label>
+                  <select
+                    value={selectedClass || ""}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Section */}
+                <div className="field mb-3">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Section:
+                  </label>
+                  <select
+                    value={selectedSection || ""}
+                    onChange={handleSectionChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    disabled={!selectedClass} // Disable section dropdown if no class is selected
+                  >
+                    <option value="">Select</option>
+                    {section.map((sec) => (
+                      <option key={sec.section_id} value={sec.section_id}>
+                        {sec.section_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Subject Group */}
+                <div className="field mb-3">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Student <span className="required">*</span>
+                  </label>
+                  <select
+                    value={selectedStudent || ""}
+                    onChange={handleStudentChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    disabled={!selectedClass || !selectedSection}
+                  >
+                    <option value="">Select</option>
+                    {studentName.map((sec) => (
+                      <option key={sec.student_id} value={sec.student_id}>
+                        {sec.student_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="field mb-3">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Apply Date <span className="required">*</span>
                   </label>
                   <div className="relative">
-                  <Flatpickr
+                    <Flatpickr
                       value={formData.apply_date}
                       onChange={(selectedDates) =>
                         handleDateChange(selectedDates, "apply_date")
@@ -665,23 +649,22 @@ const StudentDetails = () => {
                       </svg>
                     </div>
                   </div>
-      </div>
+                </div>
 
- 
-      <div className="field mb-3">
+                <div className="field mb-3">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  From Date <span className="required">*</span>
+                    From Date <span className="required">*</span>
                   </label>
                   <div className="relative">
                     <Flatpickr
-                     value={formData.from_date}
-                     onChange={(selectedDates) =>
-                       handleDateChange(selectedDates, "from_date")
-                     }
-                     options={{
-                       dateFormat: "m/d/Y",
-                     }}
-                     name="from_date"
+                      value={formData.from_date}
+                      onChange={(selectedDates) =>
+                        handleDateChange(selectedDates, "from_date")
+                      }
+                      options={{
+                        dateFormat: "m/d/Y",
+                      }}
+                      name="from_date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -700,12 +683,11 @@ const StudentDetails = () => {
                       </svg>
                     </div>
                   </div>
-      </div>
+                </div>
 
-    
-      <div className="field mb-6">
+                <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  To Date<span className="required">*</span>
+                    To Date<span className="required">*</span>
                   </label>
                   <div className="relative">
                     <Flatpickr
@@ -737,41 +719,42 @@ const StudentDetails = () => {
                   </div>
                 </div>
 
-              
-      <div className="field mb-3">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Reason 
-        </label>
-        <input
-          name="reason"
-          type="text"
-          value={formData.reason}
-          onChange={handleInputChange}
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
-      </div>
+                <div className="field mb-3">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Reason
+                  </label>
+                  <input
+                    name="reason"
+                    type="text"
+                    value={formData.reason}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-      <div className="field mb-3">
-     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-      Attach Document
-      </label>
-      <input className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"   
-      type="file"
-      accept="image/*"
-      name="docs" // Optional: Include name for form data
-      onChange={handleFileChange} // Handle file change separately
-      id="file" />
-      </div>
-     
-      <div className="col-span-full">
-      <button
-         onClick={handleSave}
-        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
-      >
-        Save
-      </button>
-      </div>
-    </div>
+                <div className="field mb-3">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Attach Document
+                  </label>
+                  <input
+                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    type="file"
+                    accept="image/*"
+                    name="docs" // Optional: Include name for form data
+                    onChange={handleFileChange} // Handle file change separately
+                    id="file"
+                  />
+                </div>
+
+                <div className="col-span-full">
+                  <button
+                    onClick={handleSave}
+                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
             </div>
           </DialogContent>
         </Dialog>

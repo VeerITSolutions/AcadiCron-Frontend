@@ -88,7 +88,7 @@ const NoticeForm = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const token = localStorage.getItem("authToken") || "";
+
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -112,7 +112,7 @@ const NoticeForm = () => {
     }
 
     fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage, token]);
+  }, [page, rowsPerPage]);
 
   const handleSave = async () => {
     try {

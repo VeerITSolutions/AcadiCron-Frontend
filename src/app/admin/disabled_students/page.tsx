@@ -73,8 +73,6 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-  /* const token = localStorage.getItem("authToken") || ""; */
-
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.admission_no,

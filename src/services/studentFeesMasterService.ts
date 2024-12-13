@@ -18,11 +18,12 @@ due_date?:any,
 amount?:any,
 fine_type?:any,
 percentage?:any,
+descriptiond?: any,
 fine_amount?:string
 
 ): Promise<any> => {
   try {
-    const response = await apiClient.post("/fees-master", { 
+    const response = await apiClient.post("/fees-master", {
       fees_group,
       fees_type,
       due_date,

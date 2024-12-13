@@ -93,7 +93,13 @@ const StudentDetails = () => {
       </div>,
     ]);
   };
+const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+    }
+  }, []);
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -108,7 +114,7 @@ const StudentDetails = () => {
         selectedRole,
         selectedSection,
         keyword,
-        localStorage.getItem("selectedSessionId"),
+        selectedSessionId,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -148,7 +154,6 @@ const StudentDetails = () => {
     console.log("selectedRole", selectedRole);
   };
 
-
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
@@ -169,7 +174,7 @@ const StudentDetails = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-        <label className={styles.label}>
+          <label className={styles.label}>
             Role:
             <select
               value={selectedRole || ""}
@@ -209,7 +214,7 @@ const StudentDetails = () => {
           {/* Tabs */}
 
           <button
-            className="ml-auto bg-blue-500 text-white px-4 py-2 rounded"
+            className="ml-auto rounded bg-blue-500 px-4 py-2 text-white"
             onClick={() => router.push("/admin/staff/create")}
           >
             <PersonAdd className="text-white" />

@@ -73,7 +73,7 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-  /* const token = localStorage.getItem("authToken") || ""; */
+
   const handleDelete = async () => {
     try {
       const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
@@ -135,7 +135,15 @@ const StudentDetails = () => {
       </div>, */
     ]);
   };
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+    }
+  }, []);
   const fetchData = async (
     selectedClass?: string,
     selectedSection?: string,
@@ -150,7 +158,7 @@ const StudentDetails = () => {
           selectedClass,
           selectedSection,
           keyword,
-          localStorage.getItem("selectedSessionId"),
+          selectedSessionId,
           1,
         );
         setTotalCount(result.totalCount);

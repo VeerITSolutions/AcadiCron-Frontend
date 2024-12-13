@@ -79,10 +79,6 @@ const StudentDetails = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("authToken") || "";
-  }
-
   const handleDelete = async (id: number) => {
     try {
       await deleteLeaveData(id);
