@@ -114,10 +114,7 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
-    // selectedClass2,
-    // selectedSection2,
-    // selectedSubjectGroup2,
-    // selectedSubject2,
+   
     homework_date: null as Date | null,
     submit_date: null as Date | null,
     description: "",
@@ -129,7 +126,7 @@ const StudentDetails = () => {
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being 
   
   const [open, setOpen] = useState(false);
-  const router = useRouter();
+ 
 
   /* use Effect  */
 
@@ -175,7 +172,9 @@ const StudentDetails = () => {
 
   const handleDateChange = (selectedDates: Date[], name: string) => {
     if (selectedDates.length > 0) {
-      const formattedDate = selectedDates[0].toISOString().split("T")[0]; // Format to YYYY-MM-DD
+      const formattedDate = selectedDates[0].toLocaleDateString("en-CA"); // Format to YYYY-MM-DD
+
+      
       setFormData((prevState) => ({
         ...prevState,
         [name]: formattedDate, // Update the specific field dynamically
