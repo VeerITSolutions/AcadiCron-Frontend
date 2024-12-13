@@ -93,7 +93,7 @@ const FeesMaster = () => {
       subject.name,
       subject.code || "N/A",
       subject.type || "N/A",
-      <div key={subject.id}>
+      <div key={subject.id} className="flex">
         <IconButton
           onClick={() =>
             handleEdit(
