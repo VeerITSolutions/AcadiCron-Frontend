@@ -99,22 +99,18 @@ const NoticeForm = () => {
       setLoading(false);
     }
   };
-
+  let roleIdget = useLoginDetails((state) => state.roleId);
+  let username = useLoginDetails((state) => state.username);
+  let surname = useLoginDetails((state) => state.surname);
+  let roleNameget = useLoginDetails((state) => state.roleName);
+  let isSuperAdmin = useLoginDetails((state) => state.isSuperAdmin);
+  let selectedSessionId = useLoginDetails((state) => state.selectedSessionId);
   useEffect(() => {
-    const roleId = useLoginDetails((state) => state.roleId);
-    const username = useLoginDetails((state) => state.username);
-    const surname = useLoginDetails((state) => state.surname);
-    const roleName = useLoginDetails((state) => state.roleName);
-    const isSuperAdmin = useLoginDetails((state) => state.isSuperAdmin);
-    const selectedSessionId = useLoginDetails(
-      (state) => state.selectedSessionId,
-    );
-
-    if (roleName) {
-      setRoleName(roleName);
+    if (roleNameget) {
+      setRoleName(roleNameget);
     }
-    if (roleId) {
-      setRoleId(roleId);
+    if (roleIdget) {
+      setRoleId(roleIdget);
     }
 
     fetchData(page, rowsPerPage);

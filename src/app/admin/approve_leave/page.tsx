@@ -124,14 +124,13 @@ const StudentDetails = () => {
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
-
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+  const getroleId = useLoginDetails((state) => state.roleId);
   useEffect(() => {
-    const getselectedSessionId = useLoginDetails(
-      (state) => state.selectedSessionId,
-    );
     setSelectedSessionId(getselectedSessionId);
 
-    const getroleId = useLoginDetails((state) => state.roleId);
     if (getroleId) {
       SetGetRoleId(getroleId);
     }
