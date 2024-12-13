@@ -131,6 +131,37 @@ const StudentDetails = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
+  /* use Effect  */
+
+  useEffect(() => {
+    fetchData(page, 
+      rowsPerPage, 
+      selectedClass, 
+      selectedSection, 
+      selectedSubjectGroup,
+      selectedSubject, 
+      keyword);
+  }, [page, 
+    rowsPerPage, 
+    selectedClass, 
+    selectedSection,
+    selectedSection2,
+    selectedSubjectGroup,
+    selectedSubjectGroup2,
+    selectedSubject, 
+    keyword]);
+
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+
+  useEffect(() => {
+    fetchClassesAndSections2(); // Fetch classes and sections on initial render
+  }, [selectedClass2, selectedSection2]);
+
+
+  /* use effect End  */
+
   const handleDelete = async (id: number) => {
     try {
       await deleteHomeWorkData(id);
@@ -164,23 +195,6 @@ const StudentDetails = () => {
     }
   };
 
-
-  
-  // const handleEdit = (id: number, homeworkdate: any) => {
-  //   setEditing(true);
-  //   setCurrentLeaveId(id);
-  //   setFormData({
-  //     // selectedClass2,
-  //     // selectedSection2,
-  //     // selectedSubjectGroup2,
-  //     // selectedSubject2,
-  //     homework_date: homeworkdate.date || "",
-  //     submit_date: homeworkdate.submit_date || "",
-  //     description: homeworkdate.description || "",
-  //     document: null, 
-  //   });
-  //   setOpen(true);
-  // };
 
   const formatDate = (dateString: any) => {
     if (!dateString) return "N/A"; // Handle null/undefined dates
@@ -226,7 +240,7 @@ const StudentDetails = () => {
     selectedSection?: string,
     selectedSubjectGroup?: string,
     selectedSubject?: string,
-    keyword?: string,
+    keyword?: string
     
   ) => {
     try {
@@ -243,15 +257,36 @@ const StudentDetails = () => {
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
 
-      const subjectgroupresult = await fetchSubjectGroupData("", "", selectedClass, selectedSection);
+      
+       const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      setClassessData2(classesResult.data);
+
+      /* call condtion wise  */
+      if(selectedClass && selectedSection)
+      {
+        const subjectgroupresult = await fetchSubjectGroupData("", "", selectedClass, selectedSection);
       
       setSubjectGroup(subjectgroupresult.data);
 
-      const subjectresult = await fetchSubjectData('','', selectedSubjectGroup);
-      setSubject(subjectresult.data);
-      const subjectresult2 = await fetchSubjectData('', '', selectedSubjectGroup2);
-      setSubject2(subjectresult2.data);
+      }
+      if(selectedSubjectGroup)
+        {
+          const subjectresult = await fetchSubjectData('','', selectedSubjectGroup);
+          setSubject(subjectresult.data);
+        }
 
+        if(selectedSubjectGroup2)
+          {
+            const subjectresult2 = await fetchSubjectData('', '', selectedSubjectGroup2);
+            setSubject2(subjectresult2.data);
+          }
+        
+      
+      
+
+      /* call condtin wise end  */
 
       setLoading(false);
     } catch (error: any) {
@@ -259,6 +294,8 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
+
+  
 
   const handleSave = async () => {
     try {
@@ -425,21 +462,7 @@ const StudentDetails = () => {
       keyword);
   };
 
-  useEffect(() => {
-    fetchData(page, 
-      rowsPerPage, 
-      selectedClass, 
-      selectedSection, 
-      selectedSubjectGroup,
-      selectedSubject, 
-      keyword);
-  }, [page, 
-    rowsPerPage, 
-    selectedClass, 
-    selectedSection, selectedSection2,
-    selectedSubjectGroup, selectedSubjectGroup2,
-    selectedSubject, 
-    keyword]);
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -480,22 +503,11 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
-
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
-
-  useEffect(() => {
-    fetchClassesAndSections2(); // Fetch classes and sections on initial render
-  }, [selectedClass2, selectedSection2]);
+  
   
   const fetchClassesAndSections = async () => {
     try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      setClassessData2(classesResult.data);
-
+    
       // Fetch sections if a class is selected
       if (selectedClass) {
         const sectionsResult = await fetchsectionByClassData(selectedClass);
@@ -511,10 +523,7 @@ const StudentDetails = () => {
 
   const fetchClassesAndSections2 = async () => {
     try {
-      const classesResult = await getClasses();
       
-
-      setClassessData2(classesResult.data);
 
       // Fetch sections if a class is selected
       if (selectedClass2) {
@@ -523,14 +532,18 @@ const StudentDetails = () => {
       } else {
         setSections2([]); // Clear sections if no class is selected
       }
+      if (selectedClass2 && selectedSection2) {
+      const subjectgroupresult = await fetchSubjectGroupData("", "", selectedClass2, selectedSection2);
+      
+      setSubjectGroup2(subjectgroupresult.data);
+
+      }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
 
-    const subjectgroupresult = await fetchSubjectGroupData("", "", selectedClass2, selectedSection2);
-      
-      setSubjectGroup2(subjectgroupresult.data);
+    
   };
 
   if (loading) return <Loader />;
