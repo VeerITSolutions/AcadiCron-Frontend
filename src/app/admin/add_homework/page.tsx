@@ -365,22 +365,13 @@ const StudentDetails = () => {
     setCurrentLeaveId(id);
   
     try {
-      const result = await fetchHomeWorkData(
-        1, 
-        rowsPerPage, 
-        selectedClass2,
-        selectedSection2, 
-        selectedSubjectGroup2, 
-        selectedSubject2, 
-        keyword, 
-        id 
-      );
-  
-      setFormData(result.data[0]);
-      setSelectedClass2(result.data[0].selectedClass2);
-      setSelectedSection2(result.data[0].selectedSection2);
-      setSelectedSubjectGroup2(result.data[0].selectedSubjectGroup2);
-      setSelectedSubject2(result.data[0].selectedSubject2);
+      
+      
+      setFormData(data);
+      setSelectedClass2(data.class_id);
+      setSelectedSection2(data.section_id);
+      setSelectedSubjectGroup2(data.subject_groups_id);
+      setSelectedSubject2(data.subject_id);
   
       setLoading(false);
     } catch (error: any) {
