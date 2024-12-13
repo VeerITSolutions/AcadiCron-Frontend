@@ -209,7 +209,7 @@ const StudentDetails = () => {
       student.class_name || "N/A",
       student.section_name || "N/A",
       student.subject_groups_name || "N/A",
-      student.subject_id || "N/A",
+      student.subject_name || "N/A",
       // student.homework_date || "N/A",
       formatDate(student.homework_date) || "N/A",
       formatDate(student.submit_date) || "N/A",
