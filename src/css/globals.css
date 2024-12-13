@@ -95,6 +95,10 @@ thead.MuiTableHead-root {
   margin: 0px !important;
 }
 
+.tss-1qtl85h-MUIDataTableBodyCell-root {
+  text-transform: capitalize !important;
+}
+
 @media (min-width: 1024px) {
   .lg\:ml-72\.5 {
     margin-left: 0px;

@@ -109,7 +109,7 @@ const FeesMaster = () => {
     students.map((student: any) => [
       student.class_name,
       student.section_name || "N/A",
-      <div key={student.id} className="flex items-center space-x-2">
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() => handleEdit(student.id, student.category)}
           aria-label="edit"
