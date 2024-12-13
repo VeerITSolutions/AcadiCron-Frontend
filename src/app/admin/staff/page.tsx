@@ -31,6 +31,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { fetchRoleData } from "@/services/roleService";
+import { useLoginDetails } from "@/store/logoStore";
 const columns = [
   "Staff ID",
   "Name",
@@ -93,12 +94,16 @@ const StudentDetails = () => {
       </div>,
     ]);
   };
-const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
-    }
+    const getselectedSessionId = useLoginDetails(
+      (state) => state.selectedSessionId,
+    );
+
+    setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
     currentPage: number,

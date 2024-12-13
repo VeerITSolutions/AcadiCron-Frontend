@@ -14,6 +14,7 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Button } from "@mui/material";
 import { toast } from "react-toastify";
+import { useLoginDetails } from "@/store/logoStore";
 
 // Define columns, including a custom render for "Attendance"
 const columns = [
@@ -138,12 +139,16 @@ const StudentDetails = () => {
       student.note || "",
     ]);
   };
-const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
-    }
+    const getselectedSessionId = useLoginDetails(
+      (state) => state.selectedSessionId,
+    );
+
+    setSelectedSessionId(getselectedSessionId);
   }, []);
   // Function to fetch student data
   const fetchData = async (

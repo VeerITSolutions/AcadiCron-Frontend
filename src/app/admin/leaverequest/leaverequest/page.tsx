@@ -34,6 +34,7 @@ import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
+import { useLoginDetails } from "@/store/logoStore";
 
 const columns = [
   "Staff",
@@ -201,12 +202,16 @@ const StudentDetails = () => {
       </div>,
     ]);
   };
-const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
-    }
+    const getselectedSessionId = useLoginDetails(
+      (state) => state.selectedSessionId,
+    );
+
+    setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
     currentPage: number,
