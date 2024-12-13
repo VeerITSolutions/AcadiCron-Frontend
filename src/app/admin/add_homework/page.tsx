@@ -729,6 +729,7 @@ const StudentDetails = () => {
           Subject Group <span className="required">*</span>
         </label>
         <select
+        value={selectedSubjectGroup2 || ""}
           onChange={handleSubjectGroupChange2}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
           disabled={!selectedClass2 || !selectedSection2}>
@@ -747,6 +748,7 @@ const StudentDetails = () => {
           Subject <span className="required">*</span>
         </label>
         <select
+        value={selectedSubject2}
             onChange={handleSubjectChange2}
           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary flatpickr-input"
           disabled={!selectedClass2 || !selectedSection2 || !selectedSubjectGroup2}
