@@ -56,7 +56,7 @@ export const deleteHomeWorkData = async (id: number) => {
 
 // Edit a student category by ID
 export const editHomeWorkData = async (
-  currentLeaveId?: any,
+  id?: any,
   selectedClass2 ?: any, 
   selectedSection2 ?: any, 
   selectedSubjectGroup2 ?: any, 
@@ -65,7 +65,7 @@ export const editHomeWorkData = async (
   submit_date?: any, 
   document?: any, 
   description?: string) => {
-  const data = { currentLeaveId, selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, homework_date, submit_date, document,  description }; // Create an object with the name field
-  const response = await apiClient.post(`/homework/${currentLeaveId}`, data);
+  const data = { id, selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, homework_date, submit_date, document,  description }; // Create an object with the name field
+  const response = await apiClient.post(`/homework/${id}`, data);
   return response.data;
 };

@@ -313,6 +313,8 @@ const StudentDetails = () => {
           formData.description,
          
         );
+
+        fetchData(page, rowsPerPage);
       } else {
         result = await createHomeWork(
           selectedClass2,
@@ -332,10 +334,7 @@ const StudentDetails = () => {
           editing ? "Homework updated successfully" : "Homework applied successfully",
         );
         setFormData({
-          // selectedClass2,
-          // selectedSection2,
-          // selectedSubjectGroup2,
-          // selectedSubject2,
+         
           homework_date: null as Date | null,
           submit_date: null as Date | null,
           description: "",
@@ -366,7 +365,7 @@ const StudentDetails = () => {
   
     try {
       
-      
+      console.log(data)
       setFormData(data);
       setSelectedClass2(data.class_id);
       setSelectedSection2(data.section_id);
@@ -413,12 +412,12 @@ const StudentDetails = () => {
 
   const handleSubjectGroupChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSubjectGroup(event.target.value);
-    console.log("selectedSubjectGroup", selectedSubjectGroup);
+    
   };
 
   const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSubject(event.target.value);
-    console.log("selectedSubject", selectedSubject);
+    
   };
 
 
@@ -770,16 +769,16 @@ const StudentDetails = () => {
                   </label>
                   <div className="relative">
                     <Flatpickr
-                      // value={formData.homework_date}
+                      value={formData.homework_date}
                       onChange={(selectedDates) =>
                         handleDateChange(selectedDates, "homework_date")
                       }
                       options={{
-                        dateFormat: "m/d/Y",
+                        dateFormat: "Y-m-d",
                       }}
                       name="homework_date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      placeholder="mm/dd/yyyy"
+                      placeholder="Y-m-d"
                     />
                     <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
                       <svg
@@ -804,16 +803,16 @@ const StudentDetails = () => {
                   </label>
                   <div className="relative">
                   <Flatpickr
-                        // value={formData.submit_date} 
+                         value={formData.submit_date} 
                         onChange={(selectedDates) =>
                           handleDateChange(selectedDates, "submit_date")
                         }
                         options={{
-                          dateFormat: "m/d/Y",
+                          dateFormat: "Y-m-d",
                         }}
                         name="submit_date"
                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        placeholder="mm/dd/yyyy"
+                        placeholder="Y-m-d"
                       />
                     <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
                       <svg
