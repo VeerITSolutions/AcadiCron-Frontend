@@ -14,6 +14,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { useLoginDetails } from "@/store/logoStore";
 
 // Dynamic import for ReactQuill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -88,8 +89,6 @@ const NoticeForm = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-
-
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchNotificationData(currentPage + 1, rowsPerPage);
@@ -102,13 +101,20 @@ const NoticeForm = () => {
   };
 
   useEffect(() => {
-    const roleName = localStorage.getItem("role_name");
+    const roleId = useLoginDetails((state) => state.roleId);
+    const username = useLoginDetails((state) => state.username);
+    const surname = useLoginDetails((state) => state.surname);
+    const roleName = useLoginDetails((state) => state.roleName);
+    const isSuperAdmin = useLoginDetails((state) => state.isSuperAdmin);
+    const selectedSessionId = useLoginDetails(
+      (state) => state.selectedSessionId,
+    );
+
     if (roleName) {
       setRoleName(roleName);
     }
-    const getroleId = localStorage.getItem("role_id");
-    if (getroleId) {
-      setRoleId(getroleId);
+    if (roleId) {
+      setRoleId(roleId);
     }
 
     fetchData(page, rowsPerPage);

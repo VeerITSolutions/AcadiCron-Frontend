@@ -126,10 +126,17 @@ const StudentDetails = () => {
   );
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+    const getselectedSessionId = useLoginDetails(
+      (state) => state.selectedSessionId,
+    );
+    setSelectedSessionId(getselectedSessionId);
+
+    const getroleId = useLoginDetails((state) => state.roleId);
+    if (getroleId) {
+      SetGetRoleId(getroleId);
     }
   }, []);
+
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -288,13 +295,6 @@ const StudentDetails = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
-
-  useEffect(() => {
-    let roleId = localStorage.getItem("role_id");
-    if (roleId) {
-      SetGetRoleId(roleId);
-    }
-  }, []);
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
