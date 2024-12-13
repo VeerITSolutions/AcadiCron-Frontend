@@ -213,7 +213,7 @@ const StudentDetails = () => {
       // student.homework_date || "N/A",
       formatDate(student.homework_date) || "N/A",
       formatDate(student.submit_date) || "N/A",
-      student.evaluation_date || "N/A",
+      formatDate(student.evaluation_date) || "N/A",
       `${student.staff_name || ''} ${student.staff_surname || ''}` || "N/A",
       <div key={student.id}>
       <IconButton
