@@ -44,12 +44,17 @@ const StudentCategories = () => {
     left_footer: "",
     right_footer: "",
     center_footer: "",
+    background_image: "",
+    created_for: "", 
+    status: "", 
     header_height: "",
     content_height: "",
     footer_height: "",
     content_width: "",
-    background_image: "",
-  });
+    enable_student_image: 0,
+    enable_image_height: ""
+});
+
 
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
@@ -97,21 +102,25 @@ const StudentCategories = () => {
     setEditCategoryId(id);
 
     setFormData({
-      certificate_name,
-      certificate_text,
-      left_header,
-      center_header,
-      right_header,
-      left_footer,
-      right_footer,
-      center_footer,
-      header_height,
-      content_height,
-      footer_height,
-      content_width,
-      background_image
-
+      certificate_name: "",
+    certificate_text: "",
+    left_header: "",
+    center_header: "",
+    right_header: "",
+    left_footer: "",
+    right_footer: "",
+    center_footer: "",
+    background_image: "",
+    created_for: "", 
+    status: "", 
+    header_height: "",
+    content_height: "",
+    footer_height: "",
+    content_width: "",
+    enable_student_image: 0,
+    enable_image_height: ""
     });
+    
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -228,18 +237,22 @@ const StudentCategories = () => {
         // Reset form data
         setFormData({
           certificate_name: "",
-          certificate_text: "",
-          left_header: "",
-          center_header: "",
-          right_header: "",
-          left_footer: "",
-          right_footer: "",
-          center_footer: "",
-          header_height: "",
-          content_height: "",
-          footer_height: "",
-          content_width: "",
-          background_image: "",
+    certificate_text: "",
+    left_header: "",
+    center_header: "",
+    right_header: "",
+    left_footer: "",
+    right_footer: "",
+    center_footer: "",
+    background_image: "",
+    created_for: "", 
+    status: "", 
+    header_height: "",
+    content_height: "",
+    footer_height: "",
+    content_width: "",
+    enable_student_image: 0,
+    enable_image_height: ""
         });
         setIsEditing(false);
         setEditCategoryId(null);
@@ -309,11 +322,15 @@ const handleCancel = () => {
     left_footer: "",
     right_footer: "",
     center_footer: "",
+    background_image: "",
+    created_for: "", 
+    status: "", 
     header_height: "",
     content_height: "",
     footer_height: "",
     content_width: "",
-    background_image: "",
+    enable_student_image: 0,
+    enable_image_height: ""
   });
   setIsEditing(false);
   setEditCategoryId(null);
