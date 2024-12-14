@@ -382,8 +382,7 @@ const handleCancel = () => {
     </div>
     <div>
 
-    <span className="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]
-    [Place of Birth] [Nationality] [Mother Tongue] [TC Number] [StudentID CBSE] [Student Aadhar] [Last School Attended] [Date of Admission in School Class] [Class in which Pupil Last Studied] [Subject Studied] [Whether Qualified] [Promoted to Class] [Month Upto Pupil Paid Fees] [Total Working Days] [Total Present Days] [Whether NCC Scout] [Games Played Other Activity] [General Conduct] [Certificate Issue Date] [Reason for Leaving School] [Any Other Remarks]                                    </span>
+    <span className="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]                                    </span>
     </div>
 
     <div>
