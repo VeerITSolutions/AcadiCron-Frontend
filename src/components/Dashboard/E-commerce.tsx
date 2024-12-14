@@ -7,7 +7,7 @@ import ChatCard from "../Chat/ChatCard";
 /* import TableOne from "../Tables/TableOne"; */
 import CardDataStats from "../CardDataStats";
 import { useRouter } from "next/navigation";
-
+import { useGlobalState } from "@/context/GlobalContext";
 /* const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
   ssr: false,
 }); */
@@ -18,13 +18,14 @@ const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
 
 const ECommerce: React.FC = () => {
   const router = useRouter();
+  const { someValue } = useGlobalState(); // Access the global state
 
   const roleId = localStorage.getItem("role_id");
   const previous_role_id = localStorage.getItem("previous_role_id");
 
   const username = localStorage.getItem("username");
   const surname = localStorage.getItem("surname");
-
+  console.log("someValue", someValue);
   useEffect(() => {
     const token = localStorage.getItem("token");
 

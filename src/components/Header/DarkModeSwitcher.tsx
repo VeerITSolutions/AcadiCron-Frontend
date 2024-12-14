@@ -1,8 +1,9 @@
+import { useGlobalState } from "@/context/GlobalContext";
 import useColorMode from "@/hooks/useColorMode";
 
 const DarkModeSwitcher = () => {
   const [colorMode, setColorMode] = useColorMode();
-
+  const { themType, setThemType } = useGlobalState(); // A
   return (
     <li>
       <label
@@ -16,6 +17,7 @@ const DarkModeSwitcher = () => {
           onChange={() => {
             if (typeof setColorMode === "function") {
               setColorMode(colorMode === "light" ? "dark" : "light");
+              setThemType(colorMode === "light" ? "dark" : "light");
               // No reload needed
             }
           }}
