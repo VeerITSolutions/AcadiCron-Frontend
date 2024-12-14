@@ -19,7 +19,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 
 
-const StudentCategories = () => {
+const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
@@ -199,8 +199,8 @@ const StudentCategories = () => {
       if (result.success) {
         toast.success(
           isEditing
-            ? "Student House updated successfully"
-            : "Student House saved successfully",
+            ? "Updated successfully"
+            : "Saved successfully",
         );
         // Reset form data
         setFormData({
@@ -379,6 +379,11 @@ const handleCancel = () => {
         onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       />
+    </div>
+    <div>
+
+    <span className="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]
+    [Place of Birth] [Nationality] [Mother Tongue] [TC Number] [StudentID CBSE] [Student Aadhar] [Last School Attended] [Date of Admission in School Class] [Class in which Pupil Last Studied] [Subject Studied] [Whether Qualified] [Promoted to Class] [Month Upto Pupil Paid Fees] [Total Working Days] [Total Present Days] [Whether NCC Scout] [Games Played Other Activity] [General Conduct] [Certificate Issue Date] [Reason for Leaving School] [Any Other Remarks]                                    </span>
     </div>
 
     <div>
@@ -575,4 +580,4 @@ const handleCancel = () => {
   );
 };
 
-export default StudentCategories;
+export default StudentCertificate;
