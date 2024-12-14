@@ -51,7 +51,7 @@ const StudentCategories = () => {
     content_height: "",
     footer_height: "",
     content_width: "",
-    enable_student_image: 0,
+    enable_student_image:  enabled,
     enable_image_height: ""
 });
 
@@ -84,41 +84,29 @@ const StudentCategories = () => {
 
   const handleEdit = (
     id: number,
-    certificate_name: string,
-    certificate_text: string,
-    left_header: string,
-    center_header: string,
-    right_header: string,
-    left_footer: string,
-    right_footer: string,
-    center_footer: string,
-    header_height: string,
-    content_height: string,
-    footer_height: string,
-    content_width: string,
-    background_image: string
+    data: any,
   ) => {
     setIsEditing(true);
     setEditCategoryId(id);
   
     setFormData({
-      certificate_name: certificate_name,
-      certificate_text: certificate_text,
-      left_header: left_header,
-      center_header: center_header,
-      right_header: right_header,
-      left_footer: left_footer,
-      right_footer: right_footer,
-      center_footer: center_footer,
-      background_image: background_image,
-      created_for: "", 
-      status: "", 
-      header_height: header_height,
-      content_height: content_height,
-      footer_height: footer_height,
-      content_width: content_width,
-      enable_student_image: 0,
-      enable_image_height: "" 
+      certificate_name: data.certificate_name,
+      certificate_text: data.certificate_text,
+      left_header: data.left_header,
+      center_header: data.center_header,
+      right_header: data.right_header,
+      left_footer: data.left_footer,
+      right_footer: data.right_footer,
+      center_footer: data.center_footer,
+      background_image: data.background_image,
+      created_for: data.created_for, 
+      status: data.status, 
+      header_height:data.header_height,
+      content_height:data.content_height,
+      footer_height:data.footer_height,
+      content_width:data.content_width,
+      enable_student_image: data.enable_student_image,
+      enable_image_height: data.enable_image_height
     });
   };
   
@@ -143,19 +131,7 @@ const StudentCategories = () => {
   <IconButton
     onClick={() => handleEdit(
       student.id, 
-      student.certificate_name,
-      student.certificate_text,
-      student.left_header,
-      student.center_header,
-      student.right_header,
-      student.left_footer,
-      student.right_footer,
-      student.center_footer,
-      student. header_height,
-      student. content_height,
-      student. footer_height,
-      student. content_width,
-      student.background_image
+      student
     )}
     aria-label="edit"
   >
@@ -201,41 +177,21 @@ const StudentCategories = () => {
     try {
       let result;
 
+      const data = {
+        ...formData,
+        
+      };
+
       // Check if we are editing an existing category
       if (isEditing && editCategoryId !== null) {
         result = await editCertificateData(
           editCategoryId,
-          formData.certificate_name,
-          formData.certificate_text,
-          formData.left_header,
-          formData.center_header,
-          formData.right_header,
-          formData.left_footer,
-          formData.right_footer,
-          formData.center_footer,
-          formData.header_height,
-          formData.content_height,
-          formData.footer_height,
-          formData.content_width,
-          formData.background_image,
+          data,
 
         );
       } else {
         result = await createCertificate(
-          formData.certificate_name,
-          formData.certificate_text,
-          formData.left_header,
-          formData.center_header,
-          formData.right_header,
-          formData.left_footer,
-          formData.right_footer,
-          formData.center_footer,
-          formData.header_height,
-          formData.content_height,
-          formData.footer_height,
-          formData.content_width,
-          formData.background_image,
-         
+          data
         );
       }
 
@@ -263,7 +219,7 @@ const StudentCategories = () => {
           content_height: "",
           footer_height: "",
           content_width: "",
-          enable_student_image: 0,
+          enable_student_image: enabled,
           enable_image_height: ""
         });
         setIsEditing(false);
@@ -341,7 +297,7 @@ const handleCancel = () => {
     content_height: "",
     footer_height: "",
     content_width: "",
-    enable_student_image: 0,
+    enable_student_image: enabled,
     enable_image_height: ""
   });
   setIsEditing(false);
@@ -516,33 +472,53 @@ const handleCancel = () => {
   </div>
 </div>
 
+<div>
+  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+    Student Photo
+  </label>
+  <div>
+    <label
+      htmlFor="toggle2"
+      className="flex cursor-pointer select-none items-center"
+    >
+      <div className="relative">
+        <input
+          id="toggle2"
+          type="checkbox"
+          className="sr-only"
+          checked={enabled} // Ensure the checkbox reflects the `enabled` state
+          onChange={() => setEnabled(!enabled)}
+        />
 
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Student Photo
-      </label>
-      <div x-data="{ switcherToggle: false }">
-        <label
-          htmlFor="toggle2"
-          className="flex cursor-pointer select-none items-center"
-        >
-          <div className="relative">
-            <input
-              id="toggle2"
-              type="checkbox"
-              className="sr-only"
-              onChange={() => {
-                setEnabled(!enabled);
-              }}
-            />
-            <div className="h-5 w-14 rounded-full bg-meta-9 shadow-inner dark:bg-[#5A616B]"></div>
-            <div
-              className={`dot ${enabled && "!right-0 dark:!bg-white"} absolute -top-1 left-0 h-7 w-7 !translate-x-full rounded-full !bg-primary bg-white shadow-switch-1 transition`}
-            ></div>
-          </div>
-        </label>
+        
+        <div
+          className={`h-5 w-14 rounded-full shadow-inner transition ${
+            enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
+          }`}
+        ></div>
+        <div
+          className={`absolute -top-1 left-0 h-7 w-7 transform rounded-full bg-white shadow-switch-1 transition ${
+            enabled ? "translate-x-full bg-primary dark:bg-white" : ""
+          }`}
+        ></div>
+
+
+
+
       </div>
-    </div>
+    </label>
+
+    {enabled ? <input
+      name="enable_image_height"
+      type="number"
+      value={formData.enable_image_height}
+      onChange={handleInputChange}
+      placeholder="enable_image_height"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+    /> : ''}
+  </div>
+</div>
+
 
     <div>
       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
