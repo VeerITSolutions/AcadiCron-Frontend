@@ -37,12 +37,79 @@ import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 
 const columns = [
-  "Admission No",
-  "Student Name",
-  "Class",
-  "Category",
-  "Mobile Number",
-  "Action",
+  {
+    name: "Admission No",
+    label: "Admission No",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Student Name",
+    label: "Student Name",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Class",
+    label: "Class",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Category",
+    label: "Category",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Mobile Number",
+    label: "Mobile Number",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Action",
+    label: "Action",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+ 
 ];
 
 const options = {
@@ -51,6 +118,12 @@ const options = {
   responsive: "standard",
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
+  setCellHeaderProps: () => ({
+    style: { textAlign: "center" },
+  }),
+  setCellProps: () => ({
+    style: { textAlign: "center" },
+  }),
 };
 
 const StudentDetails = () => {
