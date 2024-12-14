@@ -6,6 +6,8 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 interface GlobalContextType {
   someValue: string;
   setSomeValue: React.Dispatch<React.SetStateAction<string>>;
+  themType: string;
+  setThemType: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // Create the context with default values
@@ -13,10 +15,12 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 // Create a GlobalProvider component
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
-  const [someValue, setSomeValue] = useState("Hello, World!");
-
+  const [someValue, setSomeValue] = useState("light");
+  const [themType, setThemType] = useState("light");
   return (
-    <GlobalContext.Provider value={{ someValue, setSomeValue }}>
+    <GlobalContext.Provider
+      value={{ someValue, setSomeValue, themType, setThemType }}
+    >
       {children}
     </GlobalContext.Provider>
   );

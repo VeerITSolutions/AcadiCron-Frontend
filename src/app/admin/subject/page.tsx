@@ -204,8 +204,7 @@ const FeesMaster = () => {
   };
 
   const { someValue } = useGlobalState(); // Access the global state
-
-  
+  const { themType, setThemType } = useGlobalState(); // A
 
   return (
     <DefaultLayout>
@@ -317,7 +316,7 @@ const FeesMaster = () => {
           </div>
         </div>
         <div className={styles.container}>
-          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title="Subjects"
               data={data}
