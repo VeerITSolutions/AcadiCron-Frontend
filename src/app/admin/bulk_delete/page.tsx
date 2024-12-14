@@ -35,14 +35,103 @@ import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 
 const columns = [
-  "Student Id",
-  "Admission No",
-  "Student Name",
-  "Class",
-  "Date Of Birth",
-  "Gender",
-  "Category",
-  "Mobile Number",
+  {
+    name: "Student Id",
+    label: "Student Id",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Admission No",
+    label: "Admission No",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Student Name",
+    label: "Student Name",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Class",
+    label: "Class",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Date Of Birth",
+    label: "Date Of Birth",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Gender",
+    label: "Gender",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Category",
+    label: "Category",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  {
+    name: "Mobile Number",
+    label: "Mobile Number",
+    options: {
+      setCellHeaderProps: () => ({
+        className: "header-center", // Add custom class to the header
+      }),
+      setCellProps: () => ({
+        className: "cell-center", // Add custom class to the body cells
+      }),
+    },
+  },
+  
 ];
 
 const options = {
@@ -247,7 +336,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
               {classes.map((cls) => (

@@ -152,7 +152,7 @@ const StudentDetails = () => {
       student.class_name || "N/A",
       student.category_name || "N/A",
       student.mobileno,
-      <div key={student.id} className="flex">
+      <div key={student.id} className="flex justify-center items-center">
         <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
           <Visibility />
         </IconButton>
