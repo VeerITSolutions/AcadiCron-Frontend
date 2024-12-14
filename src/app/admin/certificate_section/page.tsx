@@ -430,7 +430,7 @@ const handleCancel = () => {
   <div>
     <input
       name="header_height"
-      type="text"
+      type="number"
       value={formData.header_height}
       onChange={handleInputChange}
       placeholder="Header Height"
@@ -441,7 +441,7 @@ const handleCancel = () => {
   <div>
     <input
       name="footer_height"
-      type="text"
+      type="number"
       value={formData.footer_height}
       onChange={handleInputChange}
       placeholder="Footer Height"
@@ -452,7 +452,7 @@ const handleCancel = () => {
   <div>
     <input
       name="content_height"
-      type="text"
+      type="number"
       value={formData.content_height}
       onChange={handleInputChange}
       placeholder="Body Height"
@@ -463,7 +463,7 @@ const handleCancel = () => {
   <div>
     <input
       name="content_width"
-      type="text"
+     type="number"
       value={formData.content_width}
       onChange={handleInputChange}
       placeholder="Body Width"
@@ -514,7 +514,7 @@ const handleCancel = () => {
       value={formData.enable_image_height}
       onChange={handleInputChange}
       placeholder="enable_image_height"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      className=" rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
     /> : ''}
   </div>
 </div>

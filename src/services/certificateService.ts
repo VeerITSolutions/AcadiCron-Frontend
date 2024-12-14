@@ -13,7 +13,7 @@ export const fetchCertificateData = async (page?: number, perPage?: number) => {
 
 export const createCertificate = async (data:any ): Promise<any> => {
   try {
-    const response = await apiClient.post("/certificate", { data});
+    const response = await apiClient.post("/certificate", data);
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
