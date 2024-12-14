@@ -17,6 +17,7 @@ import styles from "./User.module.css";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { useGlobalState } from "@/context/GlobalContext";
 
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
@@ -87,7 +88,7 @@ const FeesMaster = () => {
     setIsEditing(false);
     setEditCategoryId(null);
   };
-  
+
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name,
@@ -202,6 +203,10 @@ const FeesMaster = () => {
     viewColumns: false, // Disable view columns button
   };
 
+  const { someValue } = useGlobalState(); // Access the global state
+
+  
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
@@ -298,14 +303,14 @@ const FeesMaster = () => {
                     {isEditing ? "Update" : "Save"}
                   </button>
                   {isEditing && (
-                      <button
-                        type="button"
-                        onClick={handleCancel} // Call the cancel function
-                        className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                      >
-                        Cancel
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={handleCancel} // Call the cancel function
+                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    >
+                      Cancel
+                    </button>
+                  )}
                 </div>
               </div>
             </form>
