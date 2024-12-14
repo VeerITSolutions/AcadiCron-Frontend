@@ -96,7 +96,8 @@ thead.MuiTableHead-root {
 }
 
 .tss-1qtl85h-MUIDataTableBodyCell-root {
-  text-transform: capitalize !important;
+  text-transform: capitalize!important;
+  /* text-align: center !important; */
 }
 
 @media (min-width: 1024px) {

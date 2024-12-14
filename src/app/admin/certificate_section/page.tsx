@@ -490,52 +490,58 @@ const handleCancel = () => {
   </div>
 </div>
 
+
 <div>
   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
     Student Photo
   </label>
+</div>
+<div className="grid grid-cols-2 gap-4">
   <div>
+    {/* Toggle Switch */}
     <label
       htmlFor="toggle2"
-      className="flex cursor-pointer select-none items-center"
+      className="flex select-none items-center"
     >
       <div className="relative">
         <input
           id="toggle2"
           type="checkbox"
           className="sr-only"
-          checked={enabled} // Ensure the checkbox reflects the `enabled` state
+          checked={enabled}
           onChange={() => setEnabled(!enabled)}
         />
-
-        
+        {/* Toggle Background */}
         <div
-          className={`h-5 w-14 rounded-full shadow-inner transition ${
+          className={`h-5 w-14 rounded-full shadow-inner transition cursor-pointer ${
             enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
           }`}
         ></div>
+        {/* Toggle Handle */}
         <div
-          className={`absolute -top-1 left-0 h-7 w-7 transform rounded-full bg-white shadow-switch-1 transition ${
+          className={`absolute -top-1 left-0 h-7 w-7 transform rounded-full bg-white shadow-switch-1 transition cursor-pointer ${
             enabled ? "translate-x-full bg-primary dark:bg-white" : ""
           }`}
         ></div>
-
-
-
-
       </div>
     </label>
+  </div>
 
-    {enabled ? <input
-      name="enable_image_height"
-      type="number"
-      value={formData.enable_image_height}
-      onChange={handleInputChange}
-      placeholder="enable_image_height"
-      className=" rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-    /> : ''}
+  <div>
+    {enabled && (
+      <input
+        name="enable_image_height"
+        type="number"
+        value={formData.enable_image_height}
+        onChange={handleInputChange}
+        placeholder="Enter Image Height"
+        className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      />
+    )}
   </div>
 </div>
+
+
 
 
     <div>
