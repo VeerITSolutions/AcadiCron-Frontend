@@ -17,11 +17,14 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Edit, Delete, Visibility } from '@mui/icons-material';
+import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
 
 
 const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+
+  const [customFileds, setCustomFileds] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -66,6 +69,13 @@ const StudentCertificate = () => {
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
+
+      const resultcutomFields = await fetchGetCustomFiledsData(
+        currentPage + 1,
+        rowsPerPage,
+      );
+
+      setCustomFileds(resultcutomFields.data);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -153,7 +163,9 @@ const StudentCertificate = () => {
   }, [page, rowsPerPage]);
 
  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -372,9 +384,9 @@ const handleCancel = () => {
       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
         Body Text *
       </label>
-      <input
+      <textarea
         name="certificate_text"
-        type="text"
+        
         value={formData.certificate_text}
         onChange={handleInputChange}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -382,7 +394,9 @@ const handleCancel = () => {
     </div>
     <div>
 
-    <span className="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]                                    </span>
+    <span className="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]   {customFileds.map((field : any, index : any) => (
+  <span key={index}>[{field.name}]</span>
+))}                           </span>
     </div>
 
     <div>
