@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -387,7 +388,7 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Topic List"}
               data={data}

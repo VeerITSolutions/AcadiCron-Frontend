@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -116,6 +117,7 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -149,13 +151,15 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        setSelectedSessionId(localStorage.getItem("selectedSessionId"));
-      }
-    }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedSessionId(localStorage.getItem("selectedSessionId"));
+    }
+  }, []);
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
@@ -288,7 +292,7 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Staff List"}
           data={data}

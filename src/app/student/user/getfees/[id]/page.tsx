@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import {
   fetchLeaveData,
   createLeave,
@@ -53,6 +54,7 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

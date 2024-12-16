@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -33,7 +34,6 @@ const FeesMaster = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
 
@@ -72,7 +72,7 @@ const FeesMaster = () => {
       );
 
       setFessGroupData(result.data);
-      console.log("datafeesgroupdata" ,datafeesgroupdata)
+      console.log("datafeesgroupdata", datafeesgroupdata);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -197,9 +197,9 @@ const FeesMaster = () => {
           formData.amount,
           formData.fine_type,
           formData.percentage,
-          formData.fine_amount
+          formData.fine_amount,
         );
-        
+
         if (result.success) {
           toast.success("Student House saved successfully");
         } else {
@@ -294,7 +294,7 @@ const FeesMaster = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {datafeesgroupdata.map((group :any) => (
+                    {datafeesgroupdata.map((group: any) => (
                       <option key={group.id} value={group.id}>
                         {group.fees_group_name}
                       </option>
@@ -313,7 +313,7 @@ const FeesMaster = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {datafesstypedata.map((group :any) => (
+                    {datafesstypedata.map((group: any) => (
                       <option key={group.id} value={group.id}>
                         {group.type}
                       </option>
@@ -353,16 +353,19 @@ const FeesMaster = () => {
                   </label>
                   <div className="flex gap-5">
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="none" value="none" />{" "}
-                      None
+                      <input type="radio" name="none" value="none" /> None
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="percentage" value="percentage" />{" "}
+                      <input
+                        type="radio"
+                        name="percentage"
+                        value="percentage"
+                      />{" "}
                       Percentage
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="fix_amount" value="fix" />{" "}
-                      Fix Amount
+                      <input type="radio" name="fix_amount" value="fix" /> Fix
+                      Amount
                     </label>
                   </div>
                 </div>
@@ -401,14 +404,14 @@ const FeesMaster = () => {
                     {isEditing ? "Update" : "Save"}
                   </button>
                   {isEditing && (
-                <button
-                  type="button"
-                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </button>
-              )}
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                  )}
                 </div>
               </div>
             </form>
@@ -416,7 +419,7 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Add Fees Master : 2024-25"}
               data={data}

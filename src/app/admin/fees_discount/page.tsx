@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 
 import {
   createFeesDiscount,
@@ -311,21 +312,21 @@ const FeesMaster = () => {
                   {isEditing ? "Update" : "Save"}
                 </button>
                 {isEditing && (
-                    <button
-                      type="button"
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                      onClick={handleCancel}
-                    >
-                      Cancel
-                    </button>
-                  )}
-                              </div>
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         <div className="">
-          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Fees Discount List"}
               data={data}

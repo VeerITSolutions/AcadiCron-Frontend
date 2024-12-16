@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -43,6 +44,7 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -58,9 +60,6 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-
-
- 
   const formatStudentCategoryData = (students: any[]) => {
     if (!Array.isArray(students)) return []; // Fallback to an empty array if not an array
 
@@ -69,16 +68,15 @@ const StudentDetails = () => {
       student.type || "N/A",
       student.date || "N/A",
       student.class ? student.content_for_role : "All",
-    
 
       <div key={student.id} className="flex items-center space-x-2">
-         <IconButton
+        <IconButton
           onClick={() =>
             handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
           }
           aria-label="download"
         >
-           {student.file ? <FileDownload /> : ""}
+          {student.file ? <FileDownload /> : ""}
         </IconButton>
         <IconButton
           onClick={() => handleDelete(student.id)}
@@ -107,9 +105,13 @@ const StudentDetails = () => {
     }
   };
 
-    const fetchData = async (currentPage: number, rowsPerPage: number) => {
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchContentData(currentPage + 1, rowsPerPage, "studymaterial");
+      const result = await fetchContentData(
+        currentPage + 1,
+        rowsPerPage,
+        "studymaterial",
+      );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -168,7 +170,7 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Study Material List"}
           data={data}

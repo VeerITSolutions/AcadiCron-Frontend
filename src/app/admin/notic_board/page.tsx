@@ -21,6 +21,7 @@ import IconButton from "@mui/material/IconButton";
 const StudentDetails = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);

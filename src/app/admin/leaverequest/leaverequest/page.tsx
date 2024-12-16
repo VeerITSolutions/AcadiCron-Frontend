@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -57,6 +58,7 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
 
@@ -186,7 +188,7 @@ const StudentDetails = () => {
       >
         {student.status || "N/A"}
       </span>,
-     <div key={student.id} className="flex">
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() => handleEdit(student.id, student)}
           aria-label="edit"
@@ -468,7 +470,7 @@ const StudentDetails = () => {
             {editing ? "Edit Leave" : "Add Leave Request"}
           </button>
         </div>
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Leaves"}
             data={data}

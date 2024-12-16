@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -54,6 +55,7 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -67,14 +69,14 @@ const StudentDetails = () => {
     undefined,
   );
   const [selectedRoleLeave, setSelectedRoleLeave] = useState<
-  string | undefined
->(undefined);
-const [selectedLeaveType, setSelectedLeaveselectedLeaveType] = useState<
-  string | undefined
->(undefined);
-const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
-  undefined,
-);
+    string | undefined
+  >(undefined);
+  const [selectedLeaveType, setSelectedLeaveselectedLeaveType] = useState<
+    string | undefined
+  >(undefined);
+  const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
+    undefined,
+  );
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
@@ -187,7 +189,6 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     setOpen(true); // Open the modal
   };
 
-
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.name || "N/A",
@@ -196,11 +197,11 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
       student.leave_days || "N/A",
       formatDate(student.date) || "N/A",
       <span
-      key={student.id}
-      style={{ color: getStatusColor(student.status), fontWeight: "bold" }}
-    >
-      {student.status || "N/A"}
-    </span>,
+        key={student.id}
+        style={{ color: getStatusColor(student.status), fontWeight: "bold" }}
+      >
+        {student.status || "N/A"}
+      </span>,
       <div key={student.id} className="flex">
         <IconButton
           onClick={() => handleEdit(student.id, student)}
@@ -324,8 +325,6 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     }
   };
 
-
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -392,7 +391,7 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
             {editing ? "Edit Leave" : "Apply Leave"}
           </button>
         </div>
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Leaves"}
             data={data}
@@ -435,7 +434,7 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
                     Apply Date <span className="required">*</span>
                   </label>
                   <div className="relative">
-                  <Flatpickr
+                    <Flatpickr
                       value={formData.date}
                       onChange={(selectedDates) =>
                         handleDateChange(selectedDates, "date")
@@ -467,7 +466,7 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
                 {/* Available Leave Type */}
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Available Leave <span className="required">*</span>{" "}
+                    Available Leave <span className="required">*</span>{" "}
                   </label>
                   <select
                     value={selectedLeaveType || ""}
@@ -489,7 +488,7 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
                     Leave From Date <span className="required">*</span>
                   </label>
                   <div className="relative">
-                  <Flatpickr
+                    <Flatpickr
                       value={formData.leave_from}
                       onChange={(selectedDates) =>
                         handleDateChange(selectedDates, "leave_from")
@@ -525,15 +524,14 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
                   </label>
                   <div className="relative">
                     <Flatpickr
-                    
-                     value={formData.leave_to}
-                     onChange={(selectedDates) =>
-                       handleDateChange(selectedDates, "leave_to")
-                     }
-                     options={{
-                       dateFormat: "m/d/Y",
-                     }}
-                     name="leave_to"
+                      value={formData.leave_to}
+                      onChange={(selectedDates) =>
+                        handleDateChange(selectedDates, "leave_to")
+                      }
+                      options={{
+                        dateFormat: "m/d/Y",
+                      }}
+                      name="leave_to"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="mm/dd/yyyy"
                     />
@@ -584,7 +582,7 @@ const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
 
                 {/* Send Message Button */}
                 <div className="col-span-full">
-                <button
+                  <button
                     onClick={handleSave}
                     className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >

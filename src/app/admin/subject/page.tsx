@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import {
   fetchSubjectData,
   createSubject,
@@ -17,7 +18,6 @@ import styles from "./User.module.css";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import { useGlobalState } from "@/context/GlobalContext";
 
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);

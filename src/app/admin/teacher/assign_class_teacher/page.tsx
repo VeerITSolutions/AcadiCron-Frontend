@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 
 import {
   createFeesMaster,
@@ -307,8 +308,6 @@ const FeesMaster = () => {
     viewColumns: false, // Disable view columns button
   };
 
-
-
   const handleCancel = () => {
     setIsEditing(false);
     setEditCategoryId(null);
@@ -323,7 +322,6 @@ const FeesMaster = () => {
       fine_amount: "",
     });
   };
-
 
   return (
     <DefaultLayout>
@@ -404,22 +402,22 @@ const FeesMaster = () => {
                   {isEditing ? "Update" : "Save"}
                 </button>
 
-                      {isEditing && (
-                      <button
-                      type="button"
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                      onClick={handleCancel}
-                      >
-                      Cancel
-                      </button>
-                      )}
+                {isEditing && (
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col gap-9">
-          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Class Teacher List"}
               data={data}

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import {
   fetchLeaveData,
   createLeave,
@@ -53,6 +54,7 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,7 +80,6 @@ const StudentDetails = () => {
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
 
   const handleDelete = async (id: number) => {
     try {
@@ -113,7 +114,7 @@ const StudentDetails = () => {
       student.leave_days || "N/A",
       student.date || "N/A",
       student.status || "N/A",
-    <div key={student.id} className="flex">
+      <div key={student.id} className="flex">
         <IconButton
           onClick={() => handleEdit(student.id, student)}
           aria-label="edit"

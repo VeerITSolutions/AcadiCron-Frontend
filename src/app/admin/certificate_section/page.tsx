@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import {
   fetchCertificateData,
   createCertificate,
@@ -16,9 +17,8 @@ import SwitcherTwo from "@/components/Switchers/SwitcherTwo";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import { Edit, Delete, Visibility } from '@mui/icons-material';
+import { Edit, Delete, Visibility } from "@mui/icons-material";
 import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
-
 
 const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +34,6 @@ const StudentCertificate = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [enabled, setEnabled] = useState(false);
-  
 
   const [colorMode, setColorMode] = useColorMode();
 
@@ -48,24 +47,19 @@ const StudentCertificate = () => {
     right_footer: "",
     center_footer: "",
     background_image: "",
-    created_for: "", 
-    status: "", 
+    created_for: "",
+    status: "",
     header_height: "",
     content_height: "",
     footer_height: "",
     content_width: "",
-    enable_student_image:  enabled,
-    enable_image_height: ""
-});
-
-
+    enable_student_image: enabled,
+    enable_image_height: "",
+  });
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchCertificateData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchCertificateData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -82,7 +76,7 @@ const StudentCertificate = () => {
     }
   };
 
-   const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number) => {
     try {
       await deleteCertificateData(id);
       toast.success("Delete successful");
@@ -92,13 +86,10 @@ const StudentCertificate = () => {
     }
   };
 
-  const handleEdit = (
-    id: number,
-    data: any,
-  ) => {
+  const handleEdit = (id: number, data: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-  
+
     setFormData({
       certificate_name: data.certificate_name,
       certificate_text: data.certificate_text,
@@ -109,17 +100,16 @@ const StudentCertificate = () => {
       right_footer: data.right_footer,
       center_footer: data.center_footer,
       background_image: data.background_image,
-      created_for: data.created_for, 
-      status: data.status, 
-      header_height:data.header_height,
-      content_height:data.content_height,
-      footer_height:data.footer_height,
-      content_width:data.content_width,
+      created_for: data.created_for,
+      status: data.status,
+      header_height: data.header_height,
+      content_height: data.content_height,
+      footer_height: data.footer_height,
+      content_width: data.content_width,
       enable_student_image: data.enable_student_image,
-      enable_image_height: data.enable_image_height
+      enable_image_height: data.enable_image_height,
     });
   };
-  
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
@@ -134,27 +124,23 @@ const StudentCertificate = () => {
         "N/A"
       ),
       <div key={student.id} className="flex items-center space-x-2">
-          <IconButton aria-label="Show">
+        <IconButton aria-label="Show">
           <Visibility />
         </IconButton>
-        
-  <IconButton
-    onClick={() => handleEdit(
-      student.id, 
-      student
-    )}
-    aria-label="edit"
-  >
-    <Edit />
-  </IconButton>
-  <IconButton
-    onClick={() => handleDelete(student.id)}
-    aria-label="delete"
-  >
-    <Delete />
-  </IconButton>
-</div>
-,
+
+        <IconButton
+          onClick={() => handleEdit(student.id, student)}
+          aria-label="edit"
+        >
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
     ]);
   };
 
@@ -162,9 +148,8 @@ const StudentCertificate = () => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
- 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -173,46 +158,37 @@ const StudentCertificate = () => {
     }));
   };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, files } = e.target;
-      const file = files ? files[0] : null;
-  
-      if (file && name) {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: file, // Dynamically set the file in formData using the input's name attribute
-        }));
-      }
-    };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
 
-   const handleSubmit = async () => {
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+  const handleSubmit = async () => {
     try {
       let result;
 
       const data = {
         ...formData,
-        
       };
 
       // Check if we are editing an existing category
       if (isEditing && editCategoryId !== null) {
-        result = await editCertificateData(
-          editCategoryId,
-          data,
-
-        );
+        result = await editCertificateData(editCategoryId, data);
       } else {
-        result = await createCertificate(
-          data
-        );
+        result = await createCertificate(data);
       }
 
       // Handle the API response
       if (result.success) {
         toast.success(
-          isEditing
-            ? "Updated successfully"
-            : "Saved successfully",
+          isEditing ? "Updated successfully" : "Saved successfully",
         );
         // Reset form data
         setFormData({
@@ -225,14 +201,14 @@ const StudentCertificate = () => {
           right_footer: "",
           center_footer: "",
           background_image: "",
-          created_for: "", 
-          status: "", 
+          created_for: "",
+          status: "",
           header_height: "",
           content_height: "",
           footer_height: "",
           content_width: "",
           enable_student_image: enabled,
-          enable_image_height: ""
+          enable_image_height: "",
         });
         setIsEditing(false);
         setEditCategoryId(null);
@@ -264,7 +240,6 @@ const StudentCertificate = () => {
     }
   };
 
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -292,300 +267,304 @@ const StudentCertificate = () => {
     onChangeRowsPerPage: handleRowsPerPageChange,
   };
 
-const handleCancel = () => {
-  setFormData({
-    certificate_name: "",
-    certificate_text: "",
-    left_header: "",
-    center_header: "",
-    right_header: "",
-    left_footer: "",
-    right_footer: "",
-    center_footer: "",
-    background_image: "",
-    created_for: "", 
-    status: "", 
-    header_height: "",
-    content_height: "",
-    footer_height: "",
-    content_width: "",
-    enable_student_image: enabled,
-    enable_image_height: ""
-  });
-  setIsEditing(false);
-  setEditCategoryId(null);
-};
-
+  const handleCancel = () => {
+    setFormData({
+      certificate_name: "",
+      certificate_text: "",
+      left_header: "",
+      center_header: "",
+      right_header: "",
+      left_footer: "",
+      right_footer: "",
+      center_footer: "",
+      background_image: "",
+      created_for: "",
+      status: "",
+      header_height: "",
+      content_height: "",
+      footer_height: "",
+      content_width: "",
+      enable_student_image: enabled,
+      enable_image_height: "",
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
 
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-    <h3 className="font-medium text-black dark:text-white">
-      {isEditing ? "Edit Student Certificate" : "Add Student Certificate"}
-    </h3>
-  </div>
-  <div className="flex flex-col gap-5.5 p-6.5">
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Certificate Name
-      </label>
-      <input
-        name="certificate_name"
-        type="text"
-        value={formData.certificate_name}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                {isEditing
+                  ? "Edit Student Certificate"
+                  : "Add Student Certificate"}
+              </h3>
+            </div>
+            <div className="flex flex-col gap-5.5 p-6.5">
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Certificate Name
+                </label>
+                <input
+                  name="certificate_name"
+                  type="text"
+                  value={formData.certificate_name}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Header Left Text
-      </label>
-      <input
-        name="left_header"
-        type="text"
-        value={formData.left_header}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Header Left Text
+                </label>
+                <input
+                  name="left_header"
+                  type="text"
+                  value={formData.left_header}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Header Center Text
-      </label>
-      <input
-        name="center_header"
-        type="text"
-        value={formData.center_header}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Header Center Text
+                </label>
+                <input
+                  name="center_header"
+                  type="text"
+                  value={formData.center_header}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Header Right Text
-      </label>
-      <input
-        name="right_header"
-        type="text"
-        value={formData.right_header}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Header Right Text
+                </label>
+                <input
+                  name="right_header"
+                  type="text"
+                  value={formData.right_header}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Body Text *
-      </label>
-      <textarea
-        name="certificate_text"
-        
-        value={formData.certificate_text}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
-    <div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Body Text *
+                </label>
+                <textarea
+                  name="certificate_text"
+                  value={formData.certificate_text}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div>
+                <span className="text-primary">
+                  [name] [dob] [present_address] [guardian] [created_at]
+                  [admission_no] [roll_no] [class] [section] [gender]
+                  [admission_date] [category] [cast] [father_name] [mother_name]
+                  [religion] [email] [phone]{" "}
+                  {customFileds.map((field: any, index: any) => (
+                    <span key={index}>[{field.name}]</span>
+                  ))}{" "}
+                </span>
+              </div>
 
-    <span className="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]   {customFileds.map((field : any, index : any) => (
-  <span key={index}>[{field.name}]</span>
-))}                           </span>
-    </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Footer Left Text
+                </label>
+                <input
+                  name="left_footer"
+                  type="text"
+                  value={formData.left_footer}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Footer Left Text
-      </label>
-      <input
-        name="left_footer"
-        type="text"
-        value={formData.left_footer}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Footer Center Text
+                </label>
+                <input
+                  name="center_footer"
+                  type="text"
+                  value={formData.center_footer}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Footer Center Text
-      </label>
-      <input
-        name="center_footer"
-        type="text"
-        value={formData.center_footer}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Footer Right Text
+                </label>
+                <input
+                  name="right_footer"
+                  type="text"
+                  value={formData.right_footer}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Footer Right Text
-      </label>
-      <input
-        name="right_footer"
-        type="text"
-        value={formData.right_footer}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+              <div>
+                <label className="block text-sm font-medium text-black dark:text-white">
+                  Certificate Design
+                </label>
+              </div>
 
-    <div>
-  <label className="block text-sm font-medium text-black dark:text-white">
-    Certificate Design
-  </label>
-</div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <input
+                    name="header_height"
+                    type="number"
+                    value={formData.header_height}
+                    onChange={handleInputChange}
+                    placeholder="Header Height"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-<div className="grid grid-cols-2 gap-4">
-  <div>
-    <input
-      name="header_height"
-      type="number"
-      value={formData.header_height}
-      onChange={handleInputChange}
-      placeholder="Header Height"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-    />
-  </div>
+                <div>
+                  <input
+                    name="footer_height"
+                    type="number"
+                    value={formData.footer_height}
+                    onChange={handleInputChange}
+                    placeholder="Footer Height"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-  <div>
-    <input
-      name="footer_height"
-      type="number"
-      value={formData.footer_height}
-      onChange={handleInputChange}
-      placeholder="Footer Height"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-    />
-  </div>
+                <div>
+                  <input
+                    name="content_height"
+                    type="number"
+                    value={formData.content_height}
+                    onChange={handleInputChange}
+                    placeholder="Body Height"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-  <div>
-    <input
-      name="content_height"
-      type="number"
-      value={formData.content_height}
-      onChange={handleInputChange}
-      placeholder="Body Height"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-    />
-  </div>
+                <div>
+                  <input
+                    name="content_width"
+                    type="number"
+                    value={formData.content_width}
+                    onChange={handleInputChange}
+                    placeholder="Body Width"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+              </div>
 
-  <div>
-    <input
-      name="content_width"
-     type="number"
-      value={formData.content_width}
-      onChange={handleInputChange}
-      placeholder="Body Width"
-      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-    />
-  </div>
-</div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Student Photo
+                </label>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  {/* Toggle Switch */}
+                  <label
+                    htmlFor="toggle2"
+                    className="flex select-none items-center"
+                  >
+                    <div className="relative">
+                      <input
+                        id="toggle2"
+                        type="checkbox"
+                        className="sr-only"
+                        checked={enabled}
+                        onChange={() => setEnabled(!enabled)}
+                      />
+                      {/* Toggle Background */}
+                      <div
+                        className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+                          enabled
+                            ? "bg-green-500"
+                            : "bg-meta-9 dark:bg-[#5A616B]"
+                        }`}
+                      ></div>
+                      {/* Toggle Handle */}
+                      <div
+                        className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+                          enabled
+                            ? "translate-x-full bg-primary dark:bg-white"
+                            : ""
+                        }`}
+                      ></div>
+                    </div>
+                  </label>
+                </div>
 
+                <div>
+                  {enabled && (
+                    <input
+                      name="enable_image_height"
+                      type="number"
+                      value={formData.enable_image_height}
+                      onChange={handleInputChange}
+                      placeholder="Enter Image Height"
+                      className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  )}
+                </div>
+              </div>
 
-<div>
-  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-    Student Photo
-  </label>
-</div>
-<div className="grid grid-cols-2 gap-4">
-  <div>
-    {/* Toggle Switch */}
-    <label
-      htmlFor="toggle2"
-      className="flex select-none items-center"
-    >
-      <div className="relative">
-        <input
-          id="toggle2"
-          type="checkbox"
-          className="sr-only"
-          checked={enabled}
-          onChange={() => setEnabled(!enabled)}
-        />
-        {/* Toggle Background */}
-        <div
-          className={`h-5 w-14 rounded-full shadow-inner transition cursor-pointer ${
-            enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
-          }`}
-        ></div>
-        {/* Toggle Handle */}
-        <div
-          className={`absolute -top-1 left-0 h-7 w-7 transform rounded-full bg-white shadow-switch-1 transition cursor-pointer ${
-            enabled ? "translate-x-full bg-primary dark:bg-white" : ""
-          }`}
-        ></div>
-      </div>
-    </label>
-  </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Background Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  id="file"
+                  name="background_image"
+                  className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                />
+              </div>
 
-  <div>
-    {enabled && (
-      <input
-        name="enable_image_height"
-        type="number"
-        value={formData.enable_image_height}
-        onChange={handleInputChange}
-        placeholder="Enter Image Height"
-        className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    )}
-  </div>
-</div>
-
-
-
-
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Background Image
-      </label>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        id="file"
-        name="background_image"
-        className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary dark:text-white"
-      />
-    </div>
-    
-    <div className="flex gap-2">
-      <button
-        type="submit"
-        className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-        onClick={(e) => {
-          e.preventDefault(); // Prevent default form submission
-          handleSubmit();
-        }}
-      >
-        {isEditing ? "Update" : "Save"}
-      </button>
-      {isEditing && (
-    <button
-      type="button"
-      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-      onClick={handleCancel}
-    >
-      Cancel
-    </button>
-  )}
-    </div>
-  </div>
-</div>
-
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default form submission
+                    handleSubmit();
+                  }}
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+                {isEditing && (
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col gap-9">
-          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Student Certificate List"}
               data={data}

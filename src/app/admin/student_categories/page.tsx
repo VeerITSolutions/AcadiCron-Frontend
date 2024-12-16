@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 import { createCategory } from "@/services/categoryService";
 import {
@@ -33,7 +34,10 @@ const StudentCategories = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentCategoryData(currentPage + 1, rowsPerPage);
+      const result = await fetchStudentCategoryData(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -194,7 +198,7 @@ const StudentCategories = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Category List"}
               data={data}

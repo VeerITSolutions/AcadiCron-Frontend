@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 
 import {
   createFeesMaster,
@@ -223,14 +224,14 @@ const FeesMaster = () => {
                     {isEditing ? "Update" : "Save"}
                   </button>
                   {isEditing && ( // Only show cancel button while editing
-                  <button
-                    type="button"
-                    onClick={handleCancel} // Call the cancel function
-                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  >
-                    Cancel
-                  </button>
-                )}
+                    <button
+                      type="button"
+                      onClick={handleCancel} // Call the cancel function
+                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    >
+                      Cancel
+                    </button>
+                  )}
                 </div>
               </div>
             </form>
@@ -238,7 +239,7 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Section List"}
               data={data}

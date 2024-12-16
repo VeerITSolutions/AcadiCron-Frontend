@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -109,7 +110,6 @@ const columns = [
       }),
     },
   },
- 
 ];
 
 const options = {
@@ -129,6 +129,7 @@ const options = {
 const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -152,7 +153,7 @@ const StudentDetails = () => {
       student.class_name || "N/A",
       student.category_name || "N/A",
       student.mobileno,
-      <div key={student.id} className="flex justify-center items-center">
+      <div key={student.id} className="flex items-center justify-center">
         <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
           <Visibility />
         </IconButton>
@@ -333,7 +334,7 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Student Details"}
           data={data}

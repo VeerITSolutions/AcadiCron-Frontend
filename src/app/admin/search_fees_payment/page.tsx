@@ -5,6 +5,7 @@ import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -14,6 +15,7 @@ const SearchFeesPayment = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -85,7 +87,7 @@ const SearchFeesPayment = () => {
             </label>
             <input
               name="firstName"
-              className="border-stroke dark:border-strokedark text-gray-900 mt-2 w-full rounded-md border bg-transparent px-4 py-3 text-sm dark:text-white outline-none transition focus:border-primary active:border-primary"
+              className="text-gray-900 mt-2 w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white"
               type="text"
               value={formData.firstName}
               onChange={handleInputChange}
@@ -106,20 +108,20 @@ const SearchFeesPayment = () => {
 
         {/* MUI Data Table */}
         <div className="mt-12">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Payment Id Detail"}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Payment Id Detail"}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }}
+            />
           </ThemeProvider>
         </div>
       </div>

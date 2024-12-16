@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStudentDisabledData } from "@/services/studentDisabledService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -57,6 +58,7 @@ const options = {
 const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -256,7 +258,7 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
-      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Student Details"}
           data={data}

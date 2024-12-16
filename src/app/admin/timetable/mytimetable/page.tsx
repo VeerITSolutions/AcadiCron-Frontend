@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchtimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
 import { toast } from "react-toastify";
@@ -34,6 +35,7 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<any[]>([]);
+  const { themType, setThemType } = useGlobalState(); // A
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [colorMode, setColorMode] = useColorMode();
@@ -126,7 +128,7 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={""}
             data={data}

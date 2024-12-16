@@ -11,6 +11,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 const StudentDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -67,7 +68,7 @@ const StudentDetails = () => {
               <div className="field">
                 <table className="divide-gray-200 min-w-full divide-y">
                   <thead className="bg-gray-50">
-                  <tr>
+                    <tr>
                       <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         Action
                       </th>
@@ -109,7 +110,7 @@ const StudentDetails = () => {
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">
-                        <input
+                          <input
                             type="number"
                             name="days2"
                             defaultValue={section.day}

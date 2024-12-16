@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchtimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
 import { toast } from "react-toastify";
@@ -220,13 +221,13 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
         <div className="flex items-center justify-between border-b border-[#E0E0E0] bg-[#F8F8F8] px-4 pb-5 pt-5 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-        <div>
-              <h6 className="text-[1.25rem] leading-[1.75rem] font-semibold">
-                Weekly Timetable
-              </h6>
-            </div>
+          <div>
+            <h6 className="text-[1.25rem] font-semibold leading-[1.75rem]">
+              Weekly Timetable
+            </h6>
+          </div>
           <div>
             <a
               href="/admin/timetable/create"

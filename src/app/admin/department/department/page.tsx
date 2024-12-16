@@ -3,7 +3,13 @@
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
-import { fetchdeparmentData, createdeparment, deletedeparment, editdeparment } from "@/services/deparmentService";
+import { useGlobalState } from "@/context/GlobalContext";
+import {
+  fetchdeparmentData,
+  createdeparment,
+  deletedeparment,
+  editdeparment,
+} from "@/services/deparmentService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -27,8 +33,6 @@ const FeesMaster = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-
-
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -96,7 +100,10 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editdeparment(editCategoryId, formData.department_name);
+        const result = await editdeparment(
+          editCategoryId,
+          formData.department_name,
+        );
         if (result.success) {
           toast.success("Department updated successfully");
         } else {
@@ -160,58 +167,57 @@ const FeesMaster = () => {
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-  <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-    <h3 className="font-medium text-black dark:text-white">
-    {isEditing ? "Edit Department" : "Add Department"}
-    </h3>
-  </div>
-  <div className="flex flex-col gap-5.5 p-6.5">
-    <div>
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Name<span className="required">*</span>
-      </label>
-      <input
-        name="department_name"
-        type="text"
-        value={formData.department_name}
-        onChange={handleInputChange}
-        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-      />
-    </div>
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                {isEditing ? "Edit Department" : "Add Department"}
+              </h3>
+            </div>
+            <div className="flex flex-col gap-5.5 p-6.5">
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Name<span className="required">*</span>
+                </label>
+                <input
+                  name="department_name"
+                  type="text"
+                  value={formData.department_name}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
 
-    <div className="flex gap-2">
-      <button
-        type="button"
-        className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-        onClick={handleSubmit}
-      >
-        {isEditing ? "Update" : "Save"}
-      </button>
-      {isEditing && (
-                    <button
-                      type="button"
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                      onClick={handleCancel}
-                    >
-                      Cancel
-                    </button>
-                  )}
-    </div>
-  </div>
-</div>
-
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={handleSubmit}
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+                {isEditing && (
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col gap-9">
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Department List"}
-            data={data}
-            columns={columns}
-            options={options}
-          />
-            </ThemeProvider>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Department List"}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </ThemeProvider>
         </div>
       </div>
     </DefaultLayout>

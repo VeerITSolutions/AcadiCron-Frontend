@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStudentData } from "@/services/studentService";
 import { fetchStudentFeesSeesionGroupData } from "@/services/studentFeesSessionGroupService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
@@ -57,6 +58,7 @@ const options = {
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [feessessiongroupdata, setfeessessiongroupdataData] = useState<
     Array<Array<string>>
   >([]);
@@ -277,7 +279,7 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
-      <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
         <MUIDataTable
           title={"Student Due Fees"}
           data={data}

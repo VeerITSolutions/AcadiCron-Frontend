@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
+import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStaffData } from "@/services/staffService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -53,6 +54,7 @@ const options = {
 const StudentDetails = () => {
   const [activeTab, setActiveTab] = useState("list"); // "list" or "card"
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const { themType, setThemType } = useGlobalState(); //
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
 
   const [loading, setLoading] = useState(true);
@@ -226,7 +228,7 @@ const StudentDetails = () => {
           </button>
         </div>
 
-        <ThemeProvider theme={colorMode === "dark" ? darkTheme : lightTheme}>
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
             title={"Staff List"}
             data={data}
