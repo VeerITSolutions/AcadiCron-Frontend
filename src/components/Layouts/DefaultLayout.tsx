@@ -17,19 +17,19 @@ export default function DefaultLayout({
       <div className="flex">
         {/* <!-- ===== Sidebar Start ===== --> */}
         <div className="sidebarOpen">
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         </div>
         {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}
-        <div className="relative flex flex-1 flex-col lg:ml-72.5 maindiv">
+        <div className="maindiv relative flex w-full flex-1 flex-col lg:ml-72.5">
           {/* <!-- ===== Header Start ===== --> */}
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10 dark:bg-boxdark dark:drop-shadow-none">
+            <div className="mx-auto max-w-screen-2xl p-4 dark:bg-boxdark dark:drop-shadow-none md:p-6 2xl:p-10">
               {children}
             </div>
           </main>

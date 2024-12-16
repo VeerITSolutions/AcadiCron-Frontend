@@ -46,7 +46,6 @@ const columns = [
   "Action",
 ];
 
-
 const options = {
   filterType: "checkbox",
   serverSide: true,
