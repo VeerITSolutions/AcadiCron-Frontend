@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
@@ -22,6 +21,8 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+
+  const { themType, setThemType } = useGlobalState();
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -203,9 +204,6 @@ const FeesMaster = () => {
     filter: false, // Disable filter,
     viewColumns: false, // Disable view columns button
   };
-
-  const { someValue } = useGlobalState(); // Access the global state
-  const { themType, setThemType } = useGlobalState(); // A
 
   return (
     <DefaultLayout>

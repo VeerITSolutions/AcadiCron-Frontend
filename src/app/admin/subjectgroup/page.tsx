@@ -47,6 +47,7 @@ const FeesMaster = () => {
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
+  const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
     name: "",

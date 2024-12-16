@@ -55,6 +55,7 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
+  const { themType, setThemType } = useGlobalState(); // A
 
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);

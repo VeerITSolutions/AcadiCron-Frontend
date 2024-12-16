@@ -56,6 +56,7 @@ const StudentDetails = () => {
     undefined,
   );
   const [colorMode, setColorMode] = useColorMode();
+  const { themType, setThemType } = useGlobalState(); // A
 
   // Format the data for the week-wise view
   const formatTimetableData = (timetableData: any) => {

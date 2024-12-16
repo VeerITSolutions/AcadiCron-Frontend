@@ -50,6 +50,8 @@ const FeesMaster = () => {
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
 
+  const { themType, setThemType } = useGlobalState(); // A
+
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     setLoading(true);
     try {
