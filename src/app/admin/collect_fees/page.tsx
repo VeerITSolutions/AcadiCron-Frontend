@@ -36,113 +36,26 @@ import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 
 const columns = [
-  {
-    name: "Class",
-    label: "Class",
-    options: {
-      setCellHeaderProps: () => ({
-        className: "header-center", // Add custom class to the header
-      }),
-      setCellProps: () => ({
-        className: "cell-center", // Add custom class to the body cells
-      }),
-    },
-  },
-  {
-    name: "Section",
-    label: "Section",
-    options: {
-      setCellHeaderProps: () => ({
-        className: "header-center", // Add custom class to the header
-      }),
-      setCellProps: () => ({
-        className: "cell-center", // Add custom class to the body cells
-      }),
-    },
-  },
-  {
-    name: "Admission No",
-    label: "Admission No",
-    options: {
-      setCellHeaderProps: () => ({
-        className: "header-center", // Add custom class to the header
-      }),
-      setCellProps: () => ({
-        className: "cell-center", // Add custom class to the body cells
-      }),
-    },
-  },
-  {
-    name: "Student Name",
-    label: "Student Name",
-    options: {
-      setCellHeaderProps: () => ({
-        className: "header-center", // Add custom class to the header
-      }),
-      setCellProps: () => ({
-        className: "cell-center", // Add custom class to the body cells
-      }),
-    },
-  },
-  {
-    name: "Father Name",
-    label: "Father Name",
-    options: {
-      setCellHeaderProps: () => ({
-        className: "header-center", // Add custom class to the header
-      }),
-      setCellProps: () => ({
-        className: "cell-center", // Add custom class to the body cells
-      }),
-    },
-  },
-  {
-    name: "Date Of Birth",
-    label: "Date Of Birth",
-    options: {
-      setCellHeaderProps: () => ({
-        className: "header-center", // Add custom class to the header
-      }),
-      setCellProps: () => ({
-        className: "cell-center", // Add custom class to the body cells
-      }),
-    },
-  },
-  {
-    name: "Phone",
-    label: "Phone",
-    options: {
-      setCellHeaderProps: () => ({
-        className: "header-center", // Add custom class to the header
-      }),
-      setCellProps: () => ({
-        className: "cell-center", // Add custom class to the body cells
-      }),
-    },
-  },
-  {
-    name: "Action",
-    label: "Action",
-    options: {
-      setCellHeaderProps: () => ({
-        className: "header-center", // Add custom class to the header
-      }),
-      setCellProps: () => ({
-        className: "cell-center", // Add custom class to the body cells
-      }),
-    },
-  },
+  "Class",
+  "Section",
+  "Admission No",
+  "Student Name",
+  "Father Name",
+  "Date Of Birth",
+  "Phone",
+  "Action",
 ];
+
 
 
 const options = {
   filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
-  selectableRows: "none", // Disable row selection
+  selectableRows: "none", 
 
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
+  filter: false, 
+  viewColumns: false, 
 };
 
 
@@ -181,7 +94,7 @@ const StudentDetails = () => {
         <button
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
-          className="flex items-center gap-2 rounded bg-primary px-2 py-2 font-medium text-white hover:bg-opacity-80"
+          className="flex items-center gap-2 rounded bg-primary px-2 py-2 font-medium text-white hover:bg-opacity-80 flex-nowrap whitespace-nowrap"
         >
           Collect Fees
         </button>
