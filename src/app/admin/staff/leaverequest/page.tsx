@@ -47,11 +47,12 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
-  responsive: "standard",
+  responsive: "vertical", // Stacks columns vertically for mobile devices
   selectableRows: "none",
   filter: false,
   viewColumns: false,
 };
+
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
