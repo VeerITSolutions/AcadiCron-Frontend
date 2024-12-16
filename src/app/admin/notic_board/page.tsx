@@ -18,6 +18,7 @@ import {
   AttachMoney,
 } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
+import { useGlobalState } from "@/context/GlobalContext";
 const StudentDetails = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [data, setData] = useState<Array<Array<string>>>([]);

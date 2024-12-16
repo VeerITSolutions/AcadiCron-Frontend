@@ -27,7 +27,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
-    // Ensure the theme in localStorage matches the state
+    // Sync localStorage with the current theme state
     localStorage.setItem("color-theme", themType);
   }, [themType]);
   return (
