@@ -47,8 +47,6 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       setSavedSession(savedSession);
       // Use this value in your logic
     }
-
-    fetchClassesAndSections();
   }, []);
 
   const fetchClassesAndSections = async () => {
