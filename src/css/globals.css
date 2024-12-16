@@ -118,3 +118,15 @@ span.required {
   text-align: center !important;
 }
  */
+/* Pranay Custom css start  */
+
+.tss-1fbujeu-MUIDataTableHeadCell-toolButton {
+  text-transform: none !important;
+  margin-left: -8px !important;
+  min-width: 0 !important;
+  margin-right: 8px !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+/* Pranay Custom css End  */
