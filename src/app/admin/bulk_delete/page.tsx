@@ -135,14 +135,16 @@ const columns = [
 ];
 
 const options = {
-  filterType: "checkbox", 
-  serverSide: true, 
-  pagination: false, 
-  responsive: "scroll", 
-  filter: false, 
-  viewColumns: false, 
-  tableBodyMaxHeight: "500px",
+  filterType: "checkbox",
+  serverSide: true,
+  pagination: false,
+  // responsive: "standard",
+  filter: false,
+  viewColumns: false,
+  // tableBodyMaxHeight: "500px",
+
 };
+
 
 
 const StudentDetails = () => {
