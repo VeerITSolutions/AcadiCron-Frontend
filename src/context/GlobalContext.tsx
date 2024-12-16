@@ -1,6 +1,12 @@
 // src/context/GlobalContext.tsx
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 // Define a type for your context state
 interface GlobalContextType {
@@ -17,6 +23,12 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [someValue, setSomeValue] = useState("light");
   const [themType, setThemType] = useState("light");
+
+  useEffect(() => {
+    // Fetch the theme type from localStorage or sessionStorage
+    const cachedTheme = localStorage.getItem("color-theme") || "light"; // Default to "light"
+    setThemType(cachedTheme);
+  }, []);
   return (
     <GlobalContext.Provider
       value={{ someValue, setSomeValue, themType, setThemType }}

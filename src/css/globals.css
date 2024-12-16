@@ -77,7 +77,6 @@ thead.MuiTableHead-root {
   color: #8db0dd !important;
 }
 
-
 .header-center {
   text-align: center !important;
 }
@@ -115,4 +114,6 @@ span.required {
   color: red;
 }
 
-
+.MuiTableCell-root {
+  text-align: center !important;
+}
