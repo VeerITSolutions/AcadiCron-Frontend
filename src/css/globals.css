@@ -31,7 +31,6 @@ thead.MuiTableHead-root {
   text-transform: capitalize;
 }
 
-
 .css-1w1rijm-MuiButtonBase-root-MuiButton-root {
   padding: 0 !important;
 }
@@ -132,9 +131,37 @@ span.required {
   padding-right: 8px !important;
 }
 
-.tss-1h9t3sl-MUIDataTableHeadCell-sortAction{
+.tss-1h9t3sl-MUIDataTableHeadCell-sortAction {
   white-space: nowrap !important;
-
 }
-
+.MuiPaper-root button.rounded,
+.MuiPaper-elevation button.rounded {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #0070f3;
+  color: white;
+  cursor: pointer;
+}
+.MuiPaper-root button.rounded:hover,
+.MuiPaper-elevation button.rounded:hover {
+  background-color: #005bb5;
+}
+button {
+  transition: all 0.3s ease;
+}
+@media (max-width: 767px) {
+  .MuiPaper-root h6 {
+    text-align: left;
+  }
+  .tss-qbo1l6-MUIDataTableToolbar-actions {
+    text-align: right !important;
+  }
+  .StudentDetails_filterGroup__cwcGe {
+    flex-wrap: wrap;
+  }
+  .tss-tlx3x1-MUIDataTableToolbar-root {
+    display: flex;
+  }
+}
 /* Pranay Custom css End  */
