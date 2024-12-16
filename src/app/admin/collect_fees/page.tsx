@@ -46,15 +46,19 @@ const columns = [
   "Action",
 ];
 
+
+
 const options = {
   filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
-  selectableRows: "none", // Disable row selection
+  selectableRows: "none", 
 
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
+  filter: false, 
+  viewColumns: false, 
 };
+
+
 
 const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
@@ -90,7 +94,7 @@ const StudentDetails = () => {
         <button
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
-          className="flex items-center gap-2 rounded bg-primary px-2 py-2 font-medium text-white hover:bg-opacity-80"
+          className="flex items-center gap-2 rounded bg-primary px-2 py-2 font-medium text-white hover:bg-opacity-80 flex-nowrap whitespace-nowrap"
         >
           Collect Fees
         </button>

@@ -31,6 +31,7 @@ thead.MuiTableHead-root {
   text-transform: capitalize;
 }
 
+
 .css-1w1rijm-MuiButtonBase-root-MuiButton-root {
   padding: 0 !important;
 }
@@ -76,9 +77,10 @@ thead.MuiTableHead-root {
 .css-1d6zwhm-MuiButtonBase-root-MuiTab-root.Mui-selected {
   color: #8db0dd !important;
 }
-
+/* 
 .header-center {
   text-align: center !important;
+  white-space: nowrap;
 }
 
 .header-center span {
@@ -86,7 +88,8 @@ thead.MuiTableHead-root {
 }
 .cell-center {
   text-align: center !important;
-}
+  white-space: nowrap;
+} */
 
 @media (min-width: 1024px) {
   .lg\:ml-72\.5 {
@@ -127,6 +130,11 @@ span.required {
   margin-right: 8px !important;
   padding-left: 8px !important;
   padding-right: 8px !important;
+}
+
+.tss-1h9t3sl-MUIDataTableHeadCell-sortAction{
+  white-space: nowrap !important;
+
 }
 
 /* Pranay Custom css End  */
