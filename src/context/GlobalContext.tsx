@@ -1,5 +1,6 @@
 // src/context/GlobalContext.tsx
 "use client";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import React, {
   createContext,
   useContext,
@@ -22,14 +23,8 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 // Create a GlobalProvider component
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [someValue, setSomeValue] = useState("light");
-  const [themType, setThemType] = useState(
-    () => localStorage.getItem("color-theme") || "light",
-  );
+  const [themType, setThemType] = useLocalStorage("color-theme", "light");
 
-  useEffect(() => {
-    // Sync localStorage with the current theme state
-    localStorage.setItem("color-theme", themType);
-  }, [themType]);
   return (
     <GlobalContext.Provider
       value={{ someValue, setSomeValue, themType, setThemType }}
