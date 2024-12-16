@@ -22,13 +22,14 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 // Create a GlobalProvider component
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [someValue, setSomeValue] = useState("light");
-  const [themType, setThemType] = useState("light");
+  const [themType, setThemType] = useState(
+    () => localStorage.getItem("color-theme") || "light",
+  );
 
   useEffect(() => {
-    // Fetch the theme type from localStorage or sessionStorage
-    const cachedTheme = localStorage.getItem("color-theme") || "light"; // Default to "light"
-    setThemType(cachedTheme);
-  }, []);
+    // Ensure the theme in localStorage matches the state
+    localStorage.setItem("color-theme", themType);
+  }, [themType]);
   return (
     <GlobalContext.Provider
       value={{ someValue, setSomeValue, themType, setThemType }}
