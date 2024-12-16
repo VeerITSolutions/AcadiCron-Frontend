@@ -94,7 +94,7 @@ const StudentDetails = () => {
         <button
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
-          className="flex items-center gap-2 rounded bg-primary px-2 py-2 font-medium text-white hover:bg-opacity-80 flex-nowrap whitespace-nowrap"
+          className="flex items-center gap-2 rounded bg-[#0070f3] px-2 py-2 font-medium text-white flex-nowrap whitespace-nowrap hover:bg-[#005bb5]"
         >
           Collect Fees
         </button>
@@ -222,7 +222,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
               {classes.map((cls) => (
@@ -237,7 +237,7 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
               disabled={!selectedClass} // Disable section dropdown if no class is selected
             >
               <option value="">Select</option>
@@ -254,7 +254,7 @@ const StudentDetails = () => {
               placeholder="Search By Keyword"
               value={keyword}
               onChange={handleKeywordChange}
-              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search

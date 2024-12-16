@@ -124,7 +124,7 @@ const StudentCertificate = () => {
       ) : (
         "N/A"
       ),
-      <div key={student.id} className="flex items-center space-x-2">
+      <div key={student.id} className="flex">
         <IconButton aria-label="Show">
           <Visibility />
         </IconButton>
@@ -472,17 +472,13 @@ const StudentCertificate = () => {
               </div>
 
               <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Student Photo
-                </label>
-              </div>
+              <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
+                Student Photo
+              </h2>
               <div className="grid grid-cols-2 gap-4">
+                {/* Toggle Switch */}
                 <div>
-                  {/* Toggle Switch */}
-                  <label
-                    htmlFor="toggle2"
-                    className="flex select-none items-center"
-                  >
+                  <label htmlFor="toggle2" className="flex select-none items-center">
                     <div className="relative">
                       <input
                         id="toggle2"
@@ -494,36 +490,36 @@ const StudentCertificate = () => {
                       {/* Toggle Background */}
                       <div
                         className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                          enabled
-                            ? "bg-green-500"
-                            : "bg-meta-9 dark:bg-[#5A616B]"
+                          enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
                         }`}
                       ></div>
                       {/* Toggle Handle */}
                       <div
                         className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                          enabled
-                            ? "translate-x-full bg-primary dark:bg-white"
-                            : ""
+                          enabled ? "translate-x-full bg-primary dark:bg-white" : ""
                         }`}
                       ></div>
                     </div>
                   </label>
                 </div>
 
+                {/* Reserved Space for Input */}
                 <div>
-                  {enabled && (
-                    <input
-                      name="enable_image_height"
-                      type="number"
-                      value={formData.enable_image_height}
-                      onChange={handleInputChange}
-                      placeholder="Enter Image Height"
-                      className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  )}
+                  <input
+                    name="enable_image_height"
+                    type="number"
+                    value={enabled ? formData.enable_image_height : ""}
+                    onChange={handleInputChange}
+                    placeholder="Enter Image Height"
+                    className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                      enabled ? "visible" : "invisible"
+                    }`}
+                  />
                 </div>
               </div>
+            </div>
+
+
 
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
