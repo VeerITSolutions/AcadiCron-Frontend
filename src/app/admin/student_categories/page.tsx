@@ -24,6 +24,7 @@ const StudentCategories = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -31,7 +32,7 @@ const StudentCategories = () => {
   const [category, setCategory] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-
+  const { themType, setThemType } = useGlobalState();
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchStudentCategoryData(

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,9 +18,9 @@ interface Session {
   id: string; // or whatever type 'id' should be
   session: string; // or whatever type 'session' should be
 }
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-  const logoUrl = useLogoStore((state) => state.logoUrl); // Access lo
 
+const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  const logoUrl = useLogoStore((state) => state.logoUrl); // Access lo
 
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
@@ -1074,6 +1074,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       )}
     </>
   );
-};
+});
 
 export default Sidebar;

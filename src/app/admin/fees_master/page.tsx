@@ -27,6 +27,7 @@ import styles from "./User.module.css";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
   const [datafeesgroupdata, setFessGroupData] = useState<Array<Array<any>>>([]);
   const [datafesstypedata, setFessTypeData] = useState<Array<Array<any>>>([]);
 

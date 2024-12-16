@@ -23,6 +23,7 @@ import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
 const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
 
   const [customFileds, setCustomFileds] = useState<Array<Array<any>>>([]);
   const [loading, setLoading] = useState(true);

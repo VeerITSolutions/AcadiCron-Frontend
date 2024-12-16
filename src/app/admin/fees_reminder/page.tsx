@@ -7,6 +7,7 @@ import React from "react";
 import { fetchStudentFeesReminderData } from "@/services/studentFeesReminderService";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { useGlobalState } from "@/context/GlobalContext";
 
 const StudentDetails = () => {
   const [error, setError] = useState<string | null>(null);
