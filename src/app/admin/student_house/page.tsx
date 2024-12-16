@@ -23,7 +23,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 const StudentHouse = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
-  const { themType, setThemType } = useGlobalState();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);

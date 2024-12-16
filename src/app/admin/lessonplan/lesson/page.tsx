@@ -38,7 +38,6 @@ const FeesMaster = () => {
     undefined,
   );
   const [colorMode, setColorMode] = useColorMode();
-  const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
     fees_group: "",
