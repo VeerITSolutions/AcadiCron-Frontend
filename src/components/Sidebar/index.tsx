@@ -56,9 +56,6 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       if (!adminLogo || !sessionYear || !sessionId) {
         await fetchClassesAndSections();
       }
-
-      // Always fetch all sessions
-      await fetchSessionData();
     };
 
     initialize();
@@ -100,6 +97,10 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     } catch (error: any) {
       console.error("Error fetching sessions:", error);
     }
+  };
+  const ChangeFunction = async () => {
+    fetchSessionData();
+    setModalOpen(true);
   };
 
   const handleSessionChange = (value: string) => {
@@ -947,6 +948,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       },
     ];
   }
+
   return (
     <>
       <ClickOutside onClick={() => setSidebarOpen(false)}>
@@ -996,7 +998,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <nav className="mt-5 px-4 lg:px-6">
               <button
                 className="mb-4 text-white" // Adjust mb-4 to your desired spacing value
-                onClick={() => setModalOpen(true)}
+                onClick={() => ChangeFunction()}
               >
                 Current Session: {savedSessionstate}
               </button>
