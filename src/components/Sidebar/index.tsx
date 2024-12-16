@@ -1075,5 +1075,5 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     </>
   );
 });
-
-export default Sidebar;
+Sidebar.displayName = "Sidebar";
+export default memo(Sidebar);

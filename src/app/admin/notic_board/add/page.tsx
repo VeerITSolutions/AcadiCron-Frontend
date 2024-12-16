@@ -15,6 +15,7 @@ import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
+import { useGlobalState } from "@/context/GlobalContext";
 
 // Dynamic import for ReactQuill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
