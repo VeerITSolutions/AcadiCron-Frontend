@@ -135,13 +135,15 @@ const columns = [
 ];
 
 const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
-  responsive: "standard",
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
+  filterType: "checkbox", 
+  serverSide: true, 
+  pagination: false, 
+  responsive: "scroll", 
+  filter: false, 
+  viewColumns: false, 
+  tableBodyMaxHeight: "500px",
 };
+
 
 const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -176,10 +178,6 @@ const StudentDetails = () => {
         window.confirm("Are you sure you want to delete the selected items?")
       ) {
         try {
-          /*  const response = await apiClient.post("/delete-endpoint", {
-            ids: selectedData.map((item) => item.id),
-          });
-          */
           const response = await deleteStudentBluk(idsToDelete);
         } catch (error) {
           console.error("Error deleting data:", error);
@@ -209,20 +207,6 @@ const StudentDetails = () => {
       student.gender || "N/A",
       student.category_id,
       student.mobileno,
-      /*  <div key={student.id}>
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
-          <Visibility />
-        </IconButton>
-        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleAddFees(student.id)}
-          aria-label="Add Fee"
-        >
-          <AttachMoney />
-        </IconButton>
-      </div>, */
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -276,7 +260,7 @@ const StudentDetails = () => {
         const sectionsResult = await fetchsectionByClassData(selectedClass);
         setSections(sectionsResult.data);
       } else {
-        setSections([]); // Clear sections if no class is selected
+        setSections([]); 
       }
     } catch (error: any) {
       setError(error.message);
@@ -285,7 +269,7 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
+    fetchClassesAndSections(); 
   }, [selectedClass]);
 
   useEffect(() => {
@@ -311,12 +295,8 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
   const handleSearch = () => {
-    setPage(0); // Reset to first page on search
+    setPage(0); 
     fetchData(selectedClass, selectedSection, keyword);
   };
   const handleRefresh = () => {
@@ -352,8 +332,8 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              disabled={!selectedClass} 
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -364,14 +344,6 @@ const StudentDetails = () => {
             </select>
           </label>
           <div className={styles.searchGroup}>
-            {/*  <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-            />
-             */}
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
@@ -380,9 +352,6 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
 
       <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
