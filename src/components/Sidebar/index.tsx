@@ -36,51 +36,70 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [image, setImage] = useState("");
 
   useEffect(() => {
-    fetchClassesAndSections();
+    const initialize = async () => {
+      // Check if role_id and session data are already available
+      const roleId = localStorage.getItem("role_id");
+      if (roleId) {
+        SetGetRoleId(roleId);
+      }
 
-    let roleId = localStorage.getItem("role_id");
-    if (roleId) {
-      SetGetRoleId(roleId);
-    }
-    const savedSession = localStorage.getItem("selectedSessionYear");
-    if (savedSession) {
-      setSavedSession(savedSession);
-      // Use this value in your logic
-    }
+      const savedSession = localStorage.getItem("selectedSessionYear");
+      if (savedSession) {
+        setSavedSession(savedSession);
+      }
+
+      // Fetch classes and sections only if required data is not present
+      const adminLogo = localStorage.getItem("admin_logo");
+      const sessionYear = localStorage.getItem("selectedSessionYear");
+      const sessionId = localStorage.getItem("selectedSessionId");
+
+      if (!adminLogo || !sessionYear || !sessionId) {
+        await fetchClassesAndSections();
+      }
+
+      // Always fetch all sessions
+      await fetchSessionData();
+    };
+
+    initialize();
   }, []);
 
   const fetchClassesAndSections = async () => {
     try {
       const response = await fetchSchSetting();
 
+      // Cache the admin logo
+      const adminLogo = response.data.admin_logo;
+      localStorage.setItem("admin_logo", adminLogo);
       setImage(
-        `${process.env.NEXT_PUBLIC_BASE_URL}uploads/school_content/admin_logo/${response.data.admin_logo}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}uploads/school_content/admin_logo/${adminLogo}`,
       );
 
-      const classesResult = await fetchSchSetting();
-
-      if (!localStorage.getItem("selectedSessionYear")) {
-        localStorage.setItem(
-          "selectedSessionYear",
-          classesResult.data.session_year,
-        );
-        setDefaultSessionYear(classesResult.data.session_year);
-        setSavedSession(classesResult.data.session_year);
+      // Cache session year and session ID if not already set
+      const sessionYear = localStorage.getItem("selectedSessionYear");
+      if (!sessionYear) {
+        localStorage.setItem("selectedSessionYear", response.data.session_year);
+        setDefaultSessionYear(response.data.session_year);
+        setSavedSession(response.data.session_year);
       }
 
-      if (!localStorage.getItem("selectedSessionId")) {
-        localStorage.setItem(
-          "selectedSessionId",
-          classesResult.data.session_id,
-        );
-        setDefaultSession(classesResult.data.session_id);
+      const sessionId = localStorage.getItem("selectedSessionId");
+      if (!sessionId) {
+        localStorage.setItem("selectedSessionId", response.data.session_id);
+        setDefaultSession(response.data.session_id);
       }
-    } catch (error: any) {}
+    } catch (error: any) {
+      console.error("Error fetching school settings:", error);
+    }
+  };
 
+  const fetchSessionData = async () => {
     try {
       const classesResult = await fetchSession();
       setAllSession(classesResult.data);
-    } catch (error: any) {}
+    } catch (error: any) {
+      console.error("Error fetching sessions:", error);
+    }
   };
 
   const handleSessionChange = (value: string) => {
