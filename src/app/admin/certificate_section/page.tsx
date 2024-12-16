@@ -124,7 +124,7 @@ const StudentCertificate = () => {
       ) : (
         "N/A"
       ),
-      <div key={student.id} className="flex items-center space-x-2">
+      <div key={student.id} className="flex">
         <IconButton aria-label="Show">
           <Visibility />
         </IconButton>

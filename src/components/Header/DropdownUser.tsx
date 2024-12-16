@@ -42,7 +42,7 @@ const DropdownUser = () => {
 
         <div className="group">
           <svg
-            className="text-gray-500 fill-current transition duration-300 ease-in-out group-hover:text-blue-500"
+            className="text-gray-500 fill-current transition duration-300 ease-in-out"
             width="26"
             height="26"
             viewBox="0 0 48 48"
