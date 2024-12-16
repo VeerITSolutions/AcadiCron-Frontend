@@ -80,6 +80,7 @@ thead.MuiTableHead-root {
 
 .header-center {
   text-align: center !important;
+  white-space: nowrap;
 }
 
 .header-center span {
@@ -87,6 +88,7 @@ thead.MuiTableHead-root {
 }
 .cell-center {
   text-align: center !important;
+  white-space: nowrap;
 }
 
 @media (min-width: 1024px) {
