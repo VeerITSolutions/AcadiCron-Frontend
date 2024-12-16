@@ -59,7 +59,7 @@ const FeesMaster = () => {
         currentPage + 1,
         rowsPerPage,
       );
-      setTotalCount(result.totalCount.feegroupCount);
+      setTotalCount(result.totalCounts.feegroupCount);
       setData(formatStudentCategoryData(result.data.feegroupList));
       setLoading(false);
     } catch (error: any) {
