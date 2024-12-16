@@ -11,6 +11,7 @@ const SidebarDropdown = ({ item }: any) => {
         {item.map((item: any, index: number) => (
           <li key={index}>
             <Link
+              prefetch={true}
               href={item.route}
               className={`${pathname === item.route ? "text-white" : ""} group relative flex items-center
                 gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out
