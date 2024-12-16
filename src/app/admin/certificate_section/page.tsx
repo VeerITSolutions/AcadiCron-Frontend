@@ -471,18 +471,14 @@ const StudentCertificate = () => {
                 </div>
               </div>
 
-              <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Student Photo
-                </label>
-              </div>
+            <div>
+              <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
+                Student Photo
+              </h2>
               <div className="grid grid-cols-2 gap-4">
+                
                 <div>
-                  {/* Toggle Switch */}
-                  <label
-                    htmlFor="toggle2"
-                    className="flex select-none items-center"
-                  >
+                  <label htmlFor="toggle2" className="flex select-none items-center">
                     <div className="relative">
                       <input
                         id="toggle2"
@@ -491,7 +487,7 @@ const StudentCertificate = () => {
                         checked={enabled}
                         onChange={() => setEnabled(!enabled)}
                       />
-                      {/* Toggle Background */}
+                    
                       <div
                         className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
                           enabled
@@ -499,7 +495,7 @@ const StudentCertificate = () => {
                             : "bg-meta-9 dark:bg-[#5A616B]"
                         }`}
                       ></div>
-                      {/* Toggle Handle */}
+                     
                       <div
                         className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
                           enabled
@@ -519,11 +515,13 @@ const StudentCertificate = () => {
                       value={formData.enable_image_height}
                       onChange={handleInputChange}
                       placeholder="Enter Image Height"
-                      className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   )}
                 </div>
               </div>
+            </div>
+
 
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">

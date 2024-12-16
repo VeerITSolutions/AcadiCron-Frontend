@@ -94,7 +94,7 @@ const StudentDetails = () => {
         <button
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
-          className="flex items-center gap-2 rounded bg-primary px-2 py-2 font-medium text-white hover:bg-opacity-80 flex-nowrap whitespace-nowrap"
+          className="flex items-center gap-2 rounded bg-[#0070f3] px-2 py-2 font-medium text-white flex-nowrap whitespace-nowrap hover:bg-[#005bb5]"
         >
           Collect Fees
         </button>
