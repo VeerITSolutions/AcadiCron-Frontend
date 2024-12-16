@@ -24,6 +24,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 const StudentCategories = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
 
   const [allsuperadmin, setAllsuperadmin] = useState(false);
   const [allstudents, setAllstudents] = useState(false);

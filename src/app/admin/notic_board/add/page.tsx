@@ -61,6 +61,7 @@ const NoticeForm = () => {
 
   const [roleId, setRoleId] = useState("");
   const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

@@ -35,6 +35,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
   const [teacher, setTeacherData] = useState<Array<Array<any>>>([]);
 
   const [loading, setLoading] = useState(true);
