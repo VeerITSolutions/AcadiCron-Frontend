@@ -22,7 +22,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<Array<Array<any>>>([]);
+const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
