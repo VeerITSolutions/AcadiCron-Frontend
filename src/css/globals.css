@@ -114,12 +114,6 @@ span.required {
   color: red;
 }
 
-/* Align column headers to the left */
-.MuiTableCell-head {
-  text-align: left !important;
-}
-
-/* Align data cells to the left */
-.MuiTableCell-body {
-  text-align: left !important;
+.MuiTableCell-root {
+  text-align: center !important;
 }
