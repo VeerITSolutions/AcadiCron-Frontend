@@ -47,7 +47,7 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
-  responsive: "vertical", // Stacks columns vertically for mobile devices
+  responsive: "standard",
   selectableRows: "none",
   filter: false,
   viewColumns: false,
