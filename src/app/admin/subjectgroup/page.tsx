@@ -170,8 +170,10 @@ const FeesMaster = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editSubjectGroup(
           editCategoryId,
-          formData.name,
-          formData.description,
+          formData,
+          selectedSubject,
+          selectedSection,
+          savedSessionstate,
         );
         if (result.success) {
           toast.success("Subject group updated successfully");
