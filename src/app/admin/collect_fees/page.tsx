@@ -46,19 +46,15 @@ const columns = [
   "Action",
 ];
 
-
-
 const options = {
   filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
-  selectableRows: "none", 
+  selectableRows: "none",
 
-  filter: false, 
-  viewColumns: false, 
+  filter: false,
+  viewColumns: false,
 };
-
-
 
 const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
@@ -94,7 +90,7 @@ const StudentDetails = () => {
         <button
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
-          className="flex items-center gap-2 rounded bg-[#0070f3] px-2 py-2 font-medium text-white flex-nowrap whitespace-nowrap hover:bg-[#005bb5]"
+          className="flex flex-nowrap items-center gap-2 whitespace-nowrap rounded bg-[#0070f3] px-2 py-2 font-medium text-white hover:bg-[#005bb5]"
         >
           Collect Fees
         </button>
@@ -210,7 +206,7 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
@@ -268,21 +264,25 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
-      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-        <MUIDataTable
-          title={"Student List"}
-          data={data}
-          columns={columns}
-          options={{
-            ...options,
-            count: totalCount,
-            page: page,
-            rowsPerPage: rowsPerPage,
-            onChangePage: handlePageChange,
-            onChangeRowsPerPage: handleRowsPerPageChange,
-          }}
-        />
-      </ThemeProvider>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+          <MUIDataTable
+            title={"Student List"}
+            data={data}
+            columns={columns}
+            options={{
+              ...options,
+              count: totalCount,
+              page: page,
+              rowsPerPage: rowsPerPage,
+              onChangePage: handlePageChange,
+              onChangeRowsPerPage: handleRowsPerPageChange,
+            }}
+          />
+        </ThemeProvider>
+      )}
     </DefaultLayout>
   );
 };

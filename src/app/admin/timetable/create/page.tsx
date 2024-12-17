@@ -200,7 +200,7 @@ const StudentDetails = () => {
     setValue(newValue);
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <div>{error}</div>;
 
   return (
@@ -264,172 +264,176 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-        <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList
-              onChange={handleChange}
-              aria-label="Timetable Tabs"
-              variant="scrollable"
-              scrollButtons="auto"
-              sx={{
-                "& .MuiTab-root": {
-                  textTransform: "none", // Optional: Remove uppercase
-                  fontWeight: 400, // Default font weight
-                },
-                "& .MuiTabs-indicator": {
-                  backgroundColor: "lightblue !important", // Active tab indicator color
-                },
-              }}
-            >
-              {columns.map((day) => (
-                <Tab key={day} label={day} value={day} />
-              ))}
-            </TabList>
-          </Box>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="Timetable Tabs"
+                variant="scrollable"
+                scrollButtons="auto"
+                sx={{
+                  "& .MuiTab-root": {
+                    textTransform: "none", // Optional: Remove uppercase
+                    fontWeight: 400, // Default font weight
+                  },
+                  "& .MuiTabs-indicator": {
+                    backgroundColor: "lightblue !important", // Active tab indicator color
+                  },
+                }}
+              >
+                {columns.map((day) => (
+                  <Tab key={day} label={day} value={day} />
+                ))}
+              </TabList>
+            </Box>
 
-          {columns.map((day) => (
-            <TabPanel key={day} value={day}>
-              <div className="container mx-auto">
-                {/* Add Row Button */}
-                <div className="flex justify-end">
+            {columns.map((day) => (
+              <TabPanel key={day} value={day}>
+                <div className="container mx-auto">
+                  {/* Add Row Button */}
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => addRow(day)}
+                      className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    >
+                      Add Row
+                    </button>
+                  </div>
+
+                  {/* Timetable */}
+                  <table className="mb-5 mt-5 min-w-full table-auto border-collapse shadow">
+                    <thead className="bg-gray-200 text-gray-700">
+                      <tr>
+                        <th className="px-4 py-4 text-left font-semibold">
+                          Subject
+                        </th>
+                        <th className="px-4 py-4 text-left font-semibold">
+                          Teacher
+                        </th>
+                        <th className="px-4 py-4 text-left font-semibold">
+                          Time From
+                        </th>
+                        <th className="px-4 py-4 text-left font-semibold">
+                          Time To
+                        </th>
+                        <th className="px-4 py-4 text-left font-semibold">
+                          Room No
+                        </th>
+                        <th className="px-4 py-4 text-left font-semibold">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rows[day].map((row, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-gray-100 transition duration-200 ease-in-out"
+                        >
+                          {/* Subject */}
+                          <td className="px-4 py-3">
+                            <TextField
+                              variant="outlined"
+                              size="small"
+                              name="subject"
+                              className="dark:border-form-strokedark dark:text-white"
+                              value={row.subject}
+                              onChange={(e: any) =>
+                                handleInputChange(day, index, e)
+                              }
+                              fullWidth
+                            />
+                          </td>
+                          {/* Teacher */}
+                          <td className="px-4 py-3">
+                            <TextField
+                              variant="outlined"
+                              size="small"
+                              name="teacher"
+                              value={row.teacher}
+                              onChange={(e: any) =>
+                                handleInputChange(day, index, e)
+                              }
+                              fullWidth
+                            />
+                          </td>
+                          {/* Time From */}
+                          <td className="px-4 py-3">
+                            <TextField
+                              variant="outlined"
+                              type="time"
+                              size="small"
+                              name="timeFrom"
+                              value={row.timeFrom}
+                              onChange={(e: any) =>
+                                handleInputChange(day, index, e)
+                              }
+                              fullWidth
+                            />
+                          </td>
+                          {/* Time To */}
+                          <td className="px-4 py-3">
+                            <TextField
+                              variant="outlined"
+                              type="time"
+                              size="small"
+                              name="timeTo"
+                              value={row.timeTo}
+                              onChange={(e: any) =>
+                                handleInputChange(day, index, e)
+                              }
+                              fullWidth
+                            />
+                          </td>
+                          {/* Room No */}
+                          <td className="px-4 py-3">
+                            <TextField
+                              variant="outlined"
+                              size="small"
+                              name="roomNo"
+                              value={row.roomNo}
+                              onChange={(e: any) =>
+                                handleInputChange(day, index, e)
+                              }
+                              fullWidth
+                            />
+                          </td>
+                          {/* Action */}
+                          <td className="px-4 py-3">
+                            <IconButton
+                              color="error"
+                              onClick={() => removeRow(day, index)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                  {/* Save Button */}
                   <button
-                    onClick={() => addRow(day)}
-                    className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={() => handleSave(day)}
+                    className={`rounded px-4.5 py-2 font-medium hover:bg-opacity-80 ${
+                      selectedClass && selectedSection
+                        ? "bg-primary text-white"
+                        : "bg-gray-400 text-gray-700 cursor-not-allowed border-[1.5px] border-stroke bg-transparent dark:border-form-strokedark"
+                    }`}
+                    disabled={!selectedClass || !selectedSection}
                   >
-                    Add Row
+                    Save
                   </button>
                 </div>
-
-                {/* Timetable */}
-                <table className="mb-5 mt-5 min-w-full table-auto border-collapse shadow">
-                  <thead className="bg-gray-200 text-gray-700">
-                    <tr>
-                      <th className="px-4 py-4 text-left font-semibold">
-                        Subject
-                      </th>
-                      <th className="px-4 py-4 text-left font-semibold">
-                        Teacher
-                      </th>
-                      <th className="px-4 py-4 text-left font-semibold">
-                        Time From
-                      </th>
-                      <th className="px-4 py-4 text-left font-semibold">
-                        Time To
-                      </th>
-                      <th className="px-4 py-4 text-left font-semibold">
-                        Room No
-                      </th>
-                      <th className="px-4 py-4 text-left font-semibold">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows[day].map((row, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-gray-100 transition duration-200 ease-in-out"
-                      >
-                        {/* Subject */}
-                        <td className="px-4 py-3">
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            name="subject"
-                            className="dark:border-form-strokedark dark:text-white"
-                            value={row.subject}
-                            onChange={(e: any) =>
-                              handleInputChange(day, index, e)
-                            }
-                            fullWidth
-                          />
-                        </td>
-                        {/* Teacher */}
-                        <td className="px-4 py-3">
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            name="teacher"
-                            value={row.teacher}
-                            onChange={(e: any) =>
-                              handleInputChange(day, index, e)
-                            }
-                            fullWidth
-                          />
-                        </td>
-                        {/* Time From */}
-                        <td className="px-4 py-3">
-                          <TextField
-                            variant="outlined"
-                            type="time"
-                            size="small"
-                            name="timeFrom"
-                            value={row.timeFrom}
-                            onChange={(e: any) =>
-                              handleInputChange(day, index, e)
-                            }
-                            fullWidth
-                          />
-                        </td>
-                        {/* Time To */}
-                        <td className="px-4 py-3">
-                          <TextField
-                            variant="outlined"
-                            type="time"
-                            size="small"
-                            name="timeTo"
-                            value={row.timeTo}
-                            onChange={(e: any) =>
-                              handleInputChange(day, index, e)
-                            }
-                            fullWidth
-                          />
-                        </td>
-                        {/* Room No */}
-                        <td className="px-4 py-3">
-                          <TextField
-                            variant="outlined"
-                            size="small"
-                            name="roomNo"
-                            value={row.roomNo}
-                            onChange={(e: any) =>
-                              handleInputChange(day, index, e)
-                            }
-                            fullWidth
-                          />
-                        </td>
-                        {/* Action */}
-                        <td className="px-4 py-3">
-                          <IconButton
-                            color="error"
-                            onClick={() => removeRow(day, index)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                {/* Save Button */}
-                <button
-                  onClick={() => handleSave(day)}
-                  className={`rounded px-4.5 py-2 font-medium hover:bg-opacity-80 ${
-                    selectedClass && selectedSection
-                      ? "bg-primary text-white"
-                      : "bg-gray-400 text-gray-700 cursor-not-allowed border-[1.5px] border-stroke bg-transparent dark:border-form-strokedark"
-                  }`}
-                  disabled={!selectedClass || !selectedSection}
-                >
-                  Save
-                </button>
-              </div>
-            </TabPanel>
-          ))}
-        </TabContext>
-      </ThemeProvider>
+              </TabPanel>
+            ))}
+          </TabContext>
+        </ThemeProvider>
+      )}
     </DefaultLayout>
   );
 };

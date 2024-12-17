@@ -448,7 +448,7 @@ const StudentDetails = () => {
     setSelectedLeaveselectedLeaveType(event.target.value);
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
@@ -470,22 +470,26 @@ const StudentDetails = () => {
             {editing ? "Edit Leave" : "Add Leave Request"}
           </button>
         </div>
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Leaves"}
-            data={data}
-            className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
-        </ThemeProvider>
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Leaves"}
+              data={data}
+              className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }}
+            />
+          </ThemeProvider>
+        )}
         <Dialog
           open={open}
           onClose={handleClose}

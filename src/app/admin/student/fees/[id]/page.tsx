@@ -407,7 +407,7 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
@@ -502,22 +502,26 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={""}
-            data={data}
-            className={`${styles["miui-box-shadow"]}`}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
-        </ThemeProvider>
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={""}
+              data={data}
+              className={`${styles["miui-box-shadow"]}`}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }}
+            />
+          </ThemeProvider>
+        )}
         <Dialog open={open} onClose={handleClose}>
           <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">

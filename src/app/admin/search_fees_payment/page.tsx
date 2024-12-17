@@ -108,21 +108,25 @@ const SearchFeesPayment = () => {
 
         {/* MUI Data Table */}
         <div className="mt-12">
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title={"Payment Id Detail"}
-              data={data}
-              columns={columns}
-              options={{
-                ...options,
-                count: totalCount,
-                page: page,
-                rowsPerPage: rowsPerPage,
-                onChangePage: handlePageChange,
-                onChangeRowsPerPage: handleRowsPerPageChange,
-              }}
-            />
-          </ThemeProvider>
+          {loading ? (
+            <Loader />
+          ) : (
+            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <MUIDataTable
+                title={"Payment Id Detail"}
+                data={data}
+                columns={columns}
+                options={{
+                  ...options,
+                  count: totalCount,
+                  page: page,
+                  rowsPerPage: rowsPerPage,
+                  onChangePage: handlePageChange,
+                  onChangeRowsPerPage: handleRowsPerPageChange,
+                }}
+              />
+            </ThemeProvider>
+          )}
         </div>
       </div>
     </DefaultLayout>
