@@ -134,6 +134,10 @@ span.required {
 .tss-1h9t3sl-MUIDataTableHeadCell-sortAction {
   white-space: nowrap !important;
 }
+
+.tss-1qtl85h-MUIDataTableBodyCell-root {
+  text-transform: capitalize;
+}
 .MuiPaper-root button.rounded,
 .MuiPaper-elevation button.rounded {
   padding: 0.5rem 1rem;

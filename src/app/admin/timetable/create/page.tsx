@@ -212,7 +212,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={styles.select}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
               {classes.map((cls) => (
@@ -227,8 +227,8 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={styles.select}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              disabled={!selectedClass}
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -243,7 +243,7 @@ const StudentDetails = () => {
             <select
               // value={selectedSection || ""}
               // onChange={handleSectionChange}
-              className={styles.select}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
               disabled={!selectedClass} // Disable section dropdown if no class is selected
             >
               <option value="">Select</option>
@@ -295,7 +295,7 @@ const StudentDetails = () => {
                 <div className="flex justify-end">
                   <button
                     onClick={() => addRow(day)}
-                    className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    className="rounded bg-[#0070f3] px-4.5 py-2 font-medium text-white hover:bg-[#005bb5]"
                   >
                     Add Row
                   </button>
