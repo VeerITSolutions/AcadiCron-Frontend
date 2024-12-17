@@ -12,6 +12,7 @@ import {
   fetchStudentSingleData,
 } from "@/services/studentService";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 const User = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
@@ -24,6 +25,7 @@ const User = () => {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // State to hold all form inputs as a single object
   const [formData, setFormData] = useState<Record<string, any>>({
@@ -157,6 +159,7 @@ const User = () => {
 
       if (response.success == true) {
         toast.success("Edit successful");
+        router.push(`/admin/student_details`);
       } else {
         toast.error("Error Edit data");
       }
