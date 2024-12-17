@@ -75,15 +75,14 @@ const SearchFeesPayment = () => {
 
   return (
     <DefaultLayout>
+      <h2 className="text-title-md2 font-semibold text-black dark:text-white">
+        Search Fees Payment
+      </h2>
       <div className="mx-auto mt-8 max-w-7xl rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark">
-        <h1 className="text-gray-900 mb-8 text-2xl font-semibold dark:text-white">
-          Search Fees Payment
-        </h1>
-
         <div className="flex items-center space-x-4">
           {/* Payment ID Field */}
           <div className="flex-grow">
-            <label className="text-gray-700 dark:text-gray-200 block text-sm font-semibold">
+            <label className="font-medium text-black dark:text-white">
               Payment Id
             </label>
             <input
