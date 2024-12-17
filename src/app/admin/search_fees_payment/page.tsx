@@ -9,6 +9,7 @@ import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import Loader from "@/components/common/Loader";
 
 const SearchFeesPayment = () => {
   const [colorMode, setColorMode] = useColorMode();
