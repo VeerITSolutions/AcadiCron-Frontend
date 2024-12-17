@@ -5,6 +5,7 @@ import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Fade, Slide } from "react-awesome-reveal";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 /* import { Metadata } from "next"; */
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -68,9 +69,11 @@ const LoginPage = () => {
               />
             </Link>
             <div className="col-md-6">
-              <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Admin Login
-              </h2>
+              <Slide>
+                <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+                  Admin Login
+                </h2>
+              </Slide>
 
               <form onSubmit={handleSubmit} className={styles.login}>
                 <div className="mb-4">
