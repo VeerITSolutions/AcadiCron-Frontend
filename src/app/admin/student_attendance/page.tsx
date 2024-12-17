@@ -257,7 +257,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
               {classes.map((cls) => (
@@ -272,7 +272,7 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
               disabled={!selectedClass}
             >
               <option value="">Select</option>
@@ -289,7 +289,7 @@ const StudentDetails = () => {
               type="date"
               value={attendancedate}
               onChange={handleAttendancedateChange}
-              className={`${styles.select} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             />
           </label>
 
