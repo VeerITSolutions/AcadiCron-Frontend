@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { fetchtimeTableData } from "@/services/timeTableService";
+import { fetchTimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
 import { toast } from "react-toastify";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -93,8 +93,8 @@ const StudentDetails = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const result = await fetchtimeTableData(); // Assuming token is passed for authorization
-      if (result && result.success) {
+      const result = await fetchTimeTableData(selectedClass, selectedSection, ''); // Assuming token is passed for authorization
+      if ( result.success) {
         const formattedData = formatTimetableData(result.data);
         setData(formattedData);
       } else {
@@ -155,26 +155,12 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedClass, selectedSection]);
 
-  /* if (loading) return <Loader />; */
+
   if (error) return <div>{error}</div>;
 
-  // const CustomHeader = () => (
-  //   <div className="flex justify-between items-center">
-  //     <h6>Weekly Timetable</h6>
-  //     <div className="flex ml-auto">
-  //       <a
-  //         href="/admin/timetable/create"
-  //         className="StudentDetails_searchButton__bCORU"
-  //       >
-  //         Add
-  //       </a>
-  //     </div>
-
-  //   </div>
-
-  // );
+  
 
   return (
     <DefaultLayout>

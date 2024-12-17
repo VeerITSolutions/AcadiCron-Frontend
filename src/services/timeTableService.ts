@@ -1,25 +1,40 @@
 import apiClient from "./apiClient";
 
-export const fetchtimeTableData = async (page?: string, perPage?: string) => {
+export const fetchTimeTableData = async (class_id?: string, section_id?: string, subject_group_id?: string) => {
   const response = await apiClient.get(`/timetable`, {
     params: {
-      page,
-      perPage,
+      class_id,
+      section_id,
+      subject_group_id
     },
   });
   return response.data;
 };
 
-/*
-// Delete a student category by ID
-export const deleteStudent = async (id: number) => {
-  const response = await apiClient.delete(`/admin/dtstudentlist/${id}`);
+
+// Edit a student category by ID
+export const createTimeTableData = async ( data : any) => {
+
+  const response = await apiClient.post(`/timetable`, data);
   return response.data;
 };
 
+
 // Edit a student category by ID
-export const editStudent = async (id: number, category: string) => {
-  const data = { category }; // Create an object with the name field
-  const response = await apiClient.post(`/admin/dtstudentlist/${id}`, data);
+export const editTimeTableData = async (id: number, data: any) => {
+
+  const response = await apiClient.post(`/timetable/${id}`, data);
   return response.data;
-}; */
+};
+
+
+
+// Delete a student category by ID
+export const deleteTimeTableData = async (id: number) => {
+  const response = await apiClient.delete(`/timetable/${id}`);
+  return response.data;
+};
+
+
+
+
