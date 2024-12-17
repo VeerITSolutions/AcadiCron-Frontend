@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { fetchtimeTableData } from "@/services/timeTableService";
+import { fetchTimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
 import { toast } from "react-toastify";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -18,6 +18,7 @@ import { TextField } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 import {
   fetchsectionByClassData,
   fetchsectionData,
@@ -25,27 +26,6 @@ import {
 import { getClasses } from "@/services/classesService"; // Import your classes API service
 import styles from "./StudentDetails.module.css"; // Import CSS module
 
-const columns = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
-
-const options = {
-  filter: false,
-  search: false,
-  pagination: false,
-  sort: false,
-  selectableRows: "none",
-  download: false,
-  print: false,
-  viewColumns: false,
-  responsive: "standard",
-};
 
 const StudentDetails = () => {
   const [data, setData] = useState<any[]>([]);
@@ -59,12 +39,39 @@ const StudentDetails = () => {
 
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<
+  string | undefined
+>(undefined);
+
+  const columns = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  const options = {
+    filter: false,
+    search: false,
+    pagination: false,
+    sort: false,
+    selectableRows: "none",
+    download: false,
+    print: false,
+    viewColumns: false,
+    responsive: "standard",
+  };
+
 
   const [rows, setRows] = useState<{ [key: string]: any[] }>({
     Monday: [
@@ -122,6 +129,12 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+  const handleSubjectGroupChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedSubjectGroup(event.target.value);
+  };
+
   // const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setKeyword(event.target.value);
   // };
@@ -130,6 +143,7 @@ const StudentDetails = () => {
     const timetableData = {
       classId: selectedClass,
       sectionId: selectedSection,
+      subjectGroupId: selectedSubjectGroup,
       day,
       rows: rows[day],
     };
@@ -147,6 +161,7 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setSelectedSubjectGroup("");
     setKeyword("");
   };
 
@@ -179,22 +194,43 @@ const StudentDetails = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const result = await fetchtimeTableData();
+  
+      const result = await fetchTimeTableData();
       if (result && result.success) {
         setData(result.data);
       } else {
         setError("Failed to load timetable data.");
       }
+  
+      // Check if selectedClass and selectedSection are defined
+      if (selectedClass && selectedSection) {
+        const subjectgroupresult = await fetchSubjectGroupData(
+          selectedSubjectGroup || "", // Pass selectedSubjectGroup to fetch the specific group
+          "",
+          selectedClass,
+          selectedSection
+        );
+        if (subjectgroupresult && subjectgroupresult.data) {
+          setSubjectGroup(subjectgroupresult.data);
+        } else {
+          setError("Failed to load subject group data.");
+        }
+      }
+      
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (selectedClass && selectedSection) {
+      fetchData();
+    }
+  }, [selectedClass, selectedSection, selectedSubjectGroup]);
+  
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -239,19 +275,19 @@ const StudentDetails = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Subject Group:
+            Subject Group
             <select
-              // value={selectedSection || ""}
-              // onChange={handleSectionChange}
+              value={selectedSubjectGroup || ""}
+              onChange={handleSubjectGroupChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              disabled={!selectedClass || !selectedSection}
             >
               <option value="">Select</option>
-              {/* {section.map((sec) => (
-        <option key={sec.section_id} value={sec.section_id}>
-          {sec.section_name}
-        </option>
-      ))} */}
+              {subjectGroup.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
             </select>
           </label>
           <div className={styles.searchGroup}>

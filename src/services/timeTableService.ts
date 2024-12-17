@@ -1,11 +1,14 @@
 import apiClient from "./apiClient";
 
-export const fetchTimeTableData = async (class_id?: string, section_id?: string, subject_group_id?: string) => {
+export const fetchTimeTableData = async (  
+  selectedClass?: string,
+  selectedSection?: string,
+  selectedSubjectGroup?: string,) => {
   const response = await apiClient.get(`/timetable`, {
     params: {
-      class_id,
-      section_id,
-      subject_group_id
+      selectedClass, 
+      selectedSection, 
+      selectedSubjectGroup, 
     },
   });
   return response.data;
