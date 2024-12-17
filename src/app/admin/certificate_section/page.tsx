@@ -250,7 +250,7 @@ const StudentCertificate = () => {
     setPage(0);
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   const columns = ["Certificate Name", "Background Image", "Actions"];
@@ -472,54 +472,59 @@ const StudentCertificate = () => {
               </div>
 
               <div>
-              <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
-                Student Photo
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                {/* Toggle Switch */}
-                <div>
-                  <label htmlFor="toggle2" className="flex select-none items-center">
-                    <div className="relative">
-                      <input
-                        id="toggle2"
-                        type="checkbox"
-                        className="sr-only"
-                        checked={enabled}
-                        onChange={() => setEnabled(!enabled)}
-                      />
-                      {/* Toggle Background */}
-                      <div
-                        className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                          enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
-                        }`}
-                      ></div>
-                      {/* Toggle Handle */}
-                      <div
-                        className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                          enabled ? "translate-x-full bg-primary dark:bg-white" : ""
-                        }`}
-                      ></div>
-                    </div>
-                  </label>
-                </div>
+                <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
+                  Student Photo
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Toggle Switch */}
+                  <div>
+                    <label
+                      htmlFor="toggle2"
+                      className="flex select-none items-center"
+                    >
+                      <div className="relative">
+                        <input
+                          id="toggle2"
+                          type="checkbox"
+                          className="sr-only"
+                          checked={enabled}
+                          onChange={() => setEnabled(!enabled)}
+                        />
+                        {/* Toggle Background */}
+                        <div
+                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+                            enabled
+                              ? "bg-green-500"
+                              : "bg-meta-9 dark:bg-[#5A616B]"
+                          }`}
+                        ></div>
+                        {/* Toggle Handle */}
+                        <div
+                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+                            enabled
+                              ? "translate-x-full bg-primary dark:bg-white"
+                              : ""
+                          }`}
+                        ></div>
+                      </div>
+                    </label>
+                  </div>
 
-                {/* Reserved Space for Input */}
-                <div>
-                  <input
-                    name="enable_image_height"
-                    type="number"
-                    value={enabled ? formData.enable_image_height : ""}
-                    onChange={handleInputChange}
-                    placeholder="Enter Image Height"
-                    className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
-                      enabled ? "visible" : "invisible"
-                    }`}
-                  />
+                  {/* Reserved Space for Input */}
+                  <div>
+                    <input
+                      name="enable_image_height"
+                      type="number"
+                      value={enabled ? formData.enable_image_height : ""}
+                      onChange={handleInputChange}
+                      placeholder="Enter Image Height"
+                      className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                        enabled ? "visible" : "invisible"
+                      }`}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-
-
 
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -561,14 +566,18 @@ const StudentCertificate = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title={"Student Certificate List"}
-              data={data}
-              columns={columns}
-              options={options}
-            />
-          </ThemeProvider>
+          {loading ? (
+            <Loader />
+          ) : (
+            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <MUIDataTable
+                title={"Student Certificate List"}
+                data={data}
+                columns={columns}
+                options={options}
+              />
+            </ThemeProvider>
+          )}
         </div>
       </div>
     </DefaultLayout>

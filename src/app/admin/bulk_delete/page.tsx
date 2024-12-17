@@ -46,7 +46,6 @@ const columns = [
   "Mobile Number",
 ];
 
-
 const options = {
   filterType: "checkbox",
   serverSide: true,
@@ -55,10 +54,7 @@ const options = {
   filter: false,
   viewColumns: false,
   tableBodyMaxHeight: "500px",
-
 };
-
-
 
 const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -175,7 +171,7 @@ const StudentDetails = () => {
         const sectionsResult = await fetchsectionByClassData(selectedClass);
         setSections(sectionsResult.data);
       } else {
-        setSections([]); 
+        setSections([]);
       }
     } catch (error: any) {
       setError(error.message);
@@ -184,7 +180,7 @@ const StudentDetails = () => {
   };
 
   useEffect(() => {
-    fetchClassesAndSections(); 
+    fetchClassesAndSections();
   }, [selectedClass]);
 
   useEffect(() => {
@@ -211,7 +207,7 @@ const StudentDetails = () => {
   };
 
   const handleSearch = () => {
-    setPage(0); 
+    setPage(0);
     fetchData(selectedClass, selectedSection, keyword);
   };
   const handleRefresh = () => {
@@ -220,7 +216,7 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
@@ -248,7 +244,7 @@ const StudentDetails = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} 
+              disabled={!selectedClass}
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -269,24 +265,28 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-        <MUIDataTable
-          title={"Bulk Delete"}
-          data={data}
-          columns={columns}
-          options={{
-            ...options,
-            count: totalCount,
-            page: page,
-            rowsPerPage: rowsPerPage,
-            onChangePage: handlePageChange,
-            onChangeRowsPerPage: handleRowsPerPageChange,
-            onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-            selectableRows: "multiple", // Allow multiple selection
-            onRowsDelete: handleDelete,
-          }}
-        />
-      </ThemeProvider>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+          <MUIDataTable
+            title={"Bulk Delete"}
+            data={data}
+            columns={columns}
+            options={{
+              ...options,
+              count: totalCount,
+              page: page,
+              rowsPerPage: rowsPerPage,
+              onChangePage: handlePageChange,
+              onChangeRowsPerPage: handleRowsPerPageChange,
+              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
+              selectableRows: "multiple", // Allow multiple selection
+              onRowsDelete: handleDelete,
+            }}
+          />
+        </ThemeProvider>
+      )}
     </DefaultLayout>
   );
 };

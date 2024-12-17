@@ -157,7 +157,7 @@ const StudentDetails = () => {
     fetchData();
   }, []);
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <div>{error}</div>;
 
   // const CustomHeader = () => (
@@ -222,30 +222,34 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-        <div className="flex items-center justify-between border-b border-[#E0E0E0] bg-[#F8F8F8] px-4 pb-5 pt-5 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-          <div>
-            <h6 className="text-[1.25rem] font-semibold leading-[1.75rem]">
-              Weekly Timetable
-            </h6>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+          <div className="flex items-center justify-between border-b border-[#E0E0E0] bg-[#F8F8F8] px-4 pb-5 pt-5 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+            <div>
+              <h6 className="text-[1.25rem] font-semibold leading-[1.75rem]">
+                Weekly Timetable
+              </h6>
+            </div>
+            <div>
+              <a
+                href="/admin/timetable/create"
+                className="StudentDetails_searchButton__bCORU"
+              >
+                Add
+              </a>
+            </div>
           </div>
-          <div>
-            <a
-              href="/admin/timetable/create"
-              className="StudentDetails_searchButton__bCORU"
-            >
-              Add
-            </a>
-          </div>
-        </div>
 
-        <MUIDataTable
-          title={""}
-          data={data}
-          columns={columns}
-          options={options}
-        />
-      </ThemeProvider>
+          <MUIDataTable
+            title={""}
+            data={data}
+            columns={columns}
+            options={options}
+          />
+        </ThemeProvider>
+      )}
     </DefaultLayout>
   );
 };

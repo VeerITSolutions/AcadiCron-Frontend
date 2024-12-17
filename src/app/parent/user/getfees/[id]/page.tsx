@@ -261,7 +261,7 @@ const StudentDetails = () => {
     setEditing(false); // Reset editing state
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (

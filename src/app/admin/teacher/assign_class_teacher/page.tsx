@@ -291,7 +291,7 @@ const FeesMaster = () => {
     }
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   const columns = ["Class", "Section", "Class Teacher", "Action"];
@@ -418,14 +418,18 @@ const FeesMaster = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title={"Class Teacher List"}
-              data={data}
-              columns={columns}
-              options={options}
-            />
-          </ThemeProvider>
+          {loading ? (
+            <Loader />
+          ) : (
+            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <MUIDataTable
+                title={"Class Teacher List"}
+                data={data}
+                columns={columns}
+                options={options}
+              />
+            </ThemeProvider>
+          )}
         </div>
       </div>
     </DefaultLayout>

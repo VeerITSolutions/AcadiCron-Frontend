@@ -187,7 +187,7 @@ const StudentDetails = () => {
     }
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
@@ -270,21 +270,25 @@ const StudentDetails = () => {
           </button>
         </div>
       </div>
-      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-        <MUIDataTable
-          title={"Generate Certificates"}
-          data={data}
-          columns={columns}
-          options={{
-            ...options,
-            count: totalCount,
-            page: page,
-            rowsPerPage: rowsPerPage,
-            onChangePage: handlePageChange,
-            onChangeRowsPerPage: handleRowsPerPageChange,
-          }}
-        />
-      </ThemeProvider>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+          <MUIDataTable
+            title={"Generate Certificates"}
+            data={data}
+            columns={columns}
+            options={{
+              ...options,
+              count: totalCount,
+              page: page,
+              rowsPerPage: rowsPerPage,
+              onChangePage: handlePageChange,
+              onChangeRowsPerPage: handleRowsPerPageChange,
+            }}
+          />
+        </ThemeProvider>
+      )}
     </DefaultLayout>
   );
 };

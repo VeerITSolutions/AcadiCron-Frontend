@@ -22,7 +22,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
-const [data, setData] = useState<Array<Array<any>>>([]);
+  const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -208,7 +208,7 @@ const [data, setData] = useState<Array<Array<any>>>([]);
     setPage(0);
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   const columns = ["Name", "Discount Code", "Amount", "Actions"];
@@ -327,14 +327,18 @@ const [data, setData] = useState<Array<Array<any>>>([]);
         </div>
 
         <div className="">
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title={"Fees Discount List"}
-              data={data}
-              columns={columns}
-              options={options}
-            />
-          </ThemeProvider>
+          {loading ? (
+            <Loader />
+          ) : (
+            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <MUIDataTable
+                title={"Fees Discount List"}
+                data={data}
+                columns={columns}
+                options={options}
+              />
+            </ThemeProvider>
+          )}
         </div>
       </div>
     </DefaultLayout>

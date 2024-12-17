@@ -1,8 +1,18 @@
+import React, { useContext } from "react";
+import { Table, TableContainer } from "@mui/material";
+import "./FlashLoader.css"; // Custom CSS for shimmer effect
+import useColorMode from "@/hooks/useColorMode";
+
 const Loader = () => {
+  const [colorMode, setColorMode] = useColorMode();
+  const themeClass = colorMode === "light" ? "light" : "dark";
   return (
-    <div className="flex h-screen items-center justify-center bg-white dark:bg-black">
-      <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
-    </div>
+    <TableContainer>
+      <Table
+        className={`shimmer-loader ${themeClass}`}
+        sx={{ minHeight: 400 }}
+      />
+    </TableContainer>
   );
 };
 

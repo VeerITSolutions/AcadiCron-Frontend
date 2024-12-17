@@ -187,7 +187,7 @@ const FeesMaster = () => {
     setPage(0);
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   const columns = ["Subject", "Subject Code", "Subject Type", "Action"];
@@ -315,14 +315,18 @@ const FeesMaster = () => {
           </div>
         </div>
         <div className={styles.container}>
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title="Subjects"
-              data={data}
-              columns={columns}
-              options={options}
-            />
-          </ThemeProvider>
+          {loading ? (
+            <Loader />
+          ) : (
+            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <MUIDataTable
+                title="Subjects"
+                data={data}
+                columns={columns}
+                options={options}
+              />
+            </ThemeProvider>
+          )}
         </div>
       </div>
     </DefaultLayout>

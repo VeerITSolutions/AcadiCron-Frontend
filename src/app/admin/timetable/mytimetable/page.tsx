@@ -93,7 +93,7 @@ const StudentDetails = () => {
     fetchData();
   }, []);
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <div>{error}</div>;
 
   return (
@@ -128,14 +128,18 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={""}
-            data={data}
-            columns={columns}
-            options={options}
-          />
-        </ThemeProvider>
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={""}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </ThemeProvider>
+        )}
       </div>
     </DefaultLayout>
   );

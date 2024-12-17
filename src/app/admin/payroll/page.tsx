@@ -195,7 +195,7 @@ const StudentDetails = () => {
     console.log("selectedRole", selectedRole);
   };
 
-  if (loading) return <Loader />;
+  /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
@@ -278,21 +278,25 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-        <MUIDataTable
-          title={"Staff List"}
-          data={data}
-          columns={columns}
-          options={{
-            ...options,
-            count: totalCount,
-            page: page,
-            rowsPerPage: rowsPerPage,
-            onChangePage: handlePageChange,
-            onChangeRowsPerPage: handleRowsPerPageChange,
-          }}
-        />
-      </ThemeProvider>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+          <MUIDataTable
+            title={"Staff List"}
+            data={data}
+            columns={columns}
+            options={{
+              ...options,
+              count: totalCount,
+              page: page,
+              rowsPerPage: rowsPerPage,
+              onChangePage: handlePageChange,
+              onChangeRowsPerPage: handleRowsPerPageChange,
+            }}
+          />
+        </ThemeProvider>
+      )}
     </DefaultLayout>
   );
 };
