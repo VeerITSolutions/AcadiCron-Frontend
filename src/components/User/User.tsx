@@ -23,6 +23,79 @@ const User = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [savedSessionstate, setSavedSession] = useState("");
+
+  const [errors, setErrors] = useState<Record<string, any>>({});
+
+  const [newErrors, setnewErrors] = useState<Record<string, any>>({
+    parent_id: "",
+    admission_no: "",
+    roll_no: "",
+    admission_date: "",
+    firstname: "",
+    middlename: "",
+    lastname: "",
+    rte: "",
+    image: "",
+    mobileno: "",
+    email: "",
+    state: "",
+    city: "",
+    pincode: "",
+    religion: "",
+    cast: "",
+    dob: "",
+    gender: "",
+    current_address: "",
+    permanent_address: "",
+    category_id: "",
+
+    route_id: 0,
+    school_house_id: 0,
+    blood_group: "",
+    vehroute_id: 0,
+    hostel_room_id: 0,
+    adhar_no: "",
+    samagra_id: "",
+    bank_account_no: "",
+    bank_name: "",
+    ifsc_code: "",
+    guardian_is: "",
+    father_name: "",
+    father_phone: "",
+    father_occupation: "",
+    mother_name: "",
+    mother_phone: "",
+    mother_occupation: "",
+    guardian_name: "",
+    guardian_relation: "",
+    guardian_phone: "",
+    guardian_occupation: "",
+    guardian_address: "",
+    guardian_email: "",
+    father_pic: "",
+    mother_pic: "",
+    guardian_pic: "",
+    is_active: "",
+    previous_school: "",
+    height: "",
+    weight: "",
+    measurement_date: "",
+    dis_reason: "",
+    note: "",
+    dis_note: "",
+    app_key: "",
+    parent_app_key: "",
+    disable_at: "",
+
+    section_id: "",
+
+    first_title: "",
+    first_doc: "",
+    second_title: "",
+    third_title: "",
+    fourth_title: "",
+    // Add other initial fields as needed
+  });
   // State to hold all form inputs as a single object
   const [formData, setFormData] = useState<Record<string, any>>({
     parent_id: "",
@@ -122,6 +195,8 @@ const User = () => {
       ...prevData,
       [name]: value, // For regular inputs like text or selects
     }));
+
+    setErrors({ ...errors, [name]: false });
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -146,6 +221,21 @@ const User = () => {
   };
 
   const handleSave = async () => {
+    const newErrors: Errors = {}; // Explicitly typed
+
+    if (!formData.firstname) newErrors.firstname = true;
+    if (!formData.lastname) newErrors.lastname = true;
+    if (!formData.gender) newErrors.gender = true;
+    if (!formData.dob) newErrors.dob = true;
+    if (!selectedClass) newErrors.class_id = true;
+    if (!selectedSection) newErrors.section_id = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error("Fields are required!");
+      return;
+    }
+
     try {
       setLoading(true);
       const data = {
@@ -154,27 +244,16 @@ const User = () => {
         section_id: selectedSection,
       };
 
-      if (
-        !selectedClass &&
-        !selectedSection &&
-        !formData.firstname &&
-        !formData.lastname &&
-        !formData.gender &&
-        !formData.dob
-      ) {
-        toast.error("Field's  Required!");
-      } else {
-        const response = await createStudent(data);
+      const response = await createStudent(data);
 
-        if (response.status == 200) {
-          toast.success("Added successful");
-          router.push(`/admin/student_details`);
-        } else {
-          toast.error("Error Edit data");
-        }
+      if (response.status === 200) {
+        toast.success("Added successfully");
+        router.push(`/admin/student_details`);
+      } else {
+        toast.error("Error editing data");
       }
     } catch (error: any) {
-      setError(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -276,7 +355,10 @@ const User = () => {
                 onChange={handleInputChange}
                 placeholder=""
                 type="text"
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className={
+                  "w-full rounded-lg border-[1.5px] bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" +
+                  (errors.firstname ? " border-red-500" : " border-stroke")
+                }
               />
             </div>
             <div className="field">
