@@ -154,13 +154,24 @@ const User = () => {
         section_id: selectedSection,
       };
 
-      const response = await createStudent(data);
-
-      if (response.status == 200) {
-        toast.success("Added successful");
-        router.push(`/admin/student_details`);
+      if (
+        !selectedClass &&
+        !selectedSection &&
+        !formData.firstname &&
+        !formData.lastname &&
+        !formData.gender &&
+        !formData.dob
+      ) {
+        toast.error("Field's  Required!");
       } else {
-        toast.error("Error Edit data");
+        const response = await createStudent(data);
+
+        if (response.status == 200) {
+          toast.success("Added successful");
+          router.push(`/admin/student_details`);
+        } else {
+          toast.error("Error Edit data");
+        }
       }
     } catch (error: any) {
       setError(error.message);
@@ -670,8 +681,8 @@ const User = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 type="file"
                 accept="image/*,video/*"
-                name="mother_pic" 
-                onChange={handleFileChange} 
+                name="mother_pic"
+                onChange={handleFileChange}
                 id="file"
               />
             </div>
@@ -770,7 +781,7 @@ const User = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 type="file"
                 accept="image/*"
-                name="guardian_pic" 
+                name="guardian_pic"
                 onChange={handleFileChange}
                 id="file"
               />
