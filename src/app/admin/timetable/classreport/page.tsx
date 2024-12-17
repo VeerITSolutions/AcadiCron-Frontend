@@ -222,11 +222,7 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <div className="flex items-center justify-between border-b border-[#E0E0E0] bg-[#F8F8F8] px-4 pb-5 pt-5 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+      <div className="flex items-center justify-between border-b border-[#E0E0E0] bg-[#F8F8F8] px-4 pb-5 pt-5 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
             <div>
               <h6 className="text-[1.25rem] font-semibold leading-[1.75rem]">
                 Weekly Timetable
@@ -242,6 +238,12 @@ const StudentDetails = () => {
             </div>
           </div>
 
+      {selectedClass && selectedSection ?  loading ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+          
+
           <MUIDataTable
             title={""}
             data={data}
@@ -249,7 +251,9 @@ const StudentDetails = () => {
             options={options}
           />
         </ThemeProvider>
-      )}
+      ) : ''}
+
+     
     </DefaultLayout>
   );
 };
