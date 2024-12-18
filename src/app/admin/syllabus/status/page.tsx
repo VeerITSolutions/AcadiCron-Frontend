@@ -43,7 +43,8 @@ const options = {
   filterType: false,
   serverSide: true,
   selectableRows: "none",
-  responsive: "standard",
+ responsive: "standard",
+search: false,
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };

@@ -215,16 +215,18 @@ const FeesMaster = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-    responsive: "standard",
+   responsive: "standard",
+search: false,
     selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
-    filter: false, // Disable filter,
+    filter: false, // Disable filter
     viewColumns: false, // Disable view columns button
   };
+  
 
   const handleCancel = () => {
     setIsEditing(false);

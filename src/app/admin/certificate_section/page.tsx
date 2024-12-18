@@ -259,7 +259,8 @@ const StudentCertificate = () => {
     viewColumns: false, // Disable view columns button
     filterType: false,
     serverSide: true,
-    responsive: "standard",
+   responsive: "standard",
+search: false,
     selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,

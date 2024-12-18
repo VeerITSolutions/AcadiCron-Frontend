@@ -69,7 +69,8 @@ const StudentDetails = () => {
     download: false,
     print: false,
     viewColumns: false,
-    responsive: "standard",
+   responsive: "standard",
+search: false,
   };
 
 

@@ -30,7 +30,8 @@ const options = {
   download: false, // Disable download button
   print: false, // Disable print button
   viewColumns: false, // Disable view columns button
-  responsive: "standard", // Customize responsiveness if needed
+ responsive: "standard",
+search: false, // Customize responsiveness if needed
 };
 
 const StudentDetails = () => {

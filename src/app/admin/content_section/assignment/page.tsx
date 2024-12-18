@@ -35,7 +35,8 @@ const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
 const options = {
   filterType: false,
   serverSide: true,
-  responsive: "standard",
+ responsive: "standard",
+search: false,
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 

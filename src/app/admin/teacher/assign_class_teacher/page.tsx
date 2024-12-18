@@ -298,7 +298,8 @@ const FeesMaster = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-    responsive: "standard",
+   responsive: "standard",
+search: false,
     count: totalCount,
     page: page,
     selectableRows: "none", // Disable row selection

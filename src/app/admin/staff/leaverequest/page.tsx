@@ -47,7 +47,8 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
-  responsive: "standard",
+ responsive: "standard",
+search: false,
   selectableRows: "none",
   filter: false,
   viewColumns: false,

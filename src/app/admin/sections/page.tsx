@@ -174,7 +174,8 @@ const FeesMaster = () => {
   const options = {
     filterType: false,
     serverSide: true,
-    responsive: "standard",
+   responsive: "standard",
+search: false,
     count: totalCount,
     selectableRows: "none", // Disable row selection
     page: page,

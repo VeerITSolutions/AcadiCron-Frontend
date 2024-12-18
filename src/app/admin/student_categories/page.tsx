@@ -143,7 +143,8 @@ const StudentCategories = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-    responsive: "standard",
+   responsive: "standard",
+search: false,
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,

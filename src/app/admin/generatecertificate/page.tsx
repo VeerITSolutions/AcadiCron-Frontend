@@ -45,7 +45,8 @@ const columns = [
 const options = {
   filterType: "checkbox",
   serverSide: true,
-  responsive: "standard",
+ responsive: "standard",
+search: false,
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
