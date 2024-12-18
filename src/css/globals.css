@@ -204,6 +204,10 @@ td.MuiTableCell-root p,
 td.MuiTableCell-root > div > div {
   padding-right: 10px;
 }
+.dark .dark\:bg-boxdark-2.dark\:text-bodydark {
+  min-height: 100vh;
+  background: #24303f;
+}
 @media (max-width: 767px) {
   .MuiPaper-root h6 {
     text-align: left;

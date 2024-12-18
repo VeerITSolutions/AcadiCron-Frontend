@@ -7,18 +7,62 @@
   height: 400px;
 }
 
-.shimmer-loader.light {
-  background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+.shimmer-loader {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: wave;
+  animation-timing-function: linear;
+  background: #dddddd;
+  background-image: linear-gradient(
+    to left,
+    #dddddd 0%,
+    #f5f5f5 20%,
+    #e5e5e5 40%,
+    #dddddd 100%
+  );
+  background-repeat: no-repeat;
 }
 
-.shimmer-loader.dark {
-  background: linear-gradient(90deg, #384350 25%, #49505c 50%, #384350 75%);
+.dark .shimmer-loader {
+  background: #78889d;
+  background-image: linear-gradient(
+    to left,
+    #78889d 0%,
+    #99abc3 20%,
+    #99abc3 40%,
+    #78889d 100%
+  );
+  background-repeat: no-repeat;
 }
+@keyframes wave {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+@keyframes wave {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+.reverse-direction .loading {
+  animation-direction: reverse;
+}
+/* .shimmer-loader.dark {
+  background: linear-gradient(90deg, #384350 25%, #49505c 50%, #384350 75%);
+} */
 
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }

@@ -101,11 +101,6 @@ const FeesMaster = () => {
     sectionId: string,
   ) => {
     setSelectedSection((prev) => [...prev, sectionId]);
-    /* if (event.target.checked) {
-
-    } else {
-      setSelectedSection((prev) => prev.filter((id) => id !== sectionId));
-    } */
   };
 
   const formatStudentCategoryData = (students: any[]) =>
@@ -188,8 +183,8 @@ const FeesMaster = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     selectableRows: "none",
     page,
@@ -253,7 +248,7 @@ search: false,
                       >
                         <input
                           type="checkbox"
-                          value={sec.section_id}
+                          value={formData.section_id}
                           checked={selectedSection.includes(sec.section_id)}
                           onChange={(e) =>
                             handleSectionChange(e, sec.section_id)
