@@ -204,6 +204,70 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {
             icon: (
               <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 2v20" />
+              <path d="M5 10l7-7 7 7" />
+              <path d="M9 15h6a2 2 0 0 1 0 4h-6a2 2 0 0 1 0-4z" />
+            </svg>
+            
+            ),
+
+            label: "Income",
+            route: "#",
+            children: [
+              {
+                label: "Add Income",
+                route: "/admin/income",
+              },
+              { label: "Search Income", route: "/admin/income_search" },
+              { label: "Income Head", route: "/admin/income_head" },
+              
+            ],
+          },
+          {
+            icon: (
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 4h16v16H4z" /> 
+              <path d="M12 8v8" /> 
+              <path d="M9 10h6" /> 
+              <path d="M16 16l4 4M16 20l4-4" /> 
+            </svg>
+
+            ),
+            label: "Expenses",
+            route: "#",
+            children: [
+              {
+                label: "Add Expense",
+                route: "/admin/expense",
+              },
+              { label: "Search Expense", route: "/admin/expense_search" },
+              { label: "Expense Head", route: "/admin/expense_head" },
+              
+            ],
+          },
+          {
+            icon: (
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
