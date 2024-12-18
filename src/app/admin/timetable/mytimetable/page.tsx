@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { fetchtimeTableData } from "@/services/timeTableService";
+import { fetchTimeTableData } from "@/services/timeTableService";
 import Loader from "@/components/common/Loader";
 import { toast } from "react-toastify";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -75,7 +75,7 @@ const StudentDetails = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const result = await fetchtimeTableData(); // Assuming token is passed for authorization
+      const result = await fetchTimeTableData(); // Assuming token is passed for authorization
       if (result && result.success) {
         const formattedData = formatTimetableData(result.data);
         setData(formattedData);
