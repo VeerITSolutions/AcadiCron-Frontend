@@ -37,8 +37,7 @@ const options = {
   download: false, // Disable download button
   print: false, // Disable print button
   viewColumns: false, // Disable view columns button
- responsive: "standard",
-search: false, // Customize responsiveness if needed
+  responsive: "standard",
 };
 
 const StudentDetails = () => {
@@ -94,8 +93,12 @@ const StudentDetails = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const result = await fetchTimeTableData(selectedClass, selectedSection, ''); // Assuming token is passed for authorization
-      if ( result.success) {
+      const result = await fetchTimeTableData(
+        selectedClass,
+        selectedSection,
+        "",
+      ); // Assuming token is passed for authorization
+      if (result.success) {
         const formattedData = formatTimetableData(result.data);
         setData(formattedData);
       } else {
@@ -158,10 +161,7 @@ const StudentDetails = () => {
     fetchData();
   }, [selectedClass, selectedSection]);
 
-
   if (error) return <div>{error}</div>;
-
-  
 
   return (
     <DefaultLayout>
@@ -210,37 +210,37 @@ const StudentDetails = () => {
       </div>
 
       <div className="flex items-center justify-between border-b border-[#E0E0E0] bg-[#F8F8F8] px-4 pb-5 pt-5 shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-            <div>
-              <h6 className="text-[1.25rem] font-semibold leading-[1.75rem]">
-                Weekly Timetable
-              </h6>
-            </div>
-            <div>
-              <a
-                href="/admin/timetable/create"
-                className="StudentDetails_searchButton__bCORU"
-              >
-                Add
-              </a>
-            </div>
-          </div>
+        <div>
+          <h6 className="text-[1.25rem] font-semibold leading-[1.75rem]">
+            Weekly Timetable
+          </h6>
+        </div>
+        <div>
+          <a
+            href="/admin/timetable/create"
+            className="StudentDetails_searchButton__bCORU"
+          >
+            Add
+          </a>
+        </div>
+      </div>
 
-      {selectedClass && selectedSection ?  loading ? (
-        <Loader />
+      {selectedClass && selectedSection ? (
+        loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={""}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </ThemeProvider>
+        )
       ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          
-
-          <MUIDataTable
-            title={""}
-            data={data}
-            columns={columns}
-            options={options}
-          />
-        </ThemeProvider>
-      ) : ''}
-
-     
+        ""
+      )}
     </DefaultLayout>
   );
 };

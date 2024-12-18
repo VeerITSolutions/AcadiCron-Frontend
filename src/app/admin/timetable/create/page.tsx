@@ -70,7 +70,7 @@ const StudentDetails = () => {
     print: false,
     viewColumns: false,
    responsive: "standard",
-search: false,
+
   };
 
 
@@ -195,14 +195,14 @@ search: false,
   const fetchData = async () => {
     try {
       setLoading(true);
-  
+
       const result = await fetchTimeTableData();
       if (result && result.success) {
         setData(result.data);
       } else {
         setError("Failed to load timetable data.");
       }
-  
+
       // Check if selectedClass and selectedSection are defined
       if (selectedClass && selectedSection) {
         const subjectgroupresult = await fetchSubjectGroupData(
@@ -217,21 +217,21 @@ search: false,
           setError("Failed to load subject group data.");
         }
       }
-      
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
-  
+
 
   useEffect(() => {
     if (selectedClass && selectedSection) {
       fetchData();
     }
   }, [selectedClass, selectedSection, selectedSubjectGroup]);
-  
+
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);

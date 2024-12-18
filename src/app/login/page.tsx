@@ -49,7 +49,7 @@ const LoginPage = () => {
 
   return (
     <div className={styles.loginContainer}>
-      <div className="flex flex-wrap items-center">
+      <div className="flex flex-wrap items-center dark:bg-boxdark">
         <div className=" w-full ">
           <div className=" py-17.5 text-center">
             <Link className="mb-5.5 inline-block" href="/">
@@ -75,7 +75,10 @@ const LoginPage = () => {
                 </h2>
               </Slide>
 
-              <form onSubmit={handleSubmit} className={styles.login}>
+              <form
+                onSubmit={handleSubmit}
+                className={`${styles.login} dark:bg-boxdark`}
+              >
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email

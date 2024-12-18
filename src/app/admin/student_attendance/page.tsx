@@ -84,8 +84,8 @@ const options = {
   download: false,
   print: false,
   viewColumns: false,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+
   customToolbar: () => (
     <div className="flex justify-end gap-2">
       <button
