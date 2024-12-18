@@ -221,8 +221,6 @@ const User = () => {
   };
 
   const handleSave = async () => {
-    const newErrors: Errors = {}; // Explicitly typed
-
     if (!formData.firstname) newErrors.firstname = true;
     if (!formData.lastname) newErrors.lastname = true;
     if (!formData.gender) newErrors.gender = true;

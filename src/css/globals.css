@@ -76,6 +76,7 @@ thead.MuiTableHead-root {
 .css-1d6zwhm-MuiButtonBase-root-MuiTab-root.Mui-selected {
   color: #8db0dd !important;
 }
+
 /* 
 .header-center {
   text-align: center !important;
@@ -108,10 +109,12 @@ thead.MuiTableHead-root {
   .tss-hj53wm-MUIDataTableToolbar-titleText {
     text-align: left !important;
   }
+
   .tss-qbo1l6-MUIDataTableToolbar-actions {
     text-align: right !important;
   }
 }
+
 span.required {
   color: red;
 }
@@ -138,34 +141,85 @@ span.required {
 .tss-1qtl85h-MUIDataTableBodyCell-root {
   text-transform: capitalize;
 }
+
 .MuiPaper-root button.rounded,
-.MuiPaper-elevation button.rounded {
+.MuiPaper-elevation button.rounded,
+button[type="submit"],
+button.bg-primary {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   background-color: #0070f3;
   color: white;
   cursor: pointer;
+  font-size: 16px;
+  min-height: 42px;
 }
+
 .MuiPaper-root button.rounded:hover,
-.MuiPaper-elevation button.rounded:hover {
+.MuiPaper-elevation button.rounded:hover,
+button[type="submit"]:hover,
+button.bg-primary:hover {
   background-color: #005bb5;
 }
+
 button {
   transition: all 0.3s ease;
+}
+
+.MuiTableRow-root th:first-child,
+.MuiTableRow-root td:first-child {
+  padding-left: 24px !important;
+}
+
+.MuiTableRow-root th:last-child,
+.MuiTableRow-root td:last-child {
+  padding-right: 24px !important;
+}
+
+.MuiTableCell-root span.MuiButtonBase-root {
+  padding-left: 0px;
+}
+
+.MuiTableRow-root th > span {
+  padding: 3px 0px;
+}
+
+.MuiTableRow-root th > div {
+  padding: 9px 0px;
+  font-family: Satoshi, sans-serif !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+  font-weight: 500 !important;
+  color: #64748b;
+}
+.MuiTableRow-root td > div {
+  /* padding: 11px 0px; */
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+td.MuiTableCell-root p,
+td.MuiTableCell-root > div > div {
+  padding-right: 10px;
 }
 @media (max-width: 767px) {
   .MuiPaper-root h6 {
     text-align: left;
   }
+
   .tss-qbo1l6-MUIDataTableToolbar-actions {
     text-align: right !important;
   }
+
   .StudentDetails_filterGroup__cwcGe {
     flex-wrap: wrap;
   }
+
   .tss-tlx3x1-MUIDataTableToolbar-root {
     display: flex;
   }
 }
+
 /* Pranay Custom css End  */
