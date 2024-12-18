@@ -1,9 +1,9 @@
-.loginContainer {
+/* .loginContainer {
   background-color: #f0f0f0;
   padding: 20px;
   border-radius: 8px;
 }
-
+ */
 .loginButton {
   background-color: #0070f3;
   color: white;
@@ -21,7 +21,7 @@
   text-align: left;
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
   .login {
     padding: 50px 20px;
   }
