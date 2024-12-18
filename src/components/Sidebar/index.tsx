@@ -236,6 +236,38 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {
             icon: (
               <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 4h16v16H4z" /> 
+              <path d="M12 8v8" /> 
+              <path d="M9 10h6" /> 
+              <path d="M16 16l4 4M16 20l4-4" /> 
+            </svg>
+
+            ),
+            label: "Expenses",
+            route: "#",
+            children: [
+              {
+                label: "Add Expense",
+                route: "/admin/expense",
+              },
+              { label: "Search Expense", route: "/admin/expense_search" },
+              { label: "Expense Head", route: "/admin/expense_head" },
+              
+            ],
+          },
+          {
+            icon: (
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
