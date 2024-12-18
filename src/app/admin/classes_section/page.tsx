@@ -243,13 +243,11 @@ const FeesMaster = () => {
                   <div className="flex flex-col gap-2">
                     {sections.map((sec: any) => (
                       <label
-                        key={sec.section_id}
+                        key={sec.id}
                         className="flex items-center gap-2 text-black dark:text-white"
                       >
                         <input
                           type="checkbox"
-                          value={formData.section_id}
-                          checked={selectedSection.includes(sec.section_id)}
                           onChange={(e) =>
                             handleSectionChange(e, sec.section_id)
                           }
