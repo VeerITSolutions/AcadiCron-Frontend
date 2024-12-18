@@ -175,7 +175,7 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection]);
+  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
