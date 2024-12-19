@@ -49,6 +49,8 @@ const Marksheet = () => {
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
+  const [isNameEnabled, setIsNameEnabled] = useState(false);
+  const [isFatherNameEnabled, setIsFatherNameEnabled] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -400,86 +402,82 @@ const Marksheet = () => {
                 </div>
 
                 <div className="field flex items-center gap-4">
-                  <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
-                    Name
-                  </h2>
-                  <div className="grid grid-cols-2 gap-4">
-                    {/* Toggle Switch */}
-                    <div>
-                      <label
-                        htmlFor="toggle2"
-                        className="flex select-none items-center"
-                      >
-                        <div className="relative">
-                          <input
-                            id="toggle2"
-                            type="checkbox"
-                            className="sr-only"
-                            checked={enabled}
-                            onChange={() => setEnabled(!enabled)}
-                          />
-                          {/* Toggle Background */}
-                          <div
-                            className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                              enabled
-                                ? "bg-green-500"
-                                : "bg-meta-9 dark:bg-[#5A616B]"
-                            }`}
-                          ></div>
-                          {/* Toggle Handle */}
-                          <div
-                            className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                              enabled
-                                ? "translate-x-full bg-primary dark:bg-white"
-                                : ""
-                            }`}
-                          ></div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
+  <h2 className="mb-5 text-sm font-medium text-black dark:text-white">Name</h2>
+  <div className="grid grid-cols-2 gap-4">
+    {/* Toggle Switch for Name */}
+    <div>
+      <label htmlFor="toggle-name" className="flex select-none items-center">
+        <div className="relative">
+          <input
+            id="toggle-name"
+            type="checkbox"
+            className="sr-only"
+            checked={isNameEnabled}
+            onChange={() => setIsNameEnabled(!isNameEnabled)}
+          />
+          {/* Toggle Background */}
+          <div
+            className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+              isNameEnabled
+                ? "bg-green-500"
+                : "bg-meta-9 dark:bg-[#5A616B]"
+            }`}
+          ></div>
+          {/* Toggle Handle */}
+          <div
+            className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+              isNameEnabled
+                ? "translate-x-full bg-primary dark:bg-white"
+                : ""
+            }`}
+          ></div>
+        </div>
+      </label>
+    </div>
+  </div>
+</div>
 
-                <div className="field flex items-center gap-4">
-                  <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
-                    Father Name
-                  </h2>
-                  <div className="grid grid-cols-2 gap-4">
-                    {/* Toggle Switch */}
-                    <div>
-                      <label
-                        htmlFor="toggle2"
-                        className="flex select-none items-center"
-                      >
-                        <div className="relative">
-                          <input
-                            id="toggle2"
-                            type="checkbox"
-                            className="sr-only"
-                            checked={enabled}
-                            onChange={() => setEnabled(!enabled)}
-                          />
-                          {/* Toggle Background */}
-                          <div
-                            className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                              enabled
-                                ? "bg-green-500"
-                                : "bg-meta-9 dark:bg-[#5A616B]"
-                            }`}
-                          ></div>
-                          {/* Toggle Handle */}
-                          <div
-                            className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                              enabled
-                                ? "translate-x-full bg-primary dark:bg-white"
-                                : ""
-                            }`}
-                          ></div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
+<div className="field flex items-center gap-4">
+  <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
+    Father Name
+  </h2>
+  <div className="grid grid-cols-2 gap-4">
+    {/* Toggle Switch for Father Name */}
+    <div>
+      <label
+        htmlFor="toggle-father-name"
+        className="flex select-none items-center"
+      >
+        <div className="relative">
+          <input
+            id="toggle-father-name"
+            type="checkbox"
+            className="sr-only"
+            checked={isFatherNameEnabled}
+            onChange={() => setIsFatherNameEnabled(!isFatherNameEnabled)}
+          />
+          {/* Toggle Background */}
+          <div
+            className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+              isFatherNameEnabled
+                ? "bg-green-500"
+                : "bg-meta-9 dark:bg-[#5A616B]"
+            }`}
+          ></div>
+          {/* Toggle Handle */}
+          <div
+            className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+              isFatherNameEnabled
+                ? "translate-x-full bg-primary dark:bg-white"
+                : ""
+            }`}
+          ></div>
+        </div>
+      </label>
+    </div>
+  </div>
+</div>
+
 
                 <div className="flex gap-2">
                   <button
