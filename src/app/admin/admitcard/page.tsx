@@ -18,17 +18,19 @@ import {
 } from "@/services/subjectGroupService";
 
 import { fetchSubjectData } from "@/services/subjectsService";
-import { Edit, Delete } from "@mui/icons-material";
+import { Edit, Delete, Visibility, } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 
-const expense = () => {
+const AdmitCard = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
+  const [enabled, setEnabled] = useState(false);
+
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -129,12 +131,13 @@ const expense = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.name || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
+      subject.certificate_name || "N/A",
+      subject.background_image || "N/A",
       <div key={subject.id} className="flex">
+      
+         <IconButton  aria-label="Show">
+          <Visibility />
+        </IconButton>
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
           aria-label="edit"
@@ -232,24 +235,19 @@ const expense = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   const columns = [
-    "Name", 
-    "Invoice Number", 
-    "Date",
-    "Expense Head",
-    "Amount",
+    "Certificate Name",
+    "Background Image",
     "Action",
-];
+  ];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page,
     rowsPerPage,
@@ -281,7 +279,7 @@ search: false,
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Template <span className="required">*</span>
+                    Template <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -291,7 +289,7 @@ search: false,
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Heading 
+                    Heading
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -301,7 +299,7 @@ search: false,
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Title 
+                    Title
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -311,7 +309,7 @@ search: false,
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Exam Name 
+                    Exam Name
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -321,7 +319,7 @@ search: false,
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  School Name 
+                    School Name
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -331,7 +329,7 @@ search: false,
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Exam Center 
+                    Exam Center
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -341,7 +339,7 @@ search: false,
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Footer Text
+                    Footer Text
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -349,109 +347,137 @@ search: false,
                     name="footer_text"
                   />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Left Logo
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        id="file"
-                        name="left_logo"
-                        className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Right Logo
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        id="file"
-                        name="right_logo"
-                        className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Sign
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        id="file"
-                        name="sign"
-                        className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Background Image
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        id="file"
-                        name="background_image"
-                        className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                      />
-                    </div>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Left Logo
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      id="file"
+                      name="left_logo"
+                      className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    />
                   </div>
-                  
 
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Invoice Number <span className="required">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="invoice_number"
-                  />
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Right Logo
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      id="file"
+                      name="right_logo"
+                      className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Sign
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      id="file"
+                      name="sign"
+                      className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Background Image
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      id="file"
+                      name="background_image"
+                      className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    />
+                  </div>
                 </div>
-            
-                <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Date <span className="required">*</span>
-              </label>
-              <input
-                id="date"
-                name="date"
-                type="date"
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Amount <span className="required">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="amount"
-                  />
+
+                <div className="field flex items-center gap-4">
+                <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
+                  Name
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Toggle Switch */}
+                  <div>
+                    <label
+                      htmlFor="toggle2"
+                      className="flex select-none items-center"
+                    >
+                      <div className="relative">
+                        <input
+                          id="toggle2"
+                          type="checkbox"
+                          className="sr-only"
+                          checked={enabled}
+                          onChange={() => setEnabled(!enabled)}
+                        />
+                        {/* Toggle Background */}
+                        <div
+                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+                            enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
+                          }`}
+                        ></div>
+                        {/* Toggle Handle */}
+                        <div
+                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+                            enabled ? "translate-x-full bg-primary dark:bg-white" : ""
+                          }`}
+                        ></div>
+                      </div>
+                    </label>
+                  </div>
                 </div>
-                
+              </div>
 
-              <div>
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Description
-            </label>
-            <textarea
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              name="description"
-            ></textarea>
-          </div>
-
+              <div className="field flex items-center gap-4">
+                <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
+                  Father Name
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Toggle Switch */}
+                  <div>
+                    <label
+                      htmlFor="toggle2"
+                      className="flex select-none items-center"
+                    >
+                      <div className="relative">
+                        <input
+                          id="toggle2"
+                          type="checkbox"
+                          className="sr-only"
+                          checked={enabled}
+                          onChange={() => setEnabled(!enabled)}
+                        />
+                        {/* Toggle Background */}
+                        <div
+                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+                            enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
+                          }`}
+                        ></div>
+                        {/* Toggle Handle */}
+                        <div
+                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+                            enabled ? "translate-x-full bg-primary dark:bg-white" : ""
+                          }`}
+                        ></div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
 
                 <div className="flex gap-2">
                   <button
@@ -494,4 +520,4 @@ search: false,
   );
 };
 
-export default expense;
+export default AdmitCard;

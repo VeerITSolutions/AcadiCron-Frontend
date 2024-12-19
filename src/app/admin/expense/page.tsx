@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 
-const expense = () => {
+const Expense = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
@@ -232,24 +232,22 @@ const expense = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   const columns = [
-    "Name", 
-    "Invoice Number", 
+    "Name",
+    "Invoice Number",
     "Date",
     "Expense Head",
     "Amount",
     "Action",
-];
+  ];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page,
     rowsPerPage,
@@ -279,13 +277,11 @@ search: false,
               }}
             >
               <div className="flex flex-col gap-5.5 p-6.5">
-              <div className="field">
+                <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Expense Head <span className="required">*</span>
+                    Expense Head <span className="required">*</span>
                   </label>
-                  <select
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
+                  <select className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                     <option value="">Select</option>
                     <option value="1">Stationery</option>
                     <option value="2">Electricity Bill</option>
@@ -295,7 +291,6 @@ search: false,
                     <option value="6">Miscellaneous</option>
                     <option value="7">Teaching</option>
                     <option value="8">Payroll</option>
-
                   </select>
                 </div>
                 <div>
@@ -310,7 +305,7 @@ search: false,
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Invoice Number <span className="required">*</span>
+                    Invoice Number <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -318,21 +313,21 @@ search: false,
                     name="invoice_number"
                   />
                 </div>
-            
+
                 <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Date <span className="required">*</span>
-              </label>
-              <input
-                id="date"
-                name="date"
-                type="date"
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Amount <span className="required">*</span>
+                    Date <span className="required">*</span>
+                  </label>
+                  <input
+                    id="date"
+                    name="date"
+                    type="date"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Amount <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -341,29 +336,28 @@ search: false,
                   />
                 </div>
                 <div>
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Attach Document
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  id="file"
-                  name="document"
-                  className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                />
-              </div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Attach Document
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    id="file"
+                    name="document"
+                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div>
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Description
-            </label>
-            <textarea
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              name="description"
-            ></textarea>
-          </div>
-
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Description
+                  </label>
+                  <textarea
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    name="description"
+                  ></textarea>
+                </div>
 
                 <div className="flex gap-2">
                   <button
@@ -393,7 +387,7 @@ search: false,
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
               <MUIDataTable
-                title={""}
+                title={"Expense List"}
                 data={data}
                 columns={columns}
                 options={options}
@@ -406,4 +400,4 @@ search: false,
   );
 };
 
-export default expense;
+export default Expense;

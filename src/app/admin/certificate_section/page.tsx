@@ -9,6 +9,7 @@ import {
   createCertificate,
   editCertificateData,
   deleteCertificateData,
+  viewCertificate,
 } from "@/services/certificateService";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -35,7 +36,8 @@ const StudentCertificate = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [enabled, setEnabled] = useState(false);
-
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState(false);
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
@@ -126,7 +128,7 @@ const StudentCertificate = () => {
       ),
       <div key={student.id} className="flex">
         <IconButton aria-label="Show">
-          <Visibility />
+          <Visibility onClick={handleButtonClick(student.id)} />
         </IconButton>
 
         <IconButton
@@ -250,6 +252,17 @@ const StudentCertificate = () => {
     setPage(0);
   };
 
+  const handleButtonClick = async (id: any) => {
+    const result = await viewCertificate(id);
+
+    if (result && result.success) {
+      setIsFormVisibleHtml(result.data); // Append returned HTML
+      setIsFormVisible(true); // Show the HTML
+    } else {
+      console.error("Failed to load certificate preview");
+    }
+  };
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -259,8 +272,8 @@ const StudentCertificate = () => {
     viewColumns: false, // Disable view columns button
     filterType: false,
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,
@@ -295,6 +308,26 @@ search: false,
 
   return (
     <DefaultLayout>
+      {isFormVisible && (
+        <>
+          {/* Modal Overlay */}
+          <div className="" onClick={handleButtonClick(1)}></div>
+
+          {/* Modal Content */}
+          <div className="">
+            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              {/* Close Button */}
+              <button
+                onClick={handleButtonClick(1)}
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+              >
+                &times;
+              </button>
+              {isFormVisibleHtml}
+            </div>
+          </div>
+        </>
+      )}
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

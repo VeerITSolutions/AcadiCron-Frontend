@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 
-const expense = () => {
+const Expense = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
@@ -228,20 +228,15 @@ const expense = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-  const columns = [
-    "Expense Head",
-    "Action",
-];
+  const columns = ["Expense Head", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page,
     rowsPerPage,
@@ -273,25 +268,24 @@ search: false,
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Expense Head <span className="required">*</span>
+                    Expense Head <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="expense_head"
                   />
-                  </div>
-        
-              <div>
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Description
-            </label>
-            <textarea
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              name="description"
-            ></textarea>
-          </div>
+                </div>
 
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Description
+                  </label>
+                  <textarea
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    name="description"
+                  ></textarea>
+                </div>
 
                 <div className="flex gap-2">
                   <button
@@ -321,7 +315,7 @@ search: false,
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
               <MUIDataTable
-                title={""}
+                title={"Expense List"}
                 data={data}
                 columns={columns}
                 options={options}
@@ -334,4 +328,4 @@ search: false,
   );
 };
 
-export default expense;
+export default Expense;
