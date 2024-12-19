@@ -365,7 +365,7 @@ search: false,
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
               <MUIDataTable
-                title={""}
+                title={"Income List"}
                 data={data}
                 columns={columns}
                 options={options}
