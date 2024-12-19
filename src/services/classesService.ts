@@ -31,6 +31,16 @@ export const createclassesAdd = async (name: any, sections: any): Promise<any> =
   }
 };
 
+export const editclassesAdd = async (id: any ,name: any, sections: any): Promise<any> => {
+  try {
+    const response = await apiClient.post(`/classes-edit/${id}`, { name, sections });
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create class section");
+  }
+};
+
 
 
 // Delete a student category by ID

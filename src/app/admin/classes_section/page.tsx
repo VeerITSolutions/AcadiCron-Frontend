@@ -11,7 +11,7 @@ import {
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
 
-import { createclassesAdd } from "@/services/classesService";
+import { createclassesAdd, editclassesAdd } from "@/services/classesService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -150,8 +150,8 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-      } else {
-        const result = await createclassesAdd(
+        const result = await editclassesAdd(
+          editCategoryId,
           formData.class_id,
           selectedSection,
         );
@@ -160,6 +160,18 @@ const FeesMaster = () => {
         } else {
           toast.error("Failed to update subject group");
         }
+
+        setFormData({
+          class_id: "",
+          section_id: selectedSection,
+        });
+
+        setSelectedSection([]);
+      } else {
+        const result = await createclassesAdd(
+          formData.class_id,
+          selectedSection,
+        );
 
         setFormData({
           class_id: "",
