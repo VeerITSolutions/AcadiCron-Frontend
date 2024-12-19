@@ -91,11 +91,14 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (id: number, fees_group_value: string) => {
+  const handleEdit = (id: number, data: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
+    setSelectedSection(data.section_id);
+
     setFormData({
-      ...formData,
+      class_id: data.class_name,
+      section_id: selectedSection,
     });
   };
 
@@ -114,7 +117,7 @@ const FeesMaster = () => {
       student.section_name || "N/A",
       <div key={student.id} className="flex">
         <IconButton
-          onClick={() => handleEdit(student.id, student.category)}
+          onClick={() => handleEdit(student.id, student)}
           aria-label="edit"
         >
           <Edit />
@@ -255,7 +258,7 @@ const FeesMaster = () => {
                             <input
                               type="checkbox"
                               onChange={(e) => handleSectionChange(sec.id)}
-                              checked={selectedSection.includes(sec.id)}
+                              checked={selectedSection == sec.id}
                               className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
                             />
 
