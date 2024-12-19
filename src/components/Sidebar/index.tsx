@@ -332,6 +332,45 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
+                
+                <path d="M4 2h16M4 6h16M4 10h16M4 14h16M4 18h16M10 6v12M14 6v12" />
+                
+               
+                <path d="M16 17l2 2 4-4" />
+
+               
+                <rect x="3" y="3" width="6" height="9" rx="1" />
+                <path d="M4 5h4M4 7h4M4 9h2" />
+                <path d="M15 3l4 4m-4 0 4-4" />
+              </svg>
+
+            ),
+            label: "Examinations",
+            route: "#",
+            children: [
+              { label: "Exam Group", route: "/admin/examgroup", },
+              { label: "Exam Schedule", route: "/admin/exam_schedule", },
+              { label: "Exam Result", route: "/admin/examresult" },
+              { label: "Design Admit Card", route: "/admin/admitcard" },
+              { label: "Print Admit Card", route: "/admin/examresult/admitcard" },
+              { label: "Design Marksheet", route: "/admin/marksheet" },
+              { label: "Print Marksheet", route: "/admin/examresult/marksheet" },
+              { label: "Marks Grade", route: "/admin/grade" },
+            ],
+          },
+          {
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M3 6h18M3 10h18M3 14h18M3 18h18" />
                 <path d="M16 16l4 4M16 20l4-4M12 12h6M12 16h6" />
                 <path d="M6 3v2M10 3v2" />

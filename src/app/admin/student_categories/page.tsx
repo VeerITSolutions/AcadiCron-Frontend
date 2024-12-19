@@ -74,7 +74,7 @@ const StudentCategories = () => {
           aria-label="edit"
         >
           <Edit />
-        </IconButton>
+        </IconButton> 
         <IconButton
           onClick={() => handleDelete(student.id)}
           aria-label="delete"
