@@ -96,11 +96,13 @@ const FeesMaster = () => {
     });
   };
 
-  const handleSectionChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    sectionId: string,
-  ) => {
-    setSelectedSection((prev) => [...prev, sectionId]);
+  const handleSectionChange = (sectionId: string) => {
+    setSelectedSection(
+      (prev) =>
+        prev.includes(sectionId)
+          ? prev.filter((id) => id !== sectionId) // Remove if already selected
+          : [...prev, sectionId], // Add if not selected
+    );
   };
 
   const formatStudentCategoryData = (students: any[]) =>
@@ -141,7 +143,7 @@ const FeesMaster = () => {
       } else {
         const result = await createclassesAdd(
           formData.class_id,
-          formData.section_id,
+          selectedSection,
         );
         if (result.success) {
           toast.success("updated successfully");
@@ -249,10 +251,8 @@ const FeesMaster = () => {
                           >
                             <input
                               type="checkbox"
-                              onChange={(e) =>
-                                handleSectionChange(e, sec.section_id)
-                              }
-                              checked={selectedSection.includes(sec.section_id)}
+                              onChange={(e) => handleSectionChange(sec.id)}
+                              checked={selectedSection.includes(sec.id)}
                               className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
                             />
 
@@ -266,12 +266,10 @@ const FeesMaster = () => {
                           >
                             <input
                               type="checkbox"
-                              onChange={(e) =>
-                                handleSectionChange(e, sec.section_id)
-                              }
+                              onChange={() => handleSectionChange(sec.id)}
+                              checked={selectedSection.includes(sec.id)} // Control the checkbox state
                               className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
                             />
-
                             {sec.section}
                           </label>
                         ))}
