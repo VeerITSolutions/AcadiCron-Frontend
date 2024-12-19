@@ -479,39 +479,6 @@ const AdmitCard = () => {
                 </div>
               </div>
 
-
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Date <span className="required">*</span>
-                  </label>
-                  <input
-                    id="date"
-                    name="date"
-                    type="date"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Amount <span className="required">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="amount"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Description
-                  </label>
-                  <textarea
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    name="description"
-                  ></textarea>
-                </div>
-
                 <div className="flex gap-2">
                   <button
                     type="submit"
