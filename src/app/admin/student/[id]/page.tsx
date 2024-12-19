@@ -25,6 +25,8 @@ import {
 import { IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { fetchStudentexamData } from "@/services/studentExamService";
+import LoaderSpiner from "@/components/common/LoaderSpiner";
+
 interface FeeData {
   fees_group: string;
   fees_code: string;
@@ -321,6 +323,8 @@ const StudentDetails = () => {
               fourth_title: "",
               category_name: data.data.category_name,
             });
+
+            setLoading(false);
           } catch (error) {
             console.error("Error fetching student data:", error);
           }
@@ -477,471 +481,477 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-      <div className="flex flex-wrap">
-        {/* Profile Sidebar */}
-        <div className="w-full p-2 md:w-1/4">
-          <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-            <div className="text-center">
-              <img
-                src={imageUrl || defaultImage}
-                alt="User Profile"
-                className="mx-auto h-24 w-24 rounded-full"
-              />
-              <h3 className="mt-2 text-[20px] font-bold">
-                {formData.firstname} {formData.lastname}
-              </h3>
+      {loading ? (
+        <LoaderSpiner />
+      ) : (
+        <div className="flex flex-wrap">
+          {/* Profile Sidebar */}
+          <div className="w-full p-2 md:w-1/4">
+            <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              <div className="text-center">
+                <img
+                  src={imageUrl || defaultImage}
+                  alt="User Profile"
+                  className="mx-auto h-24 w-24 rounded-full"
+                />
+                <h3 className="mt-2 text-[20px] font-bold">
+                  {formData.firstname} {formData.lastname}
+                </h3>
+              </div>
+
+              <ul className="mt-4 list-none border-stroke p-0 dark:border-strokedark">
+                <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
+                  <b>Admission No</b>{" "}
+                  <span className="text-aqua">{formData.admission_no}</span>
+                </li>
+                <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
+                  <b>Roll Number</b>{" "}
+                  <span className="text-aqua">
+                    {" "}
+                    {formData.roll_no || "N/A"}
+                  </span>
+                </li>
+                <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
+                  <b>Class</b>{" "}
+                  <span className="text-aqua">
+                    {formData.class_name} (2024-25)
+                  </span>
+                </li>
+                <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
+                  <b>Section</b>{" "}
+                  <span className="text-aqua">{formData.section_name}</span>
+                </li>
+                <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
+                  <b>RTE</b> <span className="text-aqua">{formData.rte}</span>
+                </li>
+                <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
+                  <b>Gender</b>{" "}
+                  <span className="text-aqua">{formData.gender}</span>
+                </li>
+              </ul>
             </div>
-
-            <ul className="mt-4 list-none border-stroke p-0 dark:border-strokedark">
-              <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>Admission No</b>{" "}
-                <span className="text-aqua">{formData.admission_no}</span>
-              </li>
-              <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>Roll Number</b>{" "}
-                <span className="text-aqua"> {formData.roll_no || "N/A"}</span>
-              </li>
-              <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>Class</b>{" "}
-                <span className="text-aqua">
-                  {formData.class_name} (2024-25)
-                </span>
-              </li>
-              <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>Section</b>{" "}
-                <span className="text-aqua">{formData.section_name}</span>
-              </li>
-              <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>RTE</b> <span className="text-aqua">{formData.rte}</span>
-              </li>
-              <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
-                <b>Gender</b>{" "}
-                <span className="text-aqua">{formData.gender}</span>
-              </li>
-            </ul>
           </div>
-        </div>
 
-        {/* Profile Content */}
-        <div className="w-full p-2 md:w-3/4">
-          <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-            <ul className="mb-4 flex border-b border-stroke dark:border-strokedark">
-              <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
-                onClick={() => setActiveTab("activity")}
-              >
-                Profile
-              </li>
-              <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "fee" ? "border-b-2 border-blue-500" : ""}`}
-                onClick={() => setActiveTab("fee")}
-              >
-                Fees
-              </li>
-              <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "exam" ? "border-b-2 border-blue-500" : ""}`}
-                onClick={() => setActiveTab("exam")}
-              >
-                Exam
-              </li>
-              <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
-                onClick={() => setActiveTab("documents")}
-              >
-                Documents
-              </li>
-              <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
-                onClick={() => setActiveTab("timelineh")}
-              >
-                Timeline
-              </li>
-            </ul>
+          {/* Profile Content */}
+          <div className="w-full p-2 md:w-3/4">
+            <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              <ul className="mb-4 flex border-b border-stroke dark:border-strokedark">
+                <li
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
+                  onClick={() => setActiveTab("activity")}
+                >
+                  Profile
+                </li>
+                <li
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "fee" ? "border-b-2 border-blue-500" : ""}`}
+                  onClick={() => setActiveTab("fee")}
+                >
+                  Fees
+                </li>
+                <li
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "exam" ? "border-b-2 border-blue-500" : ""}`}
+                  onClick={() => setActiveTab("exam")}
+                >
+                  Exam
+                </li>
+                <li
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
+                  onClick={() => setActiveTab("documents")}
+                >
+                  Documents
+                </li>
+                <li
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
+                  onClick={() => setActiveTab("timelineh")}
+                >
+                  Timeline
+                </li>
+              </ul>
 
-            {/* Tab Content */}
-            {activeTab === "activity" && (
-              <div>
-                <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                  <div
-                    className="tab-pane active flex flex-col gap-9"
-                    id="activity"
-                  >
-                    <div className="tshadow mb25 bozero rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white dark:bg-boxdark dark:drop-shadow-none">
-                          <tbody>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Admission Date
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 col-md-5 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.admission_date}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Date of Birth
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.dob}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Category
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.category_name}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Mobile Number
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.mobileno}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Caste
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.cast}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Religion
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.religion}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Email
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                {formData.email}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Place of Birth
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Nationality
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                Mother Tongue
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                TC Number
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
-                            </tr>
-                            <tr className="border-b border-stroke dark:border-strokedark">
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
-                                StudentID CBSE
-                              </td>
-                              <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                      <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                        <h3 className="font-medium text-black dark:text-white">
-                          Address
-                        </h3>
-                      </div>
-                      <div className="grid gap-5.5">
-                        <div className="overflow-x-auto">
-                          <table className="min-w-full border-b border-stroke bg-white dark:bg-boxdark">
-                            <tbody>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Current Address
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.current_address}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  {formData.permanent_address}
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                      <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                        <h3 className="font-medium text-black dark:text-white">
-                          Parent / Guardian Details
-                        </h3>
-                      </div>
-                      <div className="grid gap-5.5">
+              {/* Tab Content */}
+              {activeTab === "activity" && (
+                <div>
+                  <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                    <div
+                      className="tab-pane active flex flex-col gap-9"
+                      id="activity"
+                    >
+                      <div className="tshadow mb25 bozero rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <div className="overflow-x-auto">
                           <table className="min-w-full bg-white dark:bg-boxdark dark:drop-shadow-none">
                             <tbody>
                               <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Father Name
+                                <td className="col-md-4 col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Admission Date
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.father_name}
-                                </td>
-                                <td className="px-6 py-4">
-                                  <img
-                                    className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={
-                                      formData?.father_pic
-                                        ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}`
-                                        : defaultFatherImage
-                                    }
-                                    alt="Profile"
-                                  />
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Father Phone
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.father_phone}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Father Occupation
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.father_occupation}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Mother Name
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.mother_name}
-                                </td>
-                                <td className="px-6 py-4">
-                                  <img
-                                    className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={
-                                      formData?.father_pic
-                                        ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}`
-                                        : defaultFemalImage
-                                    }
-                                    alt="Profile"
-                                  />
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Mother Phone
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.mother_phone}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Mother Occupation
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.mother_occupation}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Guardian Name
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.guardian_name}
-                                </td>
-                                <td className="px-6 py-4">
-                                  <img
-                                    className="h-[100px] w-[100px] rounded-full border border-stroke"
-                                    src={
-                                      formData?.father_pic
-                                        ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}`
-                                        : defaultFemalImage
-                                    }
-                                    alt="Profile"
-                                  />
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Guardian Email
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.guardian_email}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Guardian Relation
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.guardian_relation}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Guardian Phone
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.guardian_phone}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Guardian Occupation
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.guardian_occupation}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Guardian Address
-                                </td>
-                                <td className="px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.guardian_address}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                      <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                        <h3 className="font-medium text-black dark:text-white">
-                          Miscellaneous Details
-                        </h3>
-                      </div>
-                      <div className="grid gap-5.5">
-                        <div className="overflow-x-auto">
-                          <table className="min-w-full bg-white dark:bg-boxdark dark:drop-shadow-none">
-                            <tbody>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Blood Group
-                                </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.blood_group}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Student House
-                                </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.school_house_id}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Height
-                                </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.height}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Weight
-                                </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.weight}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  As on Date
-                                </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                <td className="col-md-4 col-md-4 col-md-4 col-md-5 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                   {formData.admission_date}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Previous School Details
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Date of Birth
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  National Identification Number
-                                </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.adhar_no}
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  {formData.dob}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Local Identification Number
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Category
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  {formData.category_name}
+                                </td>
+                              </tr>
+                              <tr className="border-b border-stroke dark:border-strokedark">
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Mobile Number
+                                </td>
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
                                   {formData.mobileno}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Bank Account Number
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Caste
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.bank_account_no}
-                                </td>
-                              </tr>
-                              <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  Bank Name
-                                </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.bank_name}
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  {formData.cast}
                                 </td>
                               </tr>
                               <tr className="border-b border-stroke dark:border-strokedark">
-                                <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
-                                  IFSC Code
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Religion
                                 </td>
-                                <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
-                                  {formData.ifsc_code}
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  {formData.religion}
                                 </td>
+                              </tr>
+                              <tr className="border-b border-stroke dark:border-strokedark">
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Email
+                                </td>
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  {formData.email}
+                                </td>
+                              </tr>
+                              <tr className="border-b border-stroke dark:border-strokedark">
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Place of Birth
+                                </td>
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
+                              </tr>
+                              <tr className="border-b border-stroke dark:border-strokedark">
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Nationality
+                                </td>
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
+                              </tr>
+                              <tr className="border-b border-stroke dark:border-strokedark">
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  Mother Tongue
+                                </td>
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
+                              </tr>
+                              <tr className="border-b border-stroke dark:border-strokedark">
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  TC Number
+                                </td>
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
+                              </tr>
+                              <tr className="border-b border-stroke dark:border-strokedark">
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white">
+                                  StudentID CBSE
+                                </td>
+                                <td className="col-md-4 col-md-4 col-md-4 px-6 py-4 text-sm text-sm text-sm text-sm font-medium font-medium font-medium text-black text-black text-black text-black dark:text-white dark:text-white dark:text-white dark:text-white"></td>
                               </tr>
                             </tbody>
                           </table>
+                        </div>
+                      </div>
+
+                      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                        <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                          <h3 className="font-medium text-black dark:text-white">
+                            Address
+                          </h3>
+                        </div>
+                        <div className="grid gap-5.5">
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full border-b border-stroke bg-white dark:bg-boxdark">
+                              <tbody>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Current Address
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.current_address}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    {formData.permanent_address}
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white"></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                        <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                          <h3 className="font-medium text-black dark:text-white">
+                            Parent / Guardian Details
+                          </h3>
+                        </div>
+                        <div className="grid gap-5.5">
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white dark:bg-boxdark dark:drop-shadow-none">
+                              <tbody>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Father Name
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.father_name}
+                                  </td>
+                                  <td className="px-6 py-4">
+                                    <img
+                                      className="h-[100px] w-[100px] rounded-full border border-stroke"
+                                      src={
+                                        formData?.father_pic
+                                          ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.father_pic}`
+                                          : defaultFatherImage
+                                      }
+                                      alt="Profile"
+                                    />
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Father Phone
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.father_phone}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Father Occupation
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.father_occupation}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Mother Name
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.mother_name}
+                                  </td>
+                                  <td className="px-6 py-4">
+                                    <img
+                                      className="h-[100px] w-[100px] rounded-full border border-stroke"
+                                      src={
+                                        formData?.father_pic
+                                          ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.mother_pic}`
+                                          : defaultFemalImage
+                                      }
+                                      alt="Profile"
+                                    />
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Mother Phone
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.mother_phone}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Mother Occupation
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.mother_occupation}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Guardian Name
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.guardian_name}
+                                  </td>
+                                  <td className="px-6 py-4">
+                                    <img
+                                      className="h-[100px] w-[100px] rounded-full border border-stroke"
+                                      src={
+                                        formData?.father_pic
+                                          ? `${process.env.NEXT_PUBLIC_BASE_URL}${formData.guardian_pic}`
+                                          : defaultFemalImage
+                                      }
+                                      alt="Profile"
+                                    />
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Guardian Email
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.guardian_email}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Guardian Relation
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.guardian_relation}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Guardian Phone
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.guardian_phone}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Guardian Occupation
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.guardian_occupation}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Guardian Address
+                                  </td>
+                                  <td className="px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.guardian_address}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                        <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                          <h3 className="font-medium text-black dark:text-white">
+                            Miscellaneous Details
+                          </h3>
+                        </div>
+                        <div className="grid gap-5.5">
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white dark:bg-boxdark dark:drop-shadow-none">
+                              <tbody>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Blood Group
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.blood_group}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Student House
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.school_house_id}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Height
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.height}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Weight
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.weight}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    As on Date
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.admission_date}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Previous School Details
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white"></td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    National Identification Number
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.adhar_no}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Local Identification Number
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.mobileno}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Bank Account Number
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.bank_account_no}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    Bank Name
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.bank_name}
+                                  </td>
+                                </tr>
+                                <tr className="border-b border-stroke dark:border-strokedark">
+                                  <td className="col-md-4 px-6 py-4 text-sm font-medium text-black dark:text-white">
+                                    IFSC Code
+                                  </td>
+                                  <td className="col-md-5 px-6 py-4 text-sm text-black dark:text-white">
+                                    {formData.ifsc_code}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {/* {activeTab === "fee" && (
+              )}
+              {/* {activeTab === "fee" && (
               <div className="tab-content mx-auto max-w-screen-2xl p-4">
                 <div
                   className="tab-pane active flex flex-col gap-9"
@@ -956,36 +966,36 @@ const StudentDetails = () => {
               </div>
             )}
            */}
-            {activeTab === "exam" && (
-              <div className="fees-container">
-                {dataexamresult?.length === 0 &&
-                dataexamresult?.length === 0 ? (
-                  <div className="alert alert-danger">No record found</div>
-                ) : (
-                  <div className="table-responsive">
-                    <table className="table-hover table-striped table">
-                      <thead>
-                        <tr>
-                          <th>Exam Name</th>
-                          <th>Result</th>
-                        </tr>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            )}
+              {activeTab === "exam" && (
+                <div className="fees-container">
+                  {dataexamresult?.length === 0 &&
+                  dataexamresult?.length === 0 ? (
+                    <div className="alert alert-danger">No record found</div>
+                  ) : (
+                    <div className="table-responsive">
+                      <table className="table-hover table-striped table">
+                        <thead>
+                          <tr>
+                            <th>Exam Name</th>
+                            <th>Result</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              )}
 
-            {activeTab === "fee" && (
-              <div className="fees-container">
-                {student_due_fees?.length === 0 &&
-                student_discount_fees?.length === 0 ? (
-                  <div className="alert alert-danger">No record found</div>
-                ) : (
-                  <div className="table-responsive">
-                    <table className="table-hover table-striped table">
-                      {/* <thead>
+              {activeTab === "fee" && (
+                <div className="fees-container">
+                  {student_due_fees?.length === 0 &&
+                  student_discount_fees?.length === 0 ? (
+                    <div className="alert alert-danger">No record found</div>
+                  ) : (
+                    <div className="table-responsive">
+                      <table className="table-hover table-striped table">
+                        {/* <thead>
                         <tr>
                           <th>Fees Group</th>
                           <th>Fees Code</th>
@@ -1001,8 +1011,8 @@ const StudentDetails = () => {
                           <th>Balance</th>
                         </tr>
                       </thead> */}
-                      <tbody>
-                        {/*  {student_due_fees?.map((fee: any, index: any) => (
+                        <tbody>
+                          {/*  {student_due_fees?.map((fee: any, index: any) => (
                           <tr
                             key={index}
                             className={
@@ -1084,142 +1094,146 @@ const StudentDetails = () => {
                             {totals?.balance?.toFixed(2) || "0.00"}
                           </td>
                         </tr> */}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            )}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              )}
 
-            {activeTab === "documents" && (
-              <div>
-                <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                  <div
-                    className="tab-pane active flex flex-col gap-9"
-                    id="activity"
-                  >
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                      <div className="p-6">
-                        <div className="mb-4 flex justify-end">
-                          <button
-                            onClick={handleButtonClick}
-                            className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
-                          >
-                            {isFormVisible ? "Close Form" : "Upload Documents"}
-                          </button>
+              {activeTab === "documents" && (
+                <div>
+                  <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                    <div
+                      className="tab-pane active flex flex-col gap-9"
+                      id="activity"
+                    >
+                      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                        <div className="p-6">
+                          <div className="mb-4 flex justify-end">
+                            <button
+                              onClick={handleButtonClick}
+                              className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
+                            >
+                              {isFormVisible
+                                ? "Close Form"
+                                : "Upload Documents"}
+                            </button>
+                          </div>
+
+                          {/* Table */}
+                          <table className="min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
+                            <thead className="bg-gray-100">
+                              <tr>
+                                <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                                  Title
+                                </th>
+                                <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                                  Name
+                                </th>
+                                <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium dark:border-strokedark">
+                                  Action
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {dataDocument?.map((item: any, index: number) => (
+                                <tr
+                                  key={`discount-${index}`}
+                                  className="dark-light"
+                                >
+                                  <td>{item?.title}</td>
+                                  <td>{item?.doc}</td>
+
+                                  <td>
+                                    {" "}
+                                    <td className="text-left">
+                                      <IconButton
+                                        onClick={() => handleDelete2(item.id)}
+                                        aria-label="Delete"
+                                        color="error" // Optional: Adds a red color to indicate delete action
+                                      >
+                                        <Delete />
+                                      </IconButton>
+                                    </td>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {activeTab === "timelineh" && (
+                <div>
+                  <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                    <div
+                      className="tab-pane active flex flex-col gap-9"
+                      id="activity"
+                    >
+                      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                        <div className="p-6">
+                          <div className="mb-4 flex justify-end">
+                            <button
+                              onClick={handleButtonClick2}
+                              className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
+                            >
+                              {isFormVisible ? "Close Form" : "Add"}
+                            </button>
+                          </div>
 
-                        {/* Table */}
-                        <table className="min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
-                          <thead className="bg-gray-100">
-                            <tr>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
-                                Title
-                              </th>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
-                                Name
-                              </th>
-                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium dark:border-strokedark">
-                                Action
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {dataDocument?.map((item: any, index: number) => (
-                              <tr
-                                key={`discount-${index}`}
-                                className="dark-light"
-                              >
-                                <td>{item?.title}</td>
-                                <td>{item?.doc}</td>
+                          {/* Table */}
+                          <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
+                            <thead className="bg-gray-100">
+                              <tr>
+                                <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                                  Title
+                                </th>
+                                <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                                  Name
+                                </th>
+                                <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium dark:border-strokedark">
+                                  Action
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {/*  */}
 
-                                <td>
-                                  {" "}
+                              {dataTimeline?.map((item: any, index: number) => (
+                                <tr
+                                  key={`discount-${index}`}
+                                  className="dark-light"
+                                >
+                                  <td>{item?.title}</td>
+                                  <td>{item?.description}</td>
                                   <td className="text-left">
                                     <IconButton
-                                      onClick={() => handleDelete2(item.id)}
+                                      onClick={() => handleDelete(item.id)}
                                       aria-label="Delete"
                                       color="error" // Optional: Adds a red color to indicate delete action
                                     >
                                       <Delete />
                                     </IconButton>
                                   </td>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {activeTab === "timelineh" && (
-              <div>
-                <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                  <div
-                    className="tab-pane active flex flex-col gap-9"
-                    id="activity"
-                  >
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                      <div className="p-6">
-                        <div className="mb-4 flex justify-end">
-                          <button
-                            onClick={handleButtonClick2}
-                            className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
-                          >
-                            {isFormVisible ? "Close Form" : "Add"}
-                          </button>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
-
-                        {/* Table */}
-                        <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
-                          <thead className="bg-gray-100">
-                            <tr>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
-                                Title
-                              </th>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
-                                Name
-                              </th>
-                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium dark:border-strokedark">
-                                Action
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {/*  */}
-
-                            {dataTimeline?.map((item: any, index: number) => (
-                              <tr
-                                key={`discount-${index}`}
-                                className="dark-light"
-                              >
-                                <td>{item?.title}</td>
-                                <td>{item?.description}</td>
-                                <td className="text-left">
-                                  <IconButton
-                                    onClick={() => handleDelete(item.id)}
-                                    aria-label="Delete"
-                                    color="error" // Optional: Adds a red color to indicate delete action
-                                  >
-                                    <Delete />
-                                  </IconButton>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
       {/* Modal */}
       {isFormVisible && (
         <>
