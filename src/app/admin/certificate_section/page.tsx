@@ -35,7 +35,7 @@ const StudentCertificate = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [enabled, setEnabled] = useState(false);
-
+  const [isFormVisible, setIsFormVisible] = useState(false);
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
@@ -126,7 +126,7 @@ const StudentCertificate = () => {
       ),
       <div key={student.id} className="flex">
         <IconButton aria-label="Show">
-          <Visibility />
+          <Visibility onClick={handleButtonClick} />
         </IconButton>
 
         <IconButton
@@ -250,6 +250,10 @@ const StudentCertificate = () => {
     setPage(0);
   };
 
+  const handleButtonClick = () => {
+    setIsFormVisible(!isFormVisible);
+  };
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -259,8 +263,8 @@ const StudentCertificate = () => {
     viewColumns: false, // Disable view columns button
     filterType: false,
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,
@@ -295,6 +299,43 @@ search: false,
 
   return (
     <DefaultLayout>
+      {isFormVisible && (
+        <>
+          {/* Modal Overlay */}
+          <div className="" onClick={handleButtonClick}></div>
+
+          {/* Modal Content */}
+          <div className="">
+            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              {/* Close Button */}
+              <button
+                onClick={handleButtonClick}
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+              >
+                &times;
+              </button>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Doloribus repellat nobis, voluptates tempora ab consequatur! Nam
+                laudantium consectetur eius facilis nesciunt voluptate
+                temporibus incidunt labore dolorum, accusantium nemo perferendis
+                vel exercitationem ab sequi ducimus explicabo maxime. Ipsum
+                maiores facere velit adipisci et enim soluta quod distinctio,
+                voluptates sunt ipsa! Aliquam cum provident reiciendis laborum
+                magnam atque sunt. Accusantium dignissimos dolore accusamus at
+                sapiente nisi dolor vel, omnis odit? Vel, quam. Placeat
+                molestias, repellendus sit laborum earum recusandae porro
+                labore, aliquam maiores quidem natus adipisci? Labore pariatur
+                expedita quos perspiciatis culpa minima incidunt dolore ratione
+                aut, mollitia, quod necessitatibus. Molestiae natus neque minima
+                quisquam assumenda nesciunt voluptatum molestias quia saepe
+                tenetur quas quos optio, cupiditate enim sint omnis. Quia autem
+                sint aperiam ratione natus.
+              </p>
+            </div>
+          </div>
+        </>
+      )}
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
