@@ -9,6 +9,7 @@ import {
   createCertificate,
   editCertificateData,
   deleteCertificateData,
+  viewCertificate,
 } from "@/services/certificateService";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -36,6 +37,7 @@ const StudentCertificate = () => {
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [enabled, setEnabled] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState(false);
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
@@ -126,7 +128,7 @@ const StudentCertificate = () => {
       ),
       <div key={student.id} className="flex">
         <IconButton aria-label="Show">
-          <Visibility onClick={handleButtonClick} />
+          <Visibility onClick={handleButtonClick(student.id)} />
         </IconButton>
 
         <IconButton
@@ -250,8 +252,15 @@ const StudentCertificate = () => {
     setPage(0);
   };
 
-  const handleButtonClick = () => {
-    setIsFormVisible(!isFormVisible);
+  const handleButtonClick = async (id: any) => {
+    const result = await viewCertificate(id);
+
+    if (result && result.success) {
+      setIsFormVisibleHtml(result.data); // Append returned HTML
+      setIsFormVisible(true); // Show the HTML
+    } else {
+      console.error("Failed to load certificate preview");
+    }
   };
 
   /* if (loading) return <Loader />; */
@@ -302,36 +311,19 @@ const StudentCertificate = () => {
       {isFormVisible && (
         <>
           {/* Modal Overlay */}
-          <div className="" onClick={handleButtonClick}></div>
+          <div className="" onClick={handleButtonClick(1)}></div>
 
           {/* Modal Content */}
           <div className="">
             <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
               {/* Close Button */}
               <button
-                onClick={handleButtonClick}
+                onClick={handleButtonClick(1)}
                 className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
               >
                 &times;
               </button>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Doloribus repellat nobis, voluptates tempora ab consequatur! Nam
-                laudantium consectetur eius facilis nesciunt voluptate
-                temporibus incidunt labore dolorum, accusantium nemo perferendis
-                vel exercitationem ab sequi ducimus explicabo maxime. Ipsum
-                maiores facere velit adipisci et enim soluta quod distinctio,
-                voluptates sunt ipsa! Aliquam cum provident reiciendis laborum
-                magnam atque sunt. Accusantium dignissimos dolore accusamus at
-                sapiente nisi dolor vel, omnis odit? Vel, quam. Placeat
-                molestias, repellendus sit laborum earum recusandae porro
-                labore, aliquam maiores quidem natus adipisci? Labore pariatur
-                expedita quos perspiciatis culpa minima incidunt dolore ratione
-                aut, mollitia, quod necessitatibus. Molestiae natus neque minima
-                quisquam assumenda nesciunt voluptatum molestias quia saepe
-                tenetur quas quos optio, cupiditate enim sint omnis. Quia autem
-                sint aperiam ratione natus.
-              </p>
+              {isFormVisibleHtml}
             </div>
           </div>
         </>
