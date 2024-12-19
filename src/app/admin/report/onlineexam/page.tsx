@@ -11,11 +11,7 @@ const StudentAdmission = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  return (
-    <DefaultLayout>
-      Hello
-    </DefaultLayout>
-  );
+  return <DefaultLayout>Hello </DefaultLayout>;
 };
 
 export default StudentAdmission;

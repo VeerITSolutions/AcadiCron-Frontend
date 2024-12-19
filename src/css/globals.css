@@ -208,6 +208,10 @@ td.MuiTableCell-root > div > div {
   min-height: 100vh;
   background: #24303f;
 }
+.checkbox-inline input,
+.radio-inline input {
+  margin-right: 7px;
+}
 @media (max-width: 767px) {
   .MuiPaper-root h6 {
     text-align: left;
