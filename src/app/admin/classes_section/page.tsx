@@ -111,6 +111,10 @@ const FeesMaster = () => {
     );
   };
 
+  const handleSectionChange2 = (sectionId: any) => {
+    setSelectedSection(sectionId);
+  };
+
   const formatStudentCategoryData = (students: any[]) =>
     students.map((student: any) => [
       student.class_name,
@@ -257,7 +261,7 @@ const FeesMaster = () => {
                           >
                             <input
                               type="checkbox"
-                              onChange={(e) => handleSectionChange(sec.id)}
+                              onChange={(e) => handleSectionChange2(sec.id)}
                               checked={selectedSection == sec.id}
                               className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
                             />
