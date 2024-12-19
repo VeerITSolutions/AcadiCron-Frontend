@@ -11,14 +11,17 @@ import {
   fetchStudentFeesMasterData,
 } from "@/services/studentFeesMasterService";
 
-import { createclassesAdd } from "@/services/classesService";
+import { createclassesAdd, editclassesAdd } from "@/services/classesService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { fetchsectionData } from "@/services/sectionsService";
-import { fetchclassesSectionData } from "@/services/classesSectionService";
+import {
+  deleteclassesSection,
+  fetchclassesSectionData,
+} from "@/services/classesSectionService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -80,7 +83,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteclassesSection(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -88,19 +91,28 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (id: number, fees_group_value: string) => {
+  const handleEdit = (id: number, data: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
+    setSelectedSection(data.section_id);
+
     setFormData({
-      ...formData,
+      class_id: data.class_name,
+      section_id: selectedSection,
     });
   };
 
-  const handleSectionChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    sectionId: string,
-  ) => {
-    setSelectedSection((prev) => [...prev, sectionId]);
+  const handleSectionChange = (sectionId: string) => {
+    setSelectedSection(
+      (prev) =>
+        prev.includes(sectionId)
+          ? prev.filter((id) => id !== sectionId) // Remove if already selected
+          : [...prev, sectionId], // Add if not selected
+    );
+  };
+
+  const handleSectionChange2 = (sectionId: any) => {
+    setSelectedSection(sectionId);
   };
 
   const formatStudentCategoryData = (students: any[]) =>
@@ -109,7 +121,7 @@ const FeesMaster = () => {
       student.section_name || "N/A",
       <div key={student.id} className="flex">
         <IconButton
-          onClick={() => handleEdit(student.id, student.category)}
+          onClick={() => handleEdit(student.id, student)}
           aria-label="edit"
         >
           <Edit />
@@ -138,16 +150,36 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-      } else {
-        const result = await createclassesAdd(
+        const result = await editclassesAdd(
+          editCategoryId,
           formData.class_id,
-          formData.section_id,
+          selectedSection,
         );
         if (result.success) {
           toast.success("updated successfully");
         } else {
           toast.error("Failed to update subject group");
         }
+
+        setFormData({
+          class_id: "",
+          section_id: selectedSection,
+        });
+
+        setSelectedSection([]);
+
+        setFormData({
+          class_id: "",
+          section_id: selectedSection,
+        });
+
+        setIsEditing(false);
+        setEditCategoryId(null);
+      } else {
+        const result = await createclassesAdd(
+          formData.class_id,
+          selectedSection,
+        );
 
         setFormData({
           class_id: "",
@@ -196,10 +228,12 @@ const FeesMaster = () => {
   };
 
   const handleCancel = () => {
+    setSelectedSection([]);
     setFormData({
       class_id: "",
       section_id: selectedSection,
     });
+
     setIsEditing(false);
     setEditCategoryId(null);
   };
@@ -249,10 +283,8 @@ const FeesMaster = () => {
                           >
                             <input
                               type="checkbox"
-                              onChange={(e) =>
-                                handleSectionChange(e, sec.section_id)
-                              }
-                              checked={selectedSection.includes(sec.section_id)}
+                              onChange={(e) => handleSectionChange2(sec.id)}
+                              checked={selectedSection == sec.id}
                               className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
                             />
 
@@ -266,12 +298,10 @@ const FeesMaster = () => {
                           >
                             <input
                               type="checkbox"
-                              onChange={(e) =>
-                                handleSectionChange(e, sec.section_id)
-                              }
+                              onChange={() => handleSectionChange(sec.id)}
+                              checked={selectedSection.includes(sec.id)} // Control the checkbox state
                               className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
                             />
-
                             {sec.section}
                           </label>
                         ))}
