@@ -616,6 +616,61 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {
             icon: (
               <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 10h16M5 15h14M5 19h14M6 9h12M9 3h6v4h-6z" />
+              <circle cx="7" cy="19" r="2" />
+              <circle cx="17" cy="19" r="2" />
+            </svg>
+
+
+            ),
+            label: "Transport",
+            route: "#",
+            children: [
+              { label: "Routes", route: "/admin/route" },
+              { label: "Vehicles", route: "/admin/vehicle" },
+              { label: "Assign Vehicle", route: "/admin/vehroute" },
+            ],
+          },
+          {
+            icon: (
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="4" y="5" width="16" height="14" rx="2" />
+              <path d="M4 10h16M9 5v-2h6v2M7 15h10M9 12h6" />
+              <circle cx="7" cy="17" r="1" />
+              <circle cx="17" cy="17" r="1" />
+            </svg>
+            ),
+            label: "Hostel",
+            route: "#",
+            children: [
+              { label: "Hostel Rooms", route: "/admin/hostelroom" },
+              { label: "Room Type", route: "/admin/roomtype" },
+              { label: "Hostel", route: "/admin/hostel" },
+            ],
+          },
+          {
+            icon: (
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
