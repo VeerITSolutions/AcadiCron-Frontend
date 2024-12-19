@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 
-const Expense = () => {
+const AdmitCard = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
@@ -489,4 +489,4 @@ const Expense = () => {
   );
 };
 
-export default Expense;
+export default AdmitCard;
