@@ -56,7 +56,7 @@ const options = {
 };
 
 
-const StudentDetails = () => {
+const ExamShedule = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -278,4 +278,4 @@ const StudentDetails = () => {
   );
 };
 
-export default StudentDetails;
+export default ExamShedule;

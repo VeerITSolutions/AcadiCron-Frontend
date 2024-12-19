@@ -768,10 +768,11 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <rect x="3" y="4" width="18" height="16" rx="2" />
-              <path d="M3 9h18M7 3v6M17 3v6" />
-              <path d="M10 14l2 2 4-4" />
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9 15l3-3 3 3" />
+              <path d="M9 9l3 3 3-3" />
             </svg>
+
 
             ),
             label: "Alumni",
@@ -786,6 +787,46 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 route: "/admin/alumni/events",
               },
 
+            ],
+          },
+          {
+            icon: (
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4z" />
+              <path d="M3 7h18v6H3V7z" />
+              <path d="M12 12l-4 4 4 4 4-4-4-4z" />
+              <path d="M7 21h10" />
+            </svg>
+            
+
+            ),
+            label: "Reports",
+            route: "#",
+            children: [
+              { label: "Student Information", route: "/admin/report/studentinformation" },
+              { label: "Finance", route: "/admin/report/finance" },
+              { label: "Attendance", route: "/admin/report/attendance" },
+              { label: "Examinations", route: "/admin/report/examinations" },
+              { label: "Online Examinations", route: "/admin/report/onlineexam" },
+              { label: "Lesson Plan", route: "/admin/report/lesson_plan" },
+              { label: "Human Resource", route: "/admin/report/staff_report" },
+              { label: "Library", route: "/admin/report/library" },
+              { label: "Inventory", route: "/admin/report/inventory" },
+              { label: "Transport", route: "/admin/route/studenttransportdetails" },
+              { label: "Hostel", route: "/admin/hostelroom/studenthosteldetails" },
+              { label: "Alumni", route: "/admin/report/alumnireport" },
+              { label: "User Log", route: "/admin/userlog" },
+              { label: "Audit Trail Report", route: "/admin/audit" },
             ],
           },
         ],
