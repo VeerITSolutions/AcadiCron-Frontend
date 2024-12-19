@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 
-const expense = () => {
+const Expense = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
@@ -406,4 +406,4 @@ search: false,
   );
 };
 
-export default expense;
+export default Expense;
