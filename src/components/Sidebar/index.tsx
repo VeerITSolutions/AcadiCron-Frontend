@@ -698,22 +698,94 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 label: "Generate Certificate",
                 route: "/admin/generatecertificate",
               },
-              /*  {
-            label: "Student ID Card",
-            route: "/admin/studentidcard",
-            hidden: true,
-          }, */ // Added hidden property for display:none
-              /*   {
-            label: "Generate ID Card",
-            route: "/admin/generateidcard/search",
-            hidden: true,
-          }, // Added hidden property for display:none
-          { label: "Staff ID Card", route: "/admin/staffidcard", hidden: true }, // Added hidden property for display:none
+              
+            ],
+          },
           {
-            label: "Generate Staff ID Card",
-            route: "/admin/generatestaffidcard",
-            hidden: true,
-          },  */ // Added hidden property for display:none
+            icon: (
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M3 9h18M7 3v6M17 3v6" />
+              <path d="M10 14l2 2 4-4" />
+            </svg>
+
+            ),
+            label: "Front CMS",
+            route: "#",
+            children: [
+              {
+                label: "Event",
+                route: "/admin/front/events",
+              },
+              {
+                label: "Gallery",
+                route: "/admin/front/gallery",
+              },
+
+              {
+                label: "News",
+                route: "/admin/front/notice",
+              },
+              {
+                label: "Media Manager",
+                route: "/admin/front/media",
+              },
+              {
+                label: "Pages",
+                route: "/admin/front/page",
+              },
+              {
+                label: "Menus",
+                route: "/admin/front/menus",
+              },
+              {
+                label: "Banner Images",
+                route: "/admin/front/banner",
+              },
+              
+            ],
+          },
+          {
+            icon: (
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M3 9h18M7 3v6M17 3v6" />
+              <path d="M10 14l2 2 4-4" />
+            </svg>
+
+            ),
+            label: "Alumni",
+            route: "#",
+            children: [
+              {
+                label: "Manage Alumni",
+                route: "/admin/alumni/alumnilist",
+              },
+              {
+                label: "Events",
+                route: "/admin/alumni/events",
+              },
+
             ],
           },
         ],
