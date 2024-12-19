@@ -46,13 +46,13 @@ const columns = [
 const options = {
   filterType: "checkbox",
   serverSide: true,
-  pagination: false,
- responsive: "standard",
-search: false,
-  filter: false,
+  responsive: "standard",
+  search: false,
+  selectableRows: "none", 
+  filter: false, 
   viewColumns: false,
-  tableBodyMaxHeight: "500px",
 };
+
 
 const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -267,7 +267,6 @@ const StudentDetails = () => {
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
               onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              selectableRows: "multiple", // Allow multiple selection
               onRowsDelete: handleDelete,
             }}
           />
