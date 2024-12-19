@@ -361,6 +361,37 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {
             icon: (
               <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="4" width="20" height="14" rx="2" ry="2" />
+              <path d="M8 20h8M10 16v4M14 16v4" />
+
+              <rect x="6" y="6" width="12" height="8" rx="1" />
+              <path d="M8 8h8M8 10h5" />
+
+              <path d="M16 11l1 1 2-2" />
+            </svg>
+
+
+            ),
+            label: "Online Examinations",
+            route: "#",
+            children: [
+              { label: "Online Exam", route: "/admin/onlineexam", },
+              { label: "Question Bank", route: "/admin/question", },
+            ],
+          },
+          {
+            icon: (
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -548,6 +579,38 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             route: "#",
             children: [
               { label: " Add Homework", route: "/admin/add_homework" },
+            ],
+          },
+          {
+            icon: (
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+             
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <path d="M7 10h10M7 14h10M7 18h10" />
+              <path d="M3 7h18" />
+            </svg>
+
+            ),
+            label: "Inventory",
+            route: "#",
+            children: [
+              { label: "Issue Item", route: "/admin/issueitem" },
+              { label: "Add Item Stock", route: "/admin/itemstock" },
+              { label: "Add Item", route: "/admin/item" },
+              { label: "Item Category", route: "/admin/itemcategory" },
+              { label: "Item Store", route: "/admin/itemstore" },
+              { label: "Item Supplier", route: "/admin/itemsupplier" },
+
             ],
           },
           {
