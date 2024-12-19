@@ -50,7 +50,7 @@ const options = {
   filterType: "checkbox",
   serverSide: true,
  responsive: "standard",
-search: false,
+  search: false,
   selectableRows: "none", // Disable row selection
 
   filter: false, // Disable filter,
