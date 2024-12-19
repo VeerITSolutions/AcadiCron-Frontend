@@ -44,15 +44,15 @@ const columns = [
 ];
 
 const options = {
-  filterType: "checkbox",
   serverSide: true,
   pagination: false,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   filter: false,
   viewColumns: false,
   tableBodyMaxHeight: "500px",
 };
+
 
 const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
