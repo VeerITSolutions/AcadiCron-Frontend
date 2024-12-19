@@ -208,10 +208,12 @@ const FeesMaster = () => {
   };
 
   const handleCancel = () => {
+    setSelectedSection([]);
     setFormData({
       class_id: "",
       section_id: selectedSection,
     });
+
     setIsEditing(false);
     setEditCategoryId(null);
   };
