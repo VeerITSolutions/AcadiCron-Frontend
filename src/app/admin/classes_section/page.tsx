@@ -18,7 +18,10 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { fetchsectionData } from "@/services/sectionsService";
-import { fetchclassesSectionData } from "@/services/classesSectionService";
+import {
+  deleteclassesSection,
+  fetchclassesSectionData,
+} from "@/services/classesSectionService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -80,7 +83,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteclassesSection(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
