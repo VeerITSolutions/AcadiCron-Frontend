@@ -167,6 +167,14 @@ const FeesMaster = () => {
         });
 
         setSelectedSection([]);
+
+        setFormData({
+          class_id: "",
+          section_id: selectedSection,
+        });
+
+        setIsEditing(false);
+        setEditCategoryId(null);
       } else {
         const result = await createclassesAdd(
           formData.class_id,
