@@ -241,24 +241,41 @@ const FeesMaster = () => {
                     Sections<span className="text-red-500"> *</span>
                   </label>
                   <div className="flex flex-col gap-2">
-                    {sections.map((sec: any) => (
-                      <label
-                        key={sec.section_id}
-                        className="flex items-center gap-2 text-black dark:text-white"
-                      >
-                        <input
-                          type="checkbox"
-                          value={formData.section_id}
-                          checked={selectedSection.includes(sec.section_id)}
-                          onChange={(e) =>
-                            handleSectionChange(e, sec.section_id)
-                          }
-                          className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
-                        />
+                    {isEditing
+                      ? sections.map((sec: any) => (
+                          <label
+                            key={sec.id}
+                            className="flex items-center gap-2 text-black dark:text-white"
+                          >
+                            <input
+                              type="checkbox"
+                              onChange={(e) =>
+                                handleSectionChange(e, sec.section_id)
+                              }
+                              checked={selectedSection.includes(sec.section_id)}
+                              className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
+                            />
 
-                        {sec.section}
-                      </label>
-                    ))}
+                            {sec.section}
+                          </label>
+                        ))
+                      : sections.map((sec: any) => (
+                          <label
+                            key={sec.id}
+                            className="flex items-center gap-2 text-black dark:text-white"
+                          >
+                            <input
+                              type="checkbox"
+                              onChange={(e) =>
+                                handleSectionChange(e, sec.section_id)
+                              }
+                              className="rounded border-stroke text-primary focus:ring-primary dark:border-form-strokedark dark:bg-boxdark dark:text-white"
+                            />
+
+                            {sec.section}
+                          </label>
+                        ))}
+                    {}
                   </div>
                 </div>
 
