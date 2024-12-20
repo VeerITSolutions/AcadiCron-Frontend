@@ -114,6 +114,10 @@ const StudentCertificate = () => {
     });
   };
 
+  const handleButtonClick = () => {
+    setIsFormVisible((prev) => !prev); // Toggle modal state
+  };
+
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.certificate_name || "N/A",
@@ -128,7 +132,10 @@ const StudentCertificate = () => {
       ),
       <div key={student.id} className="flex">
         <IconButton aria-label="Show">
-          <Visibility onClick={handleButtonClick(student.id)} />
+          <div className="" onClick={handleButtonClick}>
+            {" "}
+            <Visibility />
+          </div>
         </IconButton>
 
         <IconButton
@@ -252,7 +259,7 @@ const StudentCertificate = () => {
     setPage(0);
   };
 
-  const handleButtonClick = async (id: any) => {
+  /*  const handleButtonClick = async (id: any) => {
     const result = await viewCertificate(id);
 
     if (result && result.success) {
@@ -261,7 +268,7 @@ const StudentCertificate = () => {
     } else {
       console.error("Failed to load certificate preview");
     }
-  };
+  }; */
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -311,19 +318,39 @@ const StudentCertificate = () => {
       {isFormVisible && (
         <>
           {/* Modal Overlay */}
-          <div className="" onClick={handleButtonClick(1)}></div>
+          <div className="" onClick={handleButtonClick}></div>
 
           {/* Modal Content */}
           <div className="">
             <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
               {/* Close Button */}
               <button
-                onClick={handleButtonClick(1)}
+                onClick={handleButtonClick}
                 className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
               >
                 &times;
               </button>
-              {isFormVisibleHtml}
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Perferendis, mollitia assumenda. Quasi accusantium, quo
+                necessitatibus minima delectus voluptas eaque dolorum
+                consectetur maiores sapiente amet omnis, ea incidunt ullam?
+                Delectus ipsam perferendis consectetur voluptatum commodi
+                magnam. Tenetur illo ad obcaecati itaque at doloribus porro
+                facilis ut tempore neque totam excepturi eos ab impedit
+                voluptates cupiditate maxime repudiandae, odio doloremque
+                mollitia illum aperiam perspiciatis. Dolore dolores, totam
+                cumque ullam praesentium illo. Vel voluptatibus dolor, quia
+                delectus voluptates, quidem rerum eveniet consectetur reiciendis
+                culpa nisi. Explicabo nostrum tempore minus sint excepturi
+                perferendis aperiam doloremque? Aut esse quidem ab praesentium!
+                Quas earum a nam ut eum at perspiciatis in consequatur?
+                Accusantium fuga beatae, eos voluptatum reprehenderit, nemo
+                iste, error repellendus placeat nesciunt voluptatibus corrupti
+                quisquam ea nisi!
+              </p>
+
+              {/*  {isFormVisibleHtml} */}
             </div>
           </div>
         </>
