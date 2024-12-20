@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 
-const Marksheet = () => {
+const ExaminationMarksheet = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
@@ -523,4 +523,4 @@ const Marksheet = () => {
   );
 };
 
-export default Marksheet;
+export default ExaminationMarksheet;
