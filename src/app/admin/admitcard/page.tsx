@@ -49,6 +49,18 @@ const AdmitCard = () => {
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
+  const [isNameEnabled, setIsNameEnabled] = useState(false);
+  const [isFatherNameEnabled, setIsFatherNameEnabled] = useState(false);
+  const [isMotherNameEnabled, setIsMotherNameEnabled] = useState(false);
+  const [isDOBEnabled, setIsDOBEnabled] = useState(false);
+  const [isAdmissionNoEnabled, setIsAdmissionNoEnabled] = useState(false);
+  const [isRollNoEnabled, setIsRollNoEnabled] = useState(false);
+  const [isAddressEnabled, setIsAddressEnabled] = useState(false);
+  const [isGenderEnabled, setIsGenderEnabled] = useState(false);
+  const [isPhotoEnabled, setIsPhotoEnabled] = useState(false);
+  const [isClassEnabled, setIsClassEnabled] = useState(false);
+  const [isSectionEnabled, setIsSectionEnabled] = useState(false);
+
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
@@ -405,79 +417,53 @@ const AdmitCard = () => {
                   </div>
                 </div>
 
-                <div className="field flex items-center gap-4">
-                <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
-                  Name
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {/* Toggle Switch */}
-                  <div>
-                    <label
-                      htmlFor="toggle2"
-                      className="flex select-none items-center"
-                    >
-                      <div className="relative">
-                        <input
-                          id="toggle2"
-                          type="checkbox"
-                          className="sr-only"
-                          checked={enabled}
-                          onChange={() => setEnabled(!enabled)}
-                        />
-                        {/* Toggle Background */}
-                        <div
-                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                            enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
-                          }`}
-                        ></div>
-                        {/* Toggle Handle */}
-                        <div
-                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                            enabled ? "translate-x-full bg-primary dark:bg-white" : ""
-                          }`}
-                        ></div>
+                <div className="field grid grid-cols-3 gap-4">
+                  {[
+                    { label: "Name", state: isNameEnabled, setState: setIsNameEnabled },
+                    { label: "Father Name", state: isFatherNameEnabled, setState: setIsFatherNameEnabled },
+                    { label: "Mother Name", state: isMotherNameEnabled, setState: setIsMotherNameEnabled },
+                    { label: "Date of Birth", state: isDOBEnabled, setState: setIsDOBEnabled },
+                    { label: "Admission No", state: isAdmissionNoEnabled, setState: setIsAdmissionNoEnabled },
+                    { label: "Roll No", state: isRollNoEnabled, setState: setIsRollNoEnabled },
+                    { label: "Address", state: isAddressEnabled, setState: setIsAddressEnabled },
+                    { label: "Gender", state: isGenderEnabled, setState: setIsGenderEnabled },
+                    { label: "Photo", state: isPhotoEnabled, setState: setIsPhotoEnabled },
+                    { label: "Class", state: isClassEnabled, setState: setIsClassEnabled },
+                    { label: "Section", state: isSectionEnabled, setState: setIsSectionEnabled },
+                  ].map(({ label, state, setState }, index) => (
+                    <div key={index} className="flex flex-col">
+                      <h2 className="mb-5 text-sm font-medium text-black dark:text-white">{label}</h2>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor={`toggle-${label.toLowerCase().replace(/\s+/g, "-")}`}
+                          className="flex select-none items-center"
+                        >
+                          <div className="relative">
+                            <input
+                              id={`toggle-${label.toLowerCase().replace(/\s+/g, "-")}`}
+                              type="checkbox"
+                              className="sr-only"
+                              checked={state}
+                              onChange={() => setState(!state)}
+                            />
+                            <div
+                              className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+                                state ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
+                              }`}
+                            ></div>
+                            <div
+                              className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+                                state ? "translate-x-full bg-primary dark:bg-white" : ""
+                              }`}
+                            ></div>
+                          </div>
+                        </label>
                       </div>
-                    </label>
-                  </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
 
-              <div className="field flex items-center gap-4">
-                <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
-                  Father Name
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {/* Toggle Switch */}
-                  <div>
-                    <label
-                      htmlFor="toggle2"
-                      className="flex select-none items-center"
-                    >
-                      <div className="relative">
-                        <input
-                          id="toggle2"
-                          type="checkbox"
-                          className="sr-only"
-                          checked={enabled}
-                          onChange={() => setEnabled(!enabled)}
-                        />
-                        {/* Toggle Background */}
-                        <div
-                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                            enabled ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
-                          }`}
-                        ></div>
-                        {/* Toggle Handle */}
-                        <div
-                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                            enabled ? "translate-x-full bg-primary dark:bg-white" : ""
-                          }`}
-                        ></div>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              </div>
+           
 
                 <div className="flex gap-2">
                   <button
@@ -507,7 +493,7 @@ const AdmitCard = () => {
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
               <MUIDataTable
-                title={""}
+                title={"Admit card list"}
                 data={data}
                 columns={columns}
                 options={options}

@@ -51,6 +51,15 @@ const Marksheet = () => {
   const { themType, setThemType } = useGlobalState(); // A
   const [isNameEnabled, setIsNameEnabled] = useState(false);
   const [isFatherNameEnabled, setIsFatherNameEnabled] = useState(false);
+  const [isMotherNameEnabled, setIsMotherNameEnabled] = useState(false);
+  const [isExamSessionEnabled, setIsExamSessionEnabled] = useState(false);
+  const [isAdmissionNoEnabled, setIsAdmissionNoEnabled] = useState(false);
+  const [isDivisionEnabled, setIsDivisionEnabled] = useState(false);
+  const [isRollNoEnabled, setIsRollNoEnabled] = useState(false);
+  const [isPhotoEnabled, setIsPhotoEnabled] = useState(false);
+  const [isClassEnabled, setIsClassEnabled] = useState(false);
+  const [isSectionEnabled, setIsSectionEnabled] = useState(false);
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -374,14 +383,40 @@ const Marksheet = () => {
 
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Sign
+                    Left Sign
                     </label>
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handleFileChange}
                       id="file"
-                      name="sign"
+                      name="left_sign"
+                      className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Middle Sign
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      id="file"
+                      name="middle_sign"
+                      className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Right Sign
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      id="file"
+                      name="right_sign"
                       className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -401,82 +436,50 @@ const Marksheet = () => {
                   </div>
                 </div>
 
-                <div className="field flex items-center gap-4">
-  <h2 className="mb-5 text-sm font-medium text-black dark:text-white">Name</h2>
-  <div className="grid grid-cols-2 gap-4">
-    {/* Toggle Switch for Name */}
-    <div>
-      <label htmlFor="toggle-name" className="flex select-none items-center">
-        <div className="relative">
-          <input
-            id="toggle-name"
-            type="checkbox"
-            className="sr-only"
-            checked={isNameEnabled}
-            onChange={() => setIsNameEnabled(!isNameEnabled)}
-          />
-          {/* Toggle Background */}
-          <div
-            className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-              isNameEnabled
-                ? "bg-green-500"
-                : "bg-meta-9 dark:bg-[#5A616B]"
-            }`}
-          ></div>
-          {/* Toggle Handle */}
-          <div
-            className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-              isNameEnabled
-                ? "translate-x-full bg-primary dark:bg-white"
-                : ""
-            }`}
-          ></div>
-        </div>
-      </label>
-    </div>
-  </div>
-</div>
-
-<div className="field flex items-center gap-4">
-  <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
-    Father Name
-  </h2>
-  <div className="grid grid-cols-2 gap-4">
-    {/* Toggle Switch for Father Name */}
-    <div>
-      <label
-        htmlFor="toggle-father-name"
-        className="flex select-none items-center"
-      >
-        <div className="relative">
-          <input
-            id="toggle-father-name"
-            type="checkbox"
-            className="sr-only"
-            checked={isFatherNameEnabled}
-            onChange={() => setIsFatherNameEnabled(!isFatherNameEnabled)}
-          />
-          {/* Toggle Background */}
-          <div
-            className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-              isFatherNameEnabled
-                ? "bg-green-500"
-                : "bg-meta-9 dark:bg-[#5A616B]"
-            }`}
-          ></div>
-          {/* Toggle Handle */}
-          <div
-            className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-              isFatherNameEnabled
-                ? "translate-x-full bg-primary dark:bg-white"
-                : ""
-            }`}
-          ></div>
-        </div>
-      </label>
-    </div>
-  </div>
-</div>
+                <div className="mb-3 field grid grid-cols-3 gap-4">
+                  {[
+                    { label: "Name", state: isNameEnabled, setState: setIsNameEnabled },
+                    { label: "Father Name", state: isFatherNameEnabled, setState: setIsFatherNameEnabled },
+                    { label: "Mother Name", state: isMotherNameEnabled, setState: setIsMotherNameEnabled },
+                    { label: "Exam Session", state: isExamSessionEnabled, setState: setIsExamSessionEnabled },
+                    { label: "Admission No", state: isAdmissionNoEnabled, setState: setIsAdmissionNoEnabled },
+                    { label: "Division", state: isDivisionEnabled, setState: setIsDivisionEnabled },
+                    { label: "Roll No", state: isRollNoEnabled, setState: setIsRollNoEnabled },
+                    { label: "Photo", state: isPhotoEnabled, setState: setIsPhotoEnabled },
+                    { label: "Class", state: isClassEnabled, setState: setIsClassEnabled },
+                    { label: "Section", state: isSectionEnabled, setState: setIsSectionEnabled },
+                  ].map(({ label, state, setState }, index) => (
+                    <div key={index} className="flex flex-col">
+                      <h2 className="mb-5 text-sm font-medium text-black dark:text-white">{label}</h2>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor={`toggle-${label.toLowerCase().replace(/\s+/g, "-")}`}
+                          className="flex select-none items-center"
+                        >
+                          <div className="relative">
+                            <input
+                              id={`toggle-${label.toLowerCase().replace(/\s+/g, "-")}`}
+                              type="checkbox"
+                              className="sr-only"
+                              checked={state}
+                              onChange={() => setState(!state)}
+                            />
+                            <div
+                              className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+                                state ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
+                              }`}
+                            ></div>
+                            <div
+                              className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+                                state ? "translate-x-full bg-primary dark:bg-white" : ""
+                              }`}
+                            ></div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
 
                 <div className="flex gap-2">
