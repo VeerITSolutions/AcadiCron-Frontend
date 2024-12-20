@@ -20,7 +20,8 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Edit, Delete, Visibility } from "@mui/icons-material";
 import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
-import { Dialog, DialogContent } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
@@ -328,14 +329,26 @@ const StudentCertificate = () => {
 
   return (
     <DefaultLayout>
-   {isFormVisible && (
+{isFormVisible && (
   <>
     <Dialog
       open={isFormVisible}
       onClose={handleButtonClick2}
-      maxWidth="md"  
+      maxWidth="md"
       fullWidth={true}
     >
+      <DialogTitle className="flex justify-end p-4">
+        <IconButton
+          edge="end"
+          color="inherit"
+          onClick={handleButtonClick2}
+          aria-label="close"
+          className="text-gray-500 hover:text-gray-700"
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+
       <div className="w-full h-full flex items-center justify-center">
         <DialogContent
           className="w-full h-full dark:bg-boxdark dark:drop-shadow-none"
@@ -349,6 +362,7 @@ const StudentCertificate = () => {
     </Dialog>
   </>
 )}
+
 
 
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
