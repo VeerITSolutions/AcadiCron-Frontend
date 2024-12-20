@@ -53,6 +53,7 @@ const options = {
   filter: false,
   viewColumns: false,
   tableBodyMaxHeight: "500px",
+  selectableRows: false,  
 };
 
 
@@ -268,7 +269,6 @@ const ExamShedule = () => {
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
               onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              selectableRows: "multiple", // Allow multiple selection
               onRowsDelete: handleDelete,
             }}
           />
