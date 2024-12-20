@@ -65,7 +65,7 @@ const options = {
   selectableRows: "none",
 };
 
-const AlumniReport = () => {
+const StudentTransport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -335,4 +335,4 @@ const AlumniReport = () => {
   );
 };
 
-export default AlumniReport;
+export default StudentTransport;
