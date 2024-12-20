@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState, Suspense } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -28,6 +28,10 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [defaultSessionYear, setDefaultSessionYear] = useState("");
 
   const [allSession, setAllSession] = useState<Session[]>([]);
+
+  const StudentDetails = React.lazy(
+    () => import("../../app/admin/student_details/page"),
+  );
 
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
@@ -150,7 +154,11 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             label: "Student Information",
             route: "#",
             children: [
-              { label: "Student Details", route: "/admin/student_details" },
+              {
+                label: "Student Details",
+                route: "/admin/student_details",
+                component: StudentDetails,
+              },
               { label: "Student Admission", route: "/admin/student_admission" },
               { label: "Disabled Students", route: "/admin/disabled_students" },
               {
@@ -204,21 +212,20 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2v20" />
-              <path d="M5 10l7-7 7 7" />
-              <path d="M9 15h6a2 2 0 0 1 0 4h-6a2 2 0 0 1 0-4z" />
-            </svg>
-            
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2v20" />
+                <path d="M5 10l7-7 7 7" />
+                <path d="M9 15h6a2 2 0 0 1 0 4h-6a2 2 0 0 1 0-4z" />
+              </svg>
             ),
 
             label: "Income",
@@ -230,28 +237,26 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               },
               { label: "Search Income", route: "/admin/income_search" },
               { label: "Income Head", route: "/admin/income_head" },
-              
             ],
           },
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 4h16v16H4z" /> 
-              <path d="M12 8v8" /> 
-              <path d="M9 10h6" /> 
-              <path d="M16 16l4 4M16 20l4-4" /> 
-            </svg>
-
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 4h16v16H4z" />
+                <path d="M12 8v8" />
+                <path d="M9 10h6" />
+                <path d="M16 16l4 4M16 20l4-4" />
+              </svg>
             ),
             label: "Expenses",
             route: "#",
@@ -262,7 +267,6 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               },
               { label: "Search Expense", route: "/admin/expense_search" },
               { label: "Expense Head", route: "/admin/expense_head" },
-              
             ],
           },
           {
@@ -299,25 +303,23 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-
-              <rect x="3" y="4" width="18" height="14" rx="2" ry="2" />
-              <path d="M10 9l5 3-5 3V9z" />
-              <path d="M2 20h20" />
-            </svg>
-
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="4" width="18" height="14" rx="2" ry="2" />
+                <path d="M10 9l5 3-5 3V9z" />
+                <path d="M2 20h20" />
+              </svg>
             ),
-            label: "Online Courses", route: "/admin/online_course_login",
-           
+            label: "Online Courses",
+            route: "/admin/online_course_login",
           },
           {
             icon: (
@@ -332,61 +334,61 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
-                
                 <path d="M4 2h16M4 6h16M4 10h16M4 14h16M4 18h16M10 6v12M14 6v12" />
-                
-               
+
                 <path d="M16 17l2 2 4-4" />
 
-               
                 <rect x="3" y="3" width="6" height="9" rx="1" />
                 <path d="M4 5h4M4 7h4M4 9h2" />
                 <path d="M15 3l4 4m-4 0 4-4" />
               </svg>
-
             ),
             label: "Examinations",
             route: "#",
             children: [
-              { label: "Exam Group", route: "/admin/examgroup", },
-              { label: "Exam Schedule", route: "/admin/exam_schedule", },
+              { label: "Exam Group", route: "/admin/examgroup" },
+              { label: "Exam Schedule", route: "/admin/exam_schedule" },
               { label: "Exam Result", route: "/admin/examresult" },
               { label: "Design Admit Card", route: "/admin/admitcard" },
-              { label: "Print Admit Card", route: "/admin/examresult/admitcard" },
+              {
+                label: "Print Admit Card",
+                route: "/admin/examresult/admitcard",
+              },
               { label: "Design Marksheet", route: "/admin/marksheet" },
-              { label: "Print Marksheet", route: "/admin/examresult/marksheet" },
+              {
+                label: "Print Marksheet",
+                route: "/admin/examresult/marksheet",
+              },
               { label: "Marks Grade", route: "/admin/grade" },
             ],
           },
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="2" y="4" width="20" height="14" rx="2" ry="2" />
-              <path d="M8 20h8M10 16v4M14 16v4" />
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="4" width="20" height="14" rx="2" ry="2" />
+                <path d="M8 20h8M10 16v4M14 16v4" />
 
-              <rect x="6" y="6" width="12" height="8" rx="1" />
-              <path d="M8 8h8M8 10h5" />
+                <rect x="6" y="6" width="12" height="8" rx="1" />
+                <path d="M8 8h8M8 10h5" />
 
-              <path d="M16 11l1 1 2-2" />
-            </svg>
-
-
+                <path d="M16 11l1 1 2-2" />
+              </svg>
             ),
             label: "Online Examinations",
             route: "#",
             children: [
-              { label: "Online Exam", route: "/admin/onlineexam", },
-              { label: "Question Bank", route: "/admin/question", },
+              { label: "Online Exam", route: "/admin/onlineexam" },
+              { label: "Question Bank", route: "/admin/question" },
             ],
           },
           {
@@ -584,22 +586,20 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-             
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <path d="M7 10h10M7 14h10M7 18h10" />
-              <path d="M3 7h18" />
-            </svg>
-
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <path d="M7 10h10M7 14h10M7 18h10" />
+                <path d="M3 7h18" />
+              </svg>
             ),
             label: "Inventory",
             route: "#",
@@ -610,28 +610,25 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               { label: "Item Category", route: "/admin/itemcategory" },
               { label: "Item Store", route: "/admin/itemstore" },
               { label: "Item Supplier", route: "/admin/itemsupplier" },
-
             ],
           },
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 10h16M5 15h14M5 19h14M6 9h12M9 3h6v4h-6z" />
-              <circle cx="7" cy="19" r="2" />
-              <circle cx="17" cy="19" r="2" />
-            </svg>
-
-
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 10h16M5 15h14M5 19h14M6 9h12M9 3h6v4h-6z" />
+                <circle cx="7" cy="19" r="2" />
+                <circle cx="17" cy="19" r="2" />
+              </svg>
             ),
             label: "Transport",
             route: "#",
@@ -644,21 +641,21 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="4" y="5" width="16" height="14" rx="2" />
-              <path d="M4 10h16M9 5v-2h6v2M7 15h10M9 12h6" />
-              <circle cx="7" cy="17" r="1" />
-              <circle cx="17" cy="17" r="1" />
-            </svg>
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="4" y="5" width="16" height="14" rx="2" />
+                <path d="M4 10h16M9 5v-2h6v2M7 15h10M9 12h6" />
+                <circle cx="7" cy="17" r="1" />
+                <circle cx="17" cy="17" r="1" />
+              </svg>
             ),
             label: "Hostel",
             route: "#",
@@ -698,27 +695,25 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 label: "Generate Certificate",
                 route: "/admin/generatecertificate",
               },
-              
             ],
           },
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="3" y="4" width="18" height="16" rx="2" />
-              <path d="M3 9h18M7 3v6M17 3v6" />
-              <path d="M10 14l2 2 4-4" />
-            </svg>
-
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+                <path d="M3 9h18M7 3v6M17 3v6" />
+                <path d="M10 14l2 2 4-4" />
+              </svg>
             ),
             label: "Front CMS",
             route: "#",
@@ -752,28 +747,25 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 label: "Banner Images",
                 route: "/admin/front/banner",
               },
-              
             ],
           },
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M9 15l3-3 3 3" />
-              <path d="M9 9l3 3 3-3" />
-            </svg>
-
-
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9 15l3-3 3 3" />
+                <path d="M9 9l3 3 3-3" />
+              </svg>
             ),
             label: "Alumni",
             route: "#",
@@ -786,44 +778,53 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 label: "Events",
                 route: "/admin/alumni/events",
               },
-
             ],
           },
           {
             icon: (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 15a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4z" />
-              <path d="M3 7h18v6H3V7z" />
-              <path d="M12 12l-4 4 4 4 4-4-4-4z" />
-              <path d="M7 21h10" />
-            </svg>
-            
-
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4z" />
+                <path d="M3 7h18v6H3V7z" />
+                <path d="M12 12l-4 4 4 4 4-4-4-4z" />
+                <path d="M7 21h10" />
+              </svg>
             ),
             label: "Reports",
             route: "#",
             children: [
-              { label: "Student Information", route: "/admin/report/studentinformation" },
+              {
+                label: "Student Information",
+                route: "/admin/report/studentinformation",
+              },
               { label: "Finance", route: "/admin/report/finance" },
               { label: "Attendance", route: "/admin/report/attendance" },
               { label: "Examinations", route: "/admin/report/examinations" },
-              { label: "Online Examinations", route: "/admin/report/onlineexam" },
+              {
+                label: "Online Examinations",
+                route: "/admin/report/onlineexam",
+              },
               { label: "Lesson Plan", route: "/admin/report/lesson_plan" },
               { label: "Human Resource", route: "/admin/report/staff_report" },
               { label: "Library", route: "/admin/report/library" },
               { label: "Inventory", route: "/admin/report/inventory" },
-              { label: "Transport", route: "/admin/route/studenttransportdetails" },
-              { label: "Hostel", route: "/admin/hostelroom/studenthosteldetails" },
+              {
+                label: "Transport",
+                route: "/admin/route/studenttransportdetails",
+              },
+              {
+                label: "Hostel",
+                route: "/admin/hostelroom/studenthosteldetails",
+              },
               { label: "Alumni", route: "/admin/report/alumnireport" },
               { label: "User Log", route: "/admin/userlog" },
               { label: "Audit Trail Report", route: "/admin/audit" },
