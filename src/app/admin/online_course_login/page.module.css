@@ -1,0 +1,28 @@
+/* .loginContainer {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+}
+ */
+.loginButton {
+  background-color: #0070f3;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login {
+  padding: 50px;
+  background: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+@media (max-width: 767px) {
+  .login {
+    padding: 50px 20px;
+  }
+}

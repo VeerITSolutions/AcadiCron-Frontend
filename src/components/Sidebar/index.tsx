@@ -316,7 +316,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </svg>
 
             ),
-            label: "Online Courses", route: "/admin/online",
+            label: "Online Courses", route: "/admin/online_course_login",
            
           },
           {
