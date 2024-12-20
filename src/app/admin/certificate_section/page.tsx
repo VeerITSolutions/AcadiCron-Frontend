@@ -37,7 +37,8 @@ const StudentCertificate = () => {
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [enabled, setEnabled] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState(false);
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<string>("");
+  const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
@@ -113,8 +114,30 @@ const StudentCertificate = () => {
       enable_image_height: data.enable_image_height,
     });
   };
+  const fetchData2 = async () => {
+    try {
+      if (isFormVisible === true) {
+        const result = await viewCertificate(isFormVisibleHtmlId);
 
-  const handleButtonClick = () => {
+        if (result && result.success) {
+          setIsFormVisibleHtml(result.data); // Append returned HTML
+          setIsFormVisible(true); // Show the HTML
+        } else {
+          console.error("Failed to load certificate preview");
+        }
+      }
+    } catch (error: any) {}
+  };
+  useEffect(() => {
+    fetchData2();
+  }, [isFormVisible]);
+
+  const handleButtonClick = (id: any) => {
+    setIsFormVisible((prev) => !prev); // Toggle modal state
+    setIsFormVisibleHtmlId(id); // Toggle modal state
+  };
+
+  const handleButtonClick2 = async () => {
     setIsFormVisible((prev) => !prev); // Toggle modal state
   };
 
@@ -132,7 +155,7 @@ const StudentCertificate = () => {
       ),
       <div key={student.id} className="flex">
         <IconButton aria-label="Show">
-          <div className="" onClick={handleButtonClick}>
+          <div className="" onClick={() => handleButtonClick(student.id)}>
             {" "}
             <Visibility />
           </div>
@@ -259,17 +282,6 @@ const StudentCertificate = () => {
     setPage(0);
   };
 
-  /*  const handleButtonClick = async (id: any) => {
-    const result = await viewCertificate(id);
-
-    if (result && result.success) {
-      setIsFormVisibleHtml(result.data); // Append returned HTML
-      setIsFormVisible(true); // Show the HTML
-    } else {
-      console.error("Failed to load certificate preview");
-    }
-  }; */
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -318,41 +330,16 @@ const StudentCertificate = () => {
       {isFormVisible && (
         <>
           {/* Modal Overlay */}
-          <div className="" onClick={handleButtonClick}></div>
+          <div className="" onClick={handleButtonClick2}></div>
+          <button
+            onClick={handleButtonClick2}
+            className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+          >
+            &times;
+          </button>
 
           {/* Modal Content */}
-          <div className="">
-            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-              {/* Close Button */}
-              <button
-                onClick={handleButtonClick}
-                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
-              >
-                &times;
-              </button>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Perferendis, mollitia assumenda. Quasi accusantium, quo
-                necessitatibus minima delectus voluptas eaque dolorum
-                consectetur maiores sapiente amet omnis, ea incidunt ullam?
-                Delectus ipsam perferendis consectetur voluptatum commodi
-                magnam. Tenetur illo ad obcaecati itaque at doloribus porro
-                facilis ut tempore neque totam excepturi eos ab impedit
-                voluptates cupiditate maxime repudiandae, odio doloremque
-                mollitia illum aperiam perspiciatis. Dolore dolores, totam
-                cumque ullam praesentium illo. Vel voluptatibus dolor, quia
-                delectus voluptates, quidem rerum eveniet consectetur reiciendis
-                culpa nisi. Explicabo nostrum tempore minus sint excepturi
-                perferendis aperiam doloremque? Aut esse quidem ab praesentium!
-                Quas earum a nam ut eum at perspiciatis in consequatur?
-                Accusantium fuga beatae, eos voluptatum reprehenderit, nemo
-                iste, error repellendus placeat nesciunt voluptatibus corrupti
-                quisquam ea nisi!
-              </p>
-
-              {/*  {isFormVisibleHtml} */}
-            </div>
-          </div>
+          <div dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }} />
         </>
       )}
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
