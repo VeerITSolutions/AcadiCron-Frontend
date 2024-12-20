@@ -293,7 +293,7 @@ const AlumniReport = () => {
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={"Alumni Report"}
+            title={"Hostel List"}
             data={data}
             columns={columns}
             options={{
