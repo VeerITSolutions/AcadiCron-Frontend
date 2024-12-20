@@ -24,7 +24,7 @@ export const createCertificate = async (data:any ): Promise<any> => {
 
 export const viewCertificate = async (id :any ): Promise<any> => {
   try {
-    const response = await apiClient.post("/certificate-view", id);
+    const response = await apiClient.post(`/certificate-view/${id}`, );
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
