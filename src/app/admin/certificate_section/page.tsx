@@ -328,17 +328,17 @@ const StudentCertificate = () => {
 
   return (
     <DefaultLayout>
-     {isFormVisible && (
+   {isFormVisible && (
   <>
     <Dialog
       open={isFormVisible}
       onClose={handleButtonClick2}
-      className="w-full"
+      maxWidth="sm"  // Adjust this to "xs", "sm", "md", or "lg" as per your requirement
+      fullWidth={true} // Ensures the dialog uses the full available width within the maxWidth constraint
     >
       <div className="w-full h-full flex items-center justify-center">
         <DialogContent
           className="w-full h-full dark:bg-boxdark dark:drop-shadow-none"
-        
         >
           <div
             className="w-full"
