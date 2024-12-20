@@ -20,6 +20,7 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Edit, Delete, Visibility } from "@mui/icons-material";
 import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
+import { Dialog, DialogContent } from "@mui/material";
 
 const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
@@ -126,7 +127,7 @@ const StudentCertificate = () => {
           console.error("Failed to load certificate preview");
         }
       }
-    } catch (error: any) {}
+    } catch (error: any) { }
   };
   useEffect(() => {
     fetchData2();
@@ -327,21 +328,29 @@ const StudentCertificate = () => {
 
   return (
     <DefaultLayout>
-      {isFormVisible && (
-        <>
-          {/* Modal Overlay */}
-          <div className="" onClick={handleButtonClick2}></div>
-          <button
-            onClick={handleButtonClick2}
-            className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
-          >
-            &times;
-          </button>
+     {isFormVisible && (
+  <>
+    <Dialog
+      open={isFormVisible}
+      onClose={handleButtonClick2}
+      className="w-full"
+    >
+      <div className="w-full h-full flex items-center justify-center">
+        <DialogContent
+          className="w-full h-full dark:bg-boxdark dark:drop-shadow-none"
+        
+        >
+          <div
+            className="w-full"
+            dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
+          />
+        </DialogContent>
+      </div>
+    </Dialog>
+  </>
+)}
 
-          {/* Modal Content */}
-          <div dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }} />
-        </>
-      )}
+
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -540,19 +549,17 @@ const StudentCertificate = () => {
                         />
                         {/* Toggle Background */}
                         <div
-                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                            enabled
+                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${enabled
                               ? "bg-green-500"
                               : "bg-meta-9 dark:bg-[#5A616B]"
-                          }`}
+                            }`}
                         ></div>
                         {/* Toggle Handle */}
                         <div
-                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                            enabled
+                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${enabled
                               ? "translate-x-full bg-primary dark:bg-white"
                               : ""
-                          }`}
+                            }`}
                         ></div>
                       </div>
                     </label>
@@ -566,9 +573,8 @@ const StudentCertificate = () => {
                       value={enabled ? formData.enable_image_height : ""}
                       onChange={handleInputChange}
                       placeholder="Enter Image Height"
-                      className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
-                        enabled ? "visible" : "invisible"
-                      }`}
+                      className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${enabled ? "visible" : "invisible"
+                        }`}
                     />
                   </div>
                 </div>
