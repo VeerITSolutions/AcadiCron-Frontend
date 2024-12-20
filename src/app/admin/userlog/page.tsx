@@ -217,16 +217,55 @@ const ReportsAudit = () => {
     <DefaultLayout>
       <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
       <Tabs
-      value={selectedTab}
-      onChange={(e, newValue) => setSelectedTab(newValue)}
-      className="bg-[#f8f8f8]"
-    >
-      <Tab label="All Users" />
-      <Tab label="Staff" />
-      <Tab label="Students" />
-      <Tab label="Parents" />
-    </Tabs>
-
+          value={selectedTab}
+          onChange={(e, newValue) => setSelectedTab(newValue)}
+          className="bg-[#f8f8f8] border-b border-stroke p-0 dark:border-strokedark"
+      >
+        <Tab
+          label="All Users"
+          sx={{
+            fontFamily: 'Satoshi, sans-serif',
+            fontSize: '1rem',
+            lineHeight: '1.5rem',
+    
+            color: 'rgb(100, 116, 139)',
+             textTransform: 'capitalize',
+          }}
+        />
+        <Tab
+          label="Staff"
+          sx={{
+            fontFamily: 'Satoshi, sans-serif',
+            fontSize: '1rem',
+            lineHeight: '1.5rem',
+    
+            color: 'rgb(100, 116, 139)',
+             textTransform: 'capitalize',
+          }}
+        />
+        <Tab
+          label="Students"
+          sx={{
+            fontFamily: 'Satoshi, sans-serif',
+            fontSize: '1rem',
+            lineHeight: '1.5rem',
+    
+            color: 'rgb(100, 116, 139)',
+             textTransform: 'capitalize',
+          }}
+        />
+        <Tab
+          label="Parents"
+          sx={{
+            fontFamily: 'Satoshi, sans-serif',
+            fontSize: '1rem',
+            lineHeight: '1.5rem',
+    
+            color: 'rgb(100, 116, 139)',
+             textTransform: 'capitalize',
+          }}
+        />
+      </Tabs>
 
         <MUIDataTable
           title={"User Log"}
