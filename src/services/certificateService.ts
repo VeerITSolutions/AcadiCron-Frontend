@@ -22,6 +22,17 @@ export const createCertificate = async (data:any ): Promise<any> => {
 };
 
 
+export const viewCertificate = async (id :any ): Promise<any> => {
+  try {
+    const response = await apiClient.post(`/certificate-view/${id}`, );
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create certificate");
+  }
+};
+
+
 
 // Delete a student category by ID
 export const deleteCertificateData = async (id: number) => {

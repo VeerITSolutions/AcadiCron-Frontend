@@ -315,7 +315,7 @@ const Expense = () => {
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
               <MUIDataTable
-                title={""}
+                title={"Expense List"}
                 data={data}
                 columns={columns}
                 options={options}

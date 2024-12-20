@@ -9,6 +9,7 @@ import {
   createCertificate,
   editCertificateData,
   deleteCertificateData,
+  viewCertificate,
 } from "@/services/certificateService";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -19,6 +20,7 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Edit, Delete, Visibility } from "@mui/icons-material";
 import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
+import { Dialog, DialogContent } from "@mui/material";
 
 const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +37,9 @@ const StudentCertificate = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [enabled, setEnabled] = useState(false);
-
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<string>("");
+  const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
@@ -111,6 +115,32 @@ const StudentCertificate = () => {
       enable_image_height: data.enable_image_height,
     });
   };
+  const fetchData2 = async () => {
+    try {
+      if (isFormVisible === true) {
+        const result = await viewCertificate(isFormVisibleHtmlId);
+
+        if (result && result.success) {
+          setIsFormVisibleHtml(result.data); // Append returned HTML
+          setIsFormVisible(true); // Show the HTML
+        } else {
+          console.error("Failed to load certificate preview");
+        }
+      }
+    } catch (error: any) { }
+  };
+  useEffect(() => {
+    fetchData2();
+  }, [isFormVisible]);
+
+  const handleButtonClick = (id: any) => {
+    setIsFormVisible((prev) => !prev); // Toggle modal state
+    setIsFormVisibleHtmlId(id); // Toggle modal state
+  };
+
+  const handleButtonClick2 = async () => {
+    setIsFormVisible((prev) => !prev); // Toggle modal state
+  };
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
@@ -126,7 +156,10 @@ const StudentCertificate = () => {
       ),
       <div key={student.id} className="flex">
         <IconButton aria-label="Show">
-          <Visibility />
+          <div className="" onClick={() => handleButtonClick(student.id)}>
+            {" "}
+            <Visibility />
+          </div>
         </IconButton>
 
         <IconButton
@@ -259,8 +292,8 @@ const StudentCertificate = () => {
     viewColumns: false, // Disable view columns button
     filterType: false,
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,
@@ -295,6 +328,29 @@ search: false,
 
   return (
     <DefaultLayout>
+     {isFormVisible && (
+  <>
+    <Dialog
+      open={isFormVisible}
+      onClose={handleButtonClick2}
+      className="w-full"
+    >
+      <div className="w-full h-full flex items-center justify-center">
+        <DialogContent
+          className="w-full h-full dark:bg-boxdark dark:drop-shadow-none"
+        
+        >
+          <div
+            className="w-full"
+            dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
+          />
+        </DialogContent>
+      </div>
+    </Dialog>
+  </>
+)}
+
+
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -493,19 +549,17 @@ search: false,
                         />
                         {/* Toggle Background */}
                         <div
-                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                            enabled
+                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${enabled
                               ? "bg-green-500"
                               : "bg-meta-9 dark:bg-[#5A616B]"
-                          }`}
+                            }`}
                         ></div>
                         {/* Toggle Handle */}
                         <div
-                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                            enabled
+                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${enabled
                               ? "translate-x-full bg-primary dark:bg-white"
                               : ""
-                          }`}
+                            }`}
                         ></div>
                       </div>
                     </label>
@@ -519,9 +573,8 @@ search: false,
                       value={enabled ? formData.enable_image_height : ""}
                       onChange={handleInputChange}
                       placeholder="Enter Image Height"
-                      className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
-                        enabled ? "visible" : "invisible"
-                      }`}
+                      className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${enabled ? "visible" : "invisible"
+                        }`}
                     />
                   </div>
                 </div>

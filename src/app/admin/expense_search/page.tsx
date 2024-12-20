@@ -48,11 +48,10 @@ const options = {
   serverSide: true,
   responsive: "standard",
   search: false,
-  selectableRows: "none", 
-  filter: false, 
+  selectableRows: "none",
+  filter: false,
   viewColumns: false,
 };
-
 
 const Expense = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -212,7 +211,7 @@ const Expense = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-          Search Type:
+            Search Type:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
@@ -228,13 +227,11 @@ const Expense = () => {
               <option value="this_year">This Year</option>
               <option value="last_year">Last Year</option>
               <option value="period">Period</option>
-
-              
             </select>
           </label>
-         
+
           <div className={styles.searchGroup}>
-          <input
+            <input
               type="text"
               placeholder="Search By Keyword"
               value={keyword}
@@ -256,7 +253,7 @@ const Expense = () => {
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={""}
+            title={"Search expense list"}
             data={data}
             columns={columns}
             options={{
