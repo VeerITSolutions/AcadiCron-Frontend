@@ -21,7 +21,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Edit, Delete, Visibility } from "@mui/icons-material";
 import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
@@ -128,7 +128,7 @@ const StudentCertificate = () => {
           console.error("Failed to load certificate preview");
         }
       }
-    } catch (error: any) { }
+    } catch (error: any) {}
   };
   useEffect(() => {
     fetchData2();
@@ -148,7 +148,10 @@ const StudentCertificate = () => {
       student.certificate_name || "N/A",
       student.background_image ? (
         <img
-          src={`https://erp.erabesa.co.in/uploads/certificate/${student.background_image}`}
+          src={
+            process.env.NEXT_PUBLIC_BASE_URL +
+            `/uploads/certificate/${student.background_image}`
+          }
           width="40"
           alt={student.certificate_name || "Certificate Image"}
         />
@@ -329,41 +332,37 @@ const StudentCertificate = () => {
 
   return (
     <DefaultLayout>
-{isFormVisible && (
-  <>
-    <Dialog
-      open={isFormVisible}
-      onClose={handleButtonClick2}
-      maxWidth="md"
-      fullWidth={true}
-    >
-      <DialogTitle className="flex justify-end p-4">
-        <IconButton
-          edge="end"
-          color="inherit"
-          onClick={handleButtonClick2}
-          aria-label="close"
-          className="text-gray-500 hover:text-gray-700"
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+      {isFormVisible && (
+        <>
+          <Dialog
+            open={isFormVisible}
+            onClose={handleButtonClick2}
+            maxWidth="md"
+            fullWidth={true}
+          >
+            <DialogTitle className="flex justify-end p-4">
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={handleButtonClick2}
+                aria-label="close"
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
 
-      <div className="w-full h-full flex items-center justify-center">
-        <DialogContent
-          className="w-full h-full dark:bg-boxdark dark:drop-shadow-none"
-        >
-          <div
-            className="w-full"
-            dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
-          />
-        </DialogContent>
-      </div>
-    </Dialog>
-  </>
-)}
-
-
+            <div className="flex h-full w-full items-center justify-center">
+              <DialogContent className="h-full w-full dark:bg-boxdark dark:drop-shadow-none">
+                <div
+                  className="w-full"
+                  dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
+                />
+              </DialogContent>
+            </div>
+          </Dialog>
+        </>
+      )}
 
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
@@ -563,17 +562,19 @@ const StudentCertificate = () => {
                         />
                         {/* Toggle Background */}
                         <div
-                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${enabled
+                          className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+                            enabled
                               ? "bg-green-500"
                               : "bg-meta-9 dark:bg-[#5A616B]"
-                            }`}
+                          }`}
                         ></div>
                         {/* Toggle Handle */}
                         <div
-                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${enabled
+                          className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+                            enabled
                               ? "translate-x-full bg-primary dark:bg-white"
                               : ""
-                            }`}
+                          }`}
                         ></div>
                       </div>
                     </label>
@@ -587,8 +588,9 @@ const StudentCertificate = () => {
                       value={enabled ? formData.enable_image_height : ""}
                       onChange={handleInputChange}
                       placeholder="Enter Image Height"
-                      className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${enabled ? "visible" : "invisible"
-                        }`}
+                      className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                        enabled ? "visible" : "invisible"
+                      }`}
                     />
                   </div>
                 </div>
