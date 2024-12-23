@@ -144,9 +144,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 12l10 5 10-5-10-5-10 5zm0 6l10 5 10-5-10-5-10 5z" />
               </svg>
@@ -182,9 +182,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 1v22M5 10h14M5 14h14M12 7h.01M12 17h.01" />
               </svg>
@@ -218,9 +218,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 2v20" />
                 <path d="M5 10l7-7 7 7" />
@@ -248,9 +248,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M4 4h16v16H4z" />
                 <path d="M12 8v8" />
@@ -278,9 +278,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M4 2h16M4 6h16M4 10h16M4 14h16M4 18h16M10 6v12M14 6v12" />
                 <path d="M16 17l2 2 4-4" />
@@ -309,9 +309,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <rect x="3" y="4" width="18" height="14" rx="2" ry="2" />
                 <path d="M10 9l5 3-5 3V9z" />
@@ -330,9 +330,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M4 2h16M4 6h16M4 10h16M4 14h16M4 18h16M10 6v12M14 6v12" />
 
@@ -371,9 +371,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <rect x="2" y="4" width="20" height="14" rx="2" ry="2" />
                 <path d="M8 20h8M10 16v4M14 16v4" />
@@ -400,9 +400,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M3 6h18M3 10h18M3 14h18M3 18h18" />
                 <path d="M16 16l4 4M16 20l4-4M12 12h6M12 16h6" />
@@ -430,9 +430,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M22 12l-10-6-10 6 10 6 10-6zM12 6v12M5 13l7 7 7-7" />
               </svg>
@@ -468,9 +468,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="12" cy="7" r="4" />
                 <path d="M5.5 21c0-4 4-7 6.5-7s6.5 3 6.5 7" />
@@ -512,9 +512,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M21 15a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4zM3 6h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
               </svg>
@@ -532,9 +532,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M19 21H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2z" />
                 <path d="M12 16v-4M12 8l-4 4M12 8l4 4" />
@@ -568,9 +568,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z" />
                 <path d="M12 5v14M5 12h14" />
@@ -592,9 +592,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                 <path d="M7 10h10M7 14h10M7 18h10" />
@@ -621,9 +621,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M4 10h16M5 15h14M5 19h14M6 9h12M9 3h6v4h-6z" />
                 <circle cx="7" cy="19" r="2" />
@@ -647,9 +647,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <rect x="4" y="5" width="16" height="14" rx="2" />
                 <path d="M4 10h16M9 5v-2h6v2M7 15h10M9 12h6" />
@@ -674,9 +674,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M21 15a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4z" />
                 <path d="M3 7h18v6H3V7z" />
@@ -706,9 +706,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <rect x="3" y="4" width="18" height="16" rx="2" />
                 <path d="M3 9h18M7 3v6M17 3v6" />
@@ -758,9 +758,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="12" cy="12" r="10" />
                 <path d="M9 15l3-3 3 3" />
@@ -789,9 +789,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M21 15a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4z" />
                 <path d="M3 7h18v6H3V7z" />
@@ -849,9 +849,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 3.68 5 7 7 7s7-3.32 7-7c0-3.87-3.13-7-7-7zM12 14c-5 0-9 3.58-9 7v1h18v-1c0-3.42-4-7-9-7z" />
               </svg>
@@ -868,9 +868,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M3 3h18v18H3z" />
                 <path d="M3 7h18M3 11h18M3 15h18" />
@@ -905,9 +905,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
                 <path d="M6 2v20" />
@@ -944,9 +944,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 2l8 4-8 4-8-4 8-4z" />
                 <path d="M4 10v10l8 4 8-4V10" />
@@ -976,9 +976,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
                 <path d="M6 18c0-3 2-4 6-4s6 1 6 4" />
@@ -998,9 +998,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M21 15.5V20c0 .55-.45 1-1 1h-3.5c-1.38 0-2.67-.56-3.64-1.5H7c-1.1 0-2-.9-2-2v-3.5c-1.38-1.35-1.95-3.35-1.95-5.5 0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.15-.57 4.15-1.95 5.5H21z" />
                 <path d="M9 8h6M9 12h4" />
@@ -1018,9 +1018,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 3v18M9 15l3 3 3-3M21 12H3" />
                 <path d="M5 18h14a2 2 0 0 1 2 2v1H3v-1a2 2 0 0 1 2-2z" />
@@ -1039,9 +1039,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <path d="M16 6h-4V2L5 7l7 5v-5h4z" />
@@ -1070,9 +1070,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
                 <path d="M4 20c0-2.21 1.79-4 4-4h8c2.21 0 4 1.79 4 4" />
@@ -1090,9 +1090,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M9 11h6M12 8v6M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
               </svg>
@@ -1109,9 +1109,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                 <path d="M16 2v4M8 2v4M3 10h18" />
@@ -1130,9 +1130,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M9 2h6a2 2 0 0 1 2 2v1H7V4a2 2 0 0 1 2-2z" />
                 <path d="M9 12l2 2 4-4M9 20h6M9 16h6M5 6h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
@@ -1150,9 +1150,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
                 <path d="M8 10h8M8 14h6M9 18l2-2 4 4M8 6h8" />
@@ -1170,9 +1170,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
                 <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
@@ -1190,9 +1190,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                 <path d="M16 2v4M8 2v4M3 10h18M9 15l2 2 4-4" />
@@ -1210,9 +1210,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M12 3v15M9 12l3 3 3-3" />
                 <path d="M20 17h-5v2h5a2 2 0 0 0 2-2v-5h-2v5z" />
@@ -1245,9 +1245,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M3 3h18v18H3z" />
                 <path d="M9 7h6M9 11h6M9 15h6" />
@@ -1267,9 +1267,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <rect x="2" y="3" width="20" height="18" rx="2" ry="2" />
                 <path d="M4 7h16M4 11h16M4 15h16" />
@@ -1288,9 +1288,9 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <path d="M21 12V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8" />

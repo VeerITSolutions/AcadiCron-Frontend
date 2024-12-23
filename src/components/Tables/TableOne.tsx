@@ -120,9 +120,9 @@ const TableOne = () => {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <path d="M3 17.25V21h3.75l11.89-11.89-3.75-3.75L3 17.25z" />
                   <path d="M14.12 4.88l3.75 3.75" />

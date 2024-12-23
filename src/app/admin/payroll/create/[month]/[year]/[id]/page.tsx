@@ -177,7 +177,7 @@ const StudentDetails = () => {
     const totalAllowance = allowances.reduce((acc, curr) => acc + Number(curr.amount), 0);
     const totalDeduction = deductions.reduce((acc, curr) => acc + Number(curr.amount), 0);
     const grossSalary = Number(salary.basic) + totalAllowance;
-    
+
     // Set both gross and net salary to the same value
     const netSalary = grossSalary;  // Net Salary is same as Gross Salary
     setSalary((prev) => ({
@@ -188,7 +188,7 @@ const StudentDetails = () => {
       net: netSalary, // Assign the same value to Net Salary
     }));
   };
-  
+
   // Handling row addition and removal for allowances and deductions
   const handleAddRow = (type: any) => {
     if (type === "allowance") {
@@ -240,13 +240,13 @@ const StudentDetails = () => {
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 mr-2"
             fill="none"
-            viewBox="0 0 24 24" 
+            viewBox="0 0 24 24"
             stroke="currentColor"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M19 12H5m7-7l-7 7 7 7"
             />
           </svg>
@@ -388,7 +388,7 @@ const StudentDetails = () => {
           onChange={(e) => handleChange(e, index, "allowance")}
           className="w-16 px-3 py-3 rounded-md border border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         />
-        
+
         {index > 0 && (
           <button
             className="btn-error py-2 rounded flex items-center"
@@ -452,7 +452,7 @@ const StudentDetails = () => {
         <span className="text-white font-medium">Calculate</span>
       </button>
     </div>
-    
+
     <div className="mb-5">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">Basic Salary</label>
                 <input
@@ -494,7 +494,7 @@ const StudentDetails = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-           
+
               <div className="mb-5">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">Tax</label>
                 <input
