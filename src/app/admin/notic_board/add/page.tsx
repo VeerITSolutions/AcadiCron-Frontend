@@ -16,20 +16,11 @@ import { Delete, Edit } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
 import { useGlobalState } from "@/context/GlobalContext";
-
+import { Editor } from "@tinymce/tinymce-react";
 // Dynamic import for ReactQuill
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const NoticeForm = () => {
   // Quill editor modules
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
-    ],
-  };
 
   const handleInputChange = (
     e:
@@ -56,6 +47,13 @@ const NoticeForm = () => {
         [name]: file, // Dynamically set the file in formData using the input's name attribute
       }));
     }
+  };
+
+  const [content, setContent] = useState("");
+
+  const handleEditorChange = (newContent: any) => {
+    setContent(newContent);
+    console.log("Content was updated:", newContent);
   };
 
   const [error, setError] = useState<string | null>(null);
@@ -173,17 +171,24 @@ const NoticeForm = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Message
                   </label>
-                  <ReactQuill
-                    className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
-                    value={formData.message} // Controlled value
-                    onChange={
-                      (content) =>
-                        handleInputChange({
-                          target: { name: "message", value: content },
-                        }) // Custom event shape
-                    }
-                    modules={modules}
-                    style={{ height: "300px" }}
+                  <Editor
+                    apiKey="your-tinymce-api-key" // Replace with your TinyMCE API key
+                    initialValue="<p>Start typing...</p>"
+                    value={content}
+                    onEditorChange={handleEditorChange}
+                    init={{
+                      height: 300,
+                      menubar: false,
+                      plugins: [
+                        "advlist autolink lists link image charmap print preview anchor",
+                        "searchreplace visualblocks code fullscreen",
+                        "insertdatetime media table paste code help wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | formatselect | bold italic backcolor | \
+          alignleft aligncenter alignright alignjustify | \
+          bullist numlist outdent indent | removeformat | help",
+                    }}
                   />
                 </div>
 
