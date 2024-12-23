@@ -172,7 +172,8 @@ const NoticeForm = () => {
                     Message
                   </label>
                   <Editor
-                    apiKey="your-tinymce-api-key" // Replace with your TinyMCE API key
+                    key={themType}
+                    apiKey="3gpvx3o0o5bmecnx6svljl3kl3kgvnz24v0jt4x1k242uey4" // Replace with your TinyMCE API key
                     initialValue="<p>Start typing...</p>"
                     value={content}
                     onEditorChange={handleEditorChange}
@@ -188,6 +189,12 @@ const NoticeForm = () => {
                         "undo redo | formatselect | bold italic backcolor | \
           alignleft aligncenter alignright alignjustify | \
           bullist numlist outdent indent | removeformat | help",
+                      content_style:
+                        themType === "dark"
+                          ? "body { background-color: #24303F; color: #fff; font-family: Arial, sans-serif; }"
+                          : "body { background-color: #fff; color: #000; font-family: Arial, sans-serif; }",
+                      skin: themType === "dark" ? "oxide-dark" : "oxide", // Apply dark/light skin
+                      content_css: themType === "dark" ? "oxide-dark" : "oxide", // Apply dark/light content styling
                     }}
                   />
                 </div>
@@ -220,7 +227,7 @@ const NoticeForm = () => {
                     }
                     onChange={handleInputChange}
                     type="date"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    className="w-full dark:text-white rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                 </div>
 
@@ -237,7 +244,7 @@ const NoticeForm = () => {
                     }
                     onChange={handleInputChange}
                     type="date"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    className="w-full dark:text-white rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                 </div>
 
