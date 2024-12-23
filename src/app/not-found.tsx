@@ -1,7 +1,13 @@
+"use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import "./not-found.css";
 
+import { useGlobalState } from "@/context/GlobalContext";
+
 export default function Home() {
+  const { themType, setThemType } = useGlobalState(); //
+
+  /* themType === "dark" ? darkTheme : lightTheme */
   return (
     <>
       <section className="page_404">
