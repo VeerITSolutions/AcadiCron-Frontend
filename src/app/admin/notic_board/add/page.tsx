@@ -188,6 +188,12 @@ const NoticeForm = () => {
                         "undo redo | formatselect | bold italic backcolor | \
           alignleft aligncenter alignright alignjustify | \
           bullist numlist outdent indent | removeformat | help",
+                      content_style:
+                        themType === "dark"
+                          ? "body { background-color: #24303F; color: #fff; font-family: Arial, sans-serif; }"
+                          : "body { background-color: #fff; color: #000; font-family: Arial, sans-serif; }",
+                      skin: themType === "dark" ? "oxide-dark" : "oxide", // Apply dark/light skin
+                      content_css: themType === "dark" ? "oxide-dark" : "oxide", // Apply dark/light content styling
                     }}
                   />
                 </div>
