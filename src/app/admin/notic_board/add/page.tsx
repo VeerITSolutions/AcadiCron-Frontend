@@ -172,6 +172,7 @@ const NoticeForm = () => {
                     Message
                   </label>
                   <Editor
+                    key={themType}
                     apiKey="3gpvx3o0o5bmecnx6svljl3kl3kgvnz24v0jt4x1k242uey4" // Replace with your TinyMCE API key
                     initialValue="<p>Start typing...</p>"
                     value={content}
