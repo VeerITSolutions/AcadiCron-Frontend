@@ -13,8 +13,12 @@
   cursor: pointer;
 }
 
+.login-box {
+  min-height: 100vh;
+}
+
 .login {
-  padding: 50px;
+  padding: 50px 50px 50px 50px;
   background: #fff;
   max-width: 600px;
   margin: 0 auto;

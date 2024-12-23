@@ -21,7 +21,6 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-  
   };
 
   return (
@@ -46,11 +45,9 @@ const LoginPage = () => {
               />
             </Link>
             <div className="col-md-6">
-              <Slide>
-                <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                  Admin Login
-                </h2>
-              </Slide>
+              <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+                Admin Login
+              </h2>
 
               <form
                 onSubmit={handleSubmit}
