@@ -32,6 +32,7 @@ const AlumniReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
+  
 
  
 
