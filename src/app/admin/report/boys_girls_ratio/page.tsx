@@ -50,7 +50,8 @@ import {
 import { usePathname } from "next/navigation"; 
 
 
-const AdmissionReport = () => {
+
+const StudentReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -72,16 +73,13 @@ const AdmissionReport = () => {
   const router = useRouter();
 
   const columns = [
-    "Admission No",
-    "Student Name",
-    "Class",
-    "Father Name",
-    "Date of Birth",
-    "Admission Date",
-    "Gender",
-    "Category",
-    "Mobile Number"
+    "Class (Section)",
+    "Total Boys",
+    "Total Girls",
+    "Total Students",
+    "Boys-Girls Ratio",
   ];
+  
   
   const options = {
     filterType: "checkbox",
@@ -94,7 +92,6 @@ const AdmissionReport = () => {
     tableBodyMaxHeight: "500px",
     selectableRows: "none",
   };
-  
 
   const handleDelete = async () => {
     try {
@@ -301,30 +298,7 @@ const AdmissionReport = () => {
 
 
 <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-      <div className={`${styles.filters} p-5`} >
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-          Search Type:
-            <select
-           
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-            
-            </select>
-          </label>
-         
-         
-          <div className={styles.searchGroup}>
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
-          </div>
-        </div>
-      </div>
+      
 
       {loading ? (
         <Loader />
@@ -352,4 +326,4 @@ const AdmissionReport = () => {
   );
 };
 
-export default AdmissionReport;
+export default StudentReport;

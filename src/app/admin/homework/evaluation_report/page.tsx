@@ -5,17 +5,28 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
+import { fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
-import {
-  fetchsectionByClassData,
-  fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your classes API service
+import { getClasses } from "@/services/classesService";
+import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { usePathname } from "next/navigation"; 
+import {
+  Group as GroupIcon,
+  Security as SecurityIcon,
+  MenuBook as MenuBookIcon,
+  Key as KeyIcon,
+  Class as ClassIcon,
+  Description as DescriptionIcon,
+  PeopleAlt as PeopleAltIcon,
+  AccountBox as AccountBoxIcon,
+  AssignmentTurnedIn as AssignmentTurnedInIcon,
+  Wc as WcIcon,
+  Scale as ScaleIcon,
+} from '@mui/icons-material';
 import {
   Edit,
   Delete,
@@ -34,26 +45,10 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
-import {
-  Group as GroupIcon,
-  Security as SecurityIcon,
-  MenuBook as MenuBookIcon,
-  Key as KeyIcon,
-  Class as ClassIcon,
-  Description as DescriptionIcon,
-  PeopleAlt as PeopleAltIcon,
-  AccountBox as AccountBoxIcon,
-  AssignmentTurnedIn as AssignmentTurnedInIcon,
-  Wc as WcIcon,
-  Scale as ScaleIcon,
-} from '@mui/icons-material';
-import { usePathname } from "next/navigation"; 
 
 
 
-const GuardianReport = () => {
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [colorMode, setColorMode] = useColorMode();
+const EvaluationReport = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
@@ -61,90 +56,45 @@ const GuardianReport = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [classes, setClassessData] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+  const [colorMode, setColorMode] = useColorMode();
+
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
   const columns = [
-    "Class (Section)",
-    "Admission No",
-    "Student Name",
-    "Mobile Number",
-    "Guardian Name",
-    "Guardian Relation",
-    "Guardian Phone",
-    "Father Name",
-    "Father Phone",
-    "Mother Name",
-    "Mother Phone"
+    "Subject",
+    "Homework Date",
+    "Submission Date",
+    "Complete/Incomplete",
+    "Complete%"
   ];
   
+  
   const options = {
-    filterType: "checkbox",
+    filterType: false,
     serverSide: true,
-    pagination: false,
-    responsive: "standard",
-    search: false,
-    filter: false,
-    viewColumns: false,
-    tableBodyMaxHeight: "500px",
     selectableRows: "none",
+   responsive: "standard",
+  search: false,
+    filter: false, // Disable filter,
+    viewColumns: false, // Disable view columns button
   };
 
-  const handleDelete = async () => {
-    try {
-      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
-
-      const idsToDelete = selectedData.map((row) => row[0]);
-
-      console.log(idsToDelete); // Handle response
-
-      if (
-        window.confirm("Are you sure you want to delete the selected items?")
-      ) {
-        try {
-          const response = await deleteStudentBluk(idsToDelete);
-        } catch (error) {
-          console.error("Error deleting data:", error);
-          alert("Failed to delete selected data.");
-        }
-      }
-    } catch (error) {
-      console.error("Error deleting data:", error);
-      alert("Failed to delete selected data.");
-    }
-  };
-
-  const handleRowSelectionChange = (
-    curRowSelected: { dataIndex: number; index: number }[],
-    allRowsSelected: { dataIndex: number; index: number }[],
-    rowsSelected: [],
-  ) => {
-    setSelectedRows(rowsSelected); // Update selected rows
-  };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.section || "N/A",
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.father_name || "N/A",
-      student.gender || "N/A",
-      student.dob || "N/A",
-      student.category || "N/A",
-      student.mobileno || "N/A",
-      student.localno || "N/A",
-      student.NationalNo || "N/A",
-      student.RTE || "N/A",
-
-
+      student.class || "N/A",
+      student.category_id,
+      student.mobileno,
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -158,61 +108,45 @@ const GuardianReport = () => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
+    currentPage: number,
+    rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
     try {
-      // Pass selectedClass and selectedSection as parameters to filter data
-      if (selectedClass && selectedSection) {
-        const result = await fetchStudentData(
-          0,
-          0,
-          selectedClass,
-          selectedSection,
-          keyword,
-          selectedSessionId,
-          1,
-        );
-        setTotalCount(result.totalCount);
-        const formattedData = formatStudentData(result.data);
-        setData(formattedData);
-        setLoading(false);
-      } else {
-        setData([]);
-        setLoading(false);
-      }
+      const result = await fetchStudentData(
+        currentPage + 1,
+        rowsPerPage,
+        selectedClass,
+        selectedSection,
+        keyword,
+        selectedSessionId,
+      );
+      setTotalCount(result.totalCount);
+      const formattedData = formatStudentData(result.data);
+      setData(formattedData);
+      setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
+  const handleDelete = async (id: number) => {
+    // Assuming id is the student_id
+    router.push(`/admin/student/${id}`);
+  };
 
-  const fetchClassesAndSections = async () => {
-    try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]);
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
+  const handleEdit = (id: number) => {
+    router.push(`/admin/student/edit/${id}`);
+  };
+  const handleAddFees = (id: number) => {
+    router.push(`/admin/student/fees/${id}`);
   };
 
   useEffect(() => {
-    fetchClassesAndSections();
-  }, [selectedClass]);
-
-  useEffect(() => {
-    fetchData(selectedClass, selectedSection, keyword);
-  }, [selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -233,15 +167,43 @@ const GuardianReport = () => {
     setPage(0);
   };
 
-  const handleSearch = () => {
-    setPage(0);
-    fetchData(selectedClass, selectedSection, keyword);
+  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.target.value);
   };
+
+  const handleSearch = () => {
+    setPage(0); // Reset to first page on search
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  };
+
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
   };
+
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
+
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
 
   const pathname = usePathname(); // Get the current path
   const [activePath, setActivePath] = useState("");
@@ -267,43 +229,45 @@ const GuardianReport = () => {
     { href: "/admin/report/student_teacher_ratio", label: "Student Teacher Ratio Report" },
   ];
 
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
     <DefaultLayout>
-  <div className="col-md-12">
-        <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-          <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-            <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-              <i className="fa fa-search mr-2 text-blue-600"></i> Student Information Report
-            </h3>
-          </div>
-          <div className="p-5">
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {reportLinks.map((link) => (
-                <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                  <a
-                    href={link.href}
-                    className={`flex items-center hover:text-[#0070f3] ${
-                      activePath === link.href
-                        ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
-                        : "p-2"
-                    }`}
-                  >
-                    <DescriptionIcon className="h-2 w-2 mr-2" />
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
 
+
+<div className="col-md-12">
+<div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+  <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+    <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
+      <i className="fa fa-search mr-2 text-blue-600"></i> Student Information Report
+    </h3>
+  </div>
+  <div className="p-5">
+    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      {reportLinks.map((link) => (
+        <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
+          <a
+            href={link.href}
+            className={`flex items-center hover:text-[#0070f3] ${
+              activePath === link.href
+                ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
+                : "p-2"
+            }`}
+          >
+            <DescriptionIcon className="h-2 w-2 mr-2" />
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+</div>
 
 <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-      <div className={`${styles.filters} p-5`} >
+<div className={`${styles.filters} p-5`} >
         <div className={styles.filterGroup}>
           <label className={styles.label}>
             Class:
@@ -326,7 +290,7 @@ const GuardianReport = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass}
+              disabled={!selectedClass} // Disable section dropdown if no class is selected
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -336,7 +300,33 @@ const GuardianReport = () => {
               ))}
             </select>
           </label>
-         
+          <label className={styles.label}>
+            Subject Group:
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              <option value="">Select</option>
+              <option value="Class1">Class 1</option>
+              <option value="Class2">Class 2</option>
+              {/* Add more class options here */}
+            </select>
+          </label>
+          <label className={styles.label}>
+            Subject:
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              <option value="">Select</option>
+              <option value="Class1">Math</option>
+              <option value="Class2">Hindi</option>
+              <option value="Class2">English</option>
+              {/* Add more class options here */}
+            </select>
+          </label>
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
@@ -346,14 +336,16 @@ const GuardianReport = () => {
             </button>
           </div>
         </div>
-      </div>
+        {/*  <div className={styles.searchGroup}>
 
+        </div> */}
+      </div>
       {loading ? (
         <Loader />
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={"Student Report"}
+            title={"Evaluation Report"}
             data={data}
             columns={columns}
             options={{
@@ -363,8 +355,6 @@ const GuardianReport = () => {
               rowsPerPage: rowsPerPage,
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              onRowsDelete: handleDelete,
             }}
           />
         </ThemeProvider>
@@ -374,4 +364,4 @@ const GuardianReport = () => {
   );
 };
 
-export default GuardianReport;
+export default EvaluationReport;
