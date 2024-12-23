@@ -38,3 +38,23 @@
   /* Corrected class name */
   margin-top: -50px;
 }
+
+/* Dark Theme */
+.dark-theme {
+  background-color: #121212; /* Dark background */
+  color: #ffffff; /* White text */
+}
+
+.dark-theme .four_zero_four_bg {
+  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+  height: 400px;
+  background-position: center;
+}
+
+.dark-theme .link_404 {
+  background: #39ac31;
+}
+
+.dark-theme .content_box_404 {
+  margin-top: -50px;
+}
