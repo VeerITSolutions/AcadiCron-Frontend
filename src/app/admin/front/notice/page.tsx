@@ -39,7 +39,8 @@ import { useLoginDetails } from "@/store/logoStore";
 
 const columns = [
   "Title",
-  "Url",
+  "Date",
+  "Venue",
   "Action",
 ];
 
@@ -53,7 +54,7 @@ search: false,
   viewColumns: false,
 };
 
-const News = () => {
+const Events = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
@@ -317,7 +318,7 @@ const News = () => {
 
       if (result.status == 200) {
         toast.success(
-          editing ? "Leave updated successfully" : "News successfully",
+          editing ? "Leave updated successfully" : "Leave applied successfully",
         );
         setFormData({
           date: null as Date | null,
@@ -338,11 +339,11 @@ const News = () => {
         setEditing(false); // Reset editing state
         fetchData(page, rowsPerPage); // Refresh data after submit
       } else {
-        toast.error("Failed to save News");
+        toast.error("Failed to save leave");
       }
     } catch (error) {
       console.error("An error occurred", error);
-      toast.error("An error occurred while saving News");
+      toast.error("An error occurred while saving leave");
     }
   };
 
@@ -459,20 +460,19 @@ const News = () => {
             alignItems: "center",
           }}
         >
-          <button
-            type="submit"
-            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-            onClick={handleClickOpen}
-          >
-            {editing ? "Edit Leave" : "Add"}
-          </button>
+ 
+<button type="submit" className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" onClick={handleClickOpen}>
+                  <i className="fa fa-plus mr-2" />
+                  Add
+                </button>
+       
         </div>
         {loading ? (
           <Loader />
         ) : (
           <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
-              title={"News"}
+              title={"Events"}
               data={data}
               className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
               columns={columns}
@@ -495,7 +495,8 @@ const News = () => {
           <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="flex items-center justify-between">
               <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Leave" : "Add News"}
+                {editing ? "Edit Leave" : "Add Event"}
+                
               </h3>
               <IconButton
                 onClick={handleClose}
@@ -526,11 +527,30 @@ const News = () => {
                   </select>
                 </div>
 
-                
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Venue <span className="required">*</span>{" "}
+                  </label>
+                  <select
+                    value={selectedStaff || ""}
+                    onChange={handleStaffChange}
+                    disabled={!selectedRoleLeave}
+                    className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                      !selectedRoleLeave ? "cursor-not-allowed opacity-50" : ""
+                    }`}
+                  >
+                    <option value="">Select</option>
+                    {staffData.map((cls: any) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name} {cls.surname} ( {cls.employee_id})
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Date <span className="required">*</span>{" "}
+                    Apply Date <span className="required">*</span>{" "}
                   </label>
                   <div className="relative">
                     <Flatpickr
@@ -562,11 +582,22 @@ const News = () => {
                   </div>
                 </div>
 
-               
+                <div>
+                  <label className="w-full mb-3 block text-sm font-medium text-black dark:text-white">
+                    Description
+                  </label>
+                  <input
+                    name="admin_remark"
+                    type="textarea"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    value={formData.admin_remark}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                   Add Media<span className="required">*</span>{" "}
+                    Attach Document <span className="required">*</span>{" "}
                   </label>
 
                   <input
@@ -598,4 +629,4 @@ const News = () => {
   );
 };
 
-export default News;
+export default Events;
