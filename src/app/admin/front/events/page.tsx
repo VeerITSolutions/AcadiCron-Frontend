@@ -460,13 +460,12 @@ const Events = () => {
             alignItems: "center",
           }}
         >
-          <button
-            type="submit"
-            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-            onClick={handleClickOpen}
-          >
-            {editing ? "Edit Leave" : "Add"}
-          </button>
+ 
+<button type="submit" className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" onClick={handleClickOpen}>
+                  <i className="fa fa-plus mr-2" />
+                  Add
+                </button>
+       
         </div>
         {loading ? (
           <Loader />
@@ -497,6 +496,7 @@ const Events = () => {
             <div className="flex items-center justify-between">
               <h3 className="font-medium text-black dark:text-white">
                 {editing ? "Edit Leave" : "Add Event"}
+                
               </h3>
               <IconButton
                 onClick={handleClose}
