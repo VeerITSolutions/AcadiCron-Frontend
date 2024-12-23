@@ -19,6 +19,9 @@ import { useGlobalState } from "@/context/GlobalContext";
 import { Editor } from "@tinymce/tinymce-react";
 // Dynamic import for ReactQuill
 
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 const NoticeForm = () => {
   // Quill editor modules
 
@@ -49,6 +52,8 @@ const NoticeForm = () => {
     }
   };
 
+  const [colorMode, setColorMode] = useColorMode();
+
   const [content, setContent] = useState("");
 
   const handleEditorChange = (newContent: any) => {
@@ -57,10 +62,10 @@ const NoticeForm = () => {
   };
 
   const [error, setError] = useState<string | null>(null);
-
+  const { themType, setThemType } = useGlobalState(); //
   const [roleId, setRoleId] = useState("");
   const [data, setData] = useState<Array<Array<any>>>([]);
-  const { themType, setThemType } = useGlobalState();
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -88,6 +93,12 @@ const NoticeForm = () => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+
+  // Dynamically import TinyMCE to avoid SSR issues
+  const Editor = dynamic(
+    () => import("@tinymce/tinymce-react").then((mod) => mod.Editor),
+    { ssr: false },
+  );
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -172,8 +183,8 @@ const NoticeForm = () => {
                     Message
                   </label>
                   <Editor
-                    apiKey="3gpvx3o0o5bmecnx6svljl3kl3kgvnz24v0jt4x1k242uey4" // Replace with your TinyMCE API key
-                    initialValue="<p>Start typing...</p>"
+                    apiKey="3gpvx3o0o5bmecnx6svljl3kl3kgvnz24v0jt4x1k242uey4" // Your TinyMCE API key
+                    initialValue={content}
                     value={content}
                     onEditorChange={handleEditorChange}
                     init={{
@@ -186,8 +197,12 @@ const NoticeForm = () => {
                       ],
                       toolbar:
                         "undo redo | formatselect | bold italic backcolor | \
-          alignleft aligncenter alignright alignjustify | \
-          bullist numlist outdent indent | removeformat | help",
+            alignleft aligncenter alignright alignjustify | \
+            bullist numlist outdent indent | removeformat | help",
+                      content_style:
+                        themType === "dark"
+                          ? "body { background-color: #000; color: #fff; font-family: Arial, sans-serif; }"
+                          : "body { background-color: #fff; color: #000; font-family: Arial, sans-serif; }",
                     }}
                   />
                 </div>
