@@ -460,7 +460,7 @@ const Gallery = () => {
             alignItems: "center",
           }}
         >
-          <Link href="/gallery/create">
+          <Link href="/admin/front/gallery/create">
 <button type="submit" className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" onClick={handleClickOpen}>
                   <i className="fa fa-plus mr-2" />
                   Add
