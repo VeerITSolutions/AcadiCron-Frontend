@@ -72,15 +72,13 @@ const OnlineExaminationsReport = () => {
   const router = useRouter();
 
   const columns = [
-    "Exam",
-    "Attempt",
-    "Exam From",
-    "Exam To",
-    "Duration",
-    "Student",
-    "Questions",
-    "Exam Publish",
-    "Result Publish"
+    "Admission No",
+    "Student Name",
+    "Class",
+    "Total Attempt",
+    "Remaining Attempt",
+    "Exam Submitted",
+    "Action",
   ];
   
   
@@ -294,33 +292,43 @@ const OnlineExaminationsReport = () => {
         <div className={styles.filterGroup}>
         
           <label className={styles.label}>
-          Search Type:
+          Exam:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
-              <option value="period">Period</option>
             </select>
           </label>
          
           <label className={styles.label}>
-          Date Type:
+            Class:
             <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="exam_from_date">Exam From Date</option>
-              <option value="exam_to_date">Exam To Date</option>
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+            Section:
+            <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              disabled={!selectedClass}
+            >
+              <option value="">Select</option>
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
             </select>
           </label>
  
