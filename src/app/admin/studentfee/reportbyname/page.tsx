@@ -5,14 +5,31 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import {
-  fetchLeaveData,
-  createLeave,
-  deleteLeaveData,
-  editLeaveData,
-} from "@/services/leaveService";
-import styles from "./StudentDetails.module.css";
+import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
+import { fetchLeaveTypeData } from "@/services/leaveTypeService";
+import { fetchStudentSingleData } from "@/services/studentService";
+import { fetchStudentFeesData } from "@/services/studentFeesService";
+import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your classes API service
+import { useLoginDetails } from "@/store/logoStore";
+import {
+  Group as GroupIcon,
+  Security as SecurityIcon,
+  MenuBook as MenuBookIcon,
+  Key as KeyIcon,
+  Class as ClassIcon,
+  Description as DescriptionIcon,
+  PeopleAlt as PeopleAltIcon,
+  AccountBox as AccountBoxIcon,
+  AssignmentTurnedIn as AssignmentTurnedInIcon,
+  Wc as WcIcon,
+  Scale as ScaleIcon,
+} from '@mui/icons-material';
+import { usePathname } from "next/navigation";
 import {
   Dialog,
   DialogActions,
@@ -24,18 +41,24 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
-import { fetchLeaveTypeData } from "@/services/leaveTypeService";
-import { fetchStudentSingleData } from "@/services/studentService";
-import { fetchStudentFeesData } from "@/services/studentFeesService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
+import {
+  fetchLeaveData,
+  createLeave,
+  deleteLeaveData,
+  editLeaveData,
+} from "@/services/leaveService";
 
 
-const StudentDetails = () => {
+const StudentReport = () => {
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
@@ -52,6 +75,11 @@ const StudentDetails = () => {
   );
   const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
+  const [editing, setEditing] = useState(false);
+  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
   const columns = [
     "Fees Group",
     "Fees Code",
@@ -64,9 +92,9 @@ const StudentDetails = () => {
     "Discount (₹)",
     "Fine (₹)",
     "Paid (₹)",
-    "Balance (₹)",
-    "Action",
+    "Balance (₹)"
   ];
+  
   
   const options = {
     filterType: "checkbox",
@@ -79,11 +107,6 @@ const StudentDetails = () => {
     tableBodyMaxHeight: "500px",
     selectableRows: "none",
   };
-
-  const [editing, setEditing] = useState(false);
-  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null);
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
 
   const handleDelete = async (id: number) => {
     try {
@@ -137,7 +160,6 @@ const StudentDetails = () => {
 
   const [formData, setFormData] = useState<Record<string, any>>({
     class_name: "",
-
     parent_id: "",
     admission_no: "",
     roll_no: "",
@@ -196,7 +218,6 @@ const StudentDetails = () => {
     app_key: "",
     parent_app_key: "",
     disable_at: "",
-
     section_id: "",
     section_name: "",
     notes: "",
@@ -205,7 +226,7 @@ const StudentDetails = () => {
     second_title: "",
     third_title: "",
     fourth_title: "",
-    // Add other initial fields as needed
+    
   });
 
   useEffect(() => {
@@ -216,7 +237,7 @@ const StudentDetails = () => {
           try {
             const data = await fetchStudentSingleData(id);
             const formattedData2 = await fetchStudentFeesData(id);
-            /* setData(formattedData2); */
+    
             setFormData({
               class_name: data.data.class_name,
 
@@ -375,21 +396,6 @@ const StudentDetails = () => {
     }
   };
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-  };
-
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-  };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -404,11 +410,204 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
+
+
+  const handleRowSelectionChange = (
+    curRowSelected: { dataIndex: number; index: number }[],
+    allRowsSelected: { dataIndex: number; index: number }[],
+    rowsSelected: [],
+  ) => {
+    setSelectedRows(rowsSelected); // Update selected rows
+  };
+
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
+
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+  useEffect(() => {
+    setSelectedSessionId(getselectedSessionId);
+  }, []);
+
+
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]);
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   fetchClassesAndSections();
+  // }, [selectedClass]);
+
+  // useEffect(() => {
+  //   fetchData(selectedClass, selectedSection, keyword);
+  // }, [selectedClass, selectedSection, keyword]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
+    setPage(0);
+  };
+
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
+  // const handleSearch = () => {
+  //   setPage(0);
+  //   fetchData(selectedClass, selectedSection, keyword);
+  // };
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
+
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const pathname = usePathname(); // Get the current path
+  const [activePath, setActivePath] = useState("");
+
+  useEffect(() => {
+    if (pathname) {
+      setActivePath(pathname); // Set the active path
+    }
+  }, [pathname]);
+
+  // Links for the reports
+  const reportLinks = [
+    { href: "/admin/studentfee/reportbyname", label: "Fees Statement" },
+    { href: "/admin/transaction/studentacademicreport", label: "Balance Fees Report" },
+    { href: "/admin/studentfee/collection_report", label: "Fees Collection Report" },
+    { href: "/admin/report/onlinefees_report", label: "Online Fees Collection Report" },
+    { href: "/admin/report/income", label: "Income Report" },
+    { href: "/admin/report/expense", label: "Expense Report" },
+    { href: "/admin/report/payroll", label: "Payroll Report" },
+    { href: "/admin/report/incomegroup", label: "Income Group Report" },
+    { href: "/admin/report/expensegroup", label: "Expense Group Report" },
+  ];
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
     <DefaultLayout>
+  <div className="col-md-12">
+        <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+          <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+            <h3 className="box-title text-2xl font-medium text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-medium">
+              <i className="fa fa-search mr-2 text-blue-600"></i> Finance
+            </h3>
+          </div>
+          <div className="p-5">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              {reportLinks.map((link) => (
+                <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
+                  <a
+                    href={link.href}
+                    className={`flex items-center font-medium hover:text-[#0070f3] ${
+                      activePath === link.href
+                        ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
+                        : "p-2"
+                    }`}
+                  >
+                    <DescriptionIcon className="h-2 w-2 mr-2" />
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+<div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+      <div className={`${styles.filters} p-5`} >
+        <div className={styles.filterGroup}>
+          <label className={styles.label}>
+            Class:
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              <option value="">Select</option>
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+            Section:
+            <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              disabled={!selectedClass}
+            >
+              <option value="">Select</option>
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+          Student:
+            <select
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              <option value="">Select</option>
+              <option value="">SC</option>
+              <option value="">ST</option>
+              <option value="">OBC</option>
+              
+            </select>
+          </label>
+        
+          <div className={styles.searchGroup}>
+            <button className={styles.searchButton}>
+              Search
+            </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
         <div className="border-b border-stroke p-4 dark:bg-boxdark dark:drop-shadow-none">
           <div className="flex items-start">
@@ -434,7 +633,7 @@ const StudentDetails = () => {
                       Class Section
                     </th>
                     <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.class_name} ( {formData.section_name} )
+                      {formData.class_name}  {formData.section_name}
                     </td>
                   </tr>
                   <tr>
@@ -486,37 +685,24 @@ const StudentDetails = () => {
           </div>
         </div>
 
-        <div className="pb-4 pl-4 pt-4 text-right dark:bg-boxdark dark:drop-shadow-none">
-          <div className="flex space-x-4">
-            <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
-              Print Selected
-            </button>
-            <button
-              className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-              onClick={handleClickOpen}
-            >
-              {editing ? "Edit Leave" : "Collect Selected"}
-            </button>
-          </div>
-        </div>
         {loading ? (
           <Loader />
         ) : (
           <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title={""}
-              data={data}
-              className={`${styles["miui-box-shadow"]}`}
-              columns={columns}
-              options={{
-                ...options,
-                count: totalCount,
-                page: page,
-                rowsPerPage: rowsPerPage,
-                onChangePage: handlePageChange,
-                onChangeRowsPerPage: handleRowsPerPageChange,
-              }}
-            />
+          <MUIDataTable
+          title={`${currentDate}`}
+          data={data}
+          className={`${styles["miui-box-shadow"]}`}
+          columns={columns}
+          options={{
+          ...options,
+          count: totalCount,
+          page: page,
+          rowsPerPage: rowsPerPage,
+          onChangePage: handlePageChange,
+          onChangeRowsPerPage: handleRowsPerPageChange,
+          }}
+          />;
           </ThemeProvider>
         )}
         <Dialog open={open} onClose={handleClose}>
@@ -659,8 +845,9 @@ const StudentDetails = () => {
           </DialogContent>
         </Dialog>
       </div>
+      </div>
     </DefaultLayout>
   );
 };
 
-export default StudentDetails;
+export default StudentReport;

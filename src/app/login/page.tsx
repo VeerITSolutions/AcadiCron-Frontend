@@ -49,9 +49,9 @@ const LoginPage = () => {
 
   return (
     <div className={styles.loginContainer}>
-      <div className="flex flex-wrap items-center dark:bg-boxdark">
+      <div className="login-box flex flex-wrap items-center dark:bg-boxdark">
         <div className=" w-full ">
-          <div className=" py-17.5 text-center">
+          <div className="text-center">
             <Link className="mb-5.5 inline-block" href="/">
               <Image
                 className="hidden dark:block"
@@ -69,11 +69,9 @@ const LoginPage = () => {
               />
             </Link>
             <div className="col-md-6">
-              <Slide>
-                <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                  Admin Login
-                </h2>
-              </Slide>
+              {/* <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+                Admin Login
+              </h2> */}
 
               <form
                 onSubmit={handleSubmit}

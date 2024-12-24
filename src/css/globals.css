@@ -212,7 +212,18 @@ td.MuiTableCell-root > div > div {
 .radio-inline input {
   margin-right: 7px;
 }
+
+.login-box {
+  min-height: 100vh;
+  padding: 30px 20px;
+}
+.MuiDialog-paper {
+  min-width: 600px;
+}
 @media (max-width: 767px) {
+  .MuiDialog-paper {
+    min-width: 90%;
+  }
   .MuiPaper-root h6 {
     text-align: left;
   }
