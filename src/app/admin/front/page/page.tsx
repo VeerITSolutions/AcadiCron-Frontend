@@ -13,6 +13,7 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
 import { fetchRoleData } from "@/services/roleService";
+import Link from "next/link";
 import {
   fetchLeaveData,
   createLeave,
@@ -460,13 +461,12 @@ const Page = () => {
             alignItems: "center",
           }}
         >
-          <button
-            type="submit"
-            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-            onClick={handleClickOpen}
-          >
-            {editing ? "Edit Leave" : "Add"}
-          </button>
+         <Link href="/admin/front/page/create">
+<button type="submit" className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" onClick={handleClickOpen}>
+                  <i className="fa fa-plus mr-2" />
+                  Add
+                </button>
+                </Link>
         </div>
         {loading ? (
           <Loader />
@@ -488,101 +488,7 @@ const Page = () => {
             />
           </ThemeProvider>
         )}
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          className="dark:bg-boxdark dark:drop-shadow-none"
-        >
-          <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Leave" : "Add Page"}
-              </h3>
-              <IconButton
-                onClick={handleClose}
-                className="text-black dark:text-white"
-              >
-                <Close />
-              </IconButton>
-            </div>
-          </DialogTitle>
-          <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="grid gap-5.5 p-6.5 sm:grid-cols-2">
-              <div className="field">
-                  <label className="w-full mb-3 block text-sm font-medium text-black dark:text-white">
-                    Title
-                  </label>
-                  <input
-                    name="admin_remark"
-                    type="Text"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value={formData.admin_remark}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Page Type <span className="required">*</span>{" "}
-                  </label>
-                  <select
-                    value={selectedRoleLeave || ""}
-                    onChange={handleRoleChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {roledata.map((cls: any) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-              
-                
-                <div>
-                  <label className="w-full mb-3 block text-sm font-medium text-black dark:text-white">
-                    Description
-                  </label>
-                  <input
-                    name="admin_remark"
-                    type="textarea"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value={formData.admin_remark}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Attach Document <span className="required">*</span>{" "}
-                  </label>
-
-                  <input
-                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                    type="file"
-                    accept="image/*"
-                    name="document_file" // Optional: Include name for form data
-                    onChange={handleFileChange} // Handle file change separately
-                    id="file"
-                  />
-                </div>
-
-                
-
-                <div className="col-span-full">
-                  <button
-                    onClick={handleSave}
-                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+      
       </div>
     </DefaultLayout>
   );
