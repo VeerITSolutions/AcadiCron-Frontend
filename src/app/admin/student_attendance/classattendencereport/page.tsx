@@ -264,7 +264,7 @@ const StudentAcademicReport = () => {
         <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
           <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-              <i className="fa fa-search mr-2 text-blue-600"></i> Finance
+              <i className="fa fa-search mr-2 text-blue-600"></i> Attendance Report
             </h3>
           </div>
           <div className="p-5">
