@@ -346,7 +346,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             label: "Examinations",
             route: "#",
             children: [
-              { label: "Exam Group", route: "/admin/examgroup" },
+             
               { label: "Exam Schedule", route: "/admin/exam_schedule" },
               { label: "Exam Result", route: "/admin/examresult" },
               { label: "Design Admit Card", route: "/admin/admitcard" },
@@ -490,11 +490,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               },
               { label: "Apply Leave", route: "/admin/staff/leaverequest" },
               { label: "Leave Type", route: "/admin/leavetypes" },
-              {
-                label: "Teachers Rating",
-                route: "/admin/staff/rating",
-                hidden: true,
-              }, // Added hidden property for display:none
+             
               { label: "Department", route: "/admin/department/department" },
               { label: "Designation", route: "/admin/designation/designation" },
               {
