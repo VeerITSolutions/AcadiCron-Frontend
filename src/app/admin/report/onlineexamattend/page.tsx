@@ -16,37 +16,10 @@ import { getClasses } from "@/services/classesService"; // Import your classes A
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
+
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
-import {
-  Group as GroupIcon,
-  Security as SecurityIcon,
-  MenuBook as MenuBookIcon,
-  Key as KeyIcon,
-  Class as ClassIcon,
-  Description as DescriptionIcon,
-  PeopleAlt as PeopleAltIcon,
-  AccountBox as AccountBoxIcon,
-  AssignmentTurnedIn as AssignmentTurnedInIcon,
-  Wc as WcIcon,
-  Scale as ScaleIcon,
-} from '@mui/icons-material';
+import { Description as DescriptionIcon } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; 
 
 
@@ -72,13 +45,14 @@ const OnlineExaminationsReport = () => {
   const router = useRouter();
 
   const columns = [
+    "Student",
+    "Admission No",
+    "Class",
+    "Section",
     "Exam",
-    "Attempt",
     "Exam From",
     "Exam To",
     "Duration",
-    "Student",
-    "Questions",
     "Exam Publish",
     "Result Publish"
   ];
