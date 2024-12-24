@@ -809,10 +809,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               { label: "Finance", route: "/admin/report/finance" },
               { label: "Attendance", route: "/admin/report/attendance" },
               { label: "Examinations", route: "/admin/report/examinations" },
-              {
-                label: "Online Examinations",
-                route: "/admin/report/onlineexam",
-              },
+              { label: "Online Examinations", route: "/admin/onlineexam/report"},
               { label: "Lesson Plan", route: "/admin/report/lesson_plan" },
               { label: "Human Resource", route: "/admin/report/staff_report" },
               { label: "Library", route: "/admin/report/library" },

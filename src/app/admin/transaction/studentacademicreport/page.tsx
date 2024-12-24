@@ -50,7 +50,7 @@ import {
 import { usePathname } from "next/navigation"; 
 
 
-const OnlineExaminationsReport = () => {
+const StudentAcademicReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -72,17 +72,18 @@ const OnlineExaminationsReport = () => {
   const router = useRouter();
 
   const columns = [
-    "Exam",
-    "Attempt",
-    "Exam From",
-    "Exam To",
-    "Duration",
-    "Student",
-    "Questions",
-    "Exam Publish",
-    "Result Publish"
+    "Class",
+    "Section",
+    "Student Name",
+    "Admission No",
+    "Roll Number",
+    "Father Name",
+    "Total Fees (₹)",
+    "Paid Fees (₹)",
+    "Discount (₹)",
+    "Fine (₹)",
+    "Balance (₹)"
   ];
-  
   
   const options = {
     filterType: "checkbox",
@@ -249,10 +250,15 @@ const OnlineExaminationsReport = () => {
   }, [pathname]);
 
   const reportLinks = [
-    { href: "/admin/onlineexam/report", label: "Rank Report" },
-    { href: "/admin/report/onlineexam", label: "Exams Report" },
-    { href: "/admin/report/onlineexamattend", label: "Exams Attempt Report" },
-    { href: "/admin/report/onlineexamrank", label: "Exams Rank Report" },
+    { href: "/admin/studentfee/reportbyname", label: "Fees Statement" },
+    { href: "/admin/transaction/studentacademicreport", label: "Balance Fees Report" },
+    { href: "/admin/studentfee/collection_report", label: "Fees Collection Report" },
+    { href: "/admin/report/onlinefees_report", label: "Online Fees Collection Report" },
+    { href: "/admin/report/income", label: "Income Report" },
+    { href: "/admin/report/expense", label: "Expense Report" },
+    { href: "/admin/report/payroll", label: "Payroll Report" },
+    { href: "/admin/report/incomegroup", label: "Income Group Report" },
+    { href: "/admin/report/expensegroup", label: "Expense Group Report" },
   ];
 
   if (error) return <p>{error}</p>;
@@ -263,7 +269,7 @@ const OnlineExaminationsReport = () => {
         <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
           <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-              <i className="fa fa-search mr-2 text-blue-600"></i> Online Examinations Report
+              <i className="fa fa-search mr-2 text-blue-600"></i> Finance
             </h3>
           </div>
           <div className="p-5">
@@ -292,38 +298,37 @@ const OnlineExaminationsReport = () => {
 <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
       <div className={`${styles.filters} p-5`} >
         <div className={styles.filterGroup}>
-        
           <label className={styles.label}>
-          Search Type:
+            Class:
             <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
-              <option value="period">Period</option>
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
             </select>
           </label>
-         
           <label className={styles.label}>
-          Date Type:
+            Section:
             <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              disabled={!selectedClass}
             >
               <option value="">Select</option>
-              <option value="exam_from_date">Exam From Date</option>
-              <option value="exam_to_date">Exam To Date</option>
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
             </select>
           </label>
- 
          
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
@@ -362,4 +367,4 @@ const OnlineExaminationsReport = () => {
   );
 };
 
-export default OnlineExaminationsReport;
+export default StudentAcademicReport;

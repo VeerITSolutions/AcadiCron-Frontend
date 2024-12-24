@@ -52,10 +52,16 @@ const LessonPlanReport = () => {
   const router = useRouter();
 
   const columns = [
-    "Subject - Lesson - Topic",
-    "Status",
+  "Teacher",
+  "Lesson Name",
+  "Topic Name",
+  "Sub Topic",
+  "Date",
+  "Time From",
+  "Time To",
+  "Action",
   ];
-  
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -276,6 +282,19 @@ const LessonPlanReport = () => {
     
             </select>
           </label>
+          <label className={styles.label}>
+            Subject:
+            <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              <option value="">Select</option>
+              <option value="1">Hindi</option>
+              <option value="2">Math</option>
+    
+            </select>
+          </label>
          
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
@@ -293,7 +312,7 @@ const LessonPlanReport = () => {
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={" Lesson Plan Report List "}
+            title={" "}
             data={data}
             columns={columns}
             options={{

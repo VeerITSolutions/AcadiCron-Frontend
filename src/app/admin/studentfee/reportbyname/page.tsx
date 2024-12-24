@@ -317,6 +317,17 @@ const StudentReport = () => {
     }
   }, []);
 
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+      null,
+    );
+  
+    const getselectedSessionId = useLoginDetails(
+      (state) => state.selectedSessionId,
+    );
+    useEffect(() => {
+      setSelectedSessionId(getselectedSessionId);
+    }, []);
+
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -420,16 +431,6 @@ const StudentReport = () => {
     setSelectedRows(rowsSelected); // Update selected rows
   };
 
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
-
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
-  useEffect(() => {
-    setSelectedSessionId(getselectedSessionId);
-  }, []);
 
 
   const fetchClassesAndSections = async () => {
@@ -450,13 +451,13 @@ const StudentReport = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchClassesAndSections();
-  // }, [selectedClass]);
+  useEffect(() => {
+    fetchClassesAndSections();
+  }, [selectedClass]);
 
-  // useEffect(() => {
-  //   fetchData(selectedClass, selectedSection, keyword);
-  // }, [selectedClass, selectedSection, keyword]);
+  useEffect(() => {
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -477,10 +478,11 @@ const StudentReport = () => {
     setPage(0);
   };
 
-  // const handleSearch = () => {
-  //   setPage(0);
-  //   fetchData(selectedClass, selectedSection, keyword);
-  // };
+  const handleSearch = () => {
+    setPage(0); 
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  };
+
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
@@ -598,7 +600,7 @@ const StudentReport = () => {
           </label>
         
           <div className={styles.searchGroup}>
-            <button className={styles.searchButton}>
+            <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
             <button onClick={handleRefresh} className={styles.searchButton}>

@@ -6,51 +6,22 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
+import styles from "./StudentDetails.module.css";
 import Loader from "@/components/common/Loader";
 import {
   fetchsectionByClassData,
   fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your classes API service
+} from "@/services/sectionsService"; 
+import { getClasses } from "@/services/classesService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
-import {
-  Group as GroupIcon,
-  Security as SecurityIcon,
-  MenuBook as MenuBookIcon,
-  Key as KeyIcon,
-  Class as ClassIcon,
-  Description as DescriptionIcon,
-  PeopleAlt as PeopleAltIcon,
-  AccountBox as AccountBoxIcon,
-  AssignmentTurnedIn as AssignmentTurnedInIcon,
-  Wc as WcIcon,
-  Scale as ScaleIcon,
-} from '@mui/icons-material';
+import { Description as DescriptionIcon } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; 
 
 
-const OnlineExaminationsReport = () => {
+const StudentAttendanceReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -72,15 +43,11 @@ const OnlineExaminationsReport = () => {
   const router = useRouter();
 
   const columns = [
-    "Exam",
-    "Attempt",
-    "Exam From",
-    "Exam To",
-    "Duration",
-    "Student",
-    "Questions",
-    "Exam Publish",
-    "Result Publish"
+    "Class (Section)",
+    "Total Present",
+    "Total Absent",
+    "Present %",
+    "Absent %"
   ];
   
   
@@ -98,11 +65,11 @@ const OnlineExaminationsReport = () => {
 
   const handleDelete = async () => {
     try {
-      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
+      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); 
 
       const idsToDelete = selectedData.map((row) => row[0]);
 
-      console.log(idsToDelete); // Handle response
+      console.log(idsToDelete); 
 
       if (
         window.confirm("Are you sure you want to delete the selected items?")
@@ -249,10 +216,10 @@ const OnlineExaminationsReport = () => {
   }, [pathname]);
 
   const reportLinks = [
-    { href: "/admin/onlineexam/report", label: "Rank Report" },
-    { href: "/admin/report/onlineexam", label: "Exams Report" },
-    { href: "/admin/report/onlineexamattend", label: "Exams Attempt Report" },
-    { href: "/admin/report/onlineexamrank", label: "Exams Rank Report" },
+    { href: "/admin/student_attendance/classattendencereport", label: "Attendance Report" },
+    { href: "/admin/report/attendancereport", label: "Student Attendance Type Report" },
+    { href: "/admin/staffattendance/attendancereport", label: "Staff Attendance Report" },
+    { href: "/admin/report/daily_attendance_report", label: "Daily Attendance Report" },
   ];
 
   if (error) return <p>{error}</p>;
@@ -263,7 +230,7 @@ const OnlineExaminationsReport = () => {
         <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
           <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-              <i className="fa fa-search mr-2 text-blue-600"></i> Online Examinations Report
+              <i className="fa fa-search mr-2 text-blue-600"></i> Attendance Report
             </h3>
           </div>
           <div className="p-5">
@@ -292,39 +259,13 @@ const OnlineExaminationsReport = () => {
 <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
       <div className={`${styles.filters} p-5`} >
         <div className={styles.filterGroup}>
-        
           <label className={styles.label}>
-          Search Type:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
-              <option value="period">Period</option>
-            </select>
-          </label>
-         
-          <label className={styles.label}>
-          Date Type:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="exam_from_date">Exam From Date</option>
-              <option value="exam_to_date">Exam To Date</option>
-            </select>
-          </label>
- 
-         
+          Date:
+          <input
+            type="date"
+            className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+          />
+        </label>
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
@@ -362,4 +303,4 @@ const OnlineExaminationsReport = () => {
   );
 };
 
-export default OnlineExaminationsReport;
+export default StudentAttendanceReport;
