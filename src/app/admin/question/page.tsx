@@ -111,6 +111,7 @@ const QuestionBank = () => {
   const [editing, setEditing] = useState(false); // Add state for editing
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const router = useRouter();
 
   const handleDelete = async (id: number) => {
@@ -429,7 +430,9 @@ const QuestionBank = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  const handleClickOpen1 = () => {
+    setOpen1(true);
+  };
   const handleClose = () => {
     setFormData({
       date: null as Date | null,
@@ -447,6 +450,25 @@ const QuestionBank = () => {
     setSelectedStaff("");
     setSelectedLeaveselectedLeaveType("");
     setOpen(false);
+    setEditing(false); // Reset editing state
+  };
+  const handleClose1 = () => {
+    setFormData({
+      date: null as Date | null,
+
+      leave_type_id: "",
+      leave_from: null as Date | null,
+      leave_to: null as Date | null,
+      employee_remark: "",
+      admin_remark: "",
+      status: "",
+      document_file: null,
+    });
+
+    setSelectedRoleLeave("");
+    setSelectedStaff("");
+    setSelectedLeaveselectedLeaveType("");
+    setOpen1(false);
     setEditing(false); // Reset editing state
   };
   const fetchClassesAndSections = async () => {
@@ -509,6 +531,13 @@ const QuestionBank = () => {
           <button
             type="submit"
             className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+            onClick={handleClickOpen1}
+          >
+            {"Import"}
+          </button>
+          <button
+            type="submit"
+            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
             onClick={handleClickOpen}
           >
             {editing ? "Edit Question" : "Add Question"}
@@ -534,6 +563,113 @@ const QuestionBank = () => {
             />
           </ThemeProvider>
         )}
+        <Dialog
+          open={open1}
+          onClose={handleClose1}
+          className="dialog-min-width dark:bg-boxdark dark:drop-shadow-none"
+        >
+          <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-black dark:text-white">
+                Import{" "}
+              </h3>
+              <IconButton
+                onClick={handleClose1}
+                className="text-black dark:text-white"
+              >
+                <Close />
+              </IconButton>
+            </div>
+          </DialogTitle>
+          <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="grid gap-5.5 p-6.5">
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Subject <span className="required">*</span>
+                  </label>
+                  <select
+                    name="class_id" // Adding name attribute for dynamic handling
+                    value={selectedClass}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Class <span className="required">*</span>
+                  </label>
+                  <select
+                    name="class_id" // Adding name attribute for dynamic handling
+                    value={selectedClass}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Section <span className="required">*</span>
+                  </label>
+                  <select
+                    name="class_id" // Adding name attribute for dynamic handling
+                    value={selectedClass}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Attach File
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*,video/*"
+                    name="image" // Optional: Include name for form data
+                    onChange={handleFileChange} // Handle file change separately
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-2.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="col-span-full flex">
+                  <button
+                    onClick={handleSave}
+                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+                  >
+                    Save
+                  </button>
+                  <a
+                    className="ml-4 inline-flex rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+                    href="https://erp.educron.com/admin/question/exportformat"
+                    target="_blank"
+                  >
+                    Download Sample File
+                  </a>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
         <Dialog
           open={open}
           onClose={handleClose}

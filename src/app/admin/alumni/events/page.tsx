@@ -16,8 +16,16 @@ import {
   editSubjectGroup,
   createSubjectGroupAdd,
 } from "@/services/subjectGroupService";
-
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from "@mui/material";
 import { fetchSubjectData } from "@/services/subjectsService";
+import Close from "@mui/icons-material/Close";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -38,7 +46,7 @@ const Events = () => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-
+  const [editing, setEditing] = useState(false);
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
@@ -48,7 +56,7 @@ const Events = () => {
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
-
+  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -93,6 +101,13 @@ const Events = () => {
     }
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
@@ -115,6 +130,10 @@ const Events = () => {
         (classSection: any) => classSection?.class_section?.class?.id,
       ),
     );
+  };
+
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
   };
 
   const handleCancel = () => {
@@ -312,7 +331,22 @@ const Events = () => {
         </div>
 
         <div className="flex flex-col gap-9">
-          
+          <div
+            className="mb-4 pl-4 pt-4 text-right"
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            <button
+              type="submit"
+              className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+              onClick={handleClickOpen}
+            >
+              Add Event
+            </button>
+          </div>
           {loading ? (
             <Loader />
           ) : (
@@ -326,6 +360,127 @@ const Events = () => {
             </ThemeProvider>
           )}
         </div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          className="dialog-min-width dark:bg-boxdark dark:drop-shadow-none"
+        >
+          <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-black dark:text-white">
+                {editing ? "Edit Exam" : "Exam"}
+              </h3>
+              <IconButton
+                onClick={handleClose}
+                className="text-black dark:text-white"
+              >
+                <Close />
+              </IconButton>
+            </div>
+          </DialogTitle>
+          <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="grid gap-5.5 p-6.5">
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Subject <span className="required">*</span>
+                  </label>
+                  <select
+                    name="class_id" // Adding name attribute for dynamic handling
+                    value={selectedClass}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Question Type <span className="required">*</span>
+                  </label>
+                  <select
+                    name="class_id" // Adding name attribute for dynamic handling
+                    value={selectedClass}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Question level <span className="required">*</span>
+                  </label>
+                  <select
+                    name="class_id" // Adding name attribute for dynamic handling
+                    value={selectedClass}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Class <span className="required">*</span>
+                  </label>
+                  <select
+                    name="class_id" // Adding name attribute for dynamic handling
+                    value={selectedClass}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Section <span className="required">*</span>
+                  </label>
+                  <select
+                    name="class_id" // Adding name attribute for dynamic handling
+                    value={selectedClass}
+                    onChange={handleClassChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="col-span-full">
+                  <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </DefaultLayout>
   );
