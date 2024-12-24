@@ -281,7 +281,7 @@ const ManageAlumni = () => {
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={""}
+            title={"Alumni List"}
             data={data}
             columns={columns}
             options={{
