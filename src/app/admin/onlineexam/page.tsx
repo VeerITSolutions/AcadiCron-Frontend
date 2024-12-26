@@ -525,7 +525,7 @@ const OnlineExam = () => {
                     />
                     Quiz
                   </label>
-                  <p className="help-block ">
+                  <p className="help-block dark:text-white">
                     In quiz result will be display to student immediately just
                     after exam submission (descriptive question type will be
                     disabled).

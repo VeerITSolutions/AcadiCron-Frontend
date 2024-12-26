@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
@@ -30,7 +29,7 @@ import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
-import styles from "./User.module.css";
+import styles from "./StudentDetails.module.css";
 
 const Events = () => {
   const [error, setError] = useState<string | null>(null);
@@ -368,7 +367,7 @@ const Events = () => {
           <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="flex items-center justify-between">
               <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Exam" : "Exam"}
+                Add Event
               </h3>
               <IconButton
                 onClick={handleClose}
@@ -383,25 +382,35 @@ const Events = () => {
               <div className="grid gap-5.5 p-6.5">
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Subject <span className="required">*</span>
+                    Event For <span className="required">*</span>
+                    &nbsp;&nbsp;&nbsp;
                   </label>
-                  <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleClassChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
-                  </select>
+
+                  <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                    <input
+                      type="radio"
+                      className={`${styles["radio"]}`}
+                      name="guardian_is"
+                      value="All Alumni" // Unique value for Father
+                      onChange={handleInputChange}
+                    />{" "}
+                    All Alumni
+                  </label>
+
+                  <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                    <input
+                      type="radio"
+                      className={`${styles["radio"]}`}
+                      name="guardian_is"
+                      value="Class" // Unique value for Mother
+                      onChange={handleInputChange}
+                    />{" "}
+                    Class
+                  </label>
                 </div>
-                <div className="field">
+                <div className="field sessionlist">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Question Type <span className="required">*</span>
+                    Pass Out Session <span className="required">*</span>
                   </label>
                   <select
                     name="class_id" // Adding name attribute for dynamic handling
@@ -417,9 +426,9 @@ const Events = () => {
                     ))}
                   </select>
                 </div>
-                <div className="field">
+                <div className="field classlist">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Question level <span className="required">*</span>
+                    Select Class <span className="required">*</span>
                   </label>
                   <select
                     name="class_id" // Adding name attribute for dynamic handling
@@ -435,25 +444,7 @@ const Events = () => {
                     ))}
                   </select>
                 </div>
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Class <span className="required">*</span>
-                  </label>
-                  <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleClassChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field">
+                <div className="field sectionlist">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Section <span className="required">*</span>
                   </label>
@@ -471,7 +462,95 @@ const Events = () => {
                     ))}
                   </select>
                 </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Event Title <span className="required">*</span>
+                  </label>
+                  <input
+                    id="event_title"
+                    name="event_title"
+                    onChange={handleInputChange}
+                    placeholder=""
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Event From Date <span className="required">*</span>
+                  </label>
+                  <input
+                    id="event_from_date"
+                    name="event_from_date"
+                    onChange={handleInputChange}
+                    type="date"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Event To Date <span className="required">*</span>
+                  </label>
+                  <input
+                    id="event_to_date"
+                    name="event_to_date"
+                    onChange={handleInputChange}
+                    type="date"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Note <span className="required">*</span>
+                  </label>
+                  <textarea
+                    id="note"
+                    name="note"
+                    placeholder=""
+                    className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
+                  ></textarea>
+                </div>
 
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Event Notification Message{" "}
+                    <span className="required">*</span>
+                  </label>
+                  <textarea
+                    id="notification"
+                    name="notification"
+                    placeholder=""
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  ></textarea>
+                </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Event For <span className="required">*</span>
+                    &nbsp;&nbsp;&nbsp;
+                  </label>
+
+                  <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                    <input
+                      type="checkbox"
+                      className={`${styles["checkbox"]}`}
+                      name="email_sms"
+                      value="All Alumni" // Unique value for Father
+                      onChange={handleInputChange}
+                    />{" "}
+                    Email
+                  </label>
+
+                  <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
+                    <input
+                      type="checkbox"
+                      className={`${styles["checkbox"]}`}
+                      name="email_sms"
+                      value="Class" // Unique value for Mother
+                      onChange={handleInputChange}
+                    />{" "}
+                    SMS
+                  </label>
+                </div>
                 <div className="col-span-full">
                   <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
                     Save
