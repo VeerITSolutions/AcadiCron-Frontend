@@ -23,6 +23,12 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import {
+  createRoomtype,
+  deleteRoomtype,
+  editRoomtype,
+  fetchRoomtypeData,
+} from "@/services/roomTypeService";
 
 const RoomType = () => {
   const [error, setError] = useState<string | null>(null);
@@ -50,19 +56,16 @@ const RoomType = () => {
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
+    room_type: "",
     description: "",
-    session_id: savedSessionstate,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
-
-      const resultSubjectData = await fetchSubjectData();
+      const result = await fetchRoomtypeData(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -72,7 +75,7 @@ const RoomType = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteRoomtype(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -98,30 +101,15 @@ const RoomType = () => {
     setEditCategoryId(id);
 
     setFormData({
-      name: subject.name,
+      room_type: subject.room_type,
       description: subject.description,
-      session_id: savedSessionstate,
     });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
   };
 
   const handleCancel = () => {
     setFormData({
-      name: "",
+      room_type: "",
       description: "",
-      session_id: savedSessionstate,
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -129,11 +117,8 @@ const RoomType = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.name || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
+      subject.room_type || "N/A",
+      subject.description || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -163,41 +148,21 @@ const RoomType = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editRoomtype(editCategoryId, formData);
         if (result.success) {
           toast.success("Subject group updated successfully");
         } else {
           toast.error("Failed to update subject group");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createRoomtype(formData);
 
         setFormData({
-          name: "",
+          room_type: "",
           description: "",
-          session_id: savedSessionstate,
         });
 
         setSelectedClass("");
@@ -212,9 +177,8 @@ const RoomType = () => {
       }
       // Reset form after successful action
       setFormData({
-        name: "",
+        room_type: "",
         description: "",
-        session_id: savedSessionstate,
       });
 
       setIsEditing(false);
@@ -223,6 +187,12 @@ const RoomType = () => {
     } catch (error) {
       console.error("An error occurred", error);
     }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
   };
 
   const handlePageChange = (newPage: number) => setPage(newPage);
@@ -235,10 +205,7 @@ const RoomType = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-  const columns = [
-    "Room Type",
-    "Action",
-  ];
+  const columns = ["Room Type", "Description", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -255,6 +222,18 @@ const RoomType = () => {
     viewColumns: false,
   };
 
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
@@ -266,52 +245,49 @@ const RoomType = () => {
               </h3>
             </div>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-            >
-              <div className="flex flex-col gap-5.5 p-6.5">
+            <div className="flex flex-col gap-5.5 p-6.5">
               <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Room Type<span className="required">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="name"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Description
-                  </label>
-                  <textarea
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    name="description"
-                  ></textarea>
-                </div>
-
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  >
-                    {isEditing ? "Update" : "Save"}
-                  </button>
-                  {isEditing && (
-                    <button
-                      type="button"
-                      onClick={handleCancel} // Call the cancel function
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Room Type<span className="required">*</span>
+                </label>
+                <input
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  type="text"
+                  name="room_type"
+                  value={formData.room_type}
+                  onChange={handleInputChange}
+                />
               </div>
-            </form>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Description
+                </label>
+                <textarea
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                ></textarea>
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={handleSubmit}
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+                {isEditing && (
+                  <button
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

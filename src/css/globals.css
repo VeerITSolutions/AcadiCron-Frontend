@@ -222,6 +222,7 @@ td.MuiTableCell-root > div > div {
 .MuiDialog-paper {
   min-width: 600px;
 }
+
 @media (max-width: 767px) {
   .MuiDialog-paper {
     min-width: 90%;
