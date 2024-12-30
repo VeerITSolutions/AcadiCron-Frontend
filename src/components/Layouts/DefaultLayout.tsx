@@ -12,7 +12,18 @@ export default function DefaultLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000} // Auto close after 5 seconds
+        hideProgressBar={false} // Show the progress bar
+        newestOnTop={true} // Newest toast appears on top
+        closeOnClick={true} // Close when clicked
+        rtl={false} // Text direction left-to-right
+        pauseOnFocusLoss={true} // Pause on losing focus
+        draggable={true} // Allow dragging
+        pauseOnHover={true} // Pause on hover
+        theme="light" // Use light theme
+      />
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex">
         {/* <!-- ===== Sidebar Start ===== --> */}
