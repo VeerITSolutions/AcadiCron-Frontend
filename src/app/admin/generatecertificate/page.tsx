@@ -96,7 +96,10 @@ const StudentDetails = () => {
       const idsToGenerate = selectedData.map((row) => row[0]);
       console.log("allCertificateDataSelected", allCertificateDataSelected);
       if (allCertificateDataSelected) {
-        const result = await viewCertificate(allCertificateDataSelected,idsToGenerate);
+        const result = await viewCertificate(
+          allCertificateDataSelected,
+          idsToGenerate,
+        );
 
         if (result.data) {
           const newTab = window.open();
@@ -282,6 +285,7 @@ const StudentDetails = () => {
               onChange={handleCertificateChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
+              <option value="">Select</option>
               {allCertificateData.map((cls: any) => (
                 <option key={cls.id} value={cls.id}>
                   {cls.certificate_name}
