@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchCertificateData = async (page?: number, perPage?: number) => {
+export const fetchCertificateData = async (page?: any, perPage?: any) => {
   const response = await apiClient.get(`/certificate`, {
     params: {
       page,

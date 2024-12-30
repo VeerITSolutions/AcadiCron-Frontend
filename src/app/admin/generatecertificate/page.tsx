@@ -34,7 +34,10 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
-import { viewCertificate } from "@/services/certificateService";
+import {
+  fetchCertificateData,
+  viewCertificate,
+} from "@/services/certificateService";
 
 const columns = [
   "Student Id",
@@ -62,6 +65,9 @@ const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const [allCertificateData, setAllCertificateData] = useState<
+    Array<Array<string>>
+  >([]);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,6 +82,11 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+
+  const [allCertificateDataSelected, setAllCertificateDataSelected] = useState<
+    string | undefined
+  >(undefined);
+
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -83,14 +94,16 @@ const StudentDetails = () => {
     try {
       const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
       const idsToDelete = selectedData.map((row) => row[0]);
+      console.log("allCertificateDataSelected", allCertificateDataSelected);
+      if (allCertificateDataSelected) {
+        const result = await viewCertificate(allCertificateDataSelected);
 
-      const result = await viewCertificate(81);
-      console.log(result.data);
-      if (result.data) {
-        const newTab = window.open();
-        if (newTab) {
-          newTab.document.write(result.data);
-          newTab.document.close(); // Close the document to render the content
+        if (result.data) {
+          const newTab = window.open();
+          if (newTab) {
+            newTab.document.write(result.data);
+            newTab.document.close(); // Close the document to render the content
+          }
         }
       }
     } catch (error) {
@@ -153,6 +166,10 @@ const StudentDetails = () => {
         setData([]);
         setLoading(false);
       }
+
+      const getAllCertificateResult = await fetchCertificateData("", "");
+
+      setAllCertificateData(getAllCertificateResult.data);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -204,6 +221,12 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+  const handleCertificateChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setAllCertificateDataSelected(event.target.value);
+  };
+
   const handleSearch = () => {
     setPage(0);
     fetchData(selectedClass, selectedSection, keyword);
@@ -248,6 +271,20 @@ const StudentDetails = () => {
               {section.map((sec) => (
                 <option key={sec.section_id} value={sec.section_id}>
                   {sec.section_name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className={styles.label}>
+            Certificate
+            <select
+              onChange={handleCertificateChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              {allCertificateData.map((cls: any) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.certificate_name}
                 </option>
               ))}
             </select>
