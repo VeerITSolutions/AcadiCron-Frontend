@@ -34,6 +34,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import { viewCertificate } from "@/services/certificateService";
 
 const columns = [
   "Student Id",
@@ -81,19 +82,15 @@ const StudentDetails = () => {
   const handleDelete = async () => {
     try {
       const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
-
       const idsToDelete = selectedData.map((row) => row[0]);
 
-      console.log(idsToDelete); // Handle response
-
-      if (
-        window.confirm("Are you sure you want to delete the selected items?")
-      ) {
-        try {
-          /* const response = await deleteStudentBluk(idsToDelete); */
-        } catch (error) {
-          console.error("Error deleting data:", error);
-          alert("Failed to delete selected data.");
+      const result = await viewCertificate(81);
+      console.log(result.data);
+      if (result.data) {
+        const newTab = window.open();
+        if (newTab) {
+          newTab.document.write(result.data);
+          newTab.document.close(); // Close the document to render the content
         }
       }
     } catch (error) {
