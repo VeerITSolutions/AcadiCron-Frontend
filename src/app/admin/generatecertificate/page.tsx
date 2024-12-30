@@ -5,11 +5,14 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { fetchStudentData } from "@/services/studentService";
+import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
-import { getClasses } from "@/services/classesService";
-import { fetchsectionByClassData } from "@/services/sectionsService";
+import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
+import { getClasses } from "@/services/classesService"; // Import your classes API service
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
@@ -31,12 +34,13 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+
 const columns = [
+  "Student Id",
   "Admission No",
   "Student Name",
   "Class",
-  "Father Name",
-  "Date of Birth",
+  "Date Of Birth",
   "Gender",
   "Category",
   "Mobile Number",
@@ -45,13 +49,17 @@ const columns = [
 const options = {
   filterType: "checkbox",
   serverSide: true,
- responsive: "standard",
-search: false,
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
+  pagination: false,
+  responsive: "standard",
+  search: false,
+  filter: false,
+  viewColumns: false,
+  tableBodyMaxHeight: "500px",
 };
 
 const StudentDetails = () => {
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
@@ -59,24 +67,56 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [colorMode, setColorMode] = useColorMode();
-  const [classes, setClassessData] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
+  const handleDelete = async () => {
+    try {
+      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
+
+      const idsToDelete = selectedData.map((row) => row[0]);
+
+      console.log(idsToDelete); // Handle response
+
+      if (
+        window.confirm("Are you sure you want to delete the selected items?")
+      ) {
+        try {
+          /* const response = await deleteStudentBluk(idsToDelete); */
+        } catch (error) {
+          console.error("Error deleting data:", error);
+          alert("Failed to delete selected data.");
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
+      alert("Failed to delete selected data.");
+    }
+  };
+
+  const handleRowSelectionChange = (
+    curRowSelected: { dataIndex: number; index: number }[],
+    allRowsSelected: { dataIndex: number; index: number }[],
+    rowsSelected: [],
+  ) => {
+    setSelectedRows(rowsSelected); // Update selected rows
+  };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
+      student.id,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
+      student.class_name || "N/A",
+      student.dob || "N/A",
+      student.gender || "N/A",
       student.category_id,
       student.mobileno,
     ]);
@@ -92,45 +132,61 @@ const StudentDetails = () => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        selectedSessionId,
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
-      setLoading(false);
+      // Pass selectedClass and selectedSection as parameters to filter data
+      if (selectedClass && selectedSection) {
+        const result = await fetchStudentData(
+          0,
+          0,
+          selectedClass,
+          selectedSection,
+          keyword,
+          selectedSessionId,
+          1,
+        );
+        setTotalCount(result.totalCount);
+        const formattedData = formatStudentData(result.data);
+        setData(formattedData);
+        setLoading(false);
+      } else {
+        setData([]);
+        setLoading(false);
+      }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
 
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]);
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchClassesAndSections();
+  }, [selectedClass]);
+
+  useEffect(() => {
+    fetchData(selectedClass, selectedSection, keyword);
+  }, [selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -151,41 +207,14 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
   const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    setPage(0);
+    fetchData(selectedClass, selectedSection, keyword);
   };
-
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
-  };
-
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
-
-  const fetchClassesAndSections = async () => {
-    try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]); // Clear sections if no class is selected
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
   };
 
   /* if (loading) return <Loader />; */
@@ -216,7 +245,7 @@ const StudentDetails = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              disabled={!selectedClass}
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -224,20 +253,6 @@ const StudentDetails = () => {
                   {sec.section_name}
                 </option>
               ))}
-            </select>
-          </label>
-
-          <label className={styles.label}>
-            Certificate
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">TC</option>
-              <option value="SectionA">Sample TC</option>
-              <option value="SectionB">Bonafite</option>
-              {/* Add more section options here */}
             </select>
           </label>
           <div className={styles.searchGroup}>
@@ -249,34 +264,14 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
 
-      <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
-        <div
-          className="mb-4 pl-4 pt-4 text-right"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
-          <button
-            type="submit"
-            className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-          >
-            Generate
-          </button>
-        </div>
-      </div>
       {loading ? (
         <Loader />
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={"Generate Certificates"}
+            title={"Generate Certificate"}
             data={data}
             columns={columns}
             options={{
@@ -286,6 +281,9 @@ const StudentDetails = () => {
               rowsPerPage: rowsPerPage,
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
+              onRowSelectionChange: handleRowSelectionChange,
+              selectableRows: "multiple",
+              onRowsDelete: handleDelete,
             }}
           />
         </ThemeProvider>
