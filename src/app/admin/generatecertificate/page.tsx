@@ -93,10 +93,10 @@ const StudentDetails = () => {
   const handleDelete = async () => {
     try {
       const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
-      const idsToDelete = selectedData.map((row) => row[0]);
+      const idsToGenerate = selectedData.map((row) => row[0]);
       console.log("allCertificateDataSelected", allCertificateDataSelected);
       if (allCertificateDataSelected) {
-        const result = await viewCertificate(allCertificateDataSelected);
+        const result = await viewCertificate(allCertificateDataSelected,idsToGenerate);
 
         if (result.data) {
           const newTab = window.open();
