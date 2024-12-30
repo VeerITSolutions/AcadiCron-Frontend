@@ -51,7 +51,7 @@ const options = {
   serverSide: true,
   pagination: false,
  responsive: "standard",
-search: false,
+  search: false,
   filter: false,
   viewColumns: false,
   tableBodyMaxHeight: "500px",

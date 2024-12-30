@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchCertificateData = async (page?: number, perPage?: number) => {
+export const fetchCertificateData = async (page?: any, perPage?: any) => {
   const response = await apiClient.get(`/certificate`, {
     params: {
       page,
@@ -22,9 +22,13 @@ export const createCertificate = async (data:any ): Promise<any> => {
 };
 
 
-export const viewCertificate = async (id :any ): Promise<any> => {
+export const viewCertificate = async (id :any , idsToGenerate? : any): Promise<any> => {
   try {
-    const response = await apiClient.post(`/certificate-view/${id}`, );
+    const requestData = {
+
+      idsToGenerate: idsToGenerate
+    };
+    const response = await apiClient.post(`/certificate-view/${id}`,requestData );
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
