@@ -214,6 +214,7 @@ const StudentCertificate = () => {
 
       const data = {
         ...formData,
+        enable_student_image: enabled,
       };
 
       // Check if we are editing an existing category
