@@ -11,6 +11,7 @@ import {
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useGlobalState } from "@/context/GlobalContext";
+import { toast } from "react-toastify";
 
 const StudentDetails = () => {
   const [error, setError] = useState<string | null>(null);
@@ -74,9 +75,19 @@ const StudentDetails = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent the default form submission behavior
-    console.log("Form Data:", formState);
+
+    try {
+      const response = await createFeesReminder(JSON.stringify(formState)); // Convert formState to a JSON string
+
+      if (response.success) {
+        toast.success("Data saved successfully!");
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Error saving data.");
+    }
   };
 
   useEffect(() => {
