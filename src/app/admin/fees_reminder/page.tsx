@@ -68,7 +68,7 @@ const StudentDetails = () => {
     setFormState((prevState) =>
       prevState.map((item) =>
         item.id === id
-          ? { ...item, [field]: field === "is_active" ? value === "on" : value }
+          ? { ...item, [field]: value } // Directly set the value passed in
           : item,
       ),
     );
