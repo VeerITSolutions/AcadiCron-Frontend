@@ -37,6 +37,7 @@ import { useLoginDetails } from "@/store/logoStore";
 import {
   fetchCertificateData,
   viewCertificate,
+  viewCertificateGenerate,
 } from "@/services/certificateService";
 
 const columns = [
@@ -95,10 +96,14 @@ const StudentDetails = () => {
       const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
       const idsToGenerate = selectedData.map((row) => row[0]);
       console.log("allCertificateDataSelected", allCertificateDataSelected);
+      const payload = idsToGenerate.map((id) => ({ student_id: id }));
+      // JSON encode the payload
+      const jsonPayload = JSON.stringify(payload);
       if (allCertificateDataSelected) {
-        const result = await viewCertificate(
+        const result = await viewCertificateGenerate(
           allCertificateDataSelected,
-          idsToGenerate,
+          selectedClass,
+          jsonPayload,
         );
 
         if (result.data) {

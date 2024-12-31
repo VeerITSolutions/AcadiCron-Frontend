@@ -36,6 +36,18 @@ export const viewCertificate = async (id :any , idsToGenerate? : any): Promise<a
   }
 };
 
+export const viewCertificateGenerate = async (id :any ,class_id? : any, data? : any  ): Promise<any> => {
+  try {
+
+    const certificate_id = id;
+    const response = await apiClient.post(`/certificate-view-generate/${id}`,{data,class_id,certificate_id } );
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create certificate");
+  }
+};
+
 
 
 // Delete a student category by ID

@@ -4,10 +4,14 @@ import { useRouter } from "next/navigation"; // This replaces `useRouter` from '
 import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 
-import { fetchStudentFeesReminderData } from "@/services/studentFeesReminderService";
+import {
+  createFeesReminder,
+  fetchStudentFeesReminderData,
+} from "@/services/studentFeesReminderService";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useGlobalState } from "@/context/GlobalContext";
+import { toast } from "react-toastify";
 
 const StudentDetails = () => {
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +31,7 @@ const StudentDetails = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
-
+  const [formState, setFormState] = useState<any[]>([]); //
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -44,10 +48,45 @@ const StudentDetails = () => {
       setTotalCount(result.totalCount);
 
       setData(result.data);
+      setFormState(
+        result.data.map((item: any) => ({
+          id: item.id,
+          is_active: item.is_active,
+          day: item.day,
+          reminder_type: item.reminder_type,
+        })),
+      ); // Initialize formState with fetched data
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
+    }
+  };
+
+  // Handle input changes
+  const handleChange = (id: number, field: string, value: any) => {
+    setFormState((prevState) =>
+      prevState.map((item) =>
+        item.id === id
+          ? { ...item, [field]: value } // Directly set the value passed in
+          : item,
+      ),
+    );
+  };
+
+  // Handle form submission
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    try {
+      const response = await createFeesReminder(JSON.stringify(formState)); // Convert formState to a JSON string
+
+      if (response.success) {
+        toast.success("Data saved successfully!");
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Error saving data.");
     }
   };
 
@@ -67,69 +106,72 @@ const StudentDetails = () => {
             </div>
             <div className="w-full p-6.5">
               <div className="field">
-                <table className="divide-gray-200 min-w-full divide-y">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                        Action
-                      </th>
-                      <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                        Reminder Type
-                      </th>
-                      <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                        Days
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-gray-200 divide-y ">
-                    {data.map((section: any) => (
-                      <tr key={section.id}>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          <label className="inline-flex items-center">
+                <form onSubmit={handleSubmit}>
+                  <table className="divide-gray-200 min-w-full divide-y">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                          Action
+                        </th>
+                        <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                          Reminder Type
+                        </th>
+                        <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                          day
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-gray-200 divide-y">
+                      {formState.map((section) => (
+                        <tr key={section.id}>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            <label className="inline-flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={section.is_active}
+                                onChange={(e) =>
+                                  handleChange(
+                                    section.id,
+                                    "is_active",
+                                    e.target.checked,
+                                  )
+                                }
+                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                              />
+                              <span className="text-gray-900 ml-2 text-sm">
+                                {section.is_active ? "Active" : "Inactive"}
+                              </span>
+                            </label>
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            <span className="text-gray-900 text-sm">
+                              {section.reminder_type.charAt(0).toUpperCase() +
+                                section.reminder_type.slice(1)}
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
                             <input
-                              type="checkbox"
-                              name="isactive_2"
-                              value={section.is_active}
-                              defaultChecked
+                              type="number"
+                              value={section.day}
+                              onChange={(e) =>
+                                handleChange(section.id, "day", e.target.value)
+                              }
                               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
-                            <span className="text-gray-900 ml-2 text-sm">
-                              {section.is_active ? "Active" : "Inactive"}
-                            </span>
-                          </label>
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          <input
-                            type="hidden"
-                            name="ids[]"
-                            value={section.id}
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          />
-                          <span className="text-gray-900 text-sm">
-                            {" "}
-                            {section.reminder_type}{" "}
-                          </span>
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          <input
-                            type="number"
-                            name="days2"
-                            defaultValue={section.day}
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
+                    Save
+                  </button>
+                </form>
               </div>
             </div>
-          </div>
-
-          <div className="flex">
-            <button className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-              Save
-            </button>
           </div>
         </div>
       </div>

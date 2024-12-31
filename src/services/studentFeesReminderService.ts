@@ -13,9 +13,9 @@ export const fetchStudentFeesReminderData = async (page: number, perPage: number
 };
 
 
-export const createFeesReminder = async (house_name: string, description: string): Promise<any> => {
+export const createFeesReminder = async (data: any): Promise<any> => {
   try {
-    const response = await apiClient.post("/fees-remainder", { house_name, description });
+    const response = await apiClient.post("/fees-remainder",data);
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
