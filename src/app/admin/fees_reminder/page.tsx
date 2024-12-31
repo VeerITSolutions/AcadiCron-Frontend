@@ -88,7 +88,7 @@ const StudentDetails = () => {
                           <label className="inline-flex items-center">
                             <input
                               type="checkbox"
-                              name="isactive_2"
+                              name={"isactive_" + section.id}
                               value={section.is_active}
                               defaultChecked
                               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -113,8 +113,8 @@ const StudentDetails = () => {
                         <td className="whitespace-nowrap px-6 py-4">
                           <input
                             type="number"
-                            name="days2"
-                            defaultValue={section.day}
+                            name={"days" + section.id}
+                            value={section.day}
                             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                           />
                         </td>
