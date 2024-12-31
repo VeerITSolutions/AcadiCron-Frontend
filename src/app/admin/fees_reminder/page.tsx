@@ -50,9 +50,9 @@ const StudentDetails = () => {
       setFormState(
         result.data.map((item: any) => ({
           id: item.id,
-          isActive: item.is_active,
-          days: item.day,
-          reminderType: item.reminder_type,
+          is_active: item.is_active,
+          day: item.day,
+          reminder_type: item.reminder_type,
         })),
       ); // Initialize formState with fetched data
       setLoading(false);
@@ -67,7 +67,7 @@ const StudentDetails = () => {
     setFormState((prevState) =>
       prevState.map((item) =>
         item.id === id
-          ? { ...item, [field]: field === "isActive" ? value === "on" : value }
+          ? { ...item, [field]: field === "is_active" ? value === "on" : value }
           : item,
       ),
     );
@@ -106,7 +106,7 @@ const StudentDetails = () => {
                           Reminder Type
                         </th>
                         <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                          Days
+                          day
                         </th>
                       </tr>
                     </thead>
@@ -117,32 +117,32 @@ const StudentDetails = () => {
                             <label className="inline-flex items-center">
                               <input
                                 type="checkbox"
-                                checked={section.isActive}
+                                checked={section.is_active}
                                 onChange={(e) =>
                                   handleChange(
                                     section.id,
-                                    "isActive",
+                                    "is_active",
                                     e.target.checked,
                                   )
                                 }
                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                               />
                               <span className="text-gray-900 ml-2 text-sm">
-                                {section.isActive ? "Active" : "Inactive"}
+                                {section.is_active ? "Active" : "Inactive"}
                               </span>
                             </label>
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             <span className="text-gray-900 text-sm">
-                              {section.reminderType}
+                              {section.reminder_type}
                             </span>
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             <input
                               type="number"
-                              value={section.days}
+                              value={section.day}
                               onChange={(e) =>
-                                handleChange(section.id, "days", e.target.value)
+                                handleChange(section.id, "day", e.target.value)
                               }
                               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
