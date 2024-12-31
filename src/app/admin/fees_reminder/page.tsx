@@ -4,7 +4,10 @@ import { useRouter } from "next/navigation"; // This replaces `useRouter` from '
 import LogoutButton from "@/components/LogoutButton";
 import React from "react";
 
-import { fetchStudentFeesReminderData } from "@/services/studentFeesReminderService";
+import {
+  createFeesReminder,
+  fetchStudentFeesReminderData,
+} from "@/services/studentFeesReminderService";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useGlobalState } from "@/context/GlobalContext";
@@ -27,7 +30,14 @@ const StudentDetails = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
-
+  const [formData, setFormData] = useState(
+    data.map((section: any) => ({
+      id: section.id,
+      is_active: section.is_active,
+      reminder_type: section.reminder_type,
+      day: section.day,
+    })),
+  );
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -51,6 +61,39 @@ const StudentDetails = () => {
     }
   };
 
+  // Handle changes in the form
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) =>
+      prevData.map((section) =>
+        section.id === id
+          ? {
+              ...section,
+              [name]: type === "checkbox" ? checked : value,
+            }
+          : section,
+      ),
+    );
+  };
+
+  // Handle form submission (API request)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await createFeesReminder(formData);
+
+      if (response.ok) {
+        alert("Data saved successfully!");
+      } else {
+        alert("Failed to save data.");
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Error saving data.");
+    }
+  };
+
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
@@ -67,69 +110,71 @@ const StudentDetails = () => {
             </div>
             <div className="w-full p-6.5">
               <div className="field">
-                <table className="divide-gray-200 min-w-full divide-y">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                        Action
-                      </th>
-                      <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                        Reminder Type
-                      </th>
-                      <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                        Days
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-gray-200 divide-y ">
-                    {data.map((section: any) => (
-                      <tr key={section.id}>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          <label className="inline-flex items-center">
+                <form onSubmit={handleSubmit}>
+                  <table className="divide-gray-200 min-w-full divide-y">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                          Action
+                        </th>
+                        <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                          Reminder Type
+                        </th>
+                        <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                          Days
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-gray-200 divide-y ">
+                      {data.map((section: any) => (
+                        <tr key={section.id}>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            <label className="inline-flex items-center">
+                              <input
+                                type="checkbox"
+                                name={"isactive_" + section.id}
+                                value={section.is_active}
+                                defaultChecked
+                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                              />
+                              <span className="text-gray-900 ml-2 text-sm">
+                                {section.is_active ? "Active" : "Inactive"}
+                              </span>
+                            </label>
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
                             <input
-                              type="checkbox"
-                              name={"isactive_" + section.id}
-                              value={section.is_active}
-                              defaultChecked
+                              type="hidden"
+                              name="ids[]"
+                              value={section.id}
                               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
-                            <span className="text-gray-900 ml-2 text-sm">
-                              {section.is_active ? "Active" : "Inactive"}
+                            <span className="text-gray-900 text-sm">
+                              {" "}
+                              {section.reminder_type}{" "}
                             </span>
-                          </label>
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          <input
-                            type="hidden"
-                            name="ids[]"
-                            value={section.id}
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          />
-                          <span className="text-gray-900 text-sm">
-                            {" "}
-                            {section.reminder_type}{" "}
-                          </span>
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          <input
-                            type="number"
-                            name={"days" + section.id}
-                            value={section.day}
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            <input
+                              type="number"
+                              name={"days" + section.id}
+                              value={section.day}
+                              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
+                    Save
+                  </button>
+                </form>
               </div>
             </div>
-          </div>
-
-          <div className="flex">
-            <button className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-              Save
-            </button>
           </div>
         </div>
       </div>
