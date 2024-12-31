@@ -145,7 +145,8 @@ const StudentDetails = () => {
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             <span className="text-gray-900 text-sm">
-                              {section.reminder_type}
+                              {section.reminder_type.charAt(0).toUpperCase() +
+                                section.reminder_type.slice(1)}
                             </span>
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
