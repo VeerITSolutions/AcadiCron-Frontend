@@ -74,7 +74,7 @@ const StudentCategories = () => {
           aria-label="edit"
         >
           <Edit />
-        </IconButton> 
+        </IconButton>
         <IconButton
           onClick={() => handleDelete(student.id)}
           aria-label="delete"
@@ -143,8 +143,8 @@ const StudentCategories = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,

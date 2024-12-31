@@ -4,20 +4,16 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { getClasses } from "@/services/classesService";
-import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
+  fetchHostelData,
+  createHostel,
+  deleteHostel,
+  editHostel,
+} from "@/services/hostelService";
 
-import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -39,30 +35,32 @@ const Hostel = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const [classes, setClasses] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+  const [selectedType, setSelectedType] = useState<string | undefined>(
     undefined,
   );
-  const [selectedSection, setSelectedSection] = useState<string[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+
+  const [selectedDescription, setSelectedDescription] = useState<
+    string | undefined
+  >(undefined);
+
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
+    hostel_name: "",
+    type: "",
+    address: "",
+    intake: "",
     description: "",
     session_id: savedSessionstate,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
-
-      const resultSubjectData = await fetchSubjectData();
+      const result = await fetchHostelData(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -72,7 +70,7 @@ const Hostel = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteHostel(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -98,28 +96,21 @@ const Hostel = () => {
     setEditCategoryId(id);
 
     setFormData({
-      name: subject.name,
+      hostel_name: subject.hostel_name,
+      type: subject.type,
+      address: subject.address,
+      intake: subject.intake,
       description: subject.description,
       session_id: savedSessionstate,
     });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
   };
 
   const handleCancel = () => {
     setFormData({
-      name: "",
+      hostel_name: "",
+      type: "",
+      address: "",
+      intake: "",
       description: "",
       session_id: savedSessionstate,
     });
@@ -129,11 +120,12 @@ const Hostel = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.name || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-   
+      subject.hostel_name || "N/A",
+      subject.type || "N/A",
+      subject.address || "N/A",
+      subject.intake || "N/A",
+      subject.description || "N/A",
+
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -171,38 +163,41 @@ const Hostel = () => {
     }));
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleTextareaChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setSelectedDescription(event.target.value);
+    setPage(0);
+  };
+
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editHostel(editCategoryId, formData);
         if (result.success) {
           toast.success("Subject group updated successfully");
         } else {
           toast.error("Failed to update subject group");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createHostel(formData);
 
         setFormData({
-          name: "",
+          hostel_name: "",
+          type: "",
+          address: "",
+          intake: "",
           description: "",
           session_id: savedSessionstate,
         });
-
-        setSelectedClass("");
-        setSelectedSection([]);
-        setSelectedSubject([]);
 
         if (result.success) {
           toast.success("Subject group created successfully");
@@ -212,7 +207,10 @@ const Hostel = () => {
       }
       // Reset form after successful action
       setFormData({
-        name: "",
+        hostel_name: "",
+        type: "",
+        address: "",
+        intake: "",
         description: "",
         session_id: savedSessionstate,
       });
@@ -240,6 +238,7 @@ const Hostel = () => {
     "Type",
     "Address",
     "Intake",
+    "Description",
     "Action",
   ];
   const options = {
@@ -268,83 +267,93 @@ const Hostel = () => {
                 {isEditing ? "Edit Add Expense" : "Add Hostel"}
               </h3>
             </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-            >
-              <div className="flex flex-col gap-5.5 p-6.5">
+            <div className="flex flex-col gap-5.5 p-6.5">
               <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Hostel Name <span className="required">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="name"
-                  />
-                </div>
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Hostel Name <span className="required">*</span>
+                </label>
+                <input
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  type="text"
+                  name="hostel_name"
+                  value={formData.hostel_name}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Type <span className="required">*</span>
-                  </label>
-                  <select className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                    <option value="">Select</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                   Address <span className="required">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="name"
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                   Intake <span className="required">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="invoice_number"
-                  />
-                </div>
+                </label>
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleSelectChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  <option value="Girls">Girls</option>
+                  <option value="Boys">Boys</option>
+                  <option value="Combine">Combine</option>
+                </select>
+              </div>
 
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Description
-                  </label>
-                  <textarea
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    name="description"
-                  ></textarea>
-                </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Address <span className="required">*</span>
+                </label>
+                <input
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Intake <span className="required">*</span>
+                </label>
+                <input
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  type="number"
+                  name="intake"
+                  value={formData.intake}
+                  onChange={handleInputChange}
+                />
+              </div>
 
-                <div className="flex gap-2">
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Description
+                </label>
+                <input
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  type="text"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+                {isEditing && (
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleCancel} // Call the cancel function
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                   >
-                    {isEditing ? "Update" : "Save"}
+                    Cancel
                   </button>
-                  {isEditing && (
-                    <button
-                      type="button"
-                      onClick={handleCancel} // Call the cancel function
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </div>
+                )}
               </div>
-            </form>
+            </div>
           </div>
         </div>
 
