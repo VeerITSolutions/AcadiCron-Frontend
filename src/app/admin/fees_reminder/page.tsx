@@ -30,14 +30,7 @@ const StudentDetails = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
-  const [formData, setFormData] = useState(
-    data.map((section: any) => ({
-      id: section.id,
-      is_active: section.is_active,
-      reminder_type: section.reminder_type,
-      day: section.day,
-    })),
-  );
+  const [formState, setFormState] = useState<any[]>([]); //
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -54,6 +47,14 @@ const StudentDetails = () => {
       setTotalCount(result.totalCount);
 
       setData(result.data);
+      setFormState(
+        result.data.map((item: any) => ({
+          id: item.id,
+          isActive: item.is_active,
+          days: item.day,
+          reminderType: item.reminder_type,
+        })),
+      ); // Initialize formState with fetched data
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -61,37 +62,21 @@ const StudentDetails = () => {
     }
   };
 
-  // Handle changes in the form
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevData) =>
-      prevData.map((section) =>
-        section.id === id
-          ? {
-              ...section,
-              [name]: type === "checkbox" ? checked : value,
-            }
-          : section,
+  // Handle input changes
+  const handleChange = (id: number, field: string, value: any) => {
+    setFormState((prevState) =>
+      prevState.map((item) =>
+        item.id === id
+          ? { ...item, [field]: field === "isActive" ? value === "on" : value }
+          : item,
       ),
     );
   };
 
-  // Handle form submission (API request)
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const response = await createFeesReminder(formData);
-
-      if (response.ok) {
-        alert("Data saved successfully!");
-      } else {
-        alert("Failed to save data.");
-      }
-    } catch (error) {
-      console.error("Error saving data:", error);
-      alert("Error saving data.");
-    }
+  // Handle form submission
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    console.log("Form Data:", formState);
   };
 
   useEffect(() => {
@@ -125,40 +110,40 @@ const StudentDetails = () => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-gray-200 divide-y ">
-                      {data.map((section: any) => (
+                    <tbody className="divide-gray-200 divide-y">
+                      {formState.map((section) => (
                         <tr key={section.id}>
                           <td className="whitespace-nowrap px-6 py-4">
                             <label className="inline-flex items-center">
                               <input
                                 type="checkbox"
-                                name={"isactive_" + section.id}
-                                value={section.is_active}
-                                defaultChecked
+                                checked={section.isActive}
+                                onChange={(e) =>
+                                  handleChange(
+                                    section.id,
+                                    "isActive",
+                                    e.target.checked,
+                                  )
+                                }
                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                               />
                               <span className="text-gray-900 ml-2 text-sm">
-                                {section.is_active ? "Active" : "Inactive"}
+                                {section.isActive ? "Active" : "Inactive"}
                               </span>
                             </label>
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
-                            <input
-                              type="hidden"
-                              name="ids[]"
-                              value={section.id}
-                              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                            />
                             <span className="text-gray-900 text-sm">
-                              {" "}
-                              {section.reminder_type}{" "}
+                              {section.reminderType}
                             </span>
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             <input
                               type="number"
-                              name={"days" + section.id}
-                              value={section.day}
+                              value={section.days}
+                              onChange={(e) =>
+                                handleChange(section.id, "days", e.target.value)
+                              }
                               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-4 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                           </td>
