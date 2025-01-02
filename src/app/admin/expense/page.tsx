@@ -97,17 +97,18 @@ const Expense = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
-      name: "",
-      invoice_no: "",
-      date: "",
-      exp_head_id: "",
-      amount: "",
-      note: "",
-      documents: "",
+      name: subject?.name || "",
+      invoice_no: subject?.invoice_no || "",
+      date: subject?.date || "",
+      exp_head_id: subject?.exp_head_id || "",
+      amount: subject?.amount || "",
+      note: subject?.note || "",
+      documents: subject?.documents || "",
     });
   };
+  
 
   const handleCancel = () => {
     setFormData({
@@ -164,9 +165,9 @@ const Expense = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editExpenses(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
         const result = await createExpenses(formData);
@@ -186,9 +187,9 @@ const Expense = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create expenses");
         }
       }
       // Reset form after successful action
