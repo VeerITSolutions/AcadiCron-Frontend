@@ -95,13 +95,13 @@ const Income = () => {
     setEditCategoryId(id);
 
     setFormData({
-      name: "",
-      invoice_no: "",
-      date: "",
-      inc_head_id: "",
-      amount: "",
-      note: "",
-      documents: "",
+      name: subject.name,
+      invoice_no: subject.invoice_no,
+      date: subject.date,
+      inc_head_id: subject.inc_head_id,
+      amount: subject.amount,
+      note: subject.note,
+      documents: subject.documents,
     });
   };
 
