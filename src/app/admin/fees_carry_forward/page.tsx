@@ -268,11 +268,8 @@ const StudentDetails = () => {
         <Loader />
       ) : (
         <>
-          <div>Due Date: {dataSetting}</div>
+          <div> {dataSetting ? `Due Date: ${dataSetting}` : ""}</div>
 
-          <div className="float-right">
-            <p className="btn btn-primary">Due Date:</p>
-          </div>
           <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Previous Session Balance Fees"}
