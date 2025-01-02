@@ -16,7 +16,19 @@ export const fetchStudentData = async (page: number, perPage: number,selectedCla
   });
   return response.data;
 };
-
+export const fetchStudentCalculateData= async (page?: number, perPage?: number,selectedClass?:any,
+  selectedSection?:any,
+  keyword?:any,
+   selectedSessionId?:any
+  ) => {
+  const response = await apiClient.post(`/calculate-balances`, {
+    selectedClass,
+    selectedSection,
+    keyword,
+    selectedSessionId
+  });
+  return response.data;
+};
 export const fetchStudentSingleData = async (id: string) => {
   const response = await apiClient.get(`/admin/dtstudentlist`, {
     params: {

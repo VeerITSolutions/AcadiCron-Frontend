@@ -9,13 +9,6 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
 
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
@@ -23,6 +16,12 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import {
+  fetchExpensesData,
+  createExpenses,
+  deleteExpenses,
+  editExpenses,
+} from "@/services/ExpensesService";
 
 const Expense = () => {
   const [error, setError] = useState<string | null>(null);
@@ -50,19 +49,21 @@ const Expense = () => {
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
+    exp_head_id: "",
     name: "",
-    description: "",
-    session_id: savedSessionstate,
+    invoice_no: "",
+    date: "",
+    amount: "",
+    note: "",
+    documents: "",
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
-
-      const resultSubjectData = await fetchSubjectData();
+      const result = await fetchExpensesData(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -72,7 +73,7 @@ const Expense = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteExpenses(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -96,32 +97,28 @@ const Expense = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
+      name: subject?.name || "",
+      invoice_no: subject?.invoice_no || "",
+      date: subject?.date || "",
+      exp_head_id: subject?.exp_head_id || "",
+      amount: subject?.amount || "",
+      note: subject?.note || "",
+      documents: subject?.documents || "",
     });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
   };
+  
 
   const handleCancel = () => {
     setFormData({
       name: "",
-      description: "",
-      session_id: savedSessionstate,
+      invoice_no: "",
+      date: "",
+      exp_head_id: "",
+      amount: "",
+      note: "",
+      documents: "",
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -130,9 +127,9 @@ const Expense = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
+      subject.invoice_no || "N/A",
+      subject.date || "N/A",
+      subject.exp_head_id || "N/A",
       subject.amount || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
@@ -163,41 +160,26 @@ const Expense = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editExpenses(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createExpenses(formData);
 
         setFormData({
           name: "",
-          description: "",
-          session_id: savedSessionstate,
+          invoice_no: "",
+          date: "",
+          exp_head_id: "",
+          amount: "",
+          note: "",
+          documents: "",
         });
 
         setSelectedClass("");
@@ -205,16 +187,20 @@ const Expense = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create expenses");
         }
       }
       // Reset form after successful action
       setFormData({
         name: "",
-        description: "",
-        session_id: savedSessionstate,
+        invoice_no: "",
+        date: "",
+        exp_head_id: "",
+        amount: "",
+        note: "",
+        documents: "",
       });
 
       setIsEditing(false);
@@ -223,6 +209,20 @@ const Expense = () => {
     } catch (error) {
       console.error("An error occurred", error);
     }
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
   };
 
   const handlePageChange = (newPage: number) => setPage(newPage);
@@ -234,6 +234,7 @@ const Expense = () => {
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
+
 
   const columns = [
     "Name",
@@ -259,6 +260,18 @@ const Expense = () => {
     viewColumns: false,
   };
 
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
@@ -281,7 +294,10 @@ const Expense = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Expense Head <span className="required">*</span>
                   </label>
-                  <select className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                  <select  name="exp_head_id"
+                  value={formData.exp_head_id}
+                  onChange={handleSelectChange} 
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                     <option value="">Select</option>
                     <option value="1">Stationery</option>
                     <option value="2">Electricity Bill</option>
@@ -299,8 +315,10 @@ const Expense = () => {
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
                     name="name"
+                    type="text"
+                    value={formData.name}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -309,8 +327,10 @@ const Expense = () => {
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="invoice_number"
+                    name="invoice_no"
+                    type="number"
+                    value={formData.invoice_no}
+                    onChange={handleInputChange}
                   />
                 </div>
 
@@ -322,6 +342,8 @@ const Expense = () => {
                     id="date"
                     name="date"
                     type="date"
+                    value={formData.date}
+                    onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -333,6 +355,9 @@ const Expense = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="amount"
+                    value={formData.amount}
+                    onChange={handleInputChange}
+                    
                   />
                 </div>
                 <div>
@@ -340,12 +365,11 @@ const Expense = () => {
                     Attach Document
                   </label>
                   <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    id="file"
-                    name="document"
-                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                     className="form-control mt-2 w-full"
+                     type="file"
+                     accept="image/*"
+                     name="documents"
+                     onChange={handleFileChange}
                   />
                 </div>
 
@@ -355,27 +379,33 @@ const Expense = () => {
                   </label>
                   <textarea
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    name="description"
+                    name="note"
+                    value={formData.note}
+                    onChange={handleInputChange}
                   ></textarea>
                 </div>
 
                 <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default form submission
+                    handleSubmit();
+                  }}
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+                {isEditing && (
                   <button
-                    type="submit"
+                    type="button"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
                   >
-                    {isEditing ? "Update" : "Save"}
+                    Cancel
                   </button>
-                  {isEditing && (
-                    <button
-                      type="button"
-                      onClick={handleCancel} // Call the cancel function
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </div>
+                )}
+              </div>
               </div>
             </form>
           </div>
