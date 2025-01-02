@@ -122,6 +122,7 @@ const StudentDetails = () => {
       console.log("getselectedSessionId", getselectedSessionId);
       // Pass selectedClass and selectedSection as parameters to filter data
       if (selectedClass && selectedSection) {
+        setLoading(true);
         const result = await fetchStudentData(
           0,
           0,
