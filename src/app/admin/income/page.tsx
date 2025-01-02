@@ -4,13 +4,6 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-
-import {
-  createFeesDiscount,
-  deleteFeesDiscountData,
-  editFeesDiscountData,
-  fetchStudentFeesDiscountData,
-} from "@/services/studentFeesDiscountService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -18,37 +11,55 @@ import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
+import {
+  createIncome,
+  deleteIncome,
+  editIncome,
+  fetchIncomeData,
+} from "@/services/IncomeService";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 const Income = () => {
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<Array<Array<any>>>([]);
-  const { themType, setThemType } = useGlobalState();
+  const [data, setData] = useState<Array<any>>([]);
+  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
+  const [createdata, setcreatedata] = useState<Array<any>>([]);
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    code: "",
-    amount: "",
-    description: "",
-    is_active: "no",
-  });
-
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
+  const [classes, setClasses] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const [savedSessionstate, setSavedSession] = useState("");
+  const { themType, setThemType } = useGlobalState(); // A
+
+  const [formData, setFormData] = useState({
+    name: "",
+    invoice_no: "",
+    date: "",
+    inc_head_id: "",
+    amount: "",
+    note: "",
+    documents: "",
+  });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesDiscountData(
-        currentPage + 1,
-        rowsPerPage,
-      );
-      setTotalCount(result.totalCount);
-      setData(formatStudentCategoryData(result.data));
+      const result = await fetchIncomeData(currentPage + 1, rowsPerPage);
+
+      setTotalCount(result.total);
+      setData(formatSubjectData(result.data));
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -58,58 +69,72 @@ const Income = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesDiscountData(id);
+      await deleteIncome(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
+      toast.error("Delete failed");
       console.error("Delete failed", error);
     }
   };
 
-  const handleEdit = (
-    id: number,
-    name: string,
-    code: string,
-    amount: string,
-    description: string,
-    is_active: string,
-  ) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+  const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      name,
-      code,
-      amount,
-      description,
-      is_active,
+      name: "",
+      invoice_no: "",
+      date: "",
+      inc_head_id: "",
+      amount: "",
+      note: "",
+      documents: "",
     });
   };
 
-  const formatStudentCategoryData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.name || "N/A",
-      student.code || "N/A",
-      student.amount || "N/A",
+  const handleCancel = () => {
+    setFormData({
+      name: "",
+      invoice_no: "",
+      date: "",
+      inc_head_id: "",
+      amount: "",
+      note: "",
+      documents: "",
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
 
-      <div key={student.id} className="flex items-center space-x-2">
+  const formatSubjectData = (subjects: any[]) => {
+    return subjects.map((subject: any) => [
+      subject.name || "N/A",
+      subject.invoice_no || "N/A",
+      subject.date || "N/A",
+      subject.inc_head_id || "N/A",
+      subject.amount || "N/A",
+      <div key={subject.id} className="flex">
         <IconButton
-          onClick={() =>
-            handleEdit(
-              student.id,
-              student.name,
-              student.code,
-              student.amount,
-              student.description,
-              student.is_active,
-            )
-          }
+          onClick={() => handleEdit(subject.id, subject)}
           aria-label="edit"
         >
           <Edit />
         </IconButton>
         <IconButton
-          onClick={() => handleDelete(student.id)}
+          onClick={() => handleDelete(subject.id)}
           aria-label="delete"
         >
           <Delete />
@@ -122,7 +147,66 @@ const Income = () => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSessionId");
+    if (savedSession) {
+      setSavedSession(savedSession);
+      // Use this value in your logic
+    }
+  }, []);
+
+  const handleSubmit = async () => {
+    try {
+      if (isEditing && editCategoryId !== null) {
+        const result = await editIncome(editCategoryId, formData);
+        if (result.success) {
+          toast.success("Subject group updated successfully");
+        } else {
+          toast.error("Failed to update subject group");
+        }
+      } else {
+        const result = await createIncome(formData);
+
+        setFormData({
+          name: "",
+          invoice_no: "",
+          date: "",
+          inc_head_id: "",
+          amount: "",
+          note: "",
+          documents: "",
+        });
+
+        setSelectedClass("");
+        setSelectedSection([]);
+        setSelectedSubject([]);
+
+        if (result.success) {
+          toast.success("Subject group created successfully");
+        } else {
+          toast.error("Failed to create subject group");
+        }
+      }
+      // Reset form after successful action
+      setFormData({
+        name: "",
+        invoice_no: "",
+        date: "",
+        inc_head_id: "",
+        amount: "",
+        note: "",
+        documents: "",
+      });
+
+      setIsEditing(false);
+      setEditCategoryId(null);
+      fetchData(page, rowsPerPage); // Refresh data after submit
+    } catch (error) {
+      console.error("An error occurred", error);
+    }
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -130,78 +214,13 @@ const Income = () => {
     }));
   };
 
-  const handleSubmit = async () => {
-    try {
-      let result;
-
-      // Check if we are editing an existing category
-      if (isEditing && editCategoryId !== null) {
-        result = await editFeesDiscountData(
-          editCategoryId,
-          formData.name,
-          formData.code,
-          formData.amount,
-          formData.description,
-          formData.is_active,
-        );
-      } else {
-        result = await createFeesDiscount(
-          formData.name,
-          formData.code,
-          formData.amount,
-          formData.description,
-          formData.is_active,
-        );
-      }
-
-      // Handle the API response
-      if (result.success) {
-        toast.success(
-          isEditing
-            ? "Student House updated successfully"
-            : "Student House saved successfully",
-        );
-        // Reset form data
-        setFormData({
-          name: "",
-          code: "",
-          amount: "",
-          description: "",
-          is_active: "",
-        });
-        setIsEditing(false);
-        setEditCategoryId(null);
-        fetchData(page, rowsPerPage); // Refresh data after submit
-      } else {
-        // Handle errors
-        const errorMessage = result.message || "An error occurred";
-        const errors = result.errors || {};
-
-        toast.error(errorMessage); // Show the main error message
-
-        // Optionally display individual field errors
-        if (errors.name) {
-          toast.error(`Name: ${errors.name.join(", ")}`);
-        }
-        if (errors.code) {
-          toast.error(`Code: ${errors.code.join(", ")}`);
-        }
-        if (errors.amount) {
-          toast.error(`Amount: ${errors.amount.join(", ")}`);
-        }
-        if (errors.description) {
-          toast.error(`Description: ${errors.description.join(", ")}`);
-        }
-      }
-    } catch (error) {
-      console.error("An error occurred", error);
-      toast.error("An unexpected error occurred. Please try again.");
-    }
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
   };
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
+  const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
@@ -211,33 +230,40 @@ const Income = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-  const columns = ["Name", "Invoice Number", "Date","Income Head","Amount", "Actions"];
+  const columns = [
+    "Name",
+    "Invoice Number",
+    "Date",
+    "Income Head",
+    "Amount",
+    "Actions",
+  ];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
-    selectableRows: "none", // Disable row selection
+    responsive: "standard",
+    search: false,
     count: totalCount,
-    page: page,
-    rowsPerPage: rowsPerPage,
+    page,
+    rowsPerPage,
+    selectableRows: "none", // Disable row selection
+
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
-    filter: false, // Disable filter
-    viewColumns: false, // Disable view columns button
+    filter: false,
+    viewColumns: false,
   };
-  
 
-  const handleCancel = () => {
-    setIsEditing(false);
-    setEditCategoryId(null);
-    setFormData({
-      name: "",
-      code: "",
-      amount: "",
-      description: "",
-      is_active: "no",
-    });
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
   };
 
   return (
@@ -251,32 +277,46 @@ search: false,
               </h3>
             </div>
             <div className="flex flex-col gap-5.5 p-6.5">
-            <div>
+              <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Income Head
+                  Income Head
                 </label>
                 <select
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    <option value="1">Donation</option>
-                    <option value="2">Rent</option>
-                    <option value="3">Book Sale</option>
-                    <option value="4">Uniform Sale</option>
-                    <option value="5">Misc</option>
-                    <option value="6">Library</option>
-                    <option value="7">Fees Collection</option>
-
-                  </select>
+                  name="inc_head_id"
+                  value={formData.inc_head_id}
+                  onChange={handleSelectChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  <option value="1">Donation</option>
+                  <option value="2">Rent</option>
+                  <option value="3">Book Sale</option>
+                  <option value="4">Uniform Sale</option>
+                  <option value="5">Misc</option>
+                  <option value="6">Library</option>
+                  <option value="7">Fees Collection</option>
+                </select>
+              </div>
+              <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Name
+                </label>
+                <input
+                  name="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
               </div>
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Invoice Number
                 </label>
                 <input
-                  name="Invoice"
+                  name="invoice_no"
                   type="number"
-                  value={formData.name}
+                  value={formData.invoice_no}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
@@ -284,12 +324,13 @@ search: false,
 
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Date
+                  Date
                 </label>
                 <input
-                 id="date"
-                 name="date"
-                 type="date"
+                  id="date"
+                  name="date"
+                  type="date"
+                  value={formData.date}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
@@ -313,9 +354,9 @@ search: false,
                   Attach Document
                 </label>
                 <input
-                  name=" Attach Document"
+                  name="documents"
                   type="file"
-                  value={formData.description}
+                  value={formData.documents}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
@@ -323,12 +364,12 @@ search: false,
 
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Description
+                  Description
                 </label>
                 <input
-                  name=" Description"
+                  name="note"
                   type="text"
-                  value={formData.description}
+                  value={formData.note}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />

@@ -12,7 +12,7 @@ export const fetchIncomeData = async (page?: number, perPage?: number, type?: an
 };
 
 
-export const createIncomeData = async (data: any): Promise<any> => {
+export const createIncome = async (data: any): Promise<any> => {
   try {
     const response = await apiClient.post(`/income`, data);
     return response.data;
@@ -25,13 +25,13 @@ export const createIncomeData = async (data: any): Promise<any> => {
 
 
 // Delete a student category by ID
-export const deleteIncomeData = async (id: number) => {
+export const deleteIncome = async (id: number) => {
   const response = await apiClient.delete(`/income/${id}`);
   return response.data;
 };
 
 // Edit a student category by ID
-export const editIncomeData = async (id: number, data: any) => {
+export const editIncome = async (id: number, data: any) => {
   const response = await apiClient.post(`/income/${id}`, data);
   return response.data;
 };
