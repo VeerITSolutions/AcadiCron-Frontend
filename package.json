@@ -17,6 +17,7 @@
     "@tinymce/tinymce-react": "^5.1.1",
     "apexcharts": "^3.45.2",
     "axios": "^1.7.4",
+    "date-fns": "^4.1.0",
     "flatpickr": "^4.6.13",
     "flowbite-react": "^0.10.2",
     "font-awesome": "^4.7.0",
