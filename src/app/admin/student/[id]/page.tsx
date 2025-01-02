@@ -237,6 +237,7 @@ const StudentDetails = () => {
       if (id) {
         const getData = async () => {
           try {
+            setLoading(true);
             const data = await fetchStudentSingleData(id);
             const data2 = await fetchStudentFeesData(id);
             const datatimeline = await fetchStudentTimelineData(id);
