@@ -268,24 +268,29 @@ const StudentDetails = () => {
       {loading ? (
         <Loader />
       ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={""}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              selectableRows: "multiple", // Allow multiple selection
-              onRowsDelete: handleDelete,
-            }}
-          />
-        </ThemeProvider>
+        <>
+          <div className="float-right">
+            <p className="btn btn-primary">Due Date:</p>
+          </div>
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Previous Session Balance Fees"}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+                onRowSelectionChange: handleRowSelectionChange, // Handle row selection
+                selectableRows: "multiple", // Allow multiple selection
+                onRowsDelete: handleDelete,
+              }}
+            />
+          </ThemeProvider>
+        </>
       )}
     </DefaultLayout>
   );
