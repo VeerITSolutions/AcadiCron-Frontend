@@ -18,7 +18,9 @@ export const fetchStudentData = async (page: number, perPage: number,selectedCla
 };
 export const fetchStudentCalculateData= async (page?: number, perPage?: number,selectedClass?:any,
   selectedSection?:any,
-  keyword?:any, selectedSessionId?:any) => {
+  keyword?:any,
+   selectedSessionId?:any
+  ) => {
   const response = await apiClient.post(`/calculate-balances`, {
     selectedClass,
     selectedSection,
