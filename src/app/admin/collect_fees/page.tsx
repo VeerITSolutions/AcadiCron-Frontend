@@ -106,7 +106,7 @@ const StudentDetails = () => {
       alert("Failed to delete selected data.");
     }
   };
-
+  const router = useRouter();
   const handleRowSelectionChange = (
     curRowSelected: { dataIndex: number; index: number }[],
     allRowsSelected: { dataIndex: number; index: number }[],
@@ -151,13 +151,14 @@ const StudentDetails = () => {
       // Pass selectedClass and selectedSection as parameters to filter data
       if (selectedClass && selectedSection) {
         setLoading(true);
-        const result = await fetchStudentCalculateData(
-          0,
-          0,
+        const result = await fetchStudentData(
+          "",
+          "",
+
           selectedClass,
           selectedSection,
           keyword,
-          getselectedSessionId,
+          selectedSessionId,
         );
 
         const resultSetting = await fetchSchSetting();
@@ -313,8 +314,7 @@ const StudentDetails = () => {
               options={{
                 ...options,
                 count: totalCount,
-                page: page,
-                rowsPerPage: rowsPerPage,
+
                 onChangePage: handlePageChange,
                 onChangeRowsPerPage: handleRowsPerPageChange,
                 onRowSelectionChange: handleRowSelectionChange, // Handle row selection

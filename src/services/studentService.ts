@@ -1,8 +1,8 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentData = async (page: number, perPage: number,selectedClass :any,
-  selectedSection :any,
-  keyword:any, selectedSessionId?:any ,bulkDelete?:any) => {
+export const fetchStudentData = async (page?: any, perPage?: any,selectedClass? :any,
+  selectedSection? :any,
+  keyword?:any, selectedSessionId?:any ,bulkDelete?:any) => {
   const response = await apiClient.get(`/admin/dtstudentlist`, {
     params: {
       page,
