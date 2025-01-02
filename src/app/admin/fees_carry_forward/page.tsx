@@ -66,6 +66,14 @@ const StudentDetails = () => {
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
+  const [editedData, setEditedData] = useState(data);
+
+  // Handle input changes for student_amount
+  /*   const handleInputChange = (index: any, value: any) => {
+    const updatedData = [...editedData];
+    updatedData[index].student_amount = value;
+    setEditedData(updatedData);
+  }; */
 
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
@@ -105,14 +113,16 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.admission_no,
-
-      format(new Date(student.admission_date), "dd-MM-yyyy"),
-
-      student.roll_no || "N/A",
-      student.father_name || "-",
-      student.id || "0",
+      `${student.firstname.trim()} ${student.lastname.trim()}`, // Full Name
+      student.admission_no, // Admission Number
+      format(new Date(student.admission_date), "dd-MM-yyyy"), // Admission Date
+      student.roll_no || "N/A", // Roll Number
+      student.father_name || "-", // Father's Name
+      <input
+        name="student_amount[]"
+        defaultValue={student.balance}
+        style={{ width: "100%" }}
+      />, // Input field as JSX
     ]);
   };
 
@@ -217,6 +227,18 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
+  // Save changes to API
+  const handleSave = async () => {
+    try {
+      // const response = await axios.post(apiEndpoint, editedData);
+      // console.log("Saved successfully:", response.data);
+      alert("Changes saved successfully!");
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Failed to save changes.");
+    }
+  };
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -289,6 +311,18 @@ const StudentDetails = () => {
                 onRowsDelete: handleDelete,
               }}
             />
+
+            {dataSetting ? (
+              <button
+                onClick={handleSave}
+                style={{ marginTop: "10px", padding: "10px 20px" }}
+                className={styles.searchButton}
+              >
+                Save
+              </button>
+            ) : (
+              ""
+            )}
           </ThemeProvider>
         </>
       )}
