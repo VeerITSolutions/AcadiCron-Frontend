@@ -9,13 +9,6 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
 
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
