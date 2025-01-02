@@ -7,6 +7,7 @@ import "@/css/globals.css";
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import { GlobalProvider } from "@/context/GlobalContext";
+import { useInitializeLoginDetails } from "@/store/logoStore";
 
 export default function RootLayout({
   children,
@@ -21,6 +22,7 @@ export default function RootLayout({
   useEffect(() => {
     setTimeout(() => setLoading(false), 1);
   }, []);
+  useInitializeLoginDetails();
 
   return (
     <>

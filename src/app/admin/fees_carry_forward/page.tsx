@@ -16,6 +16,7 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchSchSetting } from "@/services/schSetting";
 
 const columns = [
   "Student Name",
@@ -42,6 +43,7 @@ const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const [dataSetting, setDataSetting] = useState<string | undefined>(undefined);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -132,9 +134,21 @@ const StudentDetails = () => {
           getselectedSessionId,
           1,
         );
+
+        const resultSetting = await fetchSchSetting();
+
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
+
+        const currentDate = new Date();
+        currentDate.setDate(
+          currentDate.getDate() + resultSetting.data.fee_due_days,
+        );
+
+        // Format the new date as d-m-y
+        const formattedDate = `${currentDate.getDate().toString().padStart(2, "0")}-${(currentDate.getMonth() + 1).toString().padStart(2, "0")}-${currentDate.getFullYear()}`;
+        setDataSetting(formattedDate);
         setLoading(false);
       } else {
         setData([]);
@@ -254,9 +268,8 @@ const StudentDetails = () => {
         <Loader />
       ) : (
         <>
-          <div className="float-right">
-            <p className="btn btn-primary">Due Date:</p>
-          </div>
+          <div> {dataSetting ? `Due Date: ${dataSetting}` : ""}</div>
+
           <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
               title={"Previous Session Balance Fees"}
