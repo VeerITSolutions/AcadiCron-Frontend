@@ -5,7 +5,11 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
+import {
+  deleteStudentBluk,
+  fetchStudentCalculateData,
+  fetchStudentData,
+} from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import { format } from "date-fns";
@@ -121,18 +125,16 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      console.log("getselectedSessionId", getselectedSessionId);
       // Pass selectedClass and selectedSection as parameters to filter data
       if (selectedClass && selectedSection) {
         setLoading(true);
-        const result = await fetchStudentData(
+        const result = await fetchStudentCalculateData(
           0,
           0,
           selectedClass,
           selectedSection,
           keyword,
           getselectedSessionId,
-          1,
         );
 
         const resultSetting = await fetchSchSetting();
