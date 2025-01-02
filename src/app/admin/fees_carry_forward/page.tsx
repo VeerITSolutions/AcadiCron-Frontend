@@ -64,6 +64,7 @@ const StudentDetails = () => {
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
+  console.log(getselectedSessionId);
 
   const handleDelete = async () => {
     try {
@@ -118,6 +119,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
+      console.log("getselectedSessionId", getselectedSessionId);
       // Pass selectedClass and selectedSection as parameters to filter data
       if (selectedClass && selectedSection) {
         const result = await fetchStudentData(
@@ -126,7 +128,7 @@ const StudentDetails = () => {
           selectedClass,
           selectedSection,
           keyword,
-          selectedSessionId,
+          getselectedSessionId,
           1,
         );
         setTotalCount(result.totalCount);
