@@ -35,10 +35,9 @@ import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
 import LoaderSpiner from "@/components/common/LoaderSpiner";
 
-const StudentDetails = () => {
+const StudentFess = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
-  const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -319,13 +318,6 @@ const StudentDetails = () => {
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
-    }
-
-    try {
-      const result = await fetchLeaveTypeData();
-      setLeaveTypeData(result.data);
-    } catch (error: any) {
-      setError(error.message);
     }
   };
 
@@ -676,4 +668,4 @@ const StudentDetails = () => {
   );
 };
 
-export default StudentDetails;
+export default StudentFess;
