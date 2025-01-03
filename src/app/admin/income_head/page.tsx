@@ -87,8 +87,6 @@ const IncomeHead = () => {
       income_category: subject.income_category,
       description: subject.description,
     });
-
-
   };
 
   const handleCancel = () => {

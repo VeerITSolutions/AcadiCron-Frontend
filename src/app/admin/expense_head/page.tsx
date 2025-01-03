@@ -9,20 +9,18 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
-
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import {
+  fetchExpenseHeadData,
+  createExpenseHead,
+  deleteExpenseHead,
+  editExpenseHead,
+} from "@/services/expenseHeadService";
 
 const Expense = () => {
   const [error, setError] = useState<string | null>(null);
@@ -39,8 +37,6 @@ const Expense = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const [classes, setClasses] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -50,13 +46,12 @@ const Expense = () => {
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
+    exp_category: "",
     description: "",
-    session_id: savedSessionstate,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
+      const result = await fetchExpenseHeadData(currentPage + 1, rowsPerPage);
 
       const resultSubjectData = await fetchSubjectData();
 
@@ -72,7 +67,7 @@ const Expense = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteExpenseHead(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -81,47 +76,24 @@ const Expense = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
 
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
 
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      name: subject.name,
+      exp_category: subject.exp_category,
       description: subject.description,
-      session_id: savedSessionstate,
     });
 
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
   };
 
   const handleCancel = () => {
     setFormData({
-      name: "",
+      exp_category: "",
       description: "",
-      session_id: savedSessionstate,
+
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -129,7 +101,7 @@ const Expense = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.expense_head || "N/A",
+      subject.exp_category || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -159,41 +131,36 @@ const Expense = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: value, 
     }));
   };
 
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
+        const result = await editExpenseHead(
           editCategoryId,
           formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
+     
         );
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createSubjectGroupAdd(
+        const result = await createExpenseHead(
           formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
+       
         );
 
         setFormData({
-          name: "",
+          exp_category: "",
           description: "",
-          session_id: savedSessionstate,
         });
 
         setSelectedClass("");
@@ -208,9 +175,8 @@ const Expense = () => {
       }
       // Reset form after successful action
       setFormData({
-        name: "",
+        exp_category: "",
         description: "",
-        session_id: savedSessionstate,
       });
 
       setIsEditing(false);
@@ -273,7 +239,9 @@ const Expense = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="expense_head"
+                    name="exp_category"
+                    value={formData.exp_category}
+                    onChange={handleInputChange}
                   />
                 </div>
 
@@ -282,23 +250,29 @@ const Expense = () => {
                     Description
                   </label>
                   <textarea
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    name="description"
-                  ></textarea>
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                ></textarea>
                 </div>
 
                 <div className="flex gap-2">
                   <button
                     type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubmit();
+                    }}
                   >
                     {isEditing ? "Update" : "Save"}
                   </button>
                   {isEditing && (
                     <button
                       type="button"
-                      onClick={handleCancel} // Call the cancel function
                       className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      onClick={handleCancel}
                     >
                       Cancel
                     </button>
