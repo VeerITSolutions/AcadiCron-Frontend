@@ -104,6 +104,8 @@ const vehicleRoutes = () => {
     setIsEditing(true);
     setEditCategoryId(id);
 
+    /* setSelectedVehicles(subject.vehicle_id); */
+
     setFormData({
       route_id: subject.route_id || "", 
       vehicle_id: selectedVehicles,
@@ -204,14 +206,7 @@ const vehicleRoutes = () => {
           selectedVehicles
     
         );
-
-        setFormData({
-          route_id: "",
-          vehicle_id:selectedVehicles,
-         
-        });
-
-    
+        
 
         if (result.success) {
           toast.success("Vehicle routes created successfully");
@@ -220,10 +215,13 @@ const vehicleRoutes = () => {
         }
       }
       // Reset form after successful action
-      setFormData({
-        route_id: "",
-        vehicle_id:selectedVehicles,
-      });
+      setSelectedVehicles([]);
+        
+        setFormData({
+          route_id: "",
+          vehicle_id:selectedVehicles,
+         
+        });
 
       setIsEditing(false);
       setEditCategoryId(null);
@@ -321,6 +319,8 @@ const vehicleRoutes = () => {
                         type="checkbox"
                      onChange={handleInputChange2}
                         className="mr-2"
+                       
+                        
                       />
                       {route.vehicle_no}
                     </label>
