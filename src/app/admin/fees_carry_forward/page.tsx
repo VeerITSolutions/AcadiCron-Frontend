@@ -119,6 +119,7 @@ const StudentDetails = () => {
       student.roll_no || "N/A", // Roll Number
       student.father_name || "-", // Father's Name
       <input
+        key={student.id}
         name="student_amount[]"
         defaultValue={student.balance}
         style={{ width: "100%" }}
