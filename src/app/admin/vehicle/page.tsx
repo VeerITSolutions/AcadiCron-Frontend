@@ -9,20 +9,18 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
-
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import {
+  fetchVehiclesData,
+  createVehiclesData,
+  deleteVehiclesData,
+  editVehiclesData,
+} from "@/services/vehicleService";
 
 const Vehicle = () => {
   const [error, setError] = useState<string | null>(null);
@@ -50,13 +48,18 @@ const Vehicle = () => {
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    session_id: savedSessionstate,
+    vehicle_no: "",
+    vehicle_model: "",
+    manufacture_year: "",
+    driver_name: "",
+    driver_licence: "",
+    driver_contact: "",
+    note: "",
   });
+  
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
+      const result = await fetchVehiclesData(currentPage + 1, rowsPerPage);
 
       const resultSubjectData = await fetchSubjectData();
 
@@ -72,7 +75,7 @@ const Vehicle = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteVehiclesData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -81,27 +84,21 @@ const Vehicle = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
-
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
 
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
+      vehicle_no: subject.vehicle_no || "", 
+      vehicle_model: subject.vehicle_model || "",
+      manufacture_year: subject.manufacture_year || "",
+      driver_name: subject.driver_name || "",
+      driver_licence: subject.driver_licence || "",
+      driver_contact: subject.driver_contact || "",
+      note: subject.note || "",
     });
+    
 
     setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
     setSelectedSection(
@@ -119,9 +116,13 @@ const Vehicle = () => {
 
   const handleCancel = () => {
     setFormData({
-      name: "",
-      description: "",
-      session_id: savedSessionstate,
+      vehicle_no: "",
+      vehicle_model: "",
+      manufacture_year: "",
+      driver_name: "",
+      driver_licence: "",
+      driver_contact: "",
+      note: "",
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -129,11 +130,12 @@ const Vehicle = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.name || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
+      subject.vehicle_no || "N/A",
+      subject.vehicle_model || "N/A",
+      subject.manufacture_year || "N/A",
+      subject.driver_name || "N/A",
+      subject.driver_licence || "N/A",
+      subject.driver_contact || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -163,41 +165,42 @@ const Vehicle = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: value, 
     }));
   };
+
 
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
+        const result = await editVehiclesData(
           editCategoryId,
           formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
+
         );
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Vehicle updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update vehicle");
         }
       } else {
-        const result = await createSubjectGroupAdd(
+        const result = await createVehiclesData(
           formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
+    
         );
 
         setFormData({
-          name: "",
-          description: "",
-          session_id: savedSessionstate,
+          vehicle_no: "",
+          vehicle_model: "",
+          manufacture_year: "",
+          driver_name: "",
+          driver_licence: "",
+          driver_contact: "",
+          note: "",
         });
 
         setSelectedClass("");
@@ -205,16 +208,20 @@ const Vehicle = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Vehicle created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create vehicle");
         }
       }
       // Reset form after successful action
       setFormData({
-        name: "",
-        description: "",
-        session_id: savedSessionstate,
+        vehicle_no: "",
+        vehicle_model: "",
+        manufacture_year: "",
+        driver_name: "",
+        driver_licence: "",
+        driver_contact: "",
+        note: "",
       });
 
       setIsEditing(false);
@@ -285,7 +292,9 @@ const Vehicle = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="name"
+                    name="vehicle_no"
+                    value={formData.vehicle_no}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -295,7 +304,9 @@ const Vehicle = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="invoice_number"
+                    name="vehicle_model"
+                    value={formData.vehicle_model}
+                    onChange={handleInputChange}
                   />
                 </div>
 
@@ -307,7 +318,9 @@ const Vehicle = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="amount"
+                    name="manufacture_year"
+                    value={formData.manufacture_year}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -317,7 +330,9 @@ const Vehicle = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="amount"
+                    name="driver_name"
+                    value={formData.driver_name}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -327,7 +342,9 @@ const Vehicle = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="amount"
+                    name="driver_licence"
+                    value={formData.driver_licence}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -336,8 +353,10 @@ const Vehicle = () => {
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="amount"
+                    type="number"
+                    name="driver_contact"
+                    value={formData.driver_contact}
+                    onChange={handleInputChange}
                   />
                 </div>
               
@@ -348,7 +367,9 @@ const Vehicle = () => {
                   </label>
                   <textarea
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    name="description"
+                    name="note"
+                    value={formData.note}
+                    onChange={handleInputChange}
                   ></textarea>
                 </div>
 
@@ -356,14 +377,18 @@ const Vehicle = () => {
                   <button
                     type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubmit();
+                    }}
                   >
                     {isEditing ? "Update" : "Save"}
                   </button>
                   {isEditing && (
                     <button
                       type="button"
-                      onClick={handleCancel} // Call the cancel function
                       className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      onClick={handleCancel}
                     >
                       Cancel
                     </button>

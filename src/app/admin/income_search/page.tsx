@@ -35,24 +35,6 @@ import {
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 
-const columns = [
-  "Name",
-  "Invoice Number",
-  "Income Head",
-  "Date",
-  "	Amount (₹)",
-];
-
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
- responsive: "standard",
-search: false,
-  filter: false,
-  viewColumns: false,
-  tableBodyMaxHeight: "500px",
-};
 
 const IncomeSearch = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -74,6 +56,25 @@ const IncomeSearch = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+
+  const columns = [
+    "Name",
+    "Invoice Number",
+    "Income Head",
+    "Date",
+    "Amount (₹)",
+  ];
+  
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+    responsive: "standard",
+    search: false,
+    selectableRows: "none",
+    filter: false,
+    viewColumns: false,
+  };
+  
 
   const handleDelete = async () => {
     try {
@@ -266,8 +267,7 @@ const IncomeSearch = () => {
               rowsPerPage: rowsPerPage,
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              selectableRows: "multiple", // Allow multiple selection
+              onRowSelectionChange: handleRowSelectionChange, 
               onRowsDelete: handleDelete,
             }}
           />
