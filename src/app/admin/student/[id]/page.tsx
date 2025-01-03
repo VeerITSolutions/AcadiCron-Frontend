@@ -237,6 +237,7 @@ const StudentDetails = () => {
       if (id) {
         const getData = async () => {
           try {
+            setLoading(true);
             const data = await fetchStudentSingleData(id);
             const data2 = await fetchStudentFeesData(id);
             const datatimeline = await fetchStudentTimelineData(id);
@@ -493,6 +494,14 @@ const StudentDetails = () => {
                   src={imageUrl || defaultImage}
                   alt="User Profile"
                   className="mx-auto h-24 w-24 rounded-full"
+                  onError={(e) =>
+                    ((e.target as HTMLImageElement).outerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" class="mx-auto h-24 w-24 rounded-full">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M2 20c0-4.42 3.58-8 8-8h4c4.42 0 8 3.58 8 8v1H2v-1z" />
+      </svg>
+    `)
+                  }
                 />
                 <h3 className="mt-2 text-[20px] font-bold">
                   {formData.firstname} {formData.lastname}

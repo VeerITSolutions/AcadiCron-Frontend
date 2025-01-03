@@ -34,7 +34,6 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
 
-
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
@@ -67,7 +66,7 @@ const StudentDetails = () => {
     "Balance (₹)",
     "Action",
   ];
-  
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -417,6 +416,14 @@ const StudentDetails = () => {
                 src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
                 alt="User Profile"
                 className="mx-auto h-24 w-24 rounded-full"
+                onError={(e) =>
+                  ((e.target as HTMLImageElement).outerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" class="mx-auto h-24 w-24 rounded-full">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M2 20c0-4.42 3.58-8 8-8h4c4.42 0 8 3.58 8 8v1H2v-1z" />
+    </svg>
+  `)
+                }
               />
             </div>
 
