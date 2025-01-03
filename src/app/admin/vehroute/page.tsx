@@ -7,153 +7,143 @@ import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-
 import {
-  createFeesMaster,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
-import { fetchStudentFeesGroupData } from "@/services/studentFeesGroupService";
-
-import { fetchStudentFeesTypeData } from "@/services/studentFeesTypeService";
-import { fetchStudentFeesSeesionGroupData } from "@/services/studentFeesSessionGroupService";
+  fetchVehicleRoutes,
+  deleteVehicleRoutes,
+  editVehicleRoutes,
+  createVehicleRoutes,
+} from "@/services/vehicleRouteService";
+import {
+  fetchTransportRouteData,
+} from "@/services/transportRouteService";
+import {
+  fetchVehiclesData,
+} from "@/services/vehicleService";
 
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
-const AssignVehicle = () => {
+
+const vehicleRoutes = () => {
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<Array<Array<any>>>([]);
-  const { themType, setThemType } = useGlobalState();
-  const [datafeesgroupdata, setFessGroupData] = useState<Array<Array<any>>>([]);
-  const [datafesstypedata, setFessTypeData] = useState<Array<Array<any>>>([]);
+  const [data, setData] = useState<Array<any>>([]);
+  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
+  const [createdata, setcreatedata] = useState<Array<any>>([]);
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
 
-  const [formData, setFormData] = useState({
-    fees_group: "",
-    fees_type: "",
-    due_date: "",
-    amount: "",
-    fine_type: "",
-    percentage: "",
-    description: "",
-    fine_amount: "",
-  });
-
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+  const [routeData, setRouteData] = useState<Array<Array<any>>>([]);
+  const [vehicleData, setVehiclesData] = useState<Array<Array<any>>>([]);
 
+  const [classes, setClasses] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection, setSelectedSection] = useState<string[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const [savedSessionstate, setSavedSession] = useState("");
+  const { themType, setThemType } = useGlobalState(); // A
+  const [selectedVehicles, setSelectedVehicles] = useState<number[]>([]);
+  const [formData, setFormData] = useState({
+    route_id: "",
+    vehicle_id:selectedVehicles,
+  });
+  
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesSeesionGroupData(
-        currentPage + 1,
-        rowsPerPage,
-      );
-      setTotalCount(result.totalCount);
-      setData(formatStudentCategoryData(result.data));
+      const result = await fetchVehicleRoutes(currentPage + 1, rowsPerPage);
+
+      setTotalCount(result.total);
       setLoading(false);
+      setData( formatSubjectData(result.data));
+     
+     
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
 
     try {
-      const result = await fetchStudentFeesSeesionGroupData(
-        currentPage + 1,
-        rowsPerPage,
-      );
-
-      setFessGroupData(result.data);
-      console.log("datafeesgroupdata", datafeesgroupdata);
+      const result = await fetchTransportRouteData();
+      setRouteData(result.data);
     } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
+        setError(error.message);
+    };
 
     try {
-      const result = await fetchStudentFeesTypeData(
-        currentPage + 1,
-        rowsPerPage,
-      );
-
-      setFessTypeData(result.data);
+      const result = await fetchVehiclesData();
+      setVehiclesData(result.data);
     } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
+        setError(error.message);
+    };
+
+}
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteVehicleRoutes(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
+      toast.error("Delete failed");
       console.error("Delete failed", error);
     }
   };
 
-  const handleEdit = (
-    id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
-  ) => {
+
+  const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
+    /* setSelectedVehicles(subject.vehicle_id); */
+
     setFormData({
-      fees_group: fees_group_value,
-      fees_type: fees_type_value,
-      due_date: due_date_value,
-      amount: amount_value,
-      fine_type: fine_type_value,
-      percentage: percentage_value,
-      description: description_value,
-      fine_amount: fine_amount_value,
+      route_id: subject.route_id || "", 
+      vehicle_id: selectedVehicles,
     });
+    
+
   };
 
-  const formatStudentCategoryData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.fees_group_name,
-      student.fees_group_name || "N/A",
+  const handleCancel = () => {
+    setFormData({
+      route_id: "",
+      vehicle_id:selectedVehicles,
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
 
-      <div key={student.id} className="flex items-center space-x-2">
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const formatSubjectData = (subjects: any[]) => {
+    return subjects.map((subject: any) => [
+      subject.route_title || "N/A",
+      subject.vehicle_no || "N/A",
+      <div key={subject.id} className="flex">
         <IconButton
-          onClick={() =>
-            handleEdit(
-              student.id,
-              student.fees_group,
-              student.fees_type,
-              student.due_date,
-              student.amount,
-              student.fine_type,
-              student.percentage,
-              student.description,
-              student.fine_amount,
-            )
-          }
+          onClick={() => handleEdit(subject.id, subject)}
           aria-label="edit"
         >
           <Edit />
         </IconButton>
         <IconButton
-          onClick={() => handleDelete(student.id)}
+          onClick={() => handleDelete(subject.id)}
           aria-label="delete"
         >
           <Delete />
@@ -166,6 +156,14 @@ const AssignVehicle = () => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSessionId");
+    if (savedSession) {
+      setSavedSession(savedSession);
+      // Use this value in your logic
+    }
+  }, []);
+  
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -175,61 +173,65 @@ const AssignVehicle = () => {
       [name]: value,
     }));
   };
+  const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    const id = parseInt(value, 10); // Convert the value to an integer
+
+    if (checked) {
+      // Add the selected ID to the array
+      setSelectedVehicles((prev) => [...prev, id]);
+    } else {
+      // Remove the ID from the array
+      setSelectedVehicles((prev) => prev.filter((vehicleId) => vehicleId !== id));
+    }
+  };
 
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
+        const result = await editVehicleRoutes(
           editCategoryId,
+          formData,
+          selectedVehicles
 
-          formData.description,
-          formData.description,
         );
         if (result.success) {
-          toast.success("Student House updated successfully");
+          toast.success("Vehicle updated successfully");
         } else {
-          toast.error("Failed to update Student House");
+          toast.error("Failed to update vehicle");
         }
       } else {
-        const result = await createFeesMaster(
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.fine_amount,
+        const result = await createVehicleRoutes(
+          formData,
+          selectedVehicles
+    
         );
+        
 
         if (result.success) {
-          toast.success("Student House saved successfully");
+          toast.success("Vehicle routes created successfully");
         } else {
-          toast.error("Failed to save Student House");
+          toast.error("Failed to create vehicle routes");
         }
       }
-
-      setFormData({
-        fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
-      });
+      // Reset form after successful action
+      setSelectedVehicles([]);
+        
+        setFormData({
+          route_id: "",
+          vehicle_id:selectedVehicles,
+         
+        });
 
       setIsEditing(false);
       setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
+      fetchData(page, rowsPerPage);
     } catch (error) {
       console.error("An error occurred", error);
     }
   };
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
+  const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
@@ -239,31 +241,27 @@ const AssignVehicle = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-  const columns = ["Route", "Vehicle", "Actions"];
+  const columns = [
+    "Route",
+    "Vehicle",
+    "Action",
+  ];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
+    count: totalCount,
+    page,
+    rowsPerPage,
     selectableRows: "none", // Disable row selection
-    filter: false, // Disable filter,
-    viewColumns: false, // Disable view columns button
+
+    onChangePage: handlePageChange,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    filter: false,
+    viewColumns: false,
   };
 
-  const handleCancel = () => {
-    setFormData({
-      fees_group: "",
-      fees_type: "",
-      due_date: "",
-      amount: "",
-      fine_type: "",
-      percentage: "",
-      description: "",
-      fine_amount: "",
-    });
-    setIsEditing(false);
-    setEditCategoryId(null);
-  };
 
   return (
     <DefaultLayout>
@@ -290,48 +288,69 @@ search: false,
                    Route
                   </label>
                   <select
+                  name="route_id"
+                  value={formData.route_id}
+                  onChange={handleSelectChange} 
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    <option value="1">Central Avenue to Wardhman Nagar</option>
-                    <option value="2">Railway Station Rd to Wardhman Nagar</option>
+                    {routeData.map((route: any) => (
+                      <option key={route.id} value={route.id}>
+                        {route.route_title}
+                      </option>
+                    ))}
 
                   </select>
                 </div>
-
-               
-
-               
 
                 <div className="">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Vehicle
                   </label>
                   <div className="flex gap-5">
-                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="none" value="none" /> 2134
+                  {vehicleData.map((route: any) => (
+                    <label
+                      key={route.id}
+                      className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"
+                    >
+                      <input
+                        value={route.id}
+                        name="vehicle_id[]"
+                        type="checkbox"
+                     onChange={handleInputChange2}
+                        className="mr-2"
+                       
+                        
+                      />
+                      {route.vehicle_no}
                     </label>
-                  
-                  </div>
+                   
+                  ))}
+                </div>
+
                 </div>
 
                 <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmit();
+                  }}
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+                {isEditing && (
                   <button
-                    type="submit"
+                    type="button"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
                   >
-                    {isEditing ? "Update" : "Save"}
+                    Cancel
                   </button>
-                  {isEditing && (
-                    <button
-                      type="button"
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                      onClick={handleCancel}
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </div>
+                )}
+              </div>
               </div>
             </form>
           </div>
@@ -356,4 +375,4 @@ search: false,
   );
 };
 
-export default AssignVehicle;
+export default vehicleRoutes;
