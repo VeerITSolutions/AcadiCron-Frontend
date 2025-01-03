@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchHostelData = async (page?: number, perPage?: number) => {
+export const fetchHostelData = async (page?: any, perPage?: any) => {
   const response = await apiClient.get(`/hostel`, {
     params: {
       page,

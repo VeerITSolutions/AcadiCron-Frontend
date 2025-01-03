@@ -21,10 +21,14 @@ import {
   fetchHostelRoomData,
 } from "@/services/hostelRoomService";
 import styles from "./User.module.css";
+import { fetchHostelData } from "@/services/hostelService";
+import { fetchRoomtypeData } from "@/services/roomTypeService";
 
 const HostelRoom = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
+  const [dataHostel, setDataHostel] = useState<Array<any>>([]);
+  const [dataRoomType, setDataRoomType] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
 
@@ -50,7 +54,7 @@ const HostelRoom = () => {
   const [formData, setFormData] = useState({
     room_type_id: "",
     hostel_id: "",
-    room_type: "",
+    room_no: "",
     no_of_bed: "",
     cost_per_bed: "",
     title: "",
@@ -59,9 +63,12 @@ const HostelRoom = () => {
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchHostelRoomData(currentPage + 1, rowsPerPage);
-
+      const resultHostel = await fetchHostelData("", "");
+      const resultRoomType = await fetchRoomtypeData("", "");
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
+      setDataHostel(resultHostel.data);
+      setDataRoomType(resultRoomType.data);
 
       setLoading(false);
     } catch (error: any) {
@@ -100,7 +107,7 @@ const HostelRoom = () => {
     setFormData({
       room_type_id: subject.room_type_id,
       hostel_id: subject.hostel_id,
-      room_type: subject.room_type,
+      room_no: subject.room_no,
       no_of_bed: subject.no_of_bed,
       cost_per_bed: subject.cost_per_bed,
       title: subject.title,
@@ -112,7 +119,7 @@ const HostelRoom = () => {
     setFormData({
       room_type_id: "",
       hostel_id: "",
-      room_type: "",
+      room_no: "",
       no_of_bed: "",
       cost_per_bed: "",
       title: "",
@@ -124,8 +131,8 @@ const HostelRoom = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.room_type_id || "N/A",
-      subject.hostel_id || "N/A",
+      subject.room_no || "N/A",
+      subject.hostel_name || "N/A",
       subject.room_type || "N/A",
       subject.no_of_bed || "N/A",
       subject.cost_per_bed || "N/A",
@@ -173,7 +180,7 @@ const HostelRoom = () => {
         setFormData({
           room_type_id: "",
           hostel_id: "",
-          room_type: "",
+          room_no: "",
           no_of_bed: "",
           cost_per_bed: "",
           title: "",
@@ -194,7 +201,7 @@ const HostelRoom = () => {
       setFormData({
         room_type_id: "",
         hostel_id: "",
-        room_type: "",
+        room_no: "",
         no_of_bed: "",
         cost_per_bed: "",
         title: "",
@@ -288,8 +295,8 @@ const HostelRoom = () => {
                 <input
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   type="text"
-                  name="room_type_id"
-                  value={formData.room_type_id}
+                  name="room_no"
+                  value={formData.room_no}
                   onChange={handleInputChange}
                 />
               </div>
@@ -299,10 +306,16 @@ const HostelRoom = () => {
                 </label>
                 <select
                   value={formData.hostel_id}
+                  name="hostel_id"
                   onChange={handleSelectChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select</option>
+                  {dataHostel.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.hostel_name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="field">
@@ -310,11 +323,17 @@ const HostelRoom = () => {
                   Room Type <span className="required">*</span>
                 </label>
                 <select
-                  value={formData.room_type}
+                  value={formData.room_type_id}
+                  name="room_type_id"
                   onChange={handleSelectChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select</option>
+                  {dataRoomType.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.room_type}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -324,7 +343,7 @@ const HostelRoom = () => {
                 <input
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   type="text"
-                  name="name"
+                  name="no_of_bed"
                   value={formData.no_of_bed}
                   onChange={handleInputChange}
                 />
@@ -336,7 +355,7 @@ const HostelRoom = () => {
                 <input
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   type="text"
-                  name="invoice_number"
+                  name="cost_per_bed"
                   value={formData.cost_per_bed}
                   onChange={handleInputChange}
                 />
@@ -357,6 +376,7 @@ const HostelRoom = () => {
               <div className="flex gap-2">
                 <button
                   type="submit"
+                  onClick={handleSubmit}
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                 >
                   {isEditing ? "Update" : "Save"}

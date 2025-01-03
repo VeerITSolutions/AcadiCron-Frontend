@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchRoomtypeData = async (page?: number, perPage?: number) => {
+export const fetchRoomtypeData = async (page?: any, perPage?: any) => {
   const response = await apiClient.get(`/roomtype`, {
     params: {
       page,
