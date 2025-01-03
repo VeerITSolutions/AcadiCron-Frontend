@@ -40,7 +40,7 @@ const columns = [
   "Invoice Number",
   "Expense Head",
   "Date",
-  "	Amount (₹)",
+  "Amount (₹)",
 ];
 
 const options = {
