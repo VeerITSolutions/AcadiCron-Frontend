@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchIncomeHeadData = async (page?: number, perPage?: number, type?: any) => {
+export const fetchIncomeHeadData = async (page?: any, perPage?: any, type?: any) => {
   const response = await apiClient.get(`/income-head`, {
     params: {
       page,

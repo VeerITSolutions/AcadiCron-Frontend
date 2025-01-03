@@ -18,10 +18,13 @@ import {
   fetchIncomeData,
 } from "@/services/IncomeService";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { fetchIncomeHeadData } from "@/services/incomeHeadService";
 
 const Income = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
+  const [dataIncomeHead, setDataIncomeHead] = useState<Array<any>>([]);
+
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
 
@@ -56,9 +59,10 @@ const Income = () => {
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchIncomeData(currentPage + 1, rowsPerPage);
-
+      const resultIncomeHead = await fetchIncomeHeadData("", "");
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
+      setDataIncomeHead(resultIncomeHead.data);
 
       setLoading(false);
     } catch (error: any) {
@@ -101,7 +105,7 @@ const Income = () => {
       inc_head_id: subject.inc_head_id,
       amount: subject.amount,
       note: subject.note,
-      documents: subject.documents,
+      documents: subject?.documents || "",
     });
   };
 
@@ -124,7 +128,7 @@ const Income = () => {
       subject.name || "N/A",
       subject.invoice_no || "N/A",
       subject.date || "N/A",
-      subject.inc_head_id || "N/A",
+      subject.income_category || "N/A",
       subject.amount || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
@@ -288,13 +292,11 @@ const Income = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select</option>
-                  <option value="1">Donation</option>
-                  <option value="2">Rent</option>
-                  <option value="3">Book Sale</option>
-                  <option value="4">Uniform Sale</option>
-                  <option value="5">Misc</option>
-                  <option value="6">Library</option>
-                  <option value="7">Fees Collection</option>
+                  {dataIncomeHead.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.income_category}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -356,8 +358,7 @@ const Income = () => {
                 <input
                   name="documents"
                   type="file"
-                  value={formData.documents}
-                  onChange={handleInputChange}
+                  onChange={handleFileChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
