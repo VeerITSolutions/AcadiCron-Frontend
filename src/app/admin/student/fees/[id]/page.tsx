@@ -33,11 +33,11 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
+import LoaderSpiner from "@/components/common/LoaderSpiner";
 
-const StudentDetails = () => {
+const StudentFess = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
-  const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -211,6 +211,7 @@ const StudentDetails = () => {
     if (typeof window !== "undefined") {
       const id = window.location.pathname.split("/").pop();
       if (id) {
+        setLoading(true);
         const getData = async () => {
           try {
             const data = await fetchStudentSingleData(id);
@@ -318,13 +319,6 @@ const StudentDetails = () => {
       setError(error.message);
       setLoading(false);
     }
-
-    try {
-      const result = await fetchLeaveTypeData();
-      setLeaveTypeData(result.data);
-    } catch (error: any) {
-      setError(error.message);
-    }
   };
 
   const handleSubmit = async () => {
@@ -408,266 +402,270 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
-      <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
-        <div className="border-b border-stroke p-4 dark:bg-boxdark dark:drop-shadow-none">
-          <div className="flex items-start">
-            <div className="flex w-1/5 items-center justify-center">
-              <img
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
-                alt="User Profile"
-                className="mx-auto h-24 w-24 rounded-full"
-                onError={(e) =>
-                  ((e.target as HTMLImageElement).outerHTML = `
+      {loading ? (
+        <LoaderSpiner />
+      ) : (
+        <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
+          <div className="border-b border-stroke p-4 dark:bg-boxdark dark:drop-shadow-none">
+            <div className="flex items-start">
+              <div className="flex w-1/5 items-center justify-center">
+                <img
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
+                  alt="User Profile"
+                  className="mx-auto h-24 w-24 rounded-full"
+                  onError={(e) =>
+                    ((e.target as HTMLImageElement).outerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" class="mx-auto h-24 w-24 rounded-full">
       <circle cx="12" cy="8" r="4" />
       <path d="M2 20c0-4.42 3.58-8 8-8h4c4.42 0 8 3.58 8 8v1H2v-1z" />
     </svg>
   `)
-                }
-              />
-            </div>
-
-            <div className="ml-4 w-4/5">
-              <table className="w-full table-auto border-collapse">
-                <tbody>
-                  <tr>
-                    <th className="border-b border-b border-stroke p-4 px-4 py-2 text-left font-medium dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-                      Name
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.firstname} {formData.lastname}
-                    </td>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Class Section
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.class_name} ( {formData.section_name} )
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Father Name
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.father_name}
-                    </td>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Admission No
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.admission_no}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Mobile Number
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.mobileno}
-                    </td>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Roll Number
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.roll_no}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Category
-                    </th>
-                    <td className="px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.category_name}
-                    </td>
-                    <th className="px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      RTE
-                    </th>
-
-                    <td className="px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.rte}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div className="pb-4 pl-4 pt-4 text-right dark:bg-boxdark dark:drop-shadow-none">
-          <div className="flex space-x-4">
-            <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
-              Print Selected
-            </button>
-            <button
-              className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-              onClick={handleClickOpen}
-            >
-              {editing ? "Edit Leave" : "Collect Selected"}
-            </button>
-          </div>
-        </div>
-        {loading ? (
-          <Loader />
-        ) : (
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title={""}
-              data={data}
-              className={`${styles["miui-box-shadow"]}`}
-              columns={columns}
-              options={{
-                ...options,
-                count: totalCount,
-                page: page,
-                rowsPerPage: rowsPerPage,
-                onChangePage: handlePageChange,
-                onChangeRowsPerPage: handleRowsPerPageChange,
-              }}
-            />
-          </ThemeProvider>
-        )}
-        <Dialog open={open} onClose={handleClose}>
-          <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
-            <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
-              {/* Title */}
-              <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Leave" : "Collect Fees"}
-              </h3>
-              <svg
-                onClick={handleClose}
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="cursor-pointer text-black dark:text-white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
+                  }
                 />
-              </svg>
-            </div>
+              </div>
 
-            <div className="grid gap-5.5 p-4.5 dark:bg-boxdark dark:drop-shadow-none">
-              {/* Date Picker, Payment Mode, Note */}
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Date
-                </label>
-                <div className="relative">
-                  <Flatpickr
-                    options={{
-                      dateFormat: "m/d/Y",
-                    }}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    placeholder="mm/dd/yyyy"
+              <div className="ml-4 w-4/5">
+                <table className="w-full table-auto border-collapse">
+                  <tbody>
+                    <tr>
+                      <th className="border-b border-b border-stroke p-4 px-4 py-2 text-left font-medium dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                        Name
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.firstname} {formData.lastname}
+                      </td>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Class Section
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.class_name} ( {formData.section_name} )
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Father Name
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.father_name}
+                      </td>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Admission No
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.admission_no}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Mobile Number
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.mobileno}
+                      </td>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Roll Number
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.roll_no}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Category
+                      </th>
+                      <td className="px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.category_name}
+                      </td>
+                      <th className="px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        RTE
+                      </th>
+
+                      <td className="px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.rte}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div className="pb-4 pl-4 pt-4 text-right dark:bg-boxdark dark:drop-shadow-none">
+            <div className="flex space-x-4">
+              <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
+                Print Selected
+              </button>
+              <button
+                className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+                onClick={handleClickOpen}
+              >
+                {editing ? "Edit Leave" : "Collect Selected"}
+              </button>
+            </div>
+          </div>
+          {loading ? (
+            <Loader />
+          ) : (
+            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <MUIDataTable
+                title={""}
+                data={data}
+                className={`${styles["miui-box-shadow"]}`}
+                columns={columns}
+                options={{
+                  ...options,
+                  count: totalCount,
+                  page: page,
+                  rowsPerPage: rowsPerPage,
+                  onChangePage: handlePageChange,
+                  onChangeRowsPerPage: handleRowsPerPageChange,
+                }}
+              />
+            </ThemeProvider>
+          )}
+          <Dialog open={open} onClose={handleClose}>
+            <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
+              <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
+                {/* Title */}
+                <h3 className="font-medium text-black dark:text-white">
+                  {editing ? "Edit Leave" : "Collect Fees"}
+                </h3>
+                <svg
+                  onClick={handleClose}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="cursor-pointer text-black dark:text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
                   />
-                  <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M15.7504 2.9812H14.2879V2.36245C14.2879 2.02495 14.0066 1.71558 13.641 1.71558C13.2754 1.71558 12.9941 1.99683 12.9941 2.36245V2.9812H4.97852V2.36245C4.97852 2.02495 4.69727 1.71558 4.33164 1.71558C3.96602 1.71558 3.68477 1.99683 3.68477 2.36245V2.9812H2.25039C1.29414 2.9812 0.478516 3.7687 0.478516 4.75308V14.5406C0.478516 15.4968 1.26602 16.3125 2.25039 16.3125H15.7504C16.7066 16.3125 17.5223 15.525 17.5223 14.5406V4.72495C17.5223 3.7687 16.7066 2.9812 15.7504 2.9812ZM1.77227 8.21245H4.16289V10.9968H1.77227V8.21245ZM5.42852 8.21245H8.38164V10.9968H5.42852V8.21245ZM8.38164 12.2625V15.0187H5.42852V12.2625H8.38164V12.2625ZM9.64727 12.2625H12.6004V15.0187H9.64727V12.2625ZM9.64727 10.9968V8.21245H12.6004V10.9968H9.64727ZM13.8379 8.21245H16.2285V10.9968H13.8379V8.21245ZM2.25039 4.24683H3.71289V4.83745C3.71289 5.17495 3.99414 5.48433 4.35977 5.48433C4.72539 5.48433 5.00664 5.20308 5.00664 4.83745V4.24683H13.0504V4.83745C13.0504 5.17495 13.3316 5.48433 13.6973 5.48433C14.0629 5.48433 14.3441 5.20308 14.3441 4.83745V4.24683H15.7504C16.0316 4.24683 16.2566 4.47183 16.2566 4.75308V6.94683H1.77227V4.75308C1.77227 4.47183 1.96914 4.24683 2.25039 4.24683ZM1.77227 14.5125V12.2343H4.16289V14.9906H2.25039C1.96914 15.0187 1.77227 14.7937 1.77227 14.5125ZM15.7504 15.0187H13.8379V12.2625H16.2285V14.5406C16.2566 14.7937 16.0316 15.0187 15.7504 15.0187Z"
-                        fill="#64748B"
-                      />
-                    </svg>
+                </svg>
+              </div>
+
+              <div className="grid gap-5.5 p-4.5 dark:bg-boxdark dark:drop-shadow-none">
+                {/* Date Picker, Payment Mode, Note */}
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Date
+                  </label>
+                  <div className="relative">
+                    <Flatpickr
+                      options={{
+                        dateFormat: "m/d/Y",
+                      }}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      placeholder="mm/dd/yyyy"
+                    />
+                    <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15.7504 2.9812H14.2879V2.36245C14.2879 2.02495 14.0066 1.71558 13.641 1.71558C13.2754 1.71558 12.9941 1.99683 12.9941 2.36245V2.9812H4.97852V2.36245C4.97852 2.02495 4.69727 1.71558 4.33164 1.71558C3.96602 1.71558 3.68477 1.99683 3.68477 2.36245V2.9812H2.25039C1.29414 2.9812 0.478516 3.7687 0.478516 4.75308V14.5406C0.478516 15.4968 1.26602 16.3125 2.25039 16.3125H15.7504C16.7066 16.3125 17.5223 15.525 17.5223 14.5406V4.72495C17.5223 3.7687 16.7066 2.9812 15.7504 2.9812ZM1.77227 8.21245H4.16289V10.9968H1.77227V8.21245ZM5.42852 8.21245H8.38164V10.9968H5.42852V8.21245ZM8.38164 12.2625V15.0187H5.42852V12.2625H8.38164V12.2625ZM9.64727 12.2625H12.6004V15.0187H9.64727V12.2625ZM9.64727 10.9968V8.21245H12.6004V10.9968H9.64727ZM13.8379 8.21245H16.2285V10.9968H13.8379V8.21245ZM2.25039 4.24683H3.71289V4.83745C3.71289 5.17495 3.99414 5.48433 4.35977 5.48433C4.72539 5.48433 5.00664 5.20308 5.00664 4.83745V4.24683H13.0504V4.83745C13.0504 5.17495 13.3316 5.48433 13.6973 5.48433C14.0629 5.48433 14.3441 5.20308 14.3441 4.83745V4.24683H15.7504C16.0316 4.24683 16.2566 4.47183 16.2566 4.75308V6.94683H1.77227V4.75308C1.77227 4.47183 1.96914 4.24683 2.25039 4.24683ZM1.77227 14.5125V12.2343H4.16289V14.9906H2.25039C1.96914 15.0187 1.77227 14.7937 1.77227 14.5125ZM15.7504 15.0187H13.8379V12.2625H16.2285V14.5406C16.2566 14.7937 16.0316 15.0187 15.7504 15.0187Z"
+                          fill="#64748B"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Payment Mode
-                </label>
-                <label className="mr-4 inline-flex items-center">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="Cash"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2 dark:text-white"> Cash</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="Cheque"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2">Cheque</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="DD"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2">DD</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="bank_transfer"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2">Bank Transfer</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="upi"
-                    className="form-radio"
-                  />
-                  <span className="ml-2 dark:text-white">UPI</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="card"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2 dark:text-white">Card</span>
-                </label>
-              </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Payment Mode
+                  </label>
+                  <label className="mr-4 inline-flex items-center">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="Cash"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2 dark:text-white"> Cash</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="Cheque"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2">Cheque</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="DD"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2">DD</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="bank_transfer"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2">Bank Transfer</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="upi"
+                      className="form-radio"
+                    />
+                    <span className="ml-2 dark:text-white">UPI</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="card"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2 dark:text-white">Card</span>
+                  </label>
+                </div>
 
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Note
-                </label>
-                <input
-                  name="reason"
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Note
+                  </label>
+                  <input
+                    name="reason"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div className="dark:bg-boxdark dark:drop-shadow-none">
-                <button
-                  onClick={handleSubmit}
-                  className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-                >
-                  {editing ? "Update" : "Save"}
-                </button>
+                <div className="dark:bg-boxdark dark:drop-shadow-none">
+                  <button
+                    onClick={handleSubmit}
+                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+                  >
+                    {editing ? "Update" : "Save"}
+                  </button>
+                </div>
               </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      )}
     </DefaultLayout>
   );
 };
 
-export default StudentDetails;
+export default StudentFess;
