@@ -34,6 +34,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchExpensesData } from "@/services/ExpensesService";
 
 const columns = [
   "Name",
@@ -69,6 +70,9 @@ const Expense = () => {
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSearchType, setSelectedSearchType] = useState<string | undefined>(
     undefined,
   );
   const [keyword, setKeyword] = useState<string>("");
@@ -127,18 +131,16 @@ const Expense = () => {
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
+    setSelectedSearchType?: string,
   ) => {
     try {
       // Pass selectedClass and selectedSection as parameters to filter data
       if (selectedClass && selectedSection) {
-        const result = await fetchStudentData(
+        const result = await fetchExpensesData(
           0,
           0,
-          selectedClass,
-          selectedSection,
-          keyword,
-          selectedSessionId,
-          1,
+          selectedSearchType,
+       
         );
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
@@ -177,8 +179,8 @@ const Expense = () => {
   }, [selectedClass]);
 
   useEffect(() => {
-    fetchData(selectedClass, selectedSection, keyword);
-  }, [selectedClass, selectedSection, keyword]);
+    fetchData( keyword, selectedSearchType);
+  }, [keyword, selectedSearchType]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -195,12 +197,11 @@ const Expense = () => {
 
   const handleSearch = () => {
     setPage(0);
-    fetchData(selectedClass, selectedSection, keyword);
+    fetchData(keyword, selectedSearchType);
   };
   const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
     setKeyword("");
+    setSelectedSearchType("");
   };
 
   /* if (loading) return <Loader />; */
@@ -214,18 +215,19 @@ const Expense = () => {
             Search Type:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
+            onChange={(e) => setSelectedSearchType(e.target.value)}>
+              
               <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
+              <option value="1">Today</option>
+              <option value="7">This Week</option>
+              <option value="14">Last Week</option>
+              <option value="30">This Month</option>
+              <option value="45">Last Month</option>
+              <option value="90">Last 3 Months</option>
+              <option value="180">Last 6 Months</option>
+              <option value="365">Last 12 Months</option>
+              <option value="365">This Year</option>
+              <option value="730">Last Year</option>
               <option value="period">Period</option>
             </select>
           </label>
