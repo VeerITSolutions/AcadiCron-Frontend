@@ -23,29 +23,6 @@ import { useLoginDetails } from "@/store/logoStore";
 import { fetchSchSetting } from "@/services/schSetting";
 import router from "next/router";
 
-const columns = [
-  "Class",
-  "Section",
-  "Admission No",
-  "Student Name",
-  "Father Name",
-  "Date Of Birth",
-  "Phone",
-  "Action",
-];
-
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
-  responsive: "standard",
-  search: false,
-  selectableRows: "none", // Disable row selection
-  filter: false,
-  viewColumns: false,
-  tableBodyMaxHeight: "500px",
-};
-
 const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
@@ -71,17 +48,33 @@ const StudentDetails = () => {
   );
   const [editedData, setEditedData] = useState(data);
 
-  // Handle input changes for student_amount
-  /*   const handleInputChange = (index: any, value: any) => {
-    const updatedData = [...editedData];
-    updatedData[index].student_amount = value;
-    setEditedData(updatedData);
-  }; */
-
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
   console.log(getselectedSessionId);
+
+  const columns = [
+    "Class",
+    "Section",
+    "Admission No",
+    "Student Name",
+    "Father Name",
+    "Date Of Birth",
+    "Phone",
+    "Action",
+  ];
+
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+    pagination: false,
+    responsive: "standard",
+    search: false,
+    selectableRows: "none", // Disable row selection
+    filter: false,
+    viewColumns: false,
+    tableBodyMaxHeight: "500px",
+  };
 
   const handleDelete = async () => {
     try {
@@ -148,9 +141,9 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
+      setLoading(true);
       // Pass selectedClass and selectedSection as parameters to filter data
       if (selectedClass && selectedSection) {
-        setLoading(true);
         const result = await fetchStudentData(
           "",
           "",
