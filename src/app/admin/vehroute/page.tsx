@@ -52,10 +52,10 @@ const vehicleRoutes = () => {
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
-
+  const [selectedVehicles, setSelectedVehicles] = useState<number[]>([]);
   const [formData, setFormData] = useState({
     route_id: "",
-    vehicle_id: "",
+    vehicle_id:selectedVehicles,
   });
   
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
@@ -64,6 +64,8 @@ const vehicleRoutes = () => {
 
       setTotalCount(result.total);
       setLoading(false);
+      setData( formatSubjectData(result.data));
+     
      
     } catch (error: any) {
       setError(error.message);
@@ -104,7 +106,7 @@ const vehicleRoutes = () => {
 
     setFormData({
       route_id: subject.route_id || "", 
-      vehicle_id: subject.vehicle_id || "",
+      vehicle_id: selectedVehicles,
     });
     
 
@@ -113,7 +115,7 @@ const vehicleRoutes = () => {
   const handleCancel = () => {
     setFormData({
       route_id: "",
-      vehicle_id: "",
+      vehicle_id:selectedVehicles,
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -159,7 +161,7 @@ const vehicleRoutes = () => {
       // Use this value in your logic
     }
   }, []);
-
+  
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -169,7 +171,18 @@ const vehicleRoutes = () => {
       [name]: value,
     }));
   };
+  const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    const id = parseInt(value, 10); // Convert the value to an integer
 
+    if (checked) {
+      // Add the selected ID to the array
+      setSelectedVehicles((prev) => [...prev, id]);
+    } else {
+      // Remove the ID from the array
+      setSelectedVehicles((prev) => prev.filter((vehicleId) => vehicleId !== id));
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -177,6 +190,7 @@ const vehicleRoutes = () => {
         const result = await editVehicleRoutes(
           editCategoryId,
           formData,
+          selectedVehicles
 
         );
         if (result.success) {
@@ -187,12 +201,13 @@ const vehicleRoutes = () => {
       } else {
         const result = await createVehicleRoutes(
           formData,
+          selectedVehicles
     
         );
 
         setFormData({
           route_id: "",
-          vehicle_id: "",
+          vehicle_id:selectedVehicles,
          
         });
 
@@ -207,7 +222,7 @@ const vehicleRoutes = () => {
       // Reset form after successful action
       setFormData({
         route_id: "",
-        vehicle_id: "",
+        vehicle_id:selectedVehicles,
       });
 
       setIsEditing(false);
@@ -283,7 +298,7 @@ const vehicleRoutes = () => {
                     <option value="">Select</option>
                     {routeData.map((route: any) => (
                       <option key={route.id} value={route.id}>
-                        {route.route_id}
+                        {route.route_title}
                       </option>
                     ))}
 
@@ -295,14 +310,24 @@ const vehicleRoutes = () => {
                     Vehicle
                   </label>
                   <div className="flex gap-5">
-                    <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="checkbox" 
-                      name="vehicle_id" 
-                      value={formData.vehicle_id}
-                    onChange={handleInputChange} /> 2134
+                  {vehicleData.map((route: any) => (
+                    <label
+                      key={route.id}
+                      className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"
+                    >
+                      <input
+                        value={route.id}
+                        name="vehicle_id[]"
+                        type="checkbox"
+                     onChange={handleInputChange2}
+                        className="mr-2"
+                      />
+                      {route.vehicle_no}
                     </label>
-                  
-                  </div>
+                   
+                  ))}
+                </div>
+
                 </div>
 
                 <div className="flex gap-2">

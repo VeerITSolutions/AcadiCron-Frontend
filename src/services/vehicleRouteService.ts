@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchVehicleRoutes = async (page?: number, perPage?: number) => {
+export const fetchVehicleRoutes = async (page?: any, perPage?: any) => {
   const response = await apiClient.get(`/vehicle-routes`, {
     params: {
       page,
@@ -11,9 +11,9 @@ export const fetchVehicleRoutes = async (page?: number, perPage?: number) => {
 };
 
 
-export const createVehicleRoutes = async (data:any): Promise<any> => {
+export const createVehicleRoutes = async (data?:any, selectedVehicles?: any): Promise<any> => {
   try {
-    const response = await apiClient.post("/vehicle-routes", data);
+    const response = await apiClient.post("/vehicle-routes", {data, selectedVehicles});
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -30,8 +30,8 @@ export const deleteVehicleRoutes = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editVehicleRoutes = async (id: number, data: any) => {
+export const editVehicleRoutes = async (id: number, data: any, selectedVehicles: any) => {
   // Create an object with the name field
-  const response = await apiClient.post(`/vehicle-routes/${id}`, data);
+  const response = await apiClient.post(`/vehicle-routes/${id}`, {data, selectedVehicles});
   return response.data;
 };
