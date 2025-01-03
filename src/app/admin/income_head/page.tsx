@@ -88,18 +88,7 @@ const IncomeHead = () => {
       description: subject.description,
     });
 
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
 
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
   };
 
   const handleCancel = () => {
@@ -112,6 +101,9 @@ const IncomeHead = () => {
   };
 
   const formatSubjectData = (subjects: any[]) => {
+    if (!Array.isArray(subjects)) {
+      return [];
+    }
     return subjects.map((subject: any) => [
       subject.income_category || "N/A",
       <div key={subject.id} className="flex">
@@ -161,9 +153,9 @@ const IncomeHead = () => {
 
         );
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Income head updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update income head");
         }
       } else {
         const result = await createIncomeHead(
