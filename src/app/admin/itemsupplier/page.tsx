@@ -10,12 +10,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
+  fetchIteamSupplier,
+  createIteamSupplier,
+  deleteIteamSupplier,
+  editIteamSupplier,
+} from "@/services/IteamSupplierService";
 
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
@@ -27,6 +26,11 @@ import styles from "./User.module.css";
 const ItemSupplier = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
+  const [categoryData, setCategoryData] = useState<Array<any>>([]);
+  const [ItemData, setItemData] = useState<Array<any>>([]);
+  const [SupplyData, setSupplyData] = useState<Array<any>>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
 
@@ -50,19 +54,23 @@ const ItemSupplier = () => {
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    session_id: savedSessionstate,
+    item_supplier: '',
+    phone: '',
+    email: '',
+    address: '',
+    contact_person_name: '',
+    contact_person_phone: '',
+    contact_person_email: '',
+    description: '',
   });
+  
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
-
-      const resultSubjectData = await fetchSubjectData();
+      const result = await fetchIteamSupplier(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+     
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -72,7 +80,7 @@ const ItemSupplier = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteIteamSupplier(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -81,55 +89,49 @@ const ItemSupplier = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
-
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
+    
+      item_supplier: subject?.item_supplier || '',
+      phone: subject?.phone || '',
+      email: subject?.email || '',
+      address: subject?.address || '',
+      contact_person_name: subject?.contact_person_name || '',
+      contact_person_phone: subject?.contact_person_phone || '',
+      contact_person_email: subject?.contact_person_email || '',
+      description: subject?.description || '',
+   
     });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
+    
   };
+  
 
   const handleCancel = () => {
     setFormData({
-      name: "",
-      description: "",
-      session_id: savedSessionstate,
+      item_supplier: '',
+      phone: '',
+      email: '',
+      address: '',
+      contact_person_name: '',
+      contact_person_phone: '',
+      contact_person_email: '',
+      description: '',
+     
     });
     setIsEditing(false);
     setEditCategoryId(null);
   };
 
+
+
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.expense_head || "N/A",
+      subject.item_supplier || "N/A",
+      subject.contact_person_name || "N/A",
+      subject.address || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -159,41 +161,28 @@ const ItemSupplier = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editIteamSupplier(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createIteamSupplier(formData);
 
         setFormData({
-          name: "",
-          description: "",
-          session_id: savedSessionstate,
+          item_supplier: '',
+          phone: '',
+          email: '',
+          address: '',
+          contact_person_name: '',
+          contact_person_phone: '',
+          contact_person_email: '',
+          description: '',
+       
         });
 
         setSelectedClass("");
@@ -201,16 +190,22 @@ const ItemSupplier = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create expenses");
         }
       }
       // Reset form after successful action
       setFormData({
-        name: "",
-        description: "",
-        session_id: savedSessionstate,
+        item_supplier: '',
+        phone: '',
+        email: '',
+        address: '',
+        contact_person_name: '',
+        contact_person_phone: '',
+        contact_person_email: '',
+        description: '',
+      
       });
 
       setIsEditing(false);
@@ -221,6 +216,20 @@ const ItemSupplier = () => {
     }
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
+  };
+
   const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
@@ -228,10 +237,22 @@ const ItemSupplier = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
+
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
 
   const columns = [
     "Item Supplier",
@@ -280,7 +301,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name=" Name"
+                    name="item_supplier"
+                    value={formData.item_supplier}
+                    onChange={handleInputChange}
                   />
                   </div>
                   <div>
@@ -290,7 +313,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="tel"
-                    name=" Phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                   />
                   </div>
                   <div>
@@ -300,7 +325,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="email"
-                    name=" Email"
+                    name=" email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                   />
                   </div>
                   <div>
@@ -310,7 +337,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name=" Address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
                   />
                   </div>
                   <div>
@@ -320,7 +349,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name=" Name"
+                    name="contact_person_name"
+                    value={formData.contact_person_name}
+                    onChange={handleInputChange}
                   />
                   </div>
                   <div>
@@ -330,7 +361,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="tel"
-                    name=" Phone"
+                    name="contact_person_phone"
+                    value={formData.contact_person_phone}
+                    onChange={handleInputChange}
                   />
                   </div>
                   <div>
@@ -340,7 +373,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="email"
-                    name=" Email"
+                    name="contact_person_email"
+                    value={formData.contact_person_email}
+                    onChange={handleInputChange}
                   />
                   </div>
         
@@ -351,6 +386,8 @@ search: false,
             <textarea
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               name="description"
+              value={formData.description}
+              onChange={handleInputChange}
             ></textarea>
           </div>
 
@@ -365,7 +402,7 @@ search: false,
                   {isEditing && (
                     <button
                       type="button"
-                      onClick={handleCancel} // Call the cancel function
+                      onClick={handleCancel}
                       className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                     >
                       Cancel
