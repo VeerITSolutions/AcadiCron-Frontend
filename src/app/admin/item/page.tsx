@@ -122,7 +122,7 @@ const Item = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name || "N/A",
-      subject.item_category_id || "N/A",
+      subject.item_category || "N/A",
       subject.unit || "N/A",
       subject.quantity || "N/A",
     
