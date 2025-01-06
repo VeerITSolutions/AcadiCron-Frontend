@@ -22,12 +22,14 @@ import {
   deleteExpenses,
   editExpenses,
 } from "@/services/ExpensesService";
+import { fetchExpenseHeadData } from "@/services/expenseHeadService";
 
 const Expense = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
+  const [dataExpenseHead, setDataExpenseHead] = useState<Array<any>>([]);
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -60,9 +62,10 @@ const Expense = () => {
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchExpensesData(currentPage + 1, rowsPerPage);
-
+      const resultExpenses = await fetchExpenseHeadData("", "");
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
+      setDataExpenseHead(resultExpenses.data);
 
       setLoading(false);
     } catch (error: any) {
@@ -299,14 +302,11 @@ const Expense = () => {
                   onChange={handleSelectChange} 
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                     <option value="">Select</option>
-                    <option value="1">Stationery</option>
-                    <option value="2">Electricity Bill</option>
-                    <option value="3">Telephone Bill</option>
-                    <option value="4">Internet Bill</option>
-                    <option value="5">Flowers</option>
-                    <option value="6">Miscellaneous</option>
-                    <option value="7">Teaching</option>
-                    <option value="8">Payroll</option>
+                    {dataExpenseHead.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.exp_category}
+                    </option>
+                  ))}
                   </select>
                 </div>
                 <div>

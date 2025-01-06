@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchExpenseHeadData = async (page?: number, perPage?: number, type?: any) => {
+export const fetchExpenseHeadData = async (page?: any, perPage?: any, type?: any) => {
   const response = await apiClient.get(`/expense-head`, {
     params: {
       page,
