@@ -16,6 +16,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchStudentAttendencData } from "@/services/studentAttendence";
 
 // Define columns, including a custom render for "Attendance"
 const columns = [
@@ -158,15 +159,14 @@ const StudentDetails = () => {
     rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
+    selectedSubjectGroup?: string,
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
-        "",
-        "",
+      const result = await fetchStudentAttendencData(
         selectedClass,
         selectedSection,
-        keyword,
+        selectedSubjectGroup,
         selectedSessionId,
       );
       setTotalCount(result.totalCount);
