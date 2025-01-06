@@ -16,7 +16,6 @@ import {
   editIteamStock,
 } from "@/services/IteamStockService";
 
-import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -29,11 +28,9 @@ const ItemStock = () => {
   const [data, setData] = useState<Array<any>>([]);
   const [categoryData, setCategoryData] = useState<Array<any>>([]);
   const [ItemData, setItemData] = useState<Array<any>>([]);
-  const [SupplyData, setSupplyData] = useState<Array<any>>([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
-  const [createdata, setcreatedata] = useState<Array<any>>([]);
+  const [supplierData, setSupplierData] = useState<Array<any>>([]);
+  const [storeData, setStoreData] = useState<Array<any>>([]);
+
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -147,7 +144,13 @@ const ItemStock = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
+      subject.item_id || "N/A",
+      subject.supplier_id || "N/A",
       subject.item_category || "N/A",
+      subject.store_id || "N/A",
+      subject.quantity || "N/A",
+      subject.purchase_price || "N/A",
+      subject.date || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -356,7 +359,11 @@ search: false,
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                  
+                    {supplierData.map((supplier) => (
+                      <option key={supplier.id} value={supplier.id}>
+                        {supplier.supplier_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -367,6 +374,11 @@ search: false,
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
+                    {storeData.map((store) => (
+                      <option key={store.id} value={store.id}>
+                        {store.store_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                
@@ -403,6 +415,8 @@ search: false,
                 id="date"
                 name="date"
                 type="date"
+                value={formData.date}
+                onChange={handleInputChange}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -414,9 +428,8 @@ search: false,
                 <input
                   type="file"
                   accept="image/*"
+                  name="attachment"
                   onChange={handleFileChange}
-                  id="file"
-                  name="document"
                   className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                 />
               </div>
@@ -428,6 +441,8 @@ search: false,
             <textarea
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               name="description"
+              value={formData.description}
+              onChange={handleInputChange}
             ></textarea>
           </div>
 
