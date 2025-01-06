@@ -4,31 +4,28 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { getClasses } from "@/services/classesService";
-import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
+  fetchIteamData,
+  createIteamData,
+  deleteIteamData,
+  editIteamData,
 
-import { fetchSubjectData } from "@/services/subjectsService";
+} from "@/services/IteamService";
+
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { fetchIteamCategory } from "@/services/ItemCategoryService";
 
 const Item = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
-  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
-  const [createdata, setcreatedata] = useState<Array<any>>([]);
+  const [categoryData, setCategoryData] = useState<Array<any>>([]);
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -39,30 +36,33 @@ const Item = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const [classes, setClasses] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    session_id: savedSessionstate,
+    item_category_id: '',
+    name: '',
+    unit: '',
+    item_photo: '',
+    description: '',
+    created_at: '',
+    updated_at: '',
+    item_store_id: '',
+    item_supplier_id: '',
+    quantity: '',
   });
+  
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
+      const result = await fetchIteamData(currentPage + 1, rowsPerPage);
 
-      const resultSubjectData = await fetchSubjectData();
+      const resultCategory = await fetchIteamCategory("", "");
+      // const resultCategory = await fetchItea("", "");
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+      setCategoryData(resultCategory.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -72,7 +72,7 @@ const Item = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteIteamData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -81,59 +81,52 @@ const Item = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
-
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
+      item_category_id: subject?.item_category_id || '',
+      name: subject?.name || '',
+      unit: subject?.unit || '',
+      item_photo: subject?.item_photo || '',
+      description: subject?.description || '',
+      created_at: subject?.created_at || '',
+      updated_at: subject?.updated_at || '',
+      item_store_id: subject?.item_store_id || '',
+      item_supplier_id: subject?.item_supplier_id || '',
+      quantity: subject?.quantity || '',
     });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
+    
   };
+  
 
   const handleCancel = () => {
     setFormData({
-      name: "",
-      description: "",
-      session_id: savedSessionstate,
+      item_category_id: '',
+      name: '',
+      unit: '',
+      item_photo: '',
+      description: '',
+      created_at: '',
+      updated_at: '',
+      item_store_id: '',
+      item_supplier_id: '',
+      quantity: '',
+     
     });
     setIsEditing(false);
     setEditCategoryId(null);
   };
 
+
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
+      subject.item_category_id || "N/A",
+      subject.unit || "N/A",
+      subject.quantity || "N/A",
+    
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -163,58 +156,53 @@ const Item = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editIteamData(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createIteamData(formData);
 
         setFormData({
-          name: "",
-          description: "",
-          session_id: savedSessionstate,
+          item_category_id: '',
+          name: '',
+          unit: '',
+          item_photo: '',
+          description: '',
+          created_at: '',
+          updated_at: '',
+          item_store_id: '',
+          item_supplier_id: '',
+          quantity: '',
+       
         });
 
-        setSelectedClass("");
-        setSelectedSection([]);
-        setSelectedSubject([]);
+    
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create expenses");
         }
       }
       // Reset form after successful action
       setFormData({
-        name: "",
-        description: "",
-        session_id: savedSessionstate,
+        item_category_id: '',
+        name: '',
+        unit: '',
+        item_photo: '',
+        description: '',
+        created_at: '',
+        updated_at: '',
+        item_store_id: '',
+        item_supplier_id: '',
+        quantity: '',
+      
       });
 
       setIsEditing(false);
@@ -225,6 +213,20 @@ const Item = () => {
     }
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
+  };
+
   const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
@@ -232,29 +234,38 @@ const Item = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
+
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
 
   const columns = [
     "Item", 
     "Category",
     "Unit", 
     "Available Quantity",
-    "Date",
     "Action",
 ];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page,
     rowsPerPage,
-    selectableRows: "none", // Disable row selection
-
+    selectableRows: "none", 
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
     filter: false,
@@ -286,7 +297,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="Item"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                   />
                 </div>
               <div className="field">
@@ -296,11 +309,12 @@ search: false,
                   <select
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
-                    <option value="">Select</option>
-                    <option value="1">Books</option>
-                    <option value="2">Newspaper</option>
-                    <option value="3">Stationary</option>
-                    <option value="4">Magzines</option>
+                      <option value="">Select</option>
+                    {categoryData.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.item_category}
+                      </option>
+                    ))}
                   </select>
                 </div>
                
@@ -312,7 +326,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="Number"
-                    name="Unit"
+                    name="unit"
+                    value={formData.unit}
+                    onChange={handleInputChange}
                   />
                 </div>
                
@@ -323,27 +339,32 @@ search: false,
             <textarea
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               name="description"
+              value={formData.description}
+              onChange={handleInputChange}
             ></textarea>
           </div>
 
-
-                <div className="flex gap-2">
+          <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={(e) => {
+                    e.preventDefault(); 
+                    handleSubmit();
+                  }}
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+                {isEditing && (
                   <button
-                    type="submit"
+                    type="button"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
                   >
-                    {isEditing ? "Update" : "Save"}
+                    Cancel
                   </button>
-                  {isEditing && (
-                    <button
-                      type="button"
-                      onClick={handleCancel} // Call the cancel function
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </div>
+                )}
+              </div>
               </div>
             </form>
           </div>

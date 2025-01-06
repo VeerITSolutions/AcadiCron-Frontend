@@ -431,24 +431,27 @@ search: false,
             ></textarea>
           </div>
 
-
-                <div className="flex gap-2">
+          <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={(e) => {
+                    e.preventDefault(); 
+                    handleSubmit();
+                  }}
+                >
+                  {isEditing ? "Update" : "Save"}
+                </button>
+                {isEditing && (
                   <button
-                    type="submit"
+                    type="button"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancel}
                   >
-                    {isEditing ? "Update" : "Save"}
+                    Cancel
                   </button>
-                  {isEditing && (
-                    <button
-                      type="button"
-                      onClick={handleCancel} // Call the cancel function
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </div>
+                )}
+              </div>
               </div>
             </form>
           </div>
