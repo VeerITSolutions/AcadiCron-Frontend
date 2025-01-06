@@ -293,10 +293,10 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 label: "Student Attendance",
                 route: "/admin/student_attendance",
               },
-              {
+              /* {
                 label: "Attendance By Date",
                 route: "/admin/attendance_by_date",
-              },
+              }, */
               { label: "Approve Leave", route: "/admin/approve_leave" },
             ],
           },
@@ -346,7 +346,6 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             label: "Examinations",
             route: "#",
             children: [
-             
               { label: "Exam Schedule", route: "/admin/exam_schedule" },
               { label: "Exam Result", route: "/admin/examresult" },
               { label: "Design Admit Card", route: "/admin/admitcard" },
@@ -490,7 +489,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               },
               { label: "Apply Leave", route: "/admin/staff/leaverequest" },
               { label: "Leave Type", route: "/admin/leavetypes" },
-             
+
               { label: "Department", route: "/admin/department/department" },
               { label: "Designation", route: "/admin/designation/designation" },
               {
@@ -805,7 +804,10 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               { label: "Finance", route: "/admin/report/finance" },
               { label: "Attendance", route: "/admin/report/attendance" },
               { label: "Examinations", route: "/admin/report/examinations" },
-              { label: "Online Examinations", route: "/admin/onlineexam/report"},
+              {
+                label: "Online Examinations",
+                route: "/admin/onlineexam/report",
+              },
               { label: "Lesson Plan", route: "/admin/report/lesson_plan" },
               { label: "Human Resource", route: "/admin/report/staff_report" },
               { label: "Library", route: "/admin/report/library" },

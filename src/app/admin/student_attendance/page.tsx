@@ -78,7 +78,7 @@ const columns = [
 const options = {
   filter: false,
   search: false,
-  pagination: true,
+  pagination: false,
   sort: false,
   selectableRows: "none",
   download: false,
@@ -162,8 +162,8 @@ const StudentDetails = () => {
   ) => {
     try {
       const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
+        "",
+        "",
         selectedClass,
         selectedSection,
         keyword,
@@ -311,9 +311,7 @@ const StudentDetails = () => {
             columns={columns}
             options={{
               ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
+
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
             }}
