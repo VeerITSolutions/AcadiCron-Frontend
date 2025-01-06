@@ -6,11 +6,11 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import {
-  fetchItemStock,
-  createItemStock,
-  deleteItemStock,
-  editItemStock,
-} from "@/services/ItemStockService";
+  fetchItemIssue,
+  createItemIssue,
+  deleteItemIssue,
+  editItemIssue,
+} from "@/services/ItemIssueService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -84,7 +84,7 @@ const IssueItem = () => {
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchItemStock(currentPage + 1, rowsPerPage);
+      const result = await fetchItemIssue(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
@@ -99,7 +99,7 @@ const IssueItem = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteItemStock(id);
+      await deleteItemIssue(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -161,12 +161,12 @@ const IssueItem = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.item_id || "N/A",
-      subject.supplier_id || "N/A",
-      subject.item_category || "N/A",
-      subject.store_id || "N/A",
+      subject.item_category_id || "N/A",
+      subject.is_returned || "N/A",
+      subject.issue_to || "N/A",
+      subject.issue_by || "N/A",
       subject.quantity || "N/A",
-      subject.purchase_price || "N/A",
-      subject.date || "N/A",
+      subject.is_active || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleDelete(subject.id)}
@@ -193,14 +193,14 @@ const IssueItem = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editItemStock(editCategoryId, formData);
+        const result = await editItemIssue(editCategoryId, formData);
         if (result.success) {
           toast.success("Updated successfully");
         } else {
           toast.error("Failed to update");
         }
       } else {
-        const result = await createItemStock(formData);
+        const result = await createItemIssue(formData);
 
         setFormData({
           item_id: "",
