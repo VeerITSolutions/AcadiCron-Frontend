@@ -5,7 +5,12 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
+import {
+  fetchItemStock,
+  createItemStock,
+  deleteItemStock,
+  editItemStock,
+} from "@/services/ItemStockService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -35,179 +40,294 @@ import {
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 
-const columns = [
-  "Item",
-  "Item Category",
-  "Issue Return",
-  "Issue To",
-  "	Issued By",
-  "Quantity",
-  "Status",
-];
 
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
- responsive: "standard",
-search: false,
-  filter: false,
-  viewColumns: false,
-  tableBodyMaxHeight: "500px",
-};
 
 const IssueItem = () => {
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [colorMode, setColorMode] = useColorMode();
-  const [data, setData] = useState<Array<Array<string>>>([]);
-  const { themType, setThemType } = useGlobalState(); //
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<Array<any>>([]);
+  const [categoryData, setCategoryData] = useState<Array<any>>([]);
+  const [ItemData, setItemData] = useState<Array<any>>([]);
+  const [supplierData, setSupplierData] = useState<Array<any>>([]);
+  const [storeData, setStoreData] = useState<Array<any>>([]);
+
+
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [colorMode, setColorMode] = useColorMode();
+
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+
+  const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
-  );
-  const [keyword, setKeyword] = useState<string>("");
-  const router = useRouter();
+  const [selectedSection, setSelectedSection] = useState<string[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const [savedSessionstate, setSavedSession] = useState("");
+  const { themType, setThemType } = useGlobalState(); // A
 
-  const handleDelete = async () => {
+  const [formData, setFormData] = useState({
+    item_id: "",
+    supplier_id: "",
+    symbol: "",
+    store_id: "",
+    quantity: "",
+    purchase_price: "",
+    date: "",
+    attachment: "",
+    description: "",
+    is_active: false,
+  });
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
+      const result = await fetchItemStock(currentPage + 1, rowsPerPage);
 
-      const idsToDelete = selectedData.map((row) => row[0]);
+      setTotalCount(result.total);
+      setData(formatSubjectData(result.data));
+   
 
-      console.log(idsToDelete); // Handle response
-
-      if (
-        window.confirm("Are you sure you want to delete the selected items?")
-      ) {
-        try {
-          const response = await deleteStudentBluk(idsToDelete);
-        } catch (error) {
-          console.error("Error deleting data:", error);
-          alert("Failed to delete selected data.");
-        }
-      }
-    } catch (error) {
-      console.error("Error deleting data:", error);
-      alert("Failed to delete selected data.");
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
     }
   };
 
-  const handleRowSelectionChange = (
-    curRowSelected: { dataIndex: number; index: number }[],
-    allRowsSelected: { dataIndex: number; index: number }[],
-    rowsSelected: [],
-  ) => {
-    setSelectedRows(rowsSelected); // Update selected rows
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteItemStock(id);
+      toast.success("Delete successful");
+      fetchData(page, rowsPerPage);
+    } catch (error) {
+      toast.error("Delete failed");
+      console.error("Delete failed", error);
+    }
   };
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.id,
-      student.name || "N/A",
-      student.dob || "N/A",
-      student.gender || "N/A",
+
+  const handleEdit = (id: number, subject: any) => {
+    setIsEditing(true);
+    setEditCategoryId(id);
+  
+    setFormData({
+      item_id: subject?.item_id || "",
+      supplier_id: subject?.supplier_id || "",
+      symbol: subject?.symbol || "",
+      store_id: subject?.store_id || "",
+      quantity: subject?.quantity || "",
+      purchase_price: subject?.purchase_price || "",
+      date: subject?.date || "",
+      attachment: subject?.attachment || "",
+      description: subject?.description || "",
+      is_active: subject?.is_active || false, // Assuming `false` as default for boolean
+    });
+    
+  };
+  
+
+  const handleCancel = () => {
+    setFormData({
+      item_id: "",
+      supplier_id: "",
+      symbol: "",
+      store_id: "",
+      quantity: "",
+      purchase_price: "",
+      date: "",
+      attachment: "",
+      description: "",
+      is_active: false,
+     
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+  const formatSubjectData = (subjects: any[]) => {
+    return subjects.map((subject: any) => [
+      subject.item_id || "N/A",
+      subject.supplier_id || "N/A",
+      subject.item_category || "N/A",
+      subject.store_id || "N/A",
+      subject.quantity || "N/A",
+      subject.purchase_price || "N/A",
+      subject.date || "N/A",
+      <div key={subject.id} className="flex">
+        <IconButton
+          onClick={() => handleDelete(subject.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
     ]);
   };
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
 
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
   useEffect(() => {
-    setSelectedSessionId(getselectedSessionId);
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSessionId");
+    if (savedSession) {
+      setSavedSession(savedSession);
+      // Use this value in your logic
+    }
   }, []);
-  const fetchData = async (
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
-  ) => {
+
+  const handleSubmit = async () => {
     try {
-      // Pass selectedClass and selectedSection as parameters to filter data
-      if (selectedClass && selectedSection) {
-        const result = await fetchStudentData(
-          0,
-          0,
-          selectedClass,
-          selectedSection,
-          keyword,
-          selectedSessionId,
-          1,
-        );
-        setTotalCount(result.totalCount);
-        const formattedData = formatStudentData(result.data);
-        setData(formattedData);
-        setLoading(false);
+      if (isEditing && editCategoryId !== null) {
+        const result = await editItemStock(editCategoryId, formData);
+        if (result.success) {
+          toast.success("Updated successfully");
+        } else {
+          toast.error("Failed to update");
+        }
       } else {
-        setData([]);
-        setLoading(false);
+        const result = await createItemStock(formData);
+
+        setFormData({
+          item_id: "",
+          supplier_id: "",
+          symbol: "",
+          store_id: "",
+          quantity: "",
+          purchase_price: "",
+          date: "",
+          attachment: "",
+          description: "",
+          is_active: false,
+       
+        });
+
+        setSelectedClass("");
+        setSelectedSection([]);
+        setSelectedSubject([]);
+
+        if (result.success) {
+          toast.success("Created successfully");
+        } else {
+          toast.error("Failed to create expenses");
+        }
       }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
+      // Reset form after successful action
+      setFormData({
+        item_id: "",
+        supplier_id: "",
+        symbol: "",
+        store_id: "",
+        quantity: "",
+        purchase_price: "",
+        date: "",
+        attachment: "",
+        description: "",
+        is_active: false,
+      
+      });
+
+      setIsEditing(false);
+      setEditCategoryId(null);
+      fetchData(page, rowsPerPage); // Refresh data after submit
+    } catch (error) {
+      console.error("An error occurred", error);
     }
   };
 
-  const fetchClassesAndSections = async () => {
-    try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]);
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  useEffect(() => {
-    fetchClassesAndSections();
-  }, [selectedClass]);
-
-  useEffect(() => {
-    fetchData(selectedClass, selectedSection, keyword);
-  }, [selectedClass, selectedSection, keyword]);
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
   };
+
+  const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
 
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
+  /* if (loading) return <Loader />; */
+  if (error) return <p>{error}</p>;
+
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
   };
+
+
+  const columns = [
+    "Item",
+    "Item Category",
+    "Issue - Return",
+    "Issue To",
+    "Issued By",
+    "Quantity",
+    "Status",
+    "Action"
+  ];
+  
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+   responsive: "standard",
+search: false,
+    count: totalCount,
+    page,
+    rowsPerPage,
+    selectableRows: "none", // Disable row selection
+
+    onChangePage: handlePageChange,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    filter: false,
+    viewColumns: false,
+  };
+
+
+  // const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setKeyword(event.target.value);
+  // };
 
   const handleSearch = () => {
     setPage(0);
-    fetchData(selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage);
   };
   const handleRefresh = () => {
     setSelectedClass("");
-    setSelectedSection("");
-    setKeyword("");
-  };
 
-  /* if (loading) return <Loader />; */
-  if (error) return <p>{error}</p>;
+   
+  };
 
   return (
     <DefaultLayout>
@@ -239,8 +359,8 @@ const IssueItem = () => {
           <input
               type="text"
               placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
+              // value={keyword}
+              // onChange={handleKeywordChange}
               className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             />
             <button onClick={handleSearch} className={styles.searchButton}>
@@ -268,9 +388,6 @@ const IssueItem = () => {
               rowsPerPage: rowsPerPage,
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              selectableRows: "multiple", // Allow multiple selection
-              onRowsDelete: handleDelete,
             }}
           />
         </ThemeProvider>

@@ -10,11 +10,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchIteamStock,
-  createIteamStock,
-  deleteIteamStock,
-  editIteamStock,
-} from "@/services/IteamStockService";
+  fetchItemStock,
+  createItemStock,
+  deleteItemStock,
+  editItemStock,
+} from "@/services/ItemStockService";
 
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
@@ -65,7 +65,7 @@ const ItemStock = () => {
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchIteamStock(currentPage + 1, rowsPerPage);
+      const result = await fetchItemStock(currentPage + 1, rowsPerPage);
 
       const resultCategory = await fetchIteamCategory("", "");
       // const resultCategory = await fetchItea("", "");
@@ -83,7 +83,7 @@ const ItemStock = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteIteamStock(id);
+      await deleteItemStock(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -183,14 +183,14 @@ const ItemStock = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editIteamStock(editCategoryId, formData);
+        const result = await editItemStock(editCategoryId, formData);
         if (result.success) {
           toast.success("Updated successfully");
         } else {
           toast.error("Failed to update");
         }
       } else {
-        const result = await createIteamStock(formData);
+        const result = await createItemStock(formData);
 
         setFormData({
           item_id: "",

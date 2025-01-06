@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchIteamData = async (page?: any, perPage?: any, type?: any, selectedSearchType?: any) => {
+export const fetchItemData = async (page?: any, perPage?: any, type?: any, selectedSearchType?: any) => {
   const response = await apiClient.get(`/item`, {
     params: {
       page,
@@ -13,7 +13,7 @@ export const fetchIteamData = async (page?: any, perPage?: any, type?: any, sele
 };
 
 
-export const createIteamData = async (data: any): Promise<any> => {
+export const createItemData = async (data: any): Promise<any> => {
   try {
     const response = await apiClient.post(`/item`, data);
     return response.data;
@@ -26,13 +26,13 @@ export const createIteamData = async (data: any): Promise<any> => {
 
 
 // Delete a student category by ID
-export const deleteIteamData = async (id: number) => {
+export const deleteItemData = async (id: number) => {
   const response = await apiClient.delete(`/item/${id}`);
   return response.data;
 };
 
 // Edit a student category by ID
-export const editIteamData = async (id: number, data: any) => {
+export const editItemData = async (id: number, data: any) => {
   const response = await apiClient.post(`/item/${id}`, data);
   return response.data;
 };
