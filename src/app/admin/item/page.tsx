@@ -122,7 +122,7 @@ const Item = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name || "N/A",
-      subject.item_category_id || "N/A",
+      subject.item_category || "N/A",
       subject.unit || "N/A",
       subject.quantity || "N/A",
     
@@ -306,7 +306,9 @@ const Item = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Item Category <span className="required">*</span>
                   </label>
-                  <select
+                  <select name="item_category_id"
+                  value={formData.item_category_id}
+                  onChange={handleSelectChange} 
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                       <option value="">Select</option>

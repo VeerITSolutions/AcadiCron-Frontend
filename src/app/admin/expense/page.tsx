@@ -132,7 +132,7 @@ const Expense = () => {
       subject.name || "N/A",
       subject.invoice_no || "N/A",
       subject.date || "N/A",
-      subject.exp_head_id || "N/A",
+      subject.exp_category || "N/A",
       subject.amount || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
