@@ -57,8 +57,7 @@ const Item = () => {
       const result = await fetchIteamData(currentPage + 1, rowsPerPage);
 
       const resultCategory = await fetchIteamCategory("", "");
-      // const resultCategory = await fetchItea("", "");
-
+    
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
       setCategoryData(resultCategory.data);
@@ -207,6 +206,7 @@ const Item = () => {
 
       setIsEditing(false);
       setEditCategoryId(null);
+
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
