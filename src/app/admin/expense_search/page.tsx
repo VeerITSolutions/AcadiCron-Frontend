@@ -111,10 +111,11 @@ const Expense = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
       student.name || "N/A",
-      student.dob || "N/A",
-      student.gender || "N/A",
+      student.invoice_no || "N/A",
+      student.exp_head_id || "N/A",
+      student.date || "N/A",
+      student.amount || "N/A",
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
