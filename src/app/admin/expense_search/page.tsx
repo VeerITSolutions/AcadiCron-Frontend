@@ -72,9 +72,9 @@ const Expense = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [selectedSearchType, setSelectedSearchType] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedSearchType, setSelectedSearchType] = useState<
+    string | undefined
+  >(undefined);
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -135,13 +135,8 @@ const Expense = () => {
   ) => {
     try {
       // Pass selectedClass and selectedSection as parameters to filter data
-      if (selectedClass && selectedSection) {
-        const result = await fetchExpensesData(
-          0,
-          0,
-          selectedSearchType,
-       
-        );
+      if (selectedSearchType) {
+        const result = await fetchExpensesData(0, 0, selectedSearchType);
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
@@ -179,7 +174,7 @@ const Expense = () => {
   }, [selectedClass]);
 
   useEffect(() => {
-    fetchData( keyword, selectedSearchType);
+    fetchData(keyword, selectedSearchType);
   }, [keyword, selectedSearchType]);
 
   const handlePageChange = (newPage: number) => {
@@ -215,8 +210,8 @@ const Expense = () => {
             Search Type:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            onChange={(e) => setSelectedSearchType(e.target.value)}>
-              
+              onChange={(e) => setSelectedSearchType(e.target.value)}
+            >
               <option value="">Select</option>
               <option value="1">Today</option>
               <option value="7">This Week</option>
