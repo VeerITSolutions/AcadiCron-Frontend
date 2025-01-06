@@ -355,7 +355,7 @@ search: false,
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
               <MUIDataTable
-                title={"Item Stock List"}
+                title={"Item List"}
                 data={data}
                 columns={columns}
                 options={options}

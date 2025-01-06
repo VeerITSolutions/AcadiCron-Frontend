@@ -10,12 +10,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
+  fetchIteamStock,
+  createIteamStock,
+  deleteIteamStock,
+  editIteamStock,
+} from "@/services/IteamStockService";
 
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
@@ -23,10 +22,16 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { fetchIteamCategory } from "@/services/ItemCategoryService";
 
 const ItemStock = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
+  const [categoryData, setCategoryData] = useState<Array<any>>([]);
+  const [ItemData, setItemData] = useState<Array<any>>([]);
+  const [SupplyData, setSupplyData] = useState<Array<any>>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
 
@@ -50,19 +55,28 @@ const ItemStock = () => {
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
+    item_id: "",
+    supplier_id: "",
+    symbol: "",
+    store_id: "",
+    quantity: "",
+    purchase_price: "",
+    date: "",
+    attachment: "",
     description: "",
-    session_id: savedSessionstate,
+    is_active: false,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
+      const result = await fetchIteamStock(currentPage + 1, rowsPerPage);
 
-      const resultSubjectData = await fetchSubjectData();
+      const resultCategory = await fetchIteamCategory("", "");
+      // const resultCategory = await fetchItea("", "");
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+      setCategoryData(resultCategory.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -72,13 +86,51 @@ const ItemStock = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteIteamStock(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
       toast.error("Delete failed");
       console.error("Delete failed", error);
     }
+  };
+
+  const handleEdit = (id: number, subject: any) => {
+    setIsEditing(true);
+    setEditCategoryId(id);
+  
+    setFormData({
+      item_id: subject?.item_id || "",
+      supplier_id: subject?.supplier_id || "",
+      symbol: subject?.symbol || "",
+      store_id: subject?.store_id || "",
+      quantity: subject?.quantity || "",
+      purchase_price: subject?.purchase_price || "",
+      date: subject?.date || "",
+      attachment: subject?.attachment || "",
+      description: subject?.description || "",
+      is_active: subject?.is_active || false, // Assuming `false` as default for boolean
+    });
+    
+  };
+  
+
+  const handleCancel = () => {
+    setFormData({
+      item_id: "",
+      supplier_id: "",
+      symbol: "",
+      store_id: "",
+      quantity: "",
+      purchase_price: "",
+      date: "",
+      attachment: "",
+      description: "",
+      is_active: false,
+     
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,47 +145,9 @@ const ItemStock = () => {
     }
   };
 
-  const handleEdit = (id: number, subject: any) => {
-    setIsEditing(true);
-    setEditCategoryId(id);
-
-    setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
-    });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
-  };
-
-  const handleCancel = () => {
-    setFormData({
-      name: "",
-      description: "",
-      session_id: savedSessionstate,
-    });
-    setIsEditing(false);
-    setEditCategoryId(null);
-  };
-
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.name || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
+      subject.item_category || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -163,41 +177,30 @@ const ItemStock = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editIteamStock(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createIteamStock(formData);
 
         setFormData({
-          name: "",
+          item_id: "",
+          supplier_id: "",
+          symbol: "",
+          store_id: "",
+          quantity: "",
+          purchase_price: "",
+          date: "",
+          attachment: "",
           description: "",
-          session_id: savedSessionstate,
+          is_active: false,
+       
         });
 
         setSelectedClass("");
@@ -205,16 +208,24 @@ const ItemStock = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create expenses");
         }
       }
       // Reset form after successful action
       setFormData({
-        name: "",
+        item_id: "",
+        supplier_id: "",
+        symbol: "",
+        store_id: "",
+        quantity: "",
+        purchase_price: "",
+        date: "",
+        attachment: "",
         description: "",
-        session_id: savedSessionstate,
+        is_active: false,
+      
       });
 
       setIsEditing(false);
@@ -225,6 +236,20 @@ const ItemStock = () => {
     }
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
+  };
+
   const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
@@ -232,10 +257,22 @@ const ItemStock = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
+
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
 
   const columns = [
     "Name", 
@@ -289,10 +326,11 @@ search: false,
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    <option value="1">Books</option>
-                    <option value="2">Newspaper</option>
-                    <option value="3">Stationary</option>
-                    <option value="4">Magzines</option>
+                    {categoryData.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.item_category}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -303,6 +341,11 @@ search: false,
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
+                    {ItemData.map((subject) => (
+                      <option key={subject.id} value={subject.id}>
+                        {subject.subject_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -334,7 +377,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="Number"
-                    name="Quantity"
+                    name="quantity"
+                    value={formData.quantity}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -344,7 +389,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="Price"
+                    name="purchase_price"
+                    value={formData.purchase_price}
+                    onChange={handleInputChange}
                   />
                 </div>
             

@@ -9,20 +9,18 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
-
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import {
+  fetchIteamCategory,
+  createIteamCategory,
+  deleteIteamCategory,
+  editIteamCategory,
+} from "@/services/ItemCategoryService";
 
 const ItemCategory = () => {
   const [error, setError] = useState<string | null>(null);
@@ -50,19 +48,16 @@ const ItemCategory = () => {
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
+    item_category: "",
     description: "",
-    session_id: savedSessionstate,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
-
-      const resultSubjectData = await fetchSubjectData();
+      const result = await fetchIteamCategory(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -72,7 +67,7 @@ const ItemCategory = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteIteamCategory(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -81,47 +76,22 @@ const ItemCategory = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
-
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
+      item_category: subject?.item_category || "",
+      description: subject?.description || "",
     });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
   };
+  
 
   const handleCancel = () => {
     setFormData({
-      name: "",
+      item_category: "",
       description: "",
-      session_id: savedSessionstate,
+     
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -129,7 +99,7 @@ const ItemCategory = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.expense_head || "N/A",
+      subject.item_category || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -159,41 +129,22 @@ const ItemCategory = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editIteamCategory(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createIteamCategory(formData);
 
         setFormData({
-          name: "",
+          item_category: "",
           description: "",
-          session_id: savedSessionstate,
+       
         });
 
         setSelectedClass("");
@@ -201,16 +152,16 @@ const ItemCategory = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create expenses");
         }
       }
       // Reset form after successful action
       setFormData({
-        name: "",
+        item_category: "",
         description: "",
-        session_id: savedSessionstate,
+      
       });
 
       setIsEditing(false);
@@ -221,6 +172,20 @@ const ItemCategory = () => {
     }
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
+  };
+
   const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
@@ -228,10 +193,9 @@ const ItemCategory = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
+
 
   const columns = [
     "Item Category",
@@ -241,16 +205,27 @@ const ItemCategory = () => {
     filterType: "checkbox",
     serverSide: true,
    responsive: "standard",
-search: false,
+    search: false,
     count: totalCount,
     page,
     rowsPerPage,
-    selectableRows: "none", // Disable row selection
-
+    selectableRows: "none", 
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
     filter: false,
     viewColumns: false,
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
   };
 
   return (
@@ -278,7 +253,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name=" Item_Category"
+                    name="item_category"
+                    onChange={handleInputChange}
+                    value={formData.item_category}
                   />
                   </div>
         
@@ -289,6 +266,8 @@ search: false,
             <textarea
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               name="description"
+              onChange={handleInputChange}
+              value={formData.description}
             ></textarea>
           </div>
 
