@@ -38,18 +38,13 @@ import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 
-const columns = [
-  "Title",
-  "Date",
-  "Venue",
-  "Action",
-];
+const columns = ["Title", "Date", "Venue", "Action"];
 
 const options = {
   filterType: false,
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "none",
   filter: false,
   viewColumns: false,
@@ -261,8 +256,8 @@ const Events = () => {
       const result = await fetchLeaveTypeData();
       setLeaveTypeData(result.data);
 
-      const roleresult = await fetchRoleData();
-      setRoleData(roleresult.data);
+      /* const roleresult = await fetchRoleData();
+      setRoleData(roleresult.data); */
 
       // const leaveresult = await fetchLeaveData();
       // setRoleLeaveData(leaveresult.data);
@@ -461,13 +456,16 @@ const Events = () => {
             alignItems: "center",
           }}
         >
- <Link href="/admin/front/events/create">
-<button type="submit" className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" onClick={handleClickOpen}>
-                  <i className="fa fa-plus mr-2" />
-                  Add
-                </button>
-                </Link>
-       
+          <Link href="/admin/front/events/create">
+            <button
+              type="submit"
+              className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+              onClick={handleClickOpen}
+            >
+              <i className="fa fa-plus mr-2" />
+              Add
+            </button>
+          </Link>
         </div>
         {loading ? (
           <Loader />
@@ -489,7 +487,6 @@ const Events = () => {
             />
           </ThemeProvider>
         )}
-      
       </div>
     </DefaultLayout>
   );
