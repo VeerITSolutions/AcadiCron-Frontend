@@ -64,6 +64,7 @@ const ItemStock = () => {
     description: "",
     is_active: false,
   });
+
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchItemStock(currentPage + 1, rowsPerPage);
@@ -175,8 +176,8 @@ const ItemStock = () => {
   };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage, selectedItemCategoryId]);
+    fetchData(page, rowsPerPage,);
+  }, [page, rowsPerPage, selectedItemCategoryId, selectedItemId]);
 
   useEffect(() => {
     const savedSession = localStorage.getItem("selectedSessionId");
@@ -196,7 +197,8 @@ const ItemStock = () => {
           toast.error("Failed to update");
         }
       } else {
-        const result = await createItemStock(formData);
+        const data = {...formData, selectedItemCategoryId: selectedItemCategoryId, item_id: selectedItemId};
+        const result = await createItemStock(data);
 
         setFormData({
           item_id: "",
@@ -251,15 +253,14 @@ const ItemStock = () => {
     }));
   };
 
-   const handleItemCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedItemCategoryId(event.target.value);
-      
-    };
-
-     const handleItemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedItemId(event.target.value);
-        
-      };
+  const handleItemCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedItemCategoryId(event.target.value);
+    
+  };
+  
+  const handleItemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedItemId(event.target.value);
+  };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -286,7 +287,7 @@ const ItemStock = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value, // For regular inputs like text or selects
+      [name]: value, 
     }));
   };
 
@@ -304,12 +305,12 @@ const ItemStock = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page,
     rowsPerPage,
-    selectableRows: "none", // Disable row selection
+    selectableRows: "none", 
 
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
@@ -328,20 +329,18 @@ search: false,
               </h3>
             </div>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-            >
+            
               <div className="flex flex-col gap-5.5 p-6.5">
               <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Item Category <span className="required">*</span>
                   </label>
                   <select
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    onChange={handleItemCategoryChange}
+                  name="item_category_id"
+                  value={selectedItemCategoryId || ""}
+                  onChange={handleItemCategoryChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  
                   >
                     <option value="">Select</option>
                     {categoryData.map((category) => (
@@ -356,6 +355,9 @@ search: false,
                   Item <span className="required">*</span>
                   </label>
                   <select
+                  name="item_id"
+                   value={selectedItemId || ""}
+                   onChange={handleItemChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
@@ -371,6 +373,9 @@ search: false,
                  Supply <span className="required">*</span>
                   </label>
                   <select
+                  name="supplier_id"
+                  value={formData.supplier_id}
+                   onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
@@ -386,6 +391,9 @@ search: false,
                   Store <span className="required">*</span>
                   </label>
                   <select
+                  name="store_id"
+                  value={formData.store_id}
+                  onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
@@ -483,7 +491,7 @@ search: false,
                 )}
               </div>
               </div>
-            </form>
+           
           </div>
         </div>
 

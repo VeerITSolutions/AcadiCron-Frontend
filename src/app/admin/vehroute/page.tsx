@@ -13,12 +13,8 @@ import {
   editVehicleRoutes,
   createVehicleRoutes,
 } from "@/services/vehicleRouteService";
-import {
-  fetchTransportRouteData,
-} from "@/services/transportRouteService";
-import {
-  fetchVehiclesData,
-} from "@/services/vehicleService";
+import { fetchTransportRouteData } from "@/services/transportRouteService";
+import { fetchVehiclesData } from "@/services/vehicleService";
 
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
@@ -26,7 +22,7 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 
-const vehicleRoutes = () => {
+const VehicleRoutes = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
@@ -55,18 +51,16 @@ const vehicleRoutes = () => {
   const [selectedVehicles, setSelectedVehicles] = useState<number[]>([]);
   const [formData, setFormData] = useState({
     route_id: "",
-    vehicle_id:selectedVehicles,
+    vehicle_id: selectedVehicles,
   });
-  
+
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchVehicleRoutes(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setLoading(false);
-      setData( formatSubjectData(result.data));
-     
-     
+      setData(formatSubjectData(result.data));
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -76,17 +70,16 @@ const vehicleRoutes = () => {
       const result = await fetchTransportRouteData();
       setRouteData(result.data);
     } catch (error: any) {
-        setError(error.message);
-    };
+      setError(error.message);
+    }
 
     try {
       const result = await fetchVehiclesData();
       setVehiclesData(result.data);
     } catch (error: any) {
-        setError(error.message);
-    };
-
-}
+      setError(error.message);
+    }
+  };
 
   const handleDelete = async (id: number) => {
     try {
@@ -99,7 +92,6 @@ const vehicleRoutes = () => {
     }
   };
 
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
@@ -107,17 +99,15 @@ const vehicleRoutes = () => {
     /* setSelectedVehicles(subject.vehicle_id); */
 
     setFormData({
-      route_id: subject.route_id || "", 
+      route_id: subject.route_id || "",
       vehicle_id: selectedVehicles,
     });
-    
-
   };
 
   const handleCancel = () => {
     setFormData({
       route_id: "",
-      vehicle_id:selectedVehicles,
+      vehicle_id: selectedVehicles,
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -163,7 +153,7 @@ const vehicleRoutes = () => {
       // Use this value in your logic
     }
   }, []);
-  
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -182,7 +172,9 @@ const vehicleRoutes = () => {
       setSelectedVehicles((prev) => [...prev, id]);
     } else {
       // Remove the ID from the array
-      setSelectedVehicles((prev) => prev.filter((vehicleId) => vehicleId !== id));
+      setSelectedVehicles((prev) =>
+        prev.filter((vehicleId) => vehicleId !== id),
+      );
     }
   };
 
@@ -192,8 +184,7 @@ const vehicleRoutes = () => {
         const result = await editVehicleRoutes(
           editCategoryId,
           formData,
-          selectedVehicles
-
+          selectedVehicles,
         );
         if (result.success) {
           toast.success("Vehicle updated successfully");
@@ -201,12 +192,7 @@ const vehicleRoutes = () => {
           toast.error("Failed to update vehicle");
         }
       } else {
-        const result = await createVehicleRoutes(
-          formData,
-          selectedVehicles
-    
-        );
-        
+        const result = await createVehicleRoutes(formData, selectedVehicles);
 
         if (result.success) {
           toast.success("Vehicle routes created successfully");
@@ -216,12 +202,11 @@ const vehicleRoutes = () => {
       }
       // Reset form after successful action
       setSelectedVehicles([]);
-        
-        setFormData({
-          route_id: "",
-          vehicle_id:selectedVehicles,
-         
-        });
+
+      setFormData({
+        route_id: "",
+        vehicle_id: selectedVehicles,
+      });
 
       setIsEditing(false);
       setEditCategoryId(null);
@@ -241,11 +226,7 @@ const vehicleRoutes = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-  const columns = [
-    "Route",
-    "Vehicle",
-    "Action",
-  ];
+  const columns = ["Route", "Vehicle", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -261,7 +242,6 @@ const vehicleRoutes = () => {
     filter: false,
     viewColumns: false,
   };
-
 
   return (
     <DefaultLayout>
@@ -285,12 +265,12 @@ const vehicleRoutes = () => {
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                   Route
+                    Route
                   </label>
                   <select
-                  name="route_id"
-                  value={formData.route_id}
-                  onChange={handleSelectChange} 
+                    name="route_id"
+                    value={formData.route_id}
+                    onChange={handleSelectChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
@@ -299,7 +279,6 @@ const vehicleRoutes = () => {
                         {route.route_title}
                       </option>
                     ))}
-
                   </select>
                 </div>
 
@@ -308,49 +287,45 @@ const vehicleRoutes = () => {
                     Vehicle
                   </label>
                   <div className="flex gap-5">
-                  {vehicleData.map((route: any) => (
-                    <label
-                      key={route.id}
-                      className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"
-                    >
-                      <input
-                        value={route.id}
-                        name="vehicle_id[]"
-                        type="checkbox"
-                     onChange={handleInputChange2}
-                        className="mr-2"
-                       
-                        
-                      />
-                      {route.vehicle_no}
-                    </label>
-                   
-                  ))}
-                </div>
-
+                    {vehicleData.map((route: any) => (
+                      <label
+                        key={route.id}
+                        className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white"
+                      >
+                        <input
+                          value={route.id}
+                          name="vehicle_id[]"
+                          type="checkbox"
+                          onChange={handleInputChange2}
+                          className="mr-2"
+                        />
+                        {route.vehicle_no}
+                      </label>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="flex gap-2">
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSubmit();
-                  }}
-                >
-                  {isEditing ? "Update" : "Save"}
-                </button>
-                {isEditing && (
                   <button
-                    type="button"
+                    type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    onClick={handleCancel}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubmit();
+                    }}
                   >
-                    Cancel
+                    {isEditing ? "Update" : "Save"}
                   </button>
-                )}
-              </div>
+                  {isEditing && (
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </div>
             </form>
           </div>
@@ -375,4 +350,4 @@ const vehicleRoutes = () => {
   );
 };
 
-export default vehicleRoutes;
+export default VehicleRoutes;
