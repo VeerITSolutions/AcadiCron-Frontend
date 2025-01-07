@@ -66,6 +66,11 @@ const Expense = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [selectedStartDate, setSelectedStartDate] = useState<string>(
+    new Date().toISOString().slice(0, 10) // This sets the default to today's date in YYYY-MM-DD format
+  );
+
+  const [selectedEndDate, setSelectedEndDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -129,23 +134,35 @@ const Expense = () => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
-    selectedClass?: string,
-    selectedSection?: string,
+  
     keyword?: string,
     setSelectedSearchType?: string,
   ) => {
     try {
-      // Pass selectedClass and selectedSection as parameters to filter data
-      if (selectedSearchType) {
-        const result = await fetchExpensesData(0, 0, selectedSearchType);
+
+      if (selectedSearchType == "period") {
+        const result = await fetchExpensesData(0, 0, selectedSearchType, selectedStartDate, selectedEndDate);
+        
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
         setLoading(false);
-      } else {
-        setData([]);
-        setLoading(false);
+        console.log("selectedStartDate", selectedStartDate);
+        console.log("selectedEndDate", selectedEndDate);
+      }else{
+        if (selectedSearchType) {
+          const result = await fetchExpensesData(0, 0, selectedSearchType);
+          setTotalCount(result.totalCount);
+          const formattedData = formatStudentData(result.data);
+          setData(formattedData);
+          setLoading(false);
+        } else {
+          setData([]);
+          setLoading(false);
+        }
       }
+  
+     
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -191,6 +208,19 @@ const Expense = () => {
     setKeyword(event.target.value);
   };
 
+  const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSearchType(event.target.value);
+  };
+
+
+  const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedStartDate(event.target.value);
+  };
+  
+  const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedEndDate(event.target.value);
+  };
+
   const handleSearch = () => {
     setPage(0);
     fetchData(keyword, selectedSearchType);
@@ -211,7 +241,7 @@ const Expense = () => {
             Search Type:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              onChange={(e) => setSelectedSearchType(e.target.value)}
+              onChange={handleSearchTypeChange}
             >
               <option value="">Select</option>
               <option value="1">Today</option>
@@ -227,8 +257,29 @@ const Expense = () => {
               <option value="period">Period</option>
             </select>
           </label>
+          {selectedSearchType === "period" && (
+          <div className={styles.searchGroup}>
+          
+          <input
+              type="date"
+              placeholder="Start date"
+             value={selectedStartDate}
+              onChange={handleStartDateChange}
+              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            />
+          
+<input
+              type="date"
+              placeholder="End date"
+             value={selectedEndDate}
+              onChange={handleEndDateChange}
+              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            />
+            </div>
+            )}
 
           <div className={styles.searchGroup}>
+
             <input
               type="text"
               placeholder="Search By Keyword"
@@ -272,3 +323,4 @@ const Expense = () => {
 };
 
 export default Expense;
+
