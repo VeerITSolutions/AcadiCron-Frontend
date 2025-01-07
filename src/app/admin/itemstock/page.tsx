@@ -145,9 +145,9 @@ const ItemStock = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.item_name || "N/A",
-      subject.supplier_id || "N/A",
       subject.category_name || "N/A",
-      subject.store_id || "N/A",
+      subject.supplier_name || "N/A",
+      subject.store_name || "N/A",
       subject.quantity || "N/A",
       subject.purchase_price || "N/A",
       subject.date || "N/A",
