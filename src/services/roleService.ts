@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchRoleData = async (page?: number, perPage?: number) => {
+export const fetchRoleData = async (page?: any, perPage?: any) => {
   const response = await apiClient.get(`/role`);
   return response.data;
 };

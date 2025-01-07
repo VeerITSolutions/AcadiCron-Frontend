@@ -35,6 +35,7 @@ import {
   deleteItemIssue,
   editItemIssue,
 } from "@/services/ItemIssueService";
+import { fetchRoleData } from "@/services/roleService";
 
 const IssueItem = () => {
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +44,7 @@ const IssueItem = () => {
   const [ItemData, setItemData] = useState<Array<any>>([]);
   const [supplierData, setSupplierData] = useState<Array<any>>([]);
   const [storeData, setStoreData] = useState<Array<any>>([]);
-
+  const [userTypeData, setuserTypeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -77,9 +78,11 @@ const IssueItem = () => {
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchItemIssue(currentPage + 1, rowsPerPage);
+      const resultUserType = await fetchRoleData("", "");
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
+      setuserTypeData(resultUserType.data);
 
       setLoading(false);
     } catch (error: any) {
@@ -464,7 +467,7 @@ const IssueItem = () => {
         <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
           <div className="flex items-center justify-between">
             <h3 className="font-medium text-black dark:text-white">
-              {editing ? "Edit Exam" : "Exam"}
+              {editing ? "Edit Issue Item" : "Issue Item"}
             </h3>
             <IconButton
               onClick={handleClose}
@@ -478,62 +481,65 @@ const IssueItem = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="grid gap-5.5 p-6.5">
               <div className="field">
-                <label className="checkbox-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                  <input
-                    type="checkbox"
-                    className="is_quiz"
-                    value="1"
-                    name="is_quiz"
-                  />
-                  Quiz
-                </label>
-                <p className="help-block dark:text-white">
-                  In quiz result will be display to student immediately just
-                  after exam submission (descriptive question type will be
-                  disabled).
-                </p>
-              </div>
-              <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Exam Title <span className="required">*</span>{" "}
+                  User Type <span className="required">*</span>{" "}
                 </label>
-                <input
-                  value=""
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Exam From <span className="required">*</span>{" "}
-                </label>
-                <input
-                  id="dob"
-                  name="dob"
-                  value=""
-                  onChange={handleInputChange}
-                  type="date"
+                <select
+                  value={formData.issue_type}
+                  name="hostel_id"
+                  onChange={handleSelectChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
+                >
+                  <option value="">Select</option>
+                  {userTypeData.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Exam To <span className="required">*</span>{" "}
+                  Issue To <span className="required">*</span>{" "}
                 </label>
-                <input
-                  id="dob"
-                  name="dob"
-                  value=""
-                  onChange={handleInputChange}
-                  type="date"
+                <select
+                  value={formData.issue_type}
+                  name="hostel_id"
+                  onChange={handleSelectChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
+                >
+                  <option value="">Select</option>
+                  {userTypeData.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Auto Result Publish Date
+                  Issue By <span className="required">*</span>{" "}
+                </label>
+                <select
+                  value={formData.issue_type}
+                  name="hostel_id"
+                  onChange={handleSelectChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  {userTypeData.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Issue Date
                   <span className="required">*</span>{" "}
                 </label>
                 <input
@@ -547,106 +553,78 @@ const IssueItem = () => {
               </div>
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Time Duration <span className="required">*</span>
+                  Return Date
                 </label>
                 <input
                   id="dob"
                   name="dob"
                   value=""
                   onChange={handleInputChange}
-                  type="time"
+                  type="date"
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
 
               <div className="field">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Attempt <span className="required">*</span>
+                  Note
                 </label>
                 <input
-                  id="dob"
-                  name="dob"
-                  value=""
+                  name="amount"
+                  type="text"
+                  value={formData.note}
                   onChange={handleInputChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Item Category <span className="required">*</span>
+                </label>
+                <select
+                  value={formData.issue_type}
+                  name="hostel_id"
+                  onChange={handleSelectChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  {userTypeData.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Item <span className="required">*</span>
+                </label>
+                <select
+                  value={formData.issue_type}
+                  name="hostel_id"
+                  onChange={handleSelectChange}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select</option>
+                  {userTypeData.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="field">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Quantity
+                </label>
+                <input
+                  name="quantity"
                   type="number"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Passing Percentage <span className="required">*</span>
-                </label>
-                <input
-                  id="dob"
-                  name="dob"
-                  value=""
+                  value={formData.quantity}
                   onChange={handleInputChange}
-                  type="number"
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
-              </div>
-              <div className="field">
-                <label className="checkbox-inline mb-3 block text-sm font-medium text-black dark:text-white ">
-                  <input
-                    type="checkbox"
-                    className="is_active"
-                    name="is_active"
-                    value="1"
-                  />
-                  Publish Exam{" "}
-                </label>
-
-                <label className="checkbox-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                  <input
-                    type="checkbox"
-                    className="publish_result"
-                    name="publish_result"
-                    value="1"
-                  />
-                  Publish Result{" "}
-                </label>
-
-                <label className="checkbox-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                  <input
-                    type="checkbox"
-                    className="is_neg_marking"
-                    name="is_neg_marking"
-                    value="1"
-                  />
-                  Negative Marking{" "}
-                </label>
-
-                <label className="checkbox-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                  <input
-                    type="checkbox"
-                    className="is_marks_display"
-                    name="is_marks_display"
-                    value="1"
-                  />
-                  Display marks in Exam{" "}
-                </label>
-
-                <label className="checkbox-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                  <input
-                    type="checkbox"
-                    className="is_random_question"
-                    name="is_random_question"
-                    value="1"
-                  />
-                  Random Question Order{" "}
-                </label>
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Description <span className="required">*</span>
-                </label>
-
-                <textarea
-                  id="description"
-                  name="description"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                ></textarea>
               </div>
 
               <div className="col-span-full">
