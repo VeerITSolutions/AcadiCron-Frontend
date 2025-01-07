@@ -9,12 +9,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
+  fetchEventData,
+  createEventData,
+  deleteEventData,
+  editEventData,
+} from "@/services/frontEventService";
 import {
   Dialog,
   DialogActions,
@@ -63,7 +62,7 @@ const Events = () => {
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
+      const result = await fetchEventData(currentPage + 1, rowsPerPage);
 
       const resultSubjectData = await fetchSubjectData();
 
@@ -79,7 +78,7 @@ const Events = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteEventData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -147,7 +146,7 @@ const Events = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.name || "N/A",
+      subject.event_title || "N/A",
       subject.amount || "N/A",
       subject.amount || "N/A",
       subject.amount || "N/A",
@@ -192,12 +191,10 @@ const Events = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
+        const result = await editEventData(
           editCategoryId,
           formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
+        
         );
         if (result.success) {
           toast.success("Subject group updated successfully");
@@ -205,11 +202,9 @@ const Events = () => {
           toast.error("Failed to update subject group");
         }
       } else {
-        const result = await createSubjectGroupAdd(
+        const result = await createEventData(
           formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
+      
         );
 
         setFormData({
