@@ -22,6 +22,9 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { fetchIteamCategory } from "@/services/ItemCategoryService";
+import { fetchItemData } from "@/services/ItemService";
+import { fetchItemSupplier } from "@/services/ItemSupplierService";
+import { fetchItemStore } from "@/services/ItemStoreService";
 
 const ItemStock = () => {
   const [error, setError] = useState<string | null>(null);
@@ -41,13 +44,6 @@ const ItemStock = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const [classes, setClasses] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
 
@@ -68,11 +64,16 @@ const ItemStock = () => {
       const result = await fetchItemStock(currentPage + 1, rowsPerPage);
 
       const resultCategory = await fetchIteamCategory("", "");
-      // const resultCategory = await fetchItea("", "");
+      const resultItem = await fetchItemData("", "");
+      const resultSupplier = await fetchItemSupplier("", "");
+      const resultStore = await fetchItemStore("", "");
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
       setCategoryData(resultCategory.data);
+      setItemData(resultItem.data);
+      setSupplierData(resultSupplier.data);
+      setStoreData(resultStore.data);
 
       setLoading(false);
     } catch (error: any) {
@@ -206,9 +207,7 @@ const ItemStock = () => {
        
         });
 
-        setSelectedClass("");
-        setSelectedSection([]);
-        setSelectedSubject([]);
+       
 
         if (result.success) {
           toast.success("Created successfully");
@@ -344,9 +343,9 @@ search: false,
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {ItemData.map((subject) => (
-                      <option key={subject.id} value={subject.id}>
-                        {subject.subject_name}
+                    {ItemData.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
                       </option>
                     ))}
                   </select>
@@ -361,7 +360,7 @@ search: false,
                     <option value="">Select</option>
                     {supplierData.map((supplier) => (
                       <option key={supplier.id} value={supplier.id}>
-                        {supplier.supplier_name}
+                        {supplier.item_supplier}
                       </option>
                     ))}
                   </select>
@@ -376,7 +375,7 @@ search: false,
                     <option value="">Select</option>
                     {storeData.map((store) => (
                       <option key={store.id} value={store.id}>
-                        {store.store_name}
+                        {store.item_store}
                       </option>
                     ))}
                   </select>
