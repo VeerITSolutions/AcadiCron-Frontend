@@ -22,6 +22,9 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { fetchIteamCategory } from "@/services/ItemCategoryService";
+import { fetchItemData } from "@/services/ItemService";
+import { fetchItemSupplier } from "@/services/ItemSupplierService";
+import { fetchItemStore } from "@/services/ItemStoreService";
 
 const ItemStock = () => {
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +34,12 @@ const ItemStock = () => {
   const [supplierData, setSupplierData] = useState<Array<any>>([]);
   const [storeData, setStoreData] = useState<Array<any>>([]);
 
-
+   const [selectedItemCategoryId, setSelectedItemCategoryId] = useState<string | undefined>(
+      undefined,
+    );
+    const [selectedItemId, setSelectedItemId] = useState<string | undefined>(
+      undefined,
+    );
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -41,13 +49,6 @@ const ItemStock = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const [classes, setClasses] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
 
@@ -68,11 +69,16 @@ const ItemStock = () => {
       const result = await fetchItemStock(currentPage + 1, rowsPerPage);
 
       const resultCategory = await fetchIteamCategory("", "");
-      // const resultCategory = await fetchItea("", "");
+      const resultItem = await fetchItemData("", "", "","",selectedItemCategoryId);
+      const resultSupplier = await fetchItemSupplier("", "");
+      const resultStore = await fetchItemStore("", "");
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
       setCategoryData(resultCategory.data);
+      setItemData(resultItem.data);
+      setSupplierData(resultSupplier.data);
+      setStoreData(resultStore.data);
 
       setLoading(false);
     } catch (error: any) {
@@ -145,9 +151,9 @@ const ItemStock = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.item_name || "N/A",
-      subject.supplier_id || "N/A",
-      subject.category_name || "N/A",
-      subject.store_id || "N/A",
+      subject.item_category || "N/A",
+      subject.supplier_name || "N/A",
+      subject.store_name || "N/A",
       subject.quantity || "N/A",
       subject.purchase_price || "N/A",
       subject.date || "N/A",
@@ -170,7 +176,7 @@ const ItemStock = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, selectedItemCategoryId]);
 
   useEffect(() => {
     const savedSession = localStorage.getItem("selectedSessionId");
@@ -206,9 +212,7 @@ const ItemStock = () => {
        
         });
 
-        setSelectedClass("");
-        setSelectedSection([]);
-        setSelectedSubject([]);
+       
 
         if (result.success) {
           toast.success("Created successfully");
@@ -246,6 +250,16 @@ const ItemStock = () => {
       [name]: value,
     }));
   };
+
+   const handleItemCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedItemCategoryId(event.target.value);
+      
+    };
+
+     const handleItemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedItemId(event.target.value);
+        
+      };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -327,6 +341,7 @@ search: false,
                   </label>
                   <select
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    onChange={handleItemCategoryChange}
                   >
                     <option value="">Select</option>
                     {categoryData.map((category) => (
@@ -344,9 +359,9 @@ search: false,
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {ItemData.map((subject) => (
-                      <option key={subject.id} value={subject.id}>
-                        {subject.subject_name}
+                    {ItemData.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
                       </option>
                     ))}
                   </select>
@@ -361,7 +376,7 @@ search: false,
                     <option value="">Select</option>
                     {supplierData.map((supplier) => (
                       <option key={supplier.id} value={supplier.id}>
-                        {supplier.supplier_name}
+                        {supplier.item_supplier}
                       </option>
                     ))}
                   </select>
@@ -376,7 +391,7 @@ search: false,
                     <option value="">Select</option>
                     {storeData.map((store) => (
                       <option key={store.id} value={store.id}>
-                        {store.store_name}
+                        {store.item_store}
                       </option>
                     ))}
                   </select>

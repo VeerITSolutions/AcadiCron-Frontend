@@ -1,12 +1,13 @@
 import apiClient from "./apiClient";
 
-export const fetchExpensesData = async (page?: any, perPage?: any, type?: any, selectedSearchType?: any) => {
+export const fetchExpensesData = async (page?: any, perPage?: any, selectedSearchType?: any, selectedStartDate?: any, selectedEndDate?: any) => {
   const response = await apiClient.get(`/expenses`, {
     params: {
       page,
       perPage,
-      type,
-      selectedSearchType
+      selectedSearchType,
+      selectedStartDate,
+      selectedEndDate
     }
   });
   return response.data;

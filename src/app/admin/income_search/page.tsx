@@ -34,6 +34,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchIncomeData } from "@/services/IncomeService";
 
 
 const IncomeSearch = () => {
@@ -54,6 +55,14 @@ const IncomeSearch = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+   const [selectedStartDate, setSelectedStartDate] = useState<string>(
+      new Date().toISOString().slice(0, 10)
+    );
+  
+    const [selectedEndDate, setSelectedEndDate] = useState<string>(new Date().toISOString().slice(0, 10));
+    const [selectedSearchType, setSelectedSearchType] = useState<
+      string | undefined
+    >(undefined);
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -109,10 +118,11 @@ const IncomeSearch = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
       student.name || "N/A",
-      student.dob || "N/A",
-      student.gender || "N/A",
+      student.invoice_no || "N/A",
+      student.inc_head_id || "N/A",
+      student.date || "N/A",
+      student.amount || "N/A",
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -126,35 +136,41 @@ const IncomeSearch = () => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
-    selectedClass?: string,
-    selectedSection?: string,
+  
     keyword?: string,
+    setSelectedSearchType?: string,
   ) => {
     try {
-      // Pass selectedClass and selectedSection as parameters to filter data
-      if (selectedClass && selectedSection) {
-        const result = await fetchStudentData(
-          0,
-          0,
-          selectedClass,
-          selectedSection,
-          keyword,
-          selectedSessionId,
-          1,
-        );
+
+      if (selectedSearchType == "period") {
+        const result = await fetchIncomeData(0, 0, selectedSearchType, selectedStartDate, selectedEndDate);
+        
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
         setLoading(false);
-      } else {
-        setData([]);
-        setLoading(false);
+        console.log("selectedStartDate", selectedStartDate);
+        console.log("selectedEndDate", selectedEndDate);
+      }else{
+        if (selectedSearchType) {
+          const result = await fetchIncomeData(0, 0, selectedSearchType);
+          setTotalCount(result.totalCount);
+          const formattedData = formatStudentData(result.data);
+          setData(formattedData);
+          setLoading(false);
+        } else {
+          setData([]);
+          setLoading(false);
+        }
       }
+  
+     
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
+
 
   const fetchClassesAndSections = async () => {
     try {
@@ -179,8 +195,8 @@ const IncomeSearch = () => {
   }, [selectedClass]);
 
   useEffect(() => {
-    fetchData(selectedClass, selectedSection, keyword);
-  }, [selectedClass, selectedSection, keyword]);
+    fetchData(keyword, selectedSearchType);
+  }, [keyword, selectedSearchType]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -197,13 +213,26 @@ const IncomeSearch = () => {
 
   const handleSearch = () => {
     setPage(0);
-    fetchData(selectedClass, selectedSection, keyword);
+    fetchData(keyword, selectedSearchType);
   };
+  
   const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
     setKeyword("");
+    setSelectedSearchType("");
   };
+
+    const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedSearchType(event.target.value);
+    };
+  
+  
+    const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedStartDate(event.target.value);
+    };
+    
+    const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedEndDate(event.target.value);
+    }
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -216,23 +245,51 @@ const IncomeSearch = () => {
           Search Type:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
+              onChange={handleSearchTypeChange}
+           
+           >
+             <option value="">Select</option>
+              <option value="1">Today</option>
+              <option value="7">This Week</option>
+              <option value="14">Last Week</option>
+              <option value="30">This Month</option>
+              <option value="45">Last Month</option>
+              <option value="90">Last 3 Months</option>
+              <option value="180">Last 6 Months</option>
+              <option value="365">Last 12 Months</option>
+              <option value="365">This Year</option>
+              <option value="730">Last Year</option>
               <option value="period">Period</option>
 
               
             </select>
           </label>
+          {selectedSearchType === "period" && (
+          <div className={styles.searchGroup}>
+          <div>
+          <label className={styles.label}>
+          Start date:
+          </label>
+          <input
+              type="date"
+              value={selectedStartDate}
+              onChange={handleStartDateChange}
+               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            />
+            </div>
+            <div>
+          <label className={styles.label}>
+          End date:
+          </label>  
+           <input
+              type="date"
+              value={selectedEndDate}
+              onChange={handleEndDateChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            />
+            </div>
+            </div>
+            )}
          
           <div className={styles.searchGroup}>
           <input
