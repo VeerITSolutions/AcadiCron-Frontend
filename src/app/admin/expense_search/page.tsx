@@ -259,22 +259,28 @@ const Expense = () => {
           </label>
           {selectedSearchType === "period" && (
           <div className={styles.searchGroup}>
-          
+          <div>
+          <label className={styles.label}>
+          Start date:
+          </label>
           <input
               type="date"
-              placeholder="Start date"
-             value={selectedStartDate}
+              value={selectedStartDate}
               onChange={handleStartDateChange}
-              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             />
-          
-<input
+            </div>
+            <div>
+          <label className={styles.label}>
+          End date:
+          </label>  
+           <input
               type="date"
-              placeholder="End date"
-             value={selectedEndDate}
+              value={selectedEndDate}
               onChange={handleEndDateChange}
-              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             />
+            </div>
             </div>
             )}
 
