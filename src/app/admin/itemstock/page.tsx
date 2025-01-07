@@ -34,7 +34,12 @@ const ItemStock = () => {
   const [supplierData, setSupplierData] = useState<Array<any>>([]);
   const [storeData, setStoreData] = useState<Array<any>>([]);
 
-
+   const [selectedItemCategoryId, setSelectedItemCategoryId] = useState<string | undefined>(
+      undefined,
+    );
+    const [selectedItemId, setSelectedItemId] = useState<string | undefined>(
+      undefined,
+    );
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -64,7 +69,7 @@ const ItemStock = () => {
       const result = await fetchItemStock(currentPage + 1, rowsPerPage);
 
       const resultCategory = await fetchIteamCategory("", "");
-      const resultItem = await fetchItemData("", "");
+      const resultItem = await fetchItemData("", "", "","",selectedItemCategoryId);
       const resultSupplier = await fetchItemSupplier("", "");
       const resultStore = await fetchItemStore("", "");
 
@@ -146,7 +151,7 @@ const ItemStock = () => {
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.item_name || "N/A",
-      subject.category_name || "N/A",
+      subject.item_category || "N/A",
       subject.supplier_name || "N/A",
       subject.store_name || "N/A",
       subject.quantity || "N/A",
@@ -171,7 +176,7 @@ const ItemStock = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, selectedItemCategoryId]);
 
   useEffect(() => {
     const savedSession = localStorage.getItem("selectedSessionId");
@@ -245,6 +250,16 @@ const ItemStock = () => {
       [name]: value,
     }));
   };
+
+   const handleItemCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedItemCategoryId(event.target.value);
+      
+    };
+
+     const handleItemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedItemId(event.target.value);
+        
+      };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -326,6 +341,7 @@ search: false,
                   </label>
                   <select
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    onChange={handleItemCategoryChange}
                   >
                     <option value="">Select</option>
                     {categoryData.map((category) => (
