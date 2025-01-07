@@ -255,6 +255,16 @@ const FrontAdd = () => {
 
               {/* Second Column */}
               <div className="col-span-1">
+              <div className="field mb-6 pt-9 flex">
+                  
+                  <input
+                    type="checkbox" id="enableSwitch" className="gap-6"
+                  />
+                  <label className="block text-sm ml-2 font-medium text-black dark:text-white position: relative; display: inline-block; width: 34px; height: 20px;">
+                  Sidebar Setting
+                  </label>
+                  
+                </div>
               <div className="field mb-6 pt-9">
                   <label className="block text-sm font-medium text-black dark:text-white">
                    Featured Image
