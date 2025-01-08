@@ -30,6 +30,8 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchStaffData } from "@/services/staffService";
+import { fetchSyllabusHTMLData } from "@/services/syllabusService";
 const columns = [
   "Monday",
   "Tuesday",
@@ -68,15 +70,6 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
-    ]);
-  };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
@@ -84,29 +77,48 @@ const StudentDetails = () => {
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
+
+  const getStartOfWeekDate = (currentDate) => {
+    const dayOfWeek = currentDate.getDay(); // Get the day of the week (0 = Sunday, 1 = Monday, ...)
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Calculate difference to Monday
+    const startOfWeek = new Date(currentDate); // Clone the current date
+    startOfWeek.setDate(currentDate.getDate() + diffToMonday); // Adjust to the start of the week
+
+    // Format the date as dd-mm-yyyy
+    const formattedDate = [
+      String(startOfWeek.getDate()).padStart(2, "0"), // Day
+      String(startOfWeek.getMonth() + 1).padStart(2, "0"), // Month
+      startOfWeek.getFullYear(), // Year
+    ].join("-");
+
+    return formattedDate;
+  };
   useEffect(() => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
+    currentPage: any,
+    rowsPerPage: any,
+    selectedTeacherId?: any,
   ) => {
     try {
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        selectedSessionId,
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
-      setLoading(false);
+      if (data.length === 0) {
+        const result = await fetchStaffData("", "", "", "", "", "", 2);
+        setTotalCount(result.totalCount);
+        setData(result.data);
+        setLoading(false);
+      }
+      if (selectedTeacherId) {
+        const currentDate = new Date(); // Current date
+        const weekStartDate = getStartOfWeekDate(currentDate);
+
+        const result = await fetchSyllabusHTMLData(
+          "current_week",
+          weekStartDate,
+          selectedTeacherId,
+        );
+        console.log(result);
+      }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -137,29 +149,14 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
+  const handleTeacherChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    fetchData(page, rowsPerPage, event.target.value);
 
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
-  };
-
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
-  const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    setSelectedTeacherId(event.target.value);
   };
 
   const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
-    setKeyword("");
+    setSelectedTeacherId("");
   };
 
   /* if (loading) return <Loader />; */
@@ -173,26 +170,19 @@ const StudentDetails = () => {
             Teachers:
             <select
               value={selectedClass || ""}
-              onChange={handleClassChange}
+              onChange={handleTeacherChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-
-              {/* Add more class options here */}
+              {data.map((staff: any) => (
+                <option key={staff.id} value={staff.id}>
+                  {staff.name} {staff.surname} ({staff.employee_id})
+                </option>
+              ))}
             </select>
           </label>
 
           <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-            />
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
             <button onClick={handleRefresh} className={styles.searchButton}>
               Reset
             </button>
@@ -202,7 +192,8 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
-      {loading ? (
+      <div></div>
+      {/*  {loading ? (
         <Loader />
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
@@ -220,7 +211,7 @@ const StudentDetails = () => {
             }}
           />
         </ThemeProvider>
-      )}
+      )} */}
     </DefaultLayout>
   );
 };
