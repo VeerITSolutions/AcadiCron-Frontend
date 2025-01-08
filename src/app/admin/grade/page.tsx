@@ -111,7 +111,7 @@ const ExaminationGrade = () => {
     return subjects.map((subject: any) => [
       subject.exam_type || "N/A",
       subject.name || "N/A",
-      subject.mark_from / subject.mark_upto || "N/A",
+      `${subject.mark_from || "N/A"} - ${subject.mark_upto || "N/A"}`,
       subject.point || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
