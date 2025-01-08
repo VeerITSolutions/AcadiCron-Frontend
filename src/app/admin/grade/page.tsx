@@ -7,77 +7,54 @@ import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
-
-import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { createGradesData, 
+  deleteGradesData, 
+  editGradesData, 
+  fetchGradesData } from "@/services/GradesService";
+import { fetchIteamCategory } from "@/services/ItemCategoryService";
 
 const ExaminationGrade = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
-  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
+  const [categoryData, setCategoryData] = useState<Array<any>>([]);
+
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-  const [selectedSection, setSelectedSection] = useState<string[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    session_id: savedSessionstate,
+  exam_type: '',
+  name: '',
+  point: '',
+  mark_from: '',
+  mark_upto: '',
+  description: '',
+  is_active: 'no',
   });
-
-
-
-  const columns = [
-    "Exam Type",
-    "Grade Name",
-    "Percent From / Upto",
-    "Grade Point",
-    "Action",
-  ];
-  const options = {
-    filterType: "checkbox",
-    serverSide: true,
-    responsive: "standard",
-    search: false,
-    count: totalCount,
-    page,
-    rowsPerPage,
-    selectableRows: "none",
-    filter: false,
-    viewColumns: false,
-  };
-
-
-
-
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
+      const result = await fetchGradesData(currentPage + 1, rowsPerPage);
 
-      const resultSubjectData = await fetchSubjectData();
+      const resultCategory = await fetchIteamCategory("", "");
+ 
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+      setCategoryData(resultCategory.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -87,7 +64,7 @@ const ExaminationGrade = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteGradesData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -96,46 +73,46 @@ const ExaminationGrade = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
-
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
+      exam_type: subject?.exam_type || '',
+      name: subject?.name || '',
+      point: subject?.point || '',
+      mark_from: subject?.mark_from || '',
+      mark_upto: subject?.mark_upto || '',
+      description: subject?.description || '',
+      is_active: subject?.is_active || 'no',
     });
-
+    
   };
+  
 
   const handleCancel = () => {
     setFormData({
-      name: "",
-      description: "",
-      session_id: savedSessionstate,
+      exam_type: '',
+      name: '',
+      point: '',
+      mark_from: '',
+      mark_upto: '',
+      description: '',
+      is_active: 'no',
+     
     });
     setIsEditing(false);
     setEditCategoryId(null);
   };
 
+
+
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.exam_type || "N/A",
-      subject.grade_name || "N/A",
-      subject.percent || "N/A",
-      subject.grade_point || "N/A",
+      subject.name || "N/A",
+      subject.mark_from / subject.mark_upto || "N/A",
+      subject.point || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -165,55 +142,46 @@ const ExaminationGrade = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editGradesData(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createGradesData(formData);
 
         setFormData({
-          name: "",
-          description: "",
-          session_id: savedSessionstate,
+          exam_type: '',
+          name: '',
+          point: '',
+          mark_from: '',
+          mark_upto: '',
+          description: '',
+          is_active: 'no',
+       
         });
 
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create expenses");
         }
       }
       // Reset form after successful action
       setFormData({
-        name: "",
-        description: "",
-        session_id: savedSessionstate,
+        exam_type: '',
+        name: '',
+        point: '',
+        mark_from: '',
+        mark_upto: '',
+        description: '',
+        is_active: 'no',
+      
       });
 
       setIsEditing(false);
@@ -222,6 +190,20 @@ const ExaminationGrade = () => {
     } catch (error) {
       console.error("An error occurred", error);
     }
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
   };
 
   const handlePageChange = (newPage: number) => setPage(newPage);
@@ -233,6 +215,40 @@ const ExaminationGrade = () => {
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
+
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
+  const columns = [
+    "Exam Type",
+    "Grade Name",
+    "Percent From / Upto",
+    "Grade Point",
+    "Action",
+  ];
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+    responsive: "standard",
+    search: false,
+    count: totalCount,
+    page,
+    rowsPerPage,
+    selectableRows: "none",
+    filter: false,
+    viewColumns: false,
+  };
+
 
   return (
     <DefaultLayout>
@@ -270,7 +286,9 @@ const ExaminationGrade = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="grade_name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -280,7 +298,9 @@ const ExaminationGrade = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="percent_upto"
+                    name="mark_upto"
+                    value={formData.mark_upto}
+                    onChange={handleInputChange}
                   />
                 </div>
 
@@ -290,9 +310,11 @@ const ExaminationGrade = () => {
                   </label>
                   <input
                     id="date"
-                    name="date"
-                    type="percent_form"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    name="mark_from"
+                    type="text"
+                    value={formData.mark_from}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -302,7 +324,9 @@ const ExaminationGrade = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="grade_point"
+                    name="point"
+                    value={formData.point}
+                    onChange={handleInputChange}
                   />
                 </div>          
                 <div>
@@ -312,6 +336,8 @@ const ExaminationGrade = () => {
                   <textarea
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
                   ></textarea>
                 </div>
 
@@ -319,13 +345,17 @@ const ExaminationGrade = () => {
                   <button
                     type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={(e) => {
+                      e.preventDefault(); 
+                      handleSubmit();
+                    }}
                   >
                     {isEditing ? "Update" : "Save"}
                   </button>
                   {isEditing && (
                     <button
                       type="button"
-                      onClick={handleCancel} // Call the cancel function
+                      onClick={handleCancel}
                       className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                     >
                       Cancel
