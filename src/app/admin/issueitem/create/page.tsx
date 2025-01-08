@@ -193,11 +193,12 @@ const IssueItem = () => {
           toast.error("Failed to update");
         }
       } else {
-        const data = {...formData, selectedItemCategoryId: selectedItemCategoryId, item_id: selectedItemId};
+        const data = {...formData, item_category_id: selectedItemCategoryId, item_id: selectedItemId};
         const result = await createItemIssue(data);
 
         if (result.success) {
           toast.success("Created successfully");
+          router.push(`/admin/issueitem`);
         } else {
           toast.error("Failed to create expenses");
         }
