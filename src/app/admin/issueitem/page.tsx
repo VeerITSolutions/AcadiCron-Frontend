@@ -152,7 +152,7 @@ const IssueItem = () => {
       subject.name || "N/A",
       subject.item_category || "N/A",
       `${subject.issue_date || "N/A"} / ${subject.return_date || "N/A"}`,
-      subject.issue_to || "N/A",
+      `${subject.staff_name || "N/A"}  ${subject.surname || "N/A"}`,
       subject.issue_by || "N/A",
       subject.quantity || "N/A",
       subject.issue_type || "N/A",
