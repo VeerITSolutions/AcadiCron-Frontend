@@ -12,6 +12,7 @@ import {
   createItemData,
   deleteItemData,
   editItemData,
+  fetchGetItemData,
 
 } from "@/services/ItemService";
 
@@ -54,7 +55,7 @@ const Item = () => {
   
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchItemData(currentPage + 1, rowsPerPage);
+      const result = await fetchGetItemData(currentPage + 1, rowsPerPage);
 
       const resultCategory = await fetchIteamCategory("", "");
     
@@ -124,7 +125,9 @@ const Item = () => {
       subject.name || "N/A",
       subject.item_category || "N/A",
       subject.unit || "N/A",
-      subject.quantity || "N/A",
+
+      
+      subject.added_stock - subject.issued || "N/A",
     
       <div key={subject.id} className="flex">
         <IconButton
