@@ -29,8 +29,6 @@ export default function RootLayout({
       }
       return originalFindDOMNode ? originalFindDOMNode(component) : null;
     };
-
-    console.log("Patched ReactDOM.findDOMNode logic for compatibility.");
   }
 
   useEffect(() => {
