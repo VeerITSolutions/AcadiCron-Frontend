@@ -43,8 +43,8 @@ const columns = [
 const options = {
   filterType: "checkbox",
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "none", // Disable row selection
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
@@ -156,6 +156,12 @@ const StudentDetails = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
+  const handleRefresh = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setKeyword("");
+  };
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -171,8 +177,7 @@ const StudentDetails = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="Class1">Priya Ronghe (19001)</option>
-              <option value="Class2">Harshalata Khante (19002)</option>
+
               {/* Add more class options here */}
             </select>
           </label>
@@ -187,6 +192,9 @@ const StudentDetails = () => {
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
+            </button>
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
             </button>
           </div>
         </div>

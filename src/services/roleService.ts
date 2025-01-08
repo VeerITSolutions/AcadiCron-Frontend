@@ -6,15 +6,15 @@ export const fetchRoleData = async (page?: any, perPage?: any) => {
 };
 
 
-// Delete a student category by ID
+// Delete a student role by ID
 export const deleteRoleData = async (id: number) => {
-  const response = await apiClient.delete(`/category/${id}`);
+  const response = await apiClient.delete(`/role/${id}`);
   return response.data;
 };
 
-// Edit a student category by ID
-export const editRoleData = async (id: number, category: string) => {
-  const data = { category }; // Create an object with the name field
-  const response = await apiClient.post(`/category/${id}`, data);
+// Edit a student role by ID
+export const editRoleData = async (id: number, role: string) => {
+  const data = { role }; // Create an object with the name field
+  const response = await apiClient.post(`/role/${id}`, data);
   return response.data;
 };
