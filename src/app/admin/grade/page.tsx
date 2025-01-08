@@ -272,11 +272,15 @@ const ExaminationGrade = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Exam Type <span className="required">*</span>
                   </label>
-                  <select className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                    <option value="">Select</option>
-                    <option value="1">General Purpose (Pass/Fail)</option>
-                    <option value="2">School Based Grading System</option>
-                    <option value="3">GPA Grading System</option>
+                  <select className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  name="exam_type"
+                  value={formData.exam_type}
+                  onChange={handleSelectChange} >
+                  <option value="">Select</option>
+                  <option value="basic_system">General Purpose (Pass/Fail)</option>
+                  <option value="school_grade_system">School Based Grading System</option>
+                  <option value="coll_grade_system">College Based Grading System</option>
+                  <option value="gpa">GPA Grading System</option>
                   </select>
                 </div>
                 <div>
