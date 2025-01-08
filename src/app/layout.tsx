@@ -6,6 +6,7 @@ import "@/css/style.css";
 import "@/css/globals.css";
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
+import ReactDOM from "react-dom";
 import { GlobalProvider } from "@/context/GlobalContext";
 import { useInitializeLoginDetails } from "@/store/logoStore";
 
@@ -18,6 +19,19 @@ export default function RootLayout({
   const [loading, setLoading] = useState<boolean>(true);
 
   // const pathname = usePathname();
+
+  if (typeof window !== "undefined") {
+    const originalFindDOMNode = ReactDOM.findDOMNode;
+
+    ReactDOM.findDOMNode = function (component) {
+      if (component instanceof Element) {
+        return component;
+      }
+      return originalFindDOMNode ? originalFindDOMNode(component) : null;
+    };
+
+    console.log("Patched ReactDOM.findDOMNode logic for compatibility.");
+  }
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1);
