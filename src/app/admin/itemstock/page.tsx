@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
@@ -34,11 +34,11 @@ const ItemStock = () => {
   const [supplierData, setSupplierData] = useState<Array<any>>([]);
   const [storeData, setStoreData] = useState<Array<any>>([]);
 
-   const [selectedItemCategoryId, setSelectedItemCategoryId] = useState<string | undefined>(
-      undefined,
+   const [selectedItemCategoryId, setSelectedItemCategoryId] = useState<string >(
+      ''
     );
-    const [selectedItemId, setSelectedItemId] = useState<string | undefined>(
-      undefined,
+    const [selectedItemId, setSelectedItemId] = useState<string >(
+      ''
     );
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -51,7 +51,7 @@ const ItemStock = () => {
 
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
-
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [formData, setFormData] = useState({
     item_id: "",
     supplier_id: "",
@@ -142,8 +142,12 @@ const ItemStock = () => {
       is_active: false,
      
     });
-    setSelectedItemCategoryId(undefined);
-    setSelectedItemId(undefined);
+    setSelectedItemCategoryId('');
+    setSelectedItemId('');
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Clear the file input
+    }
     
     setIsEditing(false);
     setEditCategoryId(null);
@@ -234,8 +238,11 @@ const ItemStock = () => {
       
       });
 
-      setSelectedItemCategoryId(undefined);
-      setSelectedItemId(undefined);
+      setSelectedItemCategoryId('');
+      setSelectedItemId('');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Clear the file input
+      }
 
       setIsEditing(false);
       setEditCategoryId(null);
@@ -452,6 +459,7 @@ const ItemStock = () => {
                   type="file"
                   accept="image/*"
                   name="attachment"
+                  ref={fileInputRef}
                   onChange={handleFileChange}
                   className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                 />
