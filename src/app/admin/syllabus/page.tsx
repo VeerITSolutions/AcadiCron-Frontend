@@ -73,12 +73,18 @@ const StudentDetails = () => {
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
+  const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(
+    null,
+  );
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<string>("");
+  const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
 
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
 
-  const getStartOfWeekDate = (currentDate) => {
+  const getStartOfWeekDate = (currentDate: any) => {
     const dayOfWeek = currentDate.getDay(); // Get the day of the week (0 = Sunday, 1 = Monday, ...)
     const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Calculate difference to Monday
     const startOfWeek = new Date(currentDate); // Clone the current date
@@ -117,7 +123,9 @@ const StudentDetails = () => {
           weekStartDate,
           selectedTeacherId,
         );
-        console.log(result);
+
+        setIsFormVisible((prev) => !prev); // Toggle modal state
+        setIsFormVisibleHtml(result);
       }
     } catch (error: any) {
       setError(error.message);
@@ -129,25 +137,9 @@ const StudentDetails = () => {
     router.push(`/admin/student/${id}`);
   };
 
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
-
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData(page, rowsPerPage, selectedTeacherId);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-    setPage(0);
-  };
 
   const handleTeacherChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     fetchData(page, rowsPerPage, event.target.value);
@@ -157,6 +149,7 @@ const StudentDetails = () => {
 
   const handleRefresh = () => {
     setSelectedTeacherId("");
+    setIsFormVisibleHtml("");
   };
 
   /* if (loading) return <Loader />; */
@@ -169,7 +162,7 @@ const StudentDetails = () => {
           <label className={styles.label}>
             Teachers:
             <select
-              value={selectedClass || ""}
+              value={selectedTeacherId || ""}
               onChange={handleTeacherChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
@@ -188,30 +181,11 @@ const StudentDetails = () => {
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
-      <div></div>
-      {/*  {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={" Manage Lesson Plan "}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
-        </ThemeProvider>
-      )} */}
+      <div
+        className="w-full"
+        dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
+      />
     </DefaultLayout>
   );
 };

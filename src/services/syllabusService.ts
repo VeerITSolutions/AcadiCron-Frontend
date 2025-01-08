@@ -1,9 +1,7 @@
 import apiClient from "./apiClient";
 
 export const fetchSyllabusHTMLData = async (status: any, date: any,selectedTeacherId ?:any) => {
-  const response = await apiClient.get(`/staff-syllabus`, {
-    params: { status, date, selectedTeacherId }
-  });
+  const response = await apiClient.post(`/staff-syllabus`, {status, date, selectedTeacherId});
   return response.data;
 };
 
