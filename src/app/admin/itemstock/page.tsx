@@ -67,19 +67,26 @@ const ItemStock = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
+
+      
       const result = await fetchItemStock(currentPage + 1, rowsPerPage);
 
       const resultCategory = await fetchIteamCategory("", "");
-      const resultItem = await fetchItemData("", "", "","",selectedItemCategoryId);
+      if(selectedItemCategoryId){
+        const resultItem = await fetchItemData("", "", "","",selectedItemCategoryId);
+        setItemData(resultItem.data);
+      }
+      
       const resultSupplier = await fetchItemSupplier("", "");
       const resultStore = await fetchItemStore("", "");
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
       setCategoryData(resultCategory.data);
-      setItemData(resultItem.data);
+      
       setSupplierData(resultSupplier.data);
       setStoreData(resultStore.data);
+      
 
       setLoading(false);
     } catch (error: any) {
@@ -115,6 +122,8 @@ const ItemStock = () => {
       description: subject?.description || "",
       is_active: subject?.is_active || false, // Assuming `false` as default for boolean
     });
+    setSelectedItemCategoryId(subject?.item_category_id);
+    setSelectedItemId(subject?.item_id);
     
   };
   
@@ -133,6 +142,9 @@ const ItemStock = () => {
       is_active: false,
      
     });
+    setSelectedItemCategoryId(undefined);
+    setSelectedItemId(undefined);
+    
     setIsEditing(false);
     setEditCategoryId(null);
   };
@@ -200,21 +212,6 @@ const ItemStock = () => {
         const data = {...formData, selectedItemCategoryId: selectedItemCategoryId, item_id: selectedItemId};
         const result = await createItemStock(data);
 
-        setFormData({
-          item_id: "",
-          supplier_id: "",
-          symbol: "",
-          store_id: "",
-          quantity: "",
-          purchase_price: "",
-          date: "",
-          attachment: "",
-          description: "",
-          is_active: false,
-       
-        });
-
-       
 
         if (result.success) {
           toast.success("Created successfully");
@@ -236,6 +233,9 @@ const ItemStock = () => {
         is_active: false,
       
       });
+
+      setSelectedItemCategoryId(undefined);
+      setSelectedItemId(undefined);
 
       setIsEditing(false);
       setEditCategoryId(null);
@@ -337,7 +337,7 @@ const ItemStock = () => {
                   </label>
                   <select
                   name="item_category_id"
-                  value={selectedItemCategoryId || ""}
+                  value={selectedItemCategoryId}
                   onChange={handleItemCategoryChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   
@@ -356,7 +356,7 @@ const ItemStock = () => {
                   </label>
                   <select
                   name="item_id"
-                   value={selectedItemId || ""}
+                   value={selectedItemId}
                    onChange={handleItemChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
