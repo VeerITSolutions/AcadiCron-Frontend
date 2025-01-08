@@ -246,7 +246,7 @@ const IncomeSearch = () => {
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
               onChange={handleSearchTypeChange}
-           
+              value={selectedSearchType}
            >
              <option value="">Select</option>
               <option value="1">Today</option>
