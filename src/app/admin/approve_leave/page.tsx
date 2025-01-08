@@ -505,15 +505,9 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
+      <div className="bg-white dark:bg-boxdark dark:drop-shadow-none dark:text-white border border-stroke dark:border-strokedark">
         <div
-          className="mb-4 pl-4 pt-4 text-right"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
+          className="mb-4 pl-4 pt-4 text-right flex justify-end items-center" >
           <button
             type="submit"
             className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" // Added margin-right for spacing
@@ -530,7 +524,7 @@ const StudentDetails = () => {
             <MUIDataTable
               title={"Approve Leave List"}
               data={data}
-              className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
+             
               columns={columns}
               options={{
                 ...options,
