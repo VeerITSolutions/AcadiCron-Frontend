@@ -151,7 +151,25 @@ const StudentDetails = () => {
     setSelectedTeacherId("");
     setIsFormVisibleHtml("");
   };
+  // In your Next.js component
+  const getWeekDates = async (status: any, date: any, staff_id: any) => {
+    try {
+      const res = await fetch("/api/get-weekdates", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status, date, staff_id }),
+      });
 
+      const data = await res.json();
+
+      // Handle the data (for example, updating the page content)
+      /* document.getElementById('weekdates_result').innerHTML = data.join('<br/>'); */
+    } catch (error) {
+      console.error("Error fetching week dates:", error);
+    }
+  };
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
