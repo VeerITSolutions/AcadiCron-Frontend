@@ -1,7 +1,7 @@
 import apiClient from "./apiClient";
 
 export const fetchContentData = async (page?: number, perPage?: number, type?: any) => {
-  const response = await apiClient.get(`/content-for-upload`, {
+  const response = await apiClient.get(`/content`, {
     params: {
       page,
       perPage,
