@@ -83,7 +83,8 @@ const ManageAlumni = () => {
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class_name || "N/A",
-      student.category_name || "N/A",
+      student.gender || "N/A",
+      student.email || "N/A",
       student.mobileno,
       <div key={student.id} className="flex text-left">
         <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
