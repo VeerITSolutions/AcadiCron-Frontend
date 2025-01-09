@@ -316,7 +316,7 @@ const StudentDetails = () => {
           align-items: center;
           justify-content: space-between;
           padding: 10px;
-          background-color: #f8f9fa;
+
           border: 1px solid #dee2e6;
           border-radius: 5px;
           margin-bottom: 20px;
