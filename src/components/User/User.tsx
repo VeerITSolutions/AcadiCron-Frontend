@@ -228,11 +228,11 @@ const User = () => {
     if (!selectedClass) newErrors.class_id = true;
     if (!selectedSection) newErrors.section_id = true;
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      toast.error("Fields are required!");
-      return;
-    }
+    // if (Object.keys(newErrors).length > 0) {
+    //   setErrors(newErrors);
+    //   toast.error("Fields are required!");
+    //   return;
+    // }
 
     try {
       setLoading(true);
