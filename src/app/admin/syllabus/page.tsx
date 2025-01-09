@@ -178,6 +178,11 @@ const StudentDetails = () => {
     setWeekEnd(getWeekEnd(newStartDate));
   };
   const handleRefresh = () => {
+    const today = new Date(); // Get today's date
+    const weekStart = getWeekStart(today);
+
+    setWeekStart(weekStart);
+    setWeekEnd(getWeekEnd(weekStart));
     setSelectedTeacherId("");
     setIsFormVisibleHtml([]);
   };
