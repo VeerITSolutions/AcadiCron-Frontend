@@ -36,12 +36,13 @@ import {
 import { fetchRoleData } from "@/services/roleService";
 import { fetchIteamCategory } from "@/services/ItemCategoryService";
 import { fetchItemData } from "@/services/ItemService";
-import { fetchStaffData } from "@/services/staffService";
+import { fetchInventoryStaffData, fetchStaffData } from "@/services/staffService";
 
 const IssueItem = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
   const [userTypeData, setuserTypeData] = useState<Array<any>>([]);
+  const [staffData, setStaffData] = useState<Array<Array<string>>>([]);
   const [employeeData, setEmployeeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -56,6 +57,7 @@ const IssueItem = () => {
   const { themType, setThemType } = useGlobalState(); // A
   const [categoryData, setCategoryData] = useState<Array<any>>([]);
   const [ItemData, setItemData] = useState<Array<any>>([]);
+  const [InventoryStaffData, setInventoryStaffData] = useState<Array<any>>([]);
   const [selectedItemCategoryId, setSelectedItemCategoryId] = useState<string >('');
   const [selectedItemId, setSelectedItemId] = useState<string >('');
   const [selectedRoleTypeId, setSelectedRoleTypeId] = useState<string >('');
@@ -77,6 +79,7 @@ const IssueItem = () => {
       const result = await fetchItemIssue(currentPage + 1, rowsPerPage);
       const resultUserType = await fetchRoleData("", "");
       const resultCategory = await fetchIteamCategory("", "");
+      const resultInventory = await fetchInventoryStaffData();
       // const resultEmployeeData = await fetchStaffData("", "");
       if(selectedItemCategoryId){
         const resultItem = await fetchItemData("", "", "","",selectedItemCategoryId);
@@ -84,15 +87,15 @@ const IssueItem = () => {
       }
     
       if(selectedRoleTypeId){
-        const resultEmployeeData = await fetchStaffData("", "", "","",selectedRoleTypeId);
-        setItemData(resultEmployeeData.data);
+         const resultEmployeeData = await fetchStaffData("", "", "", "", "", "", selectedRoleTypeId);
+        setStaffData(resultEmployeeData.data);
       }
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
       setCategoryData(resultCategory.data);
       setuserTypeData(resultUserType.data);
-      // setEmployeeData(resultEmployeeData.data);
+      setInventoryStaffData(resultInventory.data);
 
       setLoading(false);
     } catch (error: any) {
@@ -329,11 +332,11 @@ const IssueItem = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select</option>
-                  {userTypeData.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.name}
-                    </option>
-                  ))}
+                {staffData.map((staff: any) => (
+                <option key={staff.id} value={staff.id}>
+                {staff.name} {staff.surname} ({staff.employee_id})
+                </option>
+                ))}
                 </select>
               </div>
 
@@ -348,10 +351,11 @@ const IssueItem = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select</option>
-                  <option value="Super Admin  (9000)">Super Admin  (9000)</option>
-                  <option value="Priya Tendulkar (T0001)">Priya Tendulkar (T0001)</option>
-                  <option value="Piyush Gauraha (ULIPSU)">Piyush Gauraha (ULIPSU)</option>
-                  <option value="Rajiv  (123)">Rajiv  (123)</option>
+                  {InventoryStaffData.map((staff: any) => (
+                <option key={staff.id} value={staff.id}>
+                {staff.name} {staff.surname} ({staff.employee_id})
+                </option>
+                ))}
 
                 </select>
               </div>

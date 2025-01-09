@@ -18,6 +18,11 @@ export const fetchStaffData = async (page: any, perPage: any,selectedRole ?:any,
   return response.data;
 };
 
+export const fetchInventoryStaffData = async () => {
+  const response = await apiClient.get(`/inventory-staff`);
+  return response.data;
+};
+
 
 
 export const fetchStaffSingleData = async (id: string) => {
