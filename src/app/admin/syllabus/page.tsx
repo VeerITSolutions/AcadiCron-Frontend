@@ -145,7 +145,7 @@ const StudentDetails = () => {
 
   const handleTeacherChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     fetchData(page, rowsPerPage, event.target.value);
-
+    handleDateChange("");
     setSelectedTeacherId(event.target.value);
   };
   const today = new Date(); // Get today's date
@@ -251,7 +251,7 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-      {isFormVisibleHtml ? (
+      {selectedTeacherId ? (
         <>
           <div className="box-header text-center">
             <button
