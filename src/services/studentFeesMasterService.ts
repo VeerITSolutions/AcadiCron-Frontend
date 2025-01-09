@@ -11,7 +11,7 @@ export const fetchStudentFeesMasterData = async (page?: number, perPage?: number
 };
 
 
-export const createFeesMaster = async (
+export const createFeesMasterData = async (
 fees_group?:any,
 fees_type?:any,
 due_date?:any,
@@ -34,7 +34,7 @@ fine_amount?:string
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
-    throw new Error("Failed to create student house");
+    throw new Error("Failed to create Fees");
   }
 };
 
@@ -47,7 +47,7 @@ export const deleteFeesMasterData = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editFeesMasterData = async (id: number, house_name: string, description?: string,
+export const editFeesMasterData = async (id: number, name: string, description?: string,
 
 
 
@@ -60,7 +60,7 @@ percentage?:string,
 
 fine_amount?:string,
 ) => {
-  const data = { house_name, description }; // Create an object with the name field
+  const data = { name, description }; // Create an object with the name field
   const response = await apiClient.post(`/fees-master/${id}`, data);
   return response.data;
 };
