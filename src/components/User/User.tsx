@@ -221,12 +221,12 @@ const User = () => {
   };
 
   const handleSave = async () => {
-    if (!formData.firstname) newErrors.firstname = true;
-    if (!formData.lastname) newErrors.lastname = true;
-    if (!formData.gender) newErrors.gender = true;
-    if (!formData.dob) newErrors.dob = true;
-    if (!selectedClass) newErrors.class_id = true;
-    if (!selectedSection) newErrors.section_id = true;
+    // if (!formData.firstname) newErrors.firstname = true;
+    // if (!formData.lastname) newErrors.lastname = true;
+    // if (!formData.gender) newErrors.gender = true;
+    // if (!formData.dob) newErrors.dob = true;
+    // if (!selectedClass) newErrors.class_id = true;
+    // if (!selectedSection) newErrors.section_id = true;
 
     // if (Object.keys(newErrors).length > 0) {
     //   setErrors(newErrors);

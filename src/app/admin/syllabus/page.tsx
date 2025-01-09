@@ -77,12 +77,17 @@ const StudentDetails = () => {
     null,
   );
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<string>("");
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<
+    Array<Array<string>>
+  >([]);
   const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
 
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
+  const today = new Date(); // Get today's date
+  const [weekStart, setWeekStart] = useState(getWeekStart(today));
+  const [weekEnd, setWeekEnd] = useState(getWeekEnd(weekStart));
 
   const getStartOfWeekDate = (currentDate: any) => {
     const dayOfWeek = currentDate.getDay(); // Get the day of the week (0 = Sunday, 1 = Monday, ...)
@@ -115,17 +120,14 @@ const StudentDetails = () => {
         setLoading(false);
       }
       if (selectedTeacherId) {
-        const currentDate = new Date(); // Current date
-        const weekStartDate = getStartOfWeekDate(currentDate);
-
         const result = await fetchSyllabusHTMLData(
           "current_week",
-          weekStartDate,
+          weekStart,
           selectedTeacherId,
         );
 
         setIsFormVisible((prev) => !prev); // Toggle modal state
-        setIsFormVisibleHtml(result);
+        setIsFormVisibleHtml(result.data.timetable);
       }
     } catch (error: any) {
       setError(error.message);
@@ -139,16 +141,13 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedTeacherId);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+  }, [page, rowsPerPage, weekStart]);
 
   const handleTeacherChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     fetchData(page, rowsPerPage, event.target.value);
-
+    handleDateChange("");
     setSelectedTeacherId(event.target.value);
   };
-  const today = new Date(); // Get today's date
-  const [weekStart, setWeekStart] = useState(getWeekStart(today));
-  const [weekEnd, setWeekEnd] = useState(getWeekEnd(weekStart));
 
   // Function to calculate the start of the week
   function getWeekStart(date: any) {
@@ -176,8 +175,13 @@ const StudentDetails = () => {
     setWeekEnd(getWeekEnd(newStartDate));
   };
   const handleRefresh = () => {
+    const today = new Date(); // Get today's date
+    const weekStart = getWeekStart(today);
+
+    setWeekStart(weekStart);
+    setWeekEnd(getWeekEnd(weekStart));
     setSelectedTeacherId("");
-    setIsFormVisibleHtml("");
+    setIsFormVisibleHtml([]);
   };
   // In your Next.js component
   const getWeekDates = async (status: any, date: any, staff_id: any) => {
@@ -198,26 +202,6 @@ const StudentDetails = () => {
       console.error("Error fetching week dates:", error);
     }
   };
-
-  const weekdays = [
-    { name: "Monday", date: "06-01-2025" },
-    { name: "Tuesday", date: "07-01-2025" },
-    { name: "Wednesday", date: "08-01-2025" },
-    { name: "Thursday", date: "09-01-2025" },
-    { name: "Friday", date: "10-01-2025" },
-    { name: "Saturday", date: "11-01-2025" },
-    { name: "Sunday", date: "12-01-2025" },
-  ];
-
-  const schedule = [
-    "Math Class at 9 AM",
-    "Science Workshop at 10 AM",
-    "History Lecture at 11 AM",
-    "Art Session at 2 PM",
-    "PE Class at 3 PM",
-    "Music Rehearsal at 4 PM",
-    "Library Time at 5 PM",
-  ];
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -249,7 +233,7 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-      {isFormVisibleHtml ? (
+      {selectedTeacherId ? (
         <>
           <div className="box-header text-center">
             <button
@@ -282,21 +266,23 @@ const StudentDetails = () => {
             <table className="table-bordered table">
               <thead>
                 <tr>
-                  {weekdays.map((day, index) => (
-                    <th key={index} className="text text-center">
-                      {day.name}
+                  {Object.entries(isFormVisibleHtml).map(([day, status]) => (
+                    <th key={day} className="text text-center">
+                      {day}
                       <br />
-                      <span className="bmedium">{day.date}</span>
+                      <span className="bmedium">{status}</span>
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  {schedule.map((item, index) => (
-                    <td key={index} className="text text-center">
+                  {Object.entries(isFormVisibleHtml).map(([day, status]) => (
+                    <td key={day} className="text text-center">
                       <div className="attachment-block clearfix">
-                        <b className="text text-center">{item}</b>
+                        <b className="text text-center">
+                          {status ? status : "N/A"}
+                        </b>
                       </div>
                     </td>
                   ))}
@@ -392,12 +378,6 @@ const StudentDetails = () => {
           overflow-x: auto;
         }
       `}</style>
-
-      {/* Dangerous HTML Injection */}
-      {/* <div
-        className="w-full"
-        dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
-      /> */}
     </DefaultLayout>
   );
 };
