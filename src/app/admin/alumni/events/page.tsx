@@ -22,7 +22,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { fetchSubjectData } from "@/services/subjectsService";
+
 import Close from "@mui/icons-material/Close";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
@@ -48,8 +48,6 @@ const Events = () => {
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
-  const [selectedSection, setSelectedSection] = useState<string[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
   const [open, setOpen] = useState(false);
@@ -70,12 +68,8 @@ const Events = () => {
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchAlumniEventData(currentPage + 1, rowsPerPage);
-
-      const resultSubjectData = await fetchSubjectData();
-
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -211,9 +205,9 @@ const Events = () => {
         
         );
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
         const result = await createAlumniEventData(
@@ -238,9 +232,9 @@ const Events = () => {
 
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create");
         }
       }
       // Reset form after successful action
