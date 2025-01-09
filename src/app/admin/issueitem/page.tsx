@@ -146,16 +146,31 @@ const IssueItem = () => {
       }));
     }
   };
+  const formatDate = (date:any) => {
+    if (!date) return "N/A";
+    const d = new Date(date);
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "numeric", day: "numeric" });
+  };
+
+  const getIssueTypeTag = (type:any) => {
+    if (type == 1) {
+      return <span style={{ color: "red" }}>Issued</span>;
+    } else {
+      return <span style={{ color: "green" }}>Returned</span>;
+    } 
+  };
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name || "N/A",
       subject.item_category || "N/A",
-      `${subject.issue_date || "N/A"} / ${subject.return_date || "N/A"}`,
+      `${formatDate(subject.issue_date)  || "N/A"} - ${formatDate(subject.return_date) || "N/A"}`,
       `${subject.staff_name || "N/A"}  ${subject.surname || "N/A"}`,
       subject.issue_by || "N/A",
       subject.quantity || "N/A",
-      subject.issue_type || "N/A",
+  
+      <>{getIssueTypeTag(subject.is_returned)}</>
+      ,
       
       <div key={subject.id} className="flex">
         <IconButton

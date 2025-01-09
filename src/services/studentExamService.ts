@@ -5,6 +5,10 @@ export const fetchStudentexamData = async (id: string) => {
   return response.data;
 };
 
+export const fetchExamTypeData = async (id: string) => {
+  const response = await apiClient.get(`/exam-type`);
+  return response;
+};
 
 // Delete a student category by ID
 export const deleteStudentexam = async (id: number) => {
