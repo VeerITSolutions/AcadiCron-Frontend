@@ -201,26 +201,6 @@ const StudentDetails = () => {
     }
   };
 
-  const weekdays = [
-    { name: "Monday", date: "06-01-2025" },
-    { name: "Tuesday", date: "07-01-2025" },
-    { name: "Wednesday", date: "08-01-2025" },
-    { name: "Thursday", date: "09-01-2025" },
-    { name: "Friday", date: "10-01-2025" },
-    { name: "Saturday", date: "11-01-2025" },
-    { name: "Sunday", date: "12-01-2025" },
-  ];
-
-  const schedule = [
-    "Math Class at 9 AM",
-    "Science Workshop at 10 AM",
-    "History Lecture at 11 AM",
-    "Art Session at 2 PM",
-    "PE Class at 3 PM",
-    "Music Rehearsal at 4 PM",
-    "Library Time at 5 PM",
-  ];
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -298,7 +278,7 @@ const StudentDetails = () => {
                   {Object.entries(isFormVisibleHtml).map(([day, status]) => (
                     <td key={day} className="text text-center">
                       <div className="attachment-block clearfix">
-                        <b className="text text-center">{day}</b>
+                        <b className="text text-center">{status}</b>
                       </div>
                     </td>
                   ))}
