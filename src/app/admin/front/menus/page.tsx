@@ -10,12 +10,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
+  fetchFrontCmsMenus,
+  createFrontCmsMenus,
+  deleteFrontCmsMenus,
+  editFrontCmsMenus,
+} from "@/services/FrontCmsMenuService";
 
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete } from "@mui/icons-material";
@@ -23,46 +22,46 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { fetchIteamCategory } from "@/services/ItemCategoryService";
 
 const Menus = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
-  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
-  const [createdata, setcreatedata] = useState<Array<any>>([]);
-
+  const [categoryData, setCategoryData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
-
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-
-  const [classes, setClasses] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
+    menu: "",
+    slug: "",
     description: "",
-    session_id: savedSessionstate,
+    open_new_tab: 0, 
+    ext_url: "",
+    ext_url_link: "",
+    publish: 0, 
+    content_type: "manual", 
+    is_active: "no", 
+    created_at: "", 
   });
+  
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
+      const result = await fetchFrontCmsMenus(currentPage + 1, rowsPerPage);
 
-      const resultSubjectData = await fetchSubjectData();
+      const resultCategory = await fetchIteamCategory("", "");
+      // const resultCategory = await fetchItea("", "");
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+      setCategoryData(resultCategory.data);
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -72,7 +71,7 @@ const Menus = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteFrontCmsMenus(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -81,55 +80,50 @@ const Menus = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
-
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
+      menu: subject?.menu || "",
+      slug: subject?.slug || "",
+      description: subject?.description || "",
+      open_new_tab: subject?.open_new_tab || 0, 
+      ext_url: subject?.ext_url || "",
+      ext_url_link: subject?.ext_url_link || "",
+      publish: subject?.publish || 0,
+      content_type: subject?.content_type || "manual", 
+      is_active: subject?.is_active || "no", 
+      created_at: subject?.created_at || "", 
     });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
+    
+    
   };
+  
 
   const handleCancel = () => {
     setFormData({
-      name: "",
+      menu: "",
+      slug: "",
       description: "",
-      session_id: savedSessionstate,
+      open_new_tab: 0, 
+      ext_url: "",
+      ext_url_link: "",
+      publish: 0, 
+      content_type: "manual", 
+      is_active: "no", 
+      created_at: "", 
+     
     });
     setIsEditing(false);
     setEditCategoryId(null);
   };
 
+
+
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.expense_head || "N/A",
+      subject.menu || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -159,58 +153,50 @@ const Menus = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await editFrontCmsMenus(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+        const result = await createFrontCmsMenus(formData);
 
         setFormData({
-          name: "",
+          menu: "",
+          slug: "",
           description: "",
-          session_id: savedSessionstate,
+          open_new_tab: 0, 
+          ext_url: "",
+          ext_url_link: "",
+          publish: 0, 
+          content_type: "manual", 
+          is_active: "no", 
+          created_at: "", 
         });
 
-        setSelectedClass("");
-        setSelectedSection([]);
-        setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create expenses");
         }
       }
       // Reset form after successful action
       setFormData({
-        name: "",
-        description: "",
-        session_id: savedSessionstate,
+        menu: "",
+    slug: "",
+    description: "",
+    open_new_tab: 0, 
+    ext_url: "",
+    ext_url_link: "",
+    publish: 0, 
+    content_type: "manual", 
+    is_active: "no", 
+    created_at: "", 
       });
 
       setIsEditing(false);
@@ -221,6 +207,20 @@ const Menus = () => {
     }
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
+  };
+
   const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
@@ -228,10 +228,23 @@ const Menus = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
+
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
+
 
   const columns = [
     "Title",
@@ -278,7 +291,9 @@ search: false,
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="Income_head"
+                    name="menu"
+                    value={formData.menu}
+                    onChange={handleInputChange}
                   />
                   </div>
         
@@ -289,6 +304,8 @@ search: false,
             <textarea
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               name="description"
+              value={formData.description}
+              onChange={handleInputChange}
             ></textarea>
           </div>
 
