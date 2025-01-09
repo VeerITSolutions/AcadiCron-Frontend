@@ -9,11 +9,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  fetchEventData,
-  createEventData,
-  deleteEventData,
-  editEventData,
-} from "@/services/frontEventService";
+  fetchAlumniEventData,
+  createAlumniEventData,
+  deleteAlumniEventData,
+  editAlumniEventData,
+} from "@/services/AlumniEventService";
 import {
   Dialog,
   DialogActions,
@@ -44,9 +44,7 @@ const Events = () => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-  const [editing, setEditing] = useState(false);
   const [classes, setClasses] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -56,13 +54,22 @@ const Events = () => {
   const { themType, setThemType } = useGlobalState(); // A
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
+    title: "",
+    event_for: "",
     session_id: savedSessionstate,
+    class_id: "",
+    section: "",
+    from_date: "",
+    to_date: "",
+    note: "",
+    photo: "",
+    is_active: false, 
+    event_notification_message: "",
+    show_onwebsite: false,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchEventData(currentPage + 1, rowsPerPage);
+      const result = await fetchAlumniEventData(currentPage + 1, rowsPerPage);
 
       const resultSubjectData = await fetchSubjectData();
 
@@ -78,7 +85,7 @@ const Events = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteEventData(id);
+      await deleteAlumniEventData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -111,23 +118,20 @@ const Events = () => {
     setEditCategoryId(id);
 
     setFormData({
-      name: subject.name,
-      description: subject.description,
+      title: subject.title || "", 
+      event_for: subject.event_for || "", 
       session_id: savedSessionstate,
+      class_id: subject.class_id || "", 
+      section: subject.section || "", 
+      from_date: subject.from_date || "", 
+      to_date: subject.to_date || "", 
+      note: subject.note || "", 
+      photo: subject.photo || "", 
+      is_active: subject.is_active ?? false, 
+      event_notification_message: subject.event_notification_message || "", 
+      show_onwebsite: subject.show_onwebsite ?? false, 
     });
 
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -136,9 +140,18 @@ const Events = () => {
 
   const handleCancel = () => {
     setFormData({
-      name: "",
-      description: "",
+      title: "",
+      event_for: "",
       session_id: savedSessionstate,
+      class_id: "",
+      section: "",
+      from_date: "",
+      to_date: "",
+      note: "",
+      photo: "",
+      is_active: false, 
+      event_notification_message: "",
+      show_onwebsite: false,
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -146,11 +159,12 @@ const Events = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.event_title || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
-      subject.amount || "N/A",
+      subject.title || "N/A",
+      subject.class_id || "N/A",
+      subject.section || "N/A",
+      subject.session_id || "N/A",
+      subject.from_date || "N/A",
+      subject.to_date || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -191,7 +205,7 @@ const Events = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editEventData(
+        const result = await editAlumniEventData(
           editCategoryId,
           formData,
         
@@ -202,20 +216,26 @@ const Events = () => {
           toast.error("Failed to update subject group");
         }
       } else {
-        const result = await createEventData(
+        const result = await createAlumniEventData(
           formData,
       
         );
 
         setFormData({
-          name: "",
-          description: "",
+          title: "",
+          event_for: "",
           session_id: savedSessionstate,
+          class_id: "",
+          section: "",
+          from_date: "",
+          to_date: "",
+          note: "",
+          photo: "",
+          is_active: false, 
+          event_notification_message: "",
+          show_onwebsite: false,
         });
 
-        setSelectedClass("");
-        setSelectedSection([]);
-        setSelectedSubject([]);
 
         if (result.success) {
           toast.success("Subject group created successfully");
@@ -225,9 +245,18 @@ const Events = () => {
       }
       // Reset form after successful action
       setFormData({
-        name: "",
-        description: "",
+        title: "",
+        event_for: "",
         session_id: savedSessionstate,
+        class_id: "",
+        section: "",
+        from_date: "",
+        to_date: "",
+        note: "",
+        photo: "",
+        is_active: false, 
+        event_notification_message: "",
+        show_onwebsite: false,
       });
 
       setIsEditing(false);
