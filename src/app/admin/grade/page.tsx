@@ -17,6 +17,7 @@ import { createGradesData,
   editGradesData, 
   fetchGradesData } from "@/services/GradesService";
 import { fetchIteamCategory } from "@/services/ItemCategoryService";
+import { fetchExamTypeData } from "@/services/studentExamService";
 
 const ExaminationGrade = () => {
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +35,8 @@ const ExaminationGrade = () => {
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
+   const [ItemData, setItemData] = useState<Array<any>>([]);
+    const [ExamType, setExamType] = useState<Array<any>>([]);
 
   const [formData, setFormData] = useState({
   exam_type: '',
@@ -49,11 +52,15 @@ const ExaminationGrade = () => {
       const result = await fetchGradesData(currentPage + 1, rowsPerPage);
 
       const resultCategory = await fetchIteamCategory("", "");
+      const resultExam = await fetchExamTypeData("");
  
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
       setCategoryData(resultCategory.data);
+   
+      setExamType(Object.entries(resultExam.data.data));
+     
 
       setLoading(false);
     } catch (error: any) {
@@ -61,6 +68,7 @@ const ExaminationGrade = () => {
       setLoading(false);
     }
   };
+
 
   const handleDelete = async (id: number) => {
     try {
@@ -111,8 +119,8 @@ const ExaminationGrade = () => {
     return subjects.map((subject: any) => [
       subject.exam_type || "N/A",
       subject.name || "N/A",
-      `${subject.mark_from || "N/A"} - ${subject.mark_upto || "N/A"}`,
-      subject.point || "N/A",
+      `${subject.mark_from || "N/A"} To ${subject.mark_upto || "N/A"}`,
+      parseFloat(subject.point) || 0.0,
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -277,10 +285,11 @@ const ExaminationGrade = () => {
                   value={formData.exam_type}
                   onChange={handleSelectChange} >
                   <option value="">Select</option>
-                  <option value="basic_system">General Purpose (Pass/Fail)</option>
-                  <option value="school_grade_system">School Based Grading System</option>
-                  <option value="coll_grade_system">College Based Grading System</option>
-                  <option value="gpa">GPA Grading System</option>
+                  {ExamType.map(([key, value]: [string, string]) => (
+                    <option key={key} value={key}>
+                      {value}
+                    </option>
+                  ))}
                   </select>
                 </div>
                 <div>
