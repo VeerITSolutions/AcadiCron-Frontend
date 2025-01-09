@@ -16,6 +16,7 @@ import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 import { fetchSubjectData } from "@/services/subjectsService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
+import { getLessonBySubjectId } from "@/services/lessonService";
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -113,15 +114,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchHomeWorkData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        selectedSubjectGroup,
-        selectedSubject,
-        keyword,
-      );
+      const result = await getLessonBySubjectId(selectedClass, selectedSection);
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
