@@ -182,7 +182,13 @@ const FeesMaster = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage]);
+  }, [
+    page,
+    rowsPerPage,
+    selectedSection,
+    selectedSubjectGroup,
+    selectedSubject,
+  ]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -388,8 +394,10 @@ const FeesMaster = () => {
                 </select>
               </div>
 
-              <label className={styles.label}>
-                Subject
+              <div className="">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Subject
+                </label>
                 <select
                   value={selectedSubject || ""}
                   onChange={handleSubjectChange}
@@ -405,7 +413,7 @@ const FeesMaster = () => {
                     </option>
                   ))}
                 </select>
-              </label>
+              </div>
 
               <div className="">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
