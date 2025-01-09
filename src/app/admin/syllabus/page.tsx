@@ -77,7 +77,9 @@ const StudentDetails = () => {
     null,
   );
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<string>("");
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<
+    Array<Array<string>>
+  >([]);
   const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
 
   const getselectedSessionId = useLoginDetails(
@@ -125,7 +127,7 @@ const StudentDetails = () => {
         );
 
         setIsFormVisible((prev) => !prev); // Toggle modal state
-        setIsFormVisibleHtml(result);
+        setIsFormVisibleHtml(result.data.timetable);
       }
     } catch (error: any) {
       setError(error.message);
@@ -177,7 +179,7 @@ const StudentDetails = () => {
   };
   const handleRefresh = () => {
     setSelectedTeacherId("");
-    setIsFormVisibleHtml("");
+    setIsFormVisibleHtml([]);
   };
   // In your Next.js component
   const getWeekDates = async (status: any, date: any, staff_id: any) => {
@@ -282,21 +284,21 @@ const StudentDetails = () => {
             <table className="table-bordered table">
               <thead>
                 <tr>
-                  {weekdays.map((day, index) => (
-                    <th key={index} className="text text-center">
-                      {day.name}
+                  {Object.entries(isFormVisibleHtml).map(([day, status]) => (
+                    <th key={day} className="text text-center">
+                      {day}
                       <br />
-                      <span className="bmedium">{day.date}</span>
+                      <span className="bmedium">{status}</span>
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  {schedule.map((item, index) => (
-                    <td key={index} className="text text-center">
+                  {Object.entries(isFormVisibleHtml).map(([day, status]) => (
+                    <td key={day} className="text text-center">
                       <div className="attachment-block clearfix">
-                        <b className="text text-center">{item}</b>
+                        <b className="text text-center">{day}</b>
                       </div>
                     </td>
                   ))}
@@ -392,12 +394,6 @@ const StudentDetails = () => {
           overflow-x: auto;
         }
       `}</style>
-
-      {/* Dangerous HTML Injection */}
-      {/* <div
-        className="w-full"
-        dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
-      /> */}
     </DefaultLayout>
   );
 };
