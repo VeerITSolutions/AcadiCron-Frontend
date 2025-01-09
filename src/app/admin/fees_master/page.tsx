@@ -9,7 +9,7 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
 import {
-  createFeesMaster,
+  createFeesMasterData,
   deleteFeesMasterData,
   editFeesMasterData,
   fetchStudentFeesMasterData,
@@ -104,7 +104,7 @@ const FeesMaster = () => {
 
   const handleEdit = (
     id: number,
-    fees_group_value: string,
+    	fees_group_value: string,
     fees_type_value: string,
     due_date_value: string,
     amount_value: string,
@@ -117,8 +117,8 @@ const FeesMaster = () => {
     setEditCategoryId(id);
 
     setFormData({
-      fees_group: fees_group_value,
-      fees_type: fees_type_value,
+      fees_group:fees_group_value,
+      fees_type:fees_type_value,
       due_date: due_date_value,
       amount: amount_value,
       fine_type: fine_type_value,
@@ -191,7 +191,7 @@ const FeesMaster = () => {
           toast.error("Failed to update Student House");
         }
       } else {
-        const result = await createFeesMaster(
+        const result = await createFeesMasterData(
           formData.fees_group,
           formData.fees_type,
           formData.due_date,
@@ -252,7 +252,7 @@ search: false,
 
   const handleCancel = () => {
     setFormData({
-      fees_group: "",
+      	fees_group: "",
       fees_type: "",
       due_date: "",
       amount: "",
@@ -290,15 +290,15 @@ search: false,
                     Fees Group *
                   </label>
                   <select
-                    name="fees_group"
-                    value={formData.fees_group}
+                    name="	fees_group"
+                    value={formData.	fees_group}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
                     {datafeesgroupdata.map((group: any) => (
                       <option key={group.id} value={group.id}>
-                        {group.fees_group_name}
+                        {group.	fees_group_name}
                       </option>
                     ))}
                   </select>
