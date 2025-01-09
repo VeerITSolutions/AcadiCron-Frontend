@@ -18,93 +18,6 @@ import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import { fetchStudentAttendencData } from "@/services/studentAttendence";
 
-// Define columns, including a custom render for "Attendance"
-const columns = [
-  "Admission No",
-  "Roll Number",
-  "Name",
-  {
-    name: "Attendance",
-    options: {
-      customBodyRender: (
-        value: string,
-        tableMeta: any,
-        updateData: (value: string) => void,
-      ) => {
-        const { rowIndex } = tableMeta;
-        const attendance = value || "Present"; // Default value is "Present"
-        return (
-          <div className="flex gap-2">
-            {["Present", "Late", "Absent", "Halfday"].map((status) => (
-              <label key={status} className="flex items-center gap-1">
-                <input
-                  className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
-                  type="radio"
-                  name={`attendance-${rowIndex}`}
-                  value={status}
-                  checked={attendance === status}
-                  onChange={() => updateData(status)} // Update the attendance when radio button is clicked
-                />
-                {status}
-              </label>
-            ))}
-          </div>
-        );
-      },
-    },
-  },
-  {
-    name: "Note",
-    options: {
-      customBodyRender: (
-        value: string,
-        tableMeta: any,
-        updateData: (value: string) => void,
-      ) => {
-        const { rowIndex } = tableMeta;
-        return (
-          <input
-            type="text"
-            value={value || ""} // Use the note if available or empty string
-            onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full rounded border-[1.5px] border-stroke bg-transparent bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-          />
-        );
-      },
-    },
-  },
-];
-
-// Define options for MUIDataTable
-const options = {
-  filter: false,
-  search: false,
-  pagination: false,
-  sort: false,
-  selectableRows: "none",
-  download: false,
-  print: false,
-  viewColumns: false,
-  responsive: "standard",
-
-  customToolbar: () => (
-    <div className="flex justify-end gap-2">
-      <button
-        className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-        onClick={() => console.log("Mark As Holiday clicked")}
-      >
-        Mark As Holiday
-      </button>
-      <button
-        className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-        onClick={() => console.log("Save Attendance clicked")}
-      >
-        Save Attendance
-      </button>
-    </div>
-  ),
-};
-
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
@@ -132,9 +45,17 @@ const StudentDetails = () => {
     useState<string>(getDefaultDate());
   const [colorMode, setColorMode] = useColorMode();
 
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
+
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+
   // Function to format the student data, with a default attendance value
   const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
+    return students?.map((student: any) => [
       student.admission_no,
 
       student.roll_no || "N/A",
@@ -143,16 +64,94 @@ const StudentDetails = () => {
       student.note || "",
     ]);
   };
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
 
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
-  useEffect(() => {
-    setSelectedSessionId(getselectedSessionId);
-  }, []);
+  // Define columns, including a custom render for "Attendance"
+  const columns = [
+    "Admission No",
+    "Roll Number",
+    "Name",
+    {
+      name: "Attendance",
+      options: {
+        customBodyRender: (
+          value: string,
+          tableMeta: any,
+          updateData: (value: string) => void,
+        ) => {
+          const { rowIndex } = tableMeta;
+          const attendance = value || "Present"; // Default value is "Present"
+          return (
+            <div className="flex gap-2">
+              {["Present", "Late", "Absent", "Halfday"].map((status) => (
+                <label key={status} className="flex items-center gap-1">
+                  <input
+                    className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+                    type="radio"
+                    name={`attendance-${rowIndex}`}
+                    value={status}
+                    checked={attendance === status}
+                    onChange={() => updateData(status)} // Update the attendance when radio button is clicked
+                  />
+                  {status}
+                </label>
+              ))}
+            </div>
+          );
+        },
+      },
+    },
+    {
+      name: "Note",
+      options: {
+        customBodyRender: (
+          value: string,
+          tableMeta: any,
+          updateData: (value: string) => void,
+        ) => {
+          const { rowIndex } = tableMeta;
+          return (
+            <input
+              type="text"
+              value={value || ""} // Use the note if available or empty string
+              onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+            />
+          );
+        },
+      },
+    },
+  ];
+
+  // Define options for MUIDataTable
+  const options = {
+    filter: false,
+    search: false,
+    pagination: false,
+    sort: false,
+    selectableRows: "none",
+    download: false,
+    print: false,
+    viewColumns: false,
+    responsive: "standard",
+
+    customToolbar: () => (
+      <div className="flex justify-end gap-2">
+        <button
+          className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+          onClick={() => console.log("Mark As Holiday clicked")}
+        >
+          Mark As Holiday
+        </button>
+        <button
+          className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+          onClick={() => console.log("Save Attendance clicked")}
+        >
+          Save Attendance
+        </button>
+      </div>
+    ),
+  };
+
   // Function to fetch student data
   const fetchData = async (
     currentPage: number,
@@ -182,6 +181,13 @@ const StudentDetails = () => {
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+  useEffect(() => {
+    setSelectedSessionId(getselectedSessionId);
+  }, []);
+
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -223,10 +229,6 @@ const StudentDetails = () => {
 
     setattendancedate(getDefaultDate());
   };
-
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
 
   // Fetch classes and sections from the service
   const fetchClassesAndSections = async () => {

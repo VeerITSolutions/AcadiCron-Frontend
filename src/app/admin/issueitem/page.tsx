@@ -12,7 +12,7 @@ import Close from "@mui/icons-material/Close"; // Import the Close icon
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
-
+import Link from "next/link";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -146,18 +146,32 @@ const IssueItem = () => {
       }));
     }
   };
+  const formatDate = (date:any) => {
+    if (!date) return "N/A";
+    const d = new Date(date);
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "numeric", day: "numeric" });
+  };
+
+  const getIssueTypeTag = (type:any) => {
+    if (type == 1) {
+      return <span style={{ color: "red" }}>Issued</span>;
+    } else {
+      return <span style={{ color: "green" }}>Returned</span>;
+    } 
+  };
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.issue_type || "N/A",
-      subject.issue_to || "N/A",
+      subject.name || "N/A",
+      subject.item_category || "N/A",
+      `${formatDate(subject.issue_date)  || "N/A"} - ${formatDate(subject.return_date) || "N/A"}`,
+      `${subject.staff_name || "N/A"}  ${subject.surname || "N/A"}`,
       subject.issue_by || "N/A",
-      subject.issue_date || "N/A",
-      subject.return_date || "N/A",
-      subject.item_category_id || "N/A",
-      subject.item_id || "N/A",
       subject.quantity || "N/A",
-      subject.note || "N/A",
+  
+      <>{getIssueTypeTag(subject.is_returned)}</>
+      ,
+      
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleDelete(subject.id)}
@@ -236,19 +250,7 @@ const IssueItem = () => {
     }
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-    setEditCategoryId(null);
-    // Clear the input field
-  };
 
   const handlePageChange = (newPage: number) => setPage(newPage);
 
@@ -321,7 +323,7 @@ const IssueItem = () => {
 
       setIsEditing(false);
       setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
+      fetchData(page, rowsPerPage); 
     } catch (error) {
       console.error("An error occurred", error);
     }
@@ -346,99 +348,24 @@ const IssueItem = () => {
     count: totalCount,
     page,
     rowsPerPage,
-    selectableRows: "none", // Disable row selection
-
+    selectableRows: "none",
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
     filter: false,
     viewColumns: false,
   };
 
-  // const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setKeyword(event.target.value);
-  // };
-
-  const handleSearch = () => {
-    setPage(0);
-    fetchData(page, rowsPerPage);
-  };
-  const handleRefresh = () => {
-    setSelectedClass("");
-  };
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setFormData({
-      issue_type: "",
-      issue_to: "",
-      issue_by: "",
-      issue_date: "",
-      return_date: "",
-      item_category_id: "",
-      item_id: "",
-      quantity: "",
-      note: "",
-    });
-  };
-
   return (
     <DefaultLayout>
-      <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Search Type:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
-              <option value="period">Period</option>
-            </select>
-          </label>
-
-          <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              // value={keyword}
-              // onChange={handleKeywordChange}
-              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            />
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
-          </div>
-        </div>
-      </div>
+   <div className="bg-white dark:bg-boxdark dark:drop-shadow-none dark:text-white border border-stroke dark:border-strokedark">
       <div
-        className="mb-4 pl-4 pt-4 text-right"
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
-        <button
-          type="submit"
-          className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-          onClick={handleClickOpen}
-        >
-          {editing ? "Edit Issue Item" : "Add Issue Item"}
-        </button>
+        className="mb-4 pl-4 pt-4 text-right flex justify-end items-center">
+        <Link href="/admin/issueitem/create">
+                <button className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
+                  <i className="fa fa-plus mr-2" />
+                  Add Issue Item
+                </button>
+              </Link>
       </div>
       {loading ? (
         <Loader />
@@ -459,186 +386,7 @@ const IssueItem = () => {
           />
         </ThemeProvider>
       )}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        className="dark:bg-boxdark dark:drop-shadow-none"
-      >
-        <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
-          <div className="flex items-center justify-between">
-            <h3 className="font-medium text-black dark:text-white">
-              {editing ? "Edit Issue Item" : "Issue Item"}
-            </h3>
-            <IconButton
-              onClick={handleClose}
-              className="text-black dark:text-white"
-            >
-              <Close />
-            </IconButton>
-          </div>
-        </DialogTitle>
-        <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="grid gap-5.5 p-6.5">
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  User Type <span className="required">*</span>{" "}
-                </label>
-                <select
-                  value={formData.issue_type}
-                  name="hostel_id"
-                  onChange={handleSelectChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {userTypeData.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Issue To <span className="required">*</span>{" "}
-                </label>
-                <select
-                  value={formData.issue_type}
-                  name="hostel_id"
-                  onChange={handleSelectChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {userTypeData.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Issue By <span className="required">*</span>{" "}
-                </label>
-                <select
-                  value={formData.issue_type}
-                  name="hostel_id"
-                  onChange={handleSelectChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {userTypeData.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Issue Date
-                  <span className="required">*</span>{" "}
-                </label>
-                <input
-                  id="dob"
-                  name="dob"
-                  value=""
-                  onChange={handleInputChange}
-                  type="date"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Return Date
-                </label>
-                <input
-                  id="dob"
-                  name="dob"
-                  value=""
-                  onChange={handleInputChange}
-                  type="date"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Note
-                </label>
-                <input
-                  name="amount"
-                  type="text"
-                  value={formData.note}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Item Category <span className="required">*</span>
-                </label>
-                <select
-                  value={formData.issue_type}
-                  name="hostel_id"
-                  onChange={handleSelectChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {userTypeData.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Item <span className="required">*</span>
-                </label>
-                <select
-                  value={formData.issue_type}
-                  name="hostel_id"
-                  onChange={handleSelectChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {userTypeData.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Quantity
-                </label>
-                <input
-                  name="quantity"
-                  type="number"
-                  value={formData.quantity}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-
-              <div className="col-span-full">
-                <button
-                  onClick={handleSave}
-                  className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+     </div>
     </DefaultLayout>
   );
 };

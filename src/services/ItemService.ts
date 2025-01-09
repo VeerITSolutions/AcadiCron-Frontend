@@ -13,6 +13,19 @@ export const fetchItemData = async (page?: any, perPage?: any, type?: any, selec
   return response.data;
 };
 
+export const fetchGetItemData = async (page?: any, perPage?: any, type?: any, selectedSearchType?: any, selectedItemCategoryId?: any) => {
+  const response = await apiClient.get(`/get-item`, {
+    params: {
+      page,
+      perPage,
+      type,
+      selectedSearchType,
+      selectedItemCategoryId
+    }
+  });
+  return response.data;
+};
+
 
 export const createItemData = async (data: any): Promise<any> => {
   try {

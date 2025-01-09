@@ -34,6 +34,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchSession } from "@/services/session";
 
 const columns = [
   "Admission No",
@@ -57,7 +58,6 @@ const options = {
 
 
 const ManageAlumni = () => {
-  const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
@@ -76,46 +76,33 @@ const ManageAlumni = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+  const [allSession, setAllSession] = useState<Array<any>>([]);
 
-  const handleDelete = async () => {
-    try {
-      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
-
-      const idsToDelete = selectedData.map((row) => row[0]);
-
-      console.log(idsToDelete); // Handle response
-
-      if (
-        window.confirm("Are you sure you want to delete the selected items?")
-      ) {
-        try {
-          const response = await deleteStudentBluk(idsToDelete);
-        } catch (error) {
-          console.error("Error deleting data:", error);
-          alert("Failed to delete selected data.");
-        }
-      }
-    } catch (error) {
-      console.error("Error deleting data:", error);
-      alert("Failed to delete selected data.");
-    }
-  };
-
-  const handleRowSelectionChange = (
-    curRowSelected: { dataIndex: number; index: number }[],
-    allRowsSelected: { dataIndex: number; index: number }[],
-    rowsSelected: [],
-  ) => {
-    setSelectedRows(rowsSelected); // Update selected rows
-  };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.name || "N/A",
-      student.dob || "N/A",
+      student.admission_no,
+      `${student.firstname.trim()} ${student.lastname.trim()}`,
+      student.class_name || "N/A",
       student.gender || "N/A",
+      student.email || "N/A",
+      student.mobileno,
+      <div key={student.id} className="flex text-left">
+        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+          <Visibility />
+        </IconButton>
+        <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleAddFees(student.id)}
+          aria-label="Add Fee"
+        >
+          <AttachMoney />
+        </IconButton>
+      </div>,
     ]);
   };
+
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
@@ -123,34 +110,36 @@ const ManageAlumni = () => {
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
+
   useEffect(() => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
+
   const fetchData = async (
+    currentPage: number,
+    rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
     try {
       // Pass selectedClass and selectedSection as parameters to filter data
-      if (selectedClass && selectedSection) {
-        const result = await fetchStudentData(
-          0,
-          0,
-          selectedClass,
-          selectedSection,
-          keyword,
-          selectedSessionId,
-          1,
-        );
-        setTotalCount(result.totalCount);
-        const formattedData = formatStudentData(result.data);
-        setData(formattedData);
-        setLoading(false);
-      } else {
-        setData([]);
-        setLoading(false);
-      }
+      const result = await fetchStudentData(
+        currentPage + 1,
+        rowsPerPage,
+        selectedClass,
+        selectedSection,
+        keyword,
+        selectedSessionId,
+      );
+
+       const resultSession = await fetchSession();
+
+      setTotalCount(result.totalCount);
+      const formattedData = formatStudentData(result.data);
+      setAllSession(resultSession.data);
+      setData(formattedData);
+      setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -167,21 +156,37 @@ const ManageAlumni = () => {
         const sectionsResult = await fetchsectionByClassData(selectedClass);
         setSections(sectionsResult.data);
       } else {
-        setSections([]);
+        setSections([]); // Clear sections if no class is selected
       }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
+  
+ 
+
+  const handleDelete = async (id: number) => {
+    // Assuming id is the student_id
+    router.push(`/admin/student/${id}`);
+  };
+
+  const handleEdit = (id: number) => {
+    router.push(`/admin/student/edit/${id}`);
+  };
+
+  const handleAddFees = (id: number) => {
+    router.push(`/admin/student/fees/${id}`);
+  };
 
   useEffect(() => {
-    fetchClassesAndSections();
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+    
   }, [selectedClass]);
 
   useEffect(() => {
-    fetchData(selectedClass, selectedSection, keyword);
-  }, [selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -192,18 +197,29 @@ const ManageAlumni = () => {
     setPage(0);
   };
 
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
+
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
 
   const handleSearch = () => {
-    setPage(0);
-    fetchData(selectedClass, selectedSection, keyword);
+    setPage(0); // Reset to first page on search
+    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
+    setAllSession([]);
   };
 
   /* if (loading) return <Loader />; */
@@ -219,49 +235,54 @@ const ManageAlumni = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="today">2016-17</option>
-              <option value="this_week">2017-18</option>
-              <option value="last_week">2018-19</option>
-              <option value="this_month">2019-20</option>
-              <option value="last_month">2020-21</option>
-              <option value="last_3_month">2021-22</option>
-              <option value="last_6_month">2022-23</option>
-              <option value="last_12_month">2023-24</option>
-              <option value="this_year">2024-25</option>
-              <option value="last_year">2025-26</option>
-              <option value="period">2026-27</option>
-
-              
+               {allSession.map((cls: any) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.session}
+                    </option>
+                  ))}
             </select>
           </label>
-
           <label className={styles.label}>
-          Class
+            Class:
             <select
+              value={selectedClass || ""}
+              onChange={handleClassChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
-              <option value="">Select</option>     
+              <option value="">Select</option>
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
             </select>
           </label>
-
           <label className={styles.label}>
-         Section
+            Section:
             <select
+              value={selectedSection || ""}
+              onChange={handleSectionChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              disabled={!selectedClass}
             >
-              <option value="">Select</option>   
+              <option value="">Select</option>
+              {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
             </select>
           </label>
 
           <label className={styles.label}>
           Search By Admission Number
-            <select
+          <input
+              type="text"
+              placeholder="Search By Admission Number"
+              value={keyword}
+              onChange={handleKeywordChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              
-              
-            </select>
+            />
           </label>
          
           <div className={styles.searchGroup}>
@@ -291,7 +312,6 @@ const ManageAlumni = () => {
               rowsPerPage: rowsPerPage,
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
               onRowsDelete: handleDelete,
             }}
           />

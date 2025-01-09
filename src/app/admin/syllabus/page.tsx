@@ -30,6 +30,8 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchStaffData } from "@/services/staffService";
+import { fetchSyllabusHTMLData } from "@/services/syllabusService";
 const columns = [
   "Monday",
   "Tuesday",
@@ -43,8 +45,8 @@ const columns = [
 const options = {
   filterType: "checkbox",
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "none", // Disable row selection
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
@@ -68,45 +70,65 @@ const StudentDetails = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
-    ]);
-  };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
+  const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(
+    null,
+  );
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<
+    Array<Array<string>>
+  >([]);
+  const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
 
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
+  const today = new Date(); // Get today's date
+  const [weekStart, setWeekStart] = useState(getWeekStart(today));
+  const [weekEnd, setWeekEnd] = useState(getWeekEnd(weekStart));
+
+  const getStartOfWeekDate = (currentDate: any) => {
+    const dayOfWeek = currentDate.getDay(); // Get the day of the week (0 = Sunday, 1 = Monday, ...)
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Calculate difference to Monday
+    const startOfWeek = new Date(currentDate); // Clone the current date
+    startOfWeek.setDate(currentDate.getDate() + diffToMonday); // Adjust to the start of the week
+
+    // Format the date as dd-mm-yyyy
+    const formattedDate = [
+      String(startOfWeek.getDate()).padStart(2, "0"), // Day
+      String(startOfWeek.getMonth() + 1).padStart(2, "0"), // Month
+      startOfWeek.getFullYear(), // Year
+    ].join("-");
+
+    return formattedDate;
+  };
   useEffect(() => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
+    currentPage: any,
+    rowsPerPage: any,
+    selectedTeacherId?: any,
   ) => {
     try {
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        selectedSessionId,
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
-      setLoading(false);
+      if (data.length === 0) {
+        const result = await fetchStaffData("", "", "", "", "", "", 2);
+        setTotalCount(result.totalCount);
+        setData(result.data);
+        setLoading(false);
+      }
+      if (selectedTeacherId) {
+        const result = await fetchSyllabusHTMLData(
+          "current_week",
+          weekStart,
+          selectedTeacherId,
+        );
+
+        setIsFormVisible((prev) => !prev); // Toggle modal state
+        setIsFormVisibleHtml(result.data.timetable);
+      }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -117,43 +139,68 @@ const StudentDetails = () => {
     router.push(`/admin/student/${id}`);
   };
 
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
-
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+    fetchData(page, rowsPerPage, selectedTeacherId);
+  }, [page, rowsPerPage, weekStart]);
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+  const handleTeacherChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    fetchData(page, rowsPerPage, event.target.value);
+    handleDateChange("");
+    setSelectedTeacherId(event.target.value);
   };
 
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-    setPage(0);
-  };
+  // Function to calculate the start of the week
+  function getWeekStart(date: any) {
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+    return new Date(date.setDate(diff));
+  }
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
+  // Function to calculate the end of the week
+  function getWeekEnd(startDate: any) {
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 6);
+    return endDate;
+  }
 
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-    setPage(0);
+  // Handle date change
+  const handleDateChange = (direction: any) => {
+    const newStartDate = new Date(weekStart);
+    if (direction === "pre_week") {
+      newStartDate.setDate(newStartDate.getDate() - 7);
+    } else if (direction === "next_week") {
+      newStartDate.setDate(newStartDate.getDate() + 7);
+    }
+    setWeekStart(newStartDate);
+    setWeekEnd(getWeekEnd(newStartDate));
   };
+  const handleRefresh = () => {
+    const today = new Date(); // Get today's date
+    const weekStart = getWeekStart(today);
 
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
+    setWeekStart(weekStart);
+    setWeekEnd(getWeekEnd(weekStart));
+    setSelectedTeacherId("");
+    setIsFormVisibleHtml([]);
   };
+  // In your Next.js component
+  const getWeekDates = async (status: any, date: any, staff_id: any) => {
+    try {
+      const res = await fetch("/api/get-weekdates", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status, date, staff_id }),
+      });
 
-  const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+      const data = await res.json();
+
+      // Handle the data (for example, updating the page content)
+      /* document.getElementById('weekdates_result').innerHTML = data.join('<br/>'); */
+    } catch (error) {
+      console.error("Error fetching week dates:", error);
+    }
   };
 
   /* if (loading) return <Loader />; */
@@ -166,53 +213,171 @@ const StudentDetails = () => {
           <label className={styles.label}>
             Teachers:
             <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
+              value={selectedTeacherId || ""}
+              onChange={handleTeacherChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="Class1">Priya Ronghe (19001)</option>
-              <option value="Class2">Harshalata Khante (19002)</option>
-              {/* Add more class options here */}
+              {data.map((staff: any) => (
+                <option key={staff.id} value={staff.id}>
+                  {staff.name} {staff.surname} ({staff.employee_id})
+                </option>
+              ))}
             </select>
           </label>
 
           <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-            />
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
+            <button onClick={handleRefresh} className={styles.searchButton}>
+              Reset
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
-      {loading ? (
-        <Loader />
+      {selectedTeacherId ? (
+        <>
+          <div className="box-header text-center">
+            <button
+              className="fa fa-angle-left datearrow btn btn-primary"
+              onClick={() => handleDateChange("pre_week")}
+            >
+              Previous Week
+            </button>
+
+            <h3 className="box-title bmedium">
+              {weekStart.toLocaleDateString()} to {weekEnd.toLocaleDateString()}
+            </h3>
+
+            <button
+              className="fa fa-angle-right datearrow btn btn-primary"
+              onClick={() => handleDateChange("next_week")}
+            >
+              Next Week
+            </button>
+
+            <input
+              type="hidden"
+              id="this_week_start"
+              value={weekStart.toISOString().split("T")[0]}
+            />
+          </div>
+
+          {/* Schedule Table */}
+          <div className="table-responsive">
+            <table className="table-bordered table">
+              <thead>
+                <tr>
+                  {Object.entries(isFormVisibleHtml).map(([day, status]) => (
+                    <th key={day} className="text text-center">
+                      {day}
+                      <br />
+                      <span className="bmedium">{status}</span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {Object.entries(isFormVisibleHtml).map(([day, status]) => (
+                    <td key={day} className="text text-center">
+                      <div className="attachment-block clearfix">
+                        <b className="text text-center">
+                          {status ? status : "N/A"}
+                        </b>
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </>
       ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={" Manage Lesson Plan "}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
-        </ThemeProvider>
+        ""
       )}
+
+      {/* Responsive Styles */}
+      <style jsx>{`
+        .box-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px;
+
+          border: 1px solid #dee2e6;
+          border-radius: 5px;
+          margin-bottom: 20px;
+        }
+        .box-header button {
+          padding: 10px 15px;
+          border-radius: 5px;
+          font-size: 14px;
+          color: white;
+          background-color: #007bff;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        .box-header button:hover {
+          background-color: #0056b3;
+        }
+        .box-header h3 {
+          font-size: 18px;
+          font-weight: bold;
+          margin: 0;
+          text-align: center;
+        }
+        @media (max-width: 768px) {
+          .box-header {
+            flex-direction: column;
+            gap: 10px;
+          }
+          .box-header button {
+            width: 100%;
+          }
+          .box-header h3 {
+            font-size: 16px;
+          }
+        }
+        .table-responsive {
+          overflow-x: auto;
+          display: block;
+          width: 100%;
+        }
+        .box-header {
+          margin-bottom: 1rem;
+        }
+        @media (max-width: 768px) {
+          .table-responsive th,
+          .table-responsive td {
+            font-size: 12px;
+            padding: 8px;
+          }
+        }
+        .table {
+          border-collapse: collapse;
+          width: 100%;
+          margin-top: 20px;
+        }
+        .table-bordered th,
+        .table-bordered td {
+          border: 1px solid #dee2e6;
+          padding: 10px;
+          text-align: center;
+        }
+        .table-bordered th {
+          background-color: #f8f9fa;
+          font-weight: bold;
+        }
+        .table-bordered tbody tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+        .attachment-block {
+          padding: 5px;
+        }
+        .table-responsive {
+          overflow-x: auto;
+        }
+      `}</style>
     </DefaultLayout>
   );
 };

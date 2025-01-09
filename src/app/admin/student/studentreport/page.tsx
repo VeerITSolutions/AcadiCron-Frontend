@@ -48,6 +48,7 @@ import {
   Scale as ScaleIcon,
 } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; // Import usePathname for the current path
+import Link from "next/link";
 const columns = [
   "Section",
   "Admission No",
@@ -279,10 +280,11 @@ const StudentReport = () => {
           </div>
           <div className="p-5">
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {reportLinks.map((link) => (
+              {reportLinks.map((link: any) => (
                 <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                  <a
-                    href={link.href}
+                   <Link
+          href={link.href}
+                 
                     className={`flex items-center font-medium hover:text-[#0070f3] ${
                       activePath === link.href
                         ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
@@ -291,7 +293,7 @@ const StudentReport = () => {
                   >
                     <DescriptionIcon className="h-2 w-2 mr-2" />
                     {link.label}
-                  </a>
+                    </Link>
                 </li>
               ))}
             </ul>
@@ -384,7 +386,7 @@ const StudentReport = () => {
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={"Student Report"}
+            title={"Student Report 2"}
             data={data}
             columns={columns}
             options={{
