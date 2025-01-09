@@ -76,7 +76,7 @@ const ManageAlumni = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
-  const [allSession, setallSession] = useState<Array<any>>([]);
+  const [allSession, setAllSession] = useState<Array<any>>([]);
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
@@ -137,7 +137,7 @@ const ManageAlumni = () => {
 
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
-      setallSession(resultSession.data);
+      setAllSession(resultSession.data);
       setData(formattedData);
       setLoading(false);
     } catch (error: any) {
@@ -219,6 +219,7 @@ const ManageAlumni = () => {
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
+    setAllSession([]);
   };
 
   /* if (loading) return <Loader />; */
@@ -234,13 +235,11 @@ const ManageAlumni = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              {allSession?.map((cls: any) => (
-                  <option key={cls.id} value={cls.id}>
-                    {cls.session}
-                  </option>
-                ))}
-
-              
+               {allSession.map((cls: any) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.session}
+                    </option>
+                  ))}
             </select>
           </label>
           <label className={styles.label}>
