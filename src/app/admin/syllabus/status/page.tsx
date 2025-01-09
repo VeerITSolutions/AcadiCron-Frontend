@@ -95,8 +95,9 @@ const StudentDetails = () => {
   /* use effect End  */
 
   const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.admission_no,
+    return students.map((student: any, index: number) => [
+      index + 1, // Incrementing the index to start from 1 instead of 0
+      student.name,
       `${student.firstname} ${student.lastname}`,
       student.class || "N/A",
       student.category_id,
