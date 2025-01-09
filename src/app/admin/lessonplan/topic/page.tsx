@@ -54,12 +54,13 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
+      /* const result = await fetchStudentFeesMasterData(
         currentPage + 1,
         rowsPerPage,
       );
       setTotalCount(result.totalCounts.feegroupCount);
       setData(formatStudentCategoryData(result.data.feegroupList));
+      setLoading(false); */
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -269,8 +270,8 @@ const FeesMaster = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
