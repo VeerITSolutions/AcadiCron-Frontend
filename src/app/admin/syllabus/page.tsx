@@ -146,7 +146,35 @@ const StudentDetails = () => {
 
     setSelectedTeacherId(event.target.value);
   };
+  const today = new Date(); // Get today's date
+  const [weekStart, setWeekStart] = useState(getWeekStart(today));
+  const [weekEnd, setWeekEnd] = useState(getWeekEnd(weekStart));
 
+  // Function to calculate the start of the week
+  function getWeekStart(date: any) {
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+    return new Date(date.setDate(diff));
+  }
+
+  // Function to calculate the end of the week
+  function getWeekEnd(startDate: any) {
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 6);
+    return endDate;
+  }
+
+  // Handle date change
+  const handleDateChange = (direction: any) => {
+    const newStartDate = new Date(weekStart);
+    if (direction === "pre_week") {
+      newStartDate.setDate(newStartDate.getDate() - 7);
+    } else if (direction === "next_week") {
+      newStartDate.setDate(newStartDate.getDate() + 7);
+    }
+    setWeekStart(newStartDate);
+    setWeekEnd(getWeekEnd(newStartDate));
+  };
   const handleRefresh = () => {
     setSelectedTeacherId("");
     setIsFormVisibleHtml("");
@@ -170,6 +198,27 @@ const StudentDetails = () => {
       console.error("Error fetching week dates:", error);
     }
   };
+
+  const weekdays = [
+    { name: "Monday", date: "06-01-2025" },
+    { name: "Tuesday", date: "07-01-2025" },
+    { name: "Wednesday", date: "08-01-2025" },
+    { name: "Thursday", date: "09-01-2025" },
+    { name: "Friday", date: "10-01-2025" },
+    { name: "Saturday", date: "11-01-2025" },
+    { name: "Sunday", date: "12-01-2025" },
+  ];
+
+  const schedule = [
+    "Math Class at 9 AM",
+    "Science Workshop at 10 AM",
+    "History Lecture at 11 AM",
+    "Art Session at 2 PM",
+    "PE Class at 3 PM",
+    "Music Rehearsal at 4 PM",
+    "Library Time at 5 PM",
+  ];
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -200,10 +249,155 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-      <div
+      {isFormVisibleHtml ? (
+        <>
+          <div className="box-header text-center">
+            <button
+              className="fa fa-angle-left datearrow btn btn-primary"
+              onClick={() => handleDateChange("pre_week")}
+            >
+              Previous Week
+            </button>
+
+            <h3 className="box-title bmedium">
+              {weekStart.toLocaleDateString()} to {weekEnd.toLocaleDateString()}
+            </h3>
+
+            <button
+              className="fa fa-angle-right datearrow btn btn-primary"
+              onClick={() => handleDateChange("next_week")}
+            >
+              Next Week
+            </button>
+
+            <input
+              type="hidden"
+              id="this_week_start"
+              value={weekStart.toISOString().split("T")[0]}
+            />
+          </div>
+
+          {/* Schedule Table */}
+          <div className="table-responsive">
+            <table className="table-bordered table">
+              <thead>
+                <tr>
+                  {weekdays.map((day, index) => (
+                    <th key={index} className="text text-center">
+                      {day.name}
+                      <br />
+                      <span className="bmedium">{day.date}</span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {schedule.map((item, index) => (
+                    <td key={index} className="text text-center">
+                      <div className="attachment-block clearfix">
+                        <b className="text text-center">{item}</b>
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
+
+      {/* Responsive Styles */}
+      <style jsx>{`
+        .box-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px;
+
+          border: 1px solid #dee2e6;
+          border-radius: 5px;
+          margin-bottom: 20px;
+        }
+        .box-header button {
+          padding: 10px 15px;
+          border-radius: 5px;
+          font-size: 14px;
+          color: white;
+          background-color: #007bff;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        .box-header button:hover {
+          background-color: #0056b3;
+        }
+        .box-header h3 {
+          font-size: 18px;
+          font-weight: bold;
+          margin: 0;
+          text-align: center;
+        }
+        @media (max-width: 768px) {
+          .box-header {
+            flex-direction: column;
+            gap: 10px;
+          }
+          .box-header button {
+            width: 100%;
+          }
+          .box-header h3 {
+            font-size: 16px;
+          }
+        }
+        .table-responsive {
+          overflow-x: auto;
+          display: block;
+          width: 100%;
+        }
+        .box-header {
+          margin-bottom: 1rem;
+        }
+        @media (max-width: 768px) {
+          .table-responsive th,
+          .table-responsive td {
+            font-size: 12px;
+            padding: 8px;
+          }
+        }
+        .table {
+          border-collapse: collapse;
+          width: 100%;
+          margin-top: 20px;
+        }
+        .table-bordered th,
+        .table-bordered td {
+          border: 1px solid #dee2e6;
+          padding: 10px;
+          text-align: center;
+        }
+        .table-bordered th {
+          background-color: #f8f9fa;
+          font-weight: bold;
+        }
+        .table-bordered tbody tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+        .attachment-block {
+          padding: 5px;
+        }
+        .table-responsive {
+          overflow-x: auto;
+        }
+      `}</style>
+
+      {/* Dangerous HTML Injection */}
+      {/* <div
         className="w-full"
         dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
-      />
+      /> */}
     </DefaultLayout>
   );
 };
