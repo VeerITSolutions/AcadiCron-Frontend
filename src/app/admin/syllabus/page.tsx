@@ -283,7 +283,9 @@ const StudentDetails = () => {
                   {Object.entries(isFormVisibleHtml).map(([day, status]) => (
                     <td key={day} className="text text-center">
                       <div className="attachment-block clearfix">
-                        <b className="text text-center">{status}</b>
+                        <b className="text text-center">
+                          {status ? status : "N/A"}
+                        </b>
                       </div>
                     </td>
                   ))}
