@@ -269,6 +269,7 @@ const StudentDetails = () => {
             >
               Next Week
             </button>
+
             <input
               type="hidden"
               id="this_week_start"
@@ -278,7 +279,7 @@ const StudentDetails = () => {
 
           {/* Schedule Table */}
           <div className="table-responsive">
-            <table className="table-striped table">
+            <table className="table-bordered table">
               <thead>
                 <tr>
                   {weekdays.map((day, index) => (
@@ -293,7 +294,7 @@ const StudentDetails = () => {
               <tbody>
                 <tr>
                   {schedule.map((item, index) => (
-                    <td key={index} className="text text-center" width="14%">
+                    <td key={index} className="text text-center">
                       <div className="attachment-block clearfix">
                         <b className="text text-center">{item}</b>
                       </div>
@@ -310,6 +311,47 @@ const StudentDetails = () => {
 
       {/* Responsive Styles */}
       <style jsx>{`
+        .box-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px;
+          background-color: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-radius: 5px;
+          margin-bottom: 20px;
+        }
+        .box-header button {
+          padding: 10px 15px;
+          border-radius: 5px;
+          font-size: 14px;
+          color: white;
+          background-color: #007bff;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        .box-header button:hover {
+          background-color: #0056b3;
+        }
+        .box-header h3 {
+          font-size: 18px;
+          font-weight: bold;
+          margin: 0;
+          text-align: center;
+        }
+        @media (max-width: 768px) {
+          .box-header {
+            flex-direction: column;
+            gap: 10px;
+          }
+          .box-header button {
+            width: 100%;
+          }
+          .box-header h3 {
+            font-size: 16px;
+          }
+        }
         .table-responsive {
           overflow-x: auto;
           display: block;
@@ -324,6 +366,30 @@ const StudentDetails = () => {
             font-size: 12px;
             padding: 8px;
           }
+        }
+        .table {
+          border-collapse: collapse;
+          width: 100%;
+          margin-top: 20px;
+        }
+        .table-bordered th,
+        .table-bordered td {
+          border: 1px solid #dee2e6;
+          padding: 10px;
+          text-align: center;
+        }
+        .table-bordered th {
+          background-color: #f8f9fa;
+          font-weight: bold;
+        }
+        .table-bordered tbody tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+        .attachment-block {
+          padding: 5px;
+        }
+        .table-responsive {
+          overflow-x: auto;
         }
       `}</style>
 
