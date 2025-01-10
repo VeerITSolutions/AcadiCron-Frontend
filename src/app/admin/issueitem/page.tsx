@@ -146,32 +146,35 @@ const IssueItem = () => {
       }));
     }
   };
-  const formatDate = (date:any) => {
+  const formatDate = (date: any) => {
     if (!date) return "N/A";
     const d = new Date(date);
-    return d.toLocaleDateString("en-US", { year: "numeric", month: "numeric", day: "numeric" });
+    return d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
   };
 
-  const getIssueTypeTag = (type:any) => {
+  const getIssueTypeTag = (type: any) => {
     if (type == 1) {
       return <span style={{ color: "red" }}>Issued</span>;
     } else {
       return <span style={{ color: "green" }}>Returned</span>;
-    } 
+    }
   };
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.name || "N/A",
       subject.item_category || "N/A",
-      `${formatDate(subject.issue_date)  || "N/A"} - ${formatDate(subject.return_date) || "N/A"}`,
+      `${formatDate(subject.issue_date) || "N/A"} - ${formatDate(subject.return_date) || "N/A"}`,
       `${subject.staff_name || "N/A"}  ${subject.surname || "N/A"}`,
       subject.issue_by || "N/A",
       subject.quantity || "N/A",
-  
-      <>{getIssueTypeTag(subject.is_returned)}</>
-      ,
-      
+
+      <>{getIssueTypeTag(subject.is_returned)}</>,
+
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleDelete(subject.id)}
@@ -250,8 +253,6 @@ const IssueItem = () => {
     }
   };
 
-
-
   const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
@@ -279,9 +280,9 @@ const IssueItem = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editItemIssue(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Issue item updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update issue item");
         }
       } else {
         const result = await createItemIssue(formData);
@@ -303,9 +304,9 @@ const IssueItem = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Issue item created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create issue item");
         }
       }
       // Reset form after successful action
@@ -323,7 +324,7 @@ const IssueItem = () => {
 
       setIsEditing(false);
       setEditCategoryId(null);
-      fetchData(page, rowsPerPage); 
+      fetchData(page, rowsPerPage);
     } catch (error) {
       console.error("An error occurred", error);
     }
@@ -357,36 +358,35 @@ const IssueItem = () => {
 
   return (
     <DefaultLayout>
-   <div className="bg-white dark:bg-boxdark dark:drop-shadow-none dark:text-white border border-stroke dark:border-strokedark">
-      <div
-        className="mb-4 pl-4 pt-4 text-right flex justify-end items-center">
-        <Link href="/admin/issueitem/create">
-                <button className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
-                  <i className="fa fa-plus mr-2" />
-                  Add Issue Item
-                </button>
-              </Link>
+      <div className="border border-stroke bg-white dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className="mb-4 flex items-center justify-end pl-4 pt-4 text-right">
+          <Link href="/admin/issueitem/create">
+            <button className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
+              <i className="fa fa-plus mr-2" />
+              Add Issue Item
+            </button>
+          </Link>
+        </div>
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Issue Item List"}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }}
+            />
+          </ThemeProvider>
+        )}
       </div>
-      {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Issue Item List"}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
-        </ThemeProvider>
-      )}
-     </div>
     </DefaultLayout>
   );
 };

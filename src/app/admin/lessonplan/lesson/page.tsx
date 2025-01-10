@@ -21,6 +21,8 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { fetchSubjectData } from "@/services/subjectsService";
+import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -31,14 +33,22 @@ const FeesMaster = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [subject, setSubject] = useState<Array<any>>([]);
+  const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
+  const [colorMode, setColorMode] = useColorMode();
+
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [colorMode, setColorMode] = useColorMode();
-
+  const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<
+    string | undefined
+  >(undefined);
+  const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
+    undefined,
+  );
   const [formData, setFormData] = useState({
     fees_group: "",
     fees_type: "",
@@ -55,12 +65,37 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesMasterData(
+      /* const result = await fetchStudentFeesMasterData(
         currentPage + 1,
         rowsPerPage,
       );
       setTotalCount(result.totalCounts.feegroupCount);
       setData(formatStudentCategoryData(result.data.feegroupList));
+      setLoading(false); */
+
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      /* call condtion wise  */
+      if (selectedClass && selectedSection) {
+        const subjectgroupresult = await fetchSubjectGroupData(
+          "",
+          "",
+          selectedClass,
+          selectedSection,
+        );
+
+        setSubjectGroup(subjectgroupresult.data);
+      }
+      if (selectedSubjectGroup) {
+        const subjectresult = await fetchSubjectData(
+          "",
+          "",
+          selectedSubjectGroup,
+        );
+        setSubject(subjectresult.data);
+      }
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -77,6 +112,19 @@ const FeesMaster = () => {
       console.error("Delete failed", error);
     }
   };
+
+  const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubject(event.target.value);
+  };
+
+  const handleSubjectGroupChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedSubjectGroup(event.target.value);
+  };
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
 
   const handleEdit = (
     id: number,
@@ -147,7 +195,7 @@ const FeesMaster = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, selectedClass, selectedSection]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -268,8 +316,8 @@ const FeesMaster = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page: page,
     rowsPerPage: rowsPerPage,
@@ -297,7 +345,7 @@ search: false,
                 <select
                   value={selectedClass || ""}
                   onChange={handleClassChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
                 >
                   <option value="">Select</option>
                   {classes.map((cls) => (
@@ -313,9 +361,9 @@ search: false,
                 </label>
                 <select
                   value={selectedSection || ""}
+                  disabled={!selectedClass}
                   onChange={handleSectionChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  disabled={!selectedClass} // Disable section dropdown if no class is selected
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
                 >
                   <option value="">Select</option>
                   {section.map((sec) => (
@@ -331,25 +379,38 @@ search: false,
                   Subject Group <span className="required">*</span>
                 </label>
                 <select
-                  id="section_id"
-                  name="section_id"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  value={selectedSubjectGroup || ""}
+                  onChange={handleSubjectGroupChange}
+                  disabled={!selectedClass || !selectedSection}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
                 >
                   <option value="">Select</option>
+                  {subjectGroup.map((cls) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               <div className="">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  {" "}
-                  Subject <span className="required">*</span>
+                  Subject
                 </label>
                 <select
-                  id="section_id"
-                  name="section_id"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  value={selectedSubject || ""}
+                  onChange={handleSubjectChange}
+                  disabled={
+                    !selectedClass || !selectedSection || !selectedSubjectGroup
+                  }
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
                 >
                   <option value="">Select</option>
+                  {subject.map((cls) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 

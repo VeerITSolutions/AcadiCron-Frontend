@@ -146,9 +146,9 @@ const RoomType = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editRoomtype(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Room type updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update room type");
         }
       } else {
         const result = await createRoomtype(formData);
@@ -163,9 +163,9 @@ const RoomType = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Room type created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create room type");
         }
       }
       // Reset form after successful action

@@ -16,6 +16,7 @@ import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 import { fetchSubjectData } from "@/services/subjectsService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
+import { getLessonBySubjectId } from "@/services/lessonService";
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -94,8 +95,9 @@ const StudentDetails = () => {
   /* use effect End  */
 
   const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.admission_no,
+    return students.map((student: any, index: number) => [
+      index + 1, // Incrementing the index to start from 1 instead of 0
+      student.name,
       `${student.firstname} ${student.lastname}`,
       student.class || "N/A",
       student.category_id,
@@ -113,15 +115,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchHomeWorkData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        selectedSubjectGroup,
-        selectedSubject,
-        keyword,
-      );
+      const result = await getLessonBySubjectId(selectedClass, selectedSection);
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
@@ -266,8 +260,9 @@ const StudentDetails = () => {
             <select
               value={selectedSubjectGroup || ""}
               onChange={handleSubjectGroupChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
               disabled={!selectedClass || !selectedSection}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+
             >
               <option value="">Select</option>
               {subjectGroup.map((cls) => (
@@ -283,10 +278,11 @@ const StudentDetails = () => {
             <select
               value={selectedSubject || ""}
               onChange={handleSubjectChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
               disabled={
                 !selectedClass || !selectedSection || !selectedSubjectGroup
               }
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+
             >
               <option value="">Select</option>
               {subject.map((cls) => (

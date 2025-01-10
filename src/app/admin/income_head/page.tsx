@@ -78,7 +78,6 @@ const IncomeHead = () => {
     }
   };
 
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
@@ -133,38 +132,31 @@ const IncomeHead = () => {
     }
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value, // Update the specific field
     }));
   };
-  
 
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editIncomeHead(
-          editCategoryId,
-          formData,
-
-        );
+        const result = await editIncomeHead(editCategoryId, formData);
         if (result.success) {
           toast.success("Income head updated successfully");
         } else {
           toast.error("Failed to update income head");
         }
       } else {
-        const result = await createIncomeHead(
-          formData,
-      
-        );
+        const result = await createIncomeHead(formData);
 
         setFormData({
           income_category: "",
           description: "",
-          
         });
 
         setSelectedClass("");
@@ -172,16 +164,15 @@ const IncomeHead = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Income head created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create income head");
         }
       }
       // Reset form after successful action
       setFormData({
         income_category: "",
         description: "",
-
       });
 
       setIsEditing(false);
@@ -199,20 +190,15 @@ const IncomeHead = () => {
     setPage(0);
   };
 
-
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-  const columns = [
-    "Income Head",
-    "Action",
-];
+  const columns = ["Income Head", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page,
     rowsPerPage,
@@ -244,7 +230,7 @@ search: false,
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Income Head <span className="required">*</span>
+                    Income Head <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -253,42 +239,41 @@ search: false,
                     value={formData.income_category}
                     onChange={handleInputChange}
                   />
-                  </div>
-        
-              <div>
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Description
-            </label>
-            <textarea
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-            ></textarea>
-          </div>
+                </div>
 
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Description
+                  </label>
+                  <textarea
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
 
-          <div className="flex gap-2">
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  onClick={(e) => {
-                    e.preventDefault(); // Prevent default form submission
-                    handleSubmit();
-                  }}
-                >
-                  {isEditing ? "Update" : "Save"}
-                </button>
-                {isEditing && (
+                <div className="flex gap-2">
                   <button
-                    type="button"
+                    type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    onClick={handleCancel}
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default form submission
+                      handleSubmit();
+                    }}
                   >
-                    Cancel
+                    {isEditing ? "Update" : "Save"}
                   </button>
-                )}
-              </div>
+                  {isEditing && (
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </div>
             </form>
           </div>

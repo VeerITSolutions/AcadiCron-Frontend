@@ -183,9 +183,9 @@ const Hostel = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editHostel(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Hostel updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update hostel");
         }
       } else {
         const result = await createHostel(formData);
@@ -200,9 +200,9 @@ const Hostel = () => {
         });
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Hostel created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create hostel");
         }
       }
       // Reset form after successful action

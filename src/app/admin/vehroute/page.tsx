@@ -187,17 +187,17 @@ const VehicleRoutes = () => {
           selectedVehicles,
         );
         if (result.success) {
-          toast.success("Vehicle updated successfully");
+          toast.success("Vehicle route updated successfully");
         } else {
-          toast.error("Failed to update vehicle");
+          toast.error("Failed to update vehicle route");
         }
       } else {
         const result = await createVehicleRoutes(formData, selectedVehicles);
 
         if (result.success) {
-          toast.success("Vehicle routes created successfully");
+          toast.success("Vehicle route created successfully");
         } else {
-          toast.error("Failed to create vehicle routes");
+          toast.error("Failed to create vehicle route");
         }
       }
       // Reset form after successful action
