@@ -114,17 +114,17 @@ const GuardianReport = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      `${student.class_name.trim()} ${student.lastname.trim()}`,
+      `${student.class_name.trim()} ${student.section_name.trim()}`,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
+      student.mobile_no || "N/A",
+      student.guardian_name || "N/A",
+      student.guardian_relation || "N/A",
+      student.guardian_phone || "N/A",
       student.father_name || "N/A",
-      student.gender || "N/A",
-      student.dob || "N/A",
-      student.category || "N/A",
-      student.mobileno || "N/A",
-      student.localno || "N/A",
-      student.NationalNo || "N/A",
-      student.RTE || "N/A",
+      student.father_phone || "N/A",
+      student.mother_name || "N/A",
+      student.mother_phone || "N/A",
 
     ]);
   };

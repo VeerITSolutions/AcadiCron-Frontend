@@ -116,20 +116,17 @@ const StudentReport = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.section || "N/A",
+      student.section_name || "N/A",
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.father_name || "N/A",
-      student.gender || "N/A",
       student.dob || "N/A",
+      student.gender || "N/A",
       student.category || "N/A",
       student.mobileno || "N/A",
-      student.localno || "N/A",
-      student.NationalNo || "N/A",
-      student.RTE || "N/A",
-
-
+      student.local_identification_no || "N/A",
+      student.national_identification_no || "N/A",
+      student.rte || "N/A",
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
