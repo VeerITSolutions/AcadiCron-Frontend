@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentCategoryData = async (page?: number, perPage?: number) => {
+export const fetchStudentCategoryData = async (page?: any, perPage?: any) => {
   const response = await apiClient.get(`/category`, {
     params: {
       page,

@@ -17,13 +17,13 @@ import { Editor } from "@tinymce/tinymce-react";
 import {
   fetchsectionByClassData,
   fetchsectionData,
-} from "@/services/sectionsService";
+} from "@/services/sectionsService"; // Import your section API service
 import {
-  fetchLeaveData,
-  createLeave,
-  deleteLeaveData,
-  editLeaveData,
-} from "@/services/leaveService";
+  fetchquestionData,
+  createquestionData,
+  deletequestionData,
+  editquestionData,
+} from "@/services/questionService";
 
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -42,6 +42,7 @@ import { getClasses } from "@/services/classesService";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
+import content from "mui-datatables";
 
 const columns = [
   "Q. ID",
@@ -65,18 +66,120 @@ const options = {
 const QuestionBank = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
+  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const [staffData, setStaffData] = useState<Array<Array<string>>>([]);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  
+  
+   const [editing, setEditing] = useState(false); // Add state for editing
+    const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+       setSelectedClass(event.target.value);
+       setPage(0);
+     };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClickOpen1 = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+    setFormData({
+
+      subject_id: "",
+      question_type: "",
+      level: "",
+      class_id: "",
+      section_id: "",
+    });
+
+    setSelectedRoleLeave("");
+    setSelectedStaff("");
+    setSelectedLeaveselectedLeaveType("");
+    setOpen(false);
+    setEditing(false); // Reset editing state
+  };
+  const handleClose1 = () => {
+    setFormData({
+
+      subject_id: "",
+      question_type: "",
+      level: "",
+      class_id: "",
+      section_id: "",
+    });
+
+    setOpen(false);
+    setEditing(false); // Reset editing state
+  };
+
+  const handleEditorChange = (content: any, editor: any) => {
+    try {
+        console.log("Content:", content);
+        // Perform additional logic
+    } catch (error) {
+        console.error("Error in handleEditorChange:", error);
+    }
+};
+
+const handleSubmit = async () => {
+    try {
+      if (isEditing && editCategoryId !== null) {
+        const result = await editquestionData(editCategoryId, formData);
+        if (result.success) {
+          toast.success("Subject group updated successfully");
+        } else {
+          toast.error("Failed to update subject group");
+        }
+      } else {
+        const result = await createquestionData(formData);
+
+        setFormData({
+          subject_id: "",
+          question_type: "",
+          level: "",
+          class_id: "",
+          section_id: "",
+        });
+
+        setSelectedClass("");
+        setSelectedSection("");
+        setSelectedSubject([]);
+
+        if (result.success) {
+          toast.success("Question created successfully");
+        } else {
+          toast.error("Failed to create Question");
+        }
+      }
+      // Reset form after successful action
+      setFormData({
+        subject_id: "",
+    question_type: "",
+    level: "",
+    class_id: "",
+    section_id: "",
+      });
+
+      setIsEditing(false);
+      setEditCategoryId(null);
+      fetchData(page, rowsPerPage); // Refresh data after submit
+    } catch (error) {
+      console.error("An error occurred", error);
+    }
+  };
   const [roleleavedata, setRoleLeaveData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
 
@@ -95,279 +198,39 @@ const QuestionBank = () => {
   const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     undefined,
   );
+  
 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
-    date: null as Date | null,
-    leave_type_id: "",
-    leave_from: null as Date | null,
-    leave_to: null as Date | null,
-    employee_remark: "",
-    admin_remark: "",
-    status: "",
-    document_file: null,
+    subject_id: "",
+    question_type: "",
+    level: "",
+    class_id: "",
+    section_id: "",
   });
-  const [editing, setEditing] = useState(false); // Add state for editing
-  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
-  const [open, setOpen] = useState(false);
-  const [open1, setOpen1] = useState(false);
-  const router = useRouter();
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
+    try {
+      const result = await fetchquestionData(currentPage + 1, rowsPerPage);
+      setTotalCount(result.total);
+      setData(formatSubjectData(result.data));
+
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteLeaveData(id);
+      await deletequestionData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
-      console.error("Delete failed", error);
       toast.error("Delete failed");
+      console.error("Delete failed", error);
     }
-  };
-
-  const handleDateChange = (selectedDates: Date[], name: string) => {
-    if (selectedDates.length > 0) {
-      const formattedDate = selectedDates[0].toISOString().split("T")[0]; // Format to YYYY-MM-DD
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: formattedDate, // Update the specific field dynamically
-      }));
-    }
-  };
-
-  const handleEdit = async (id: number, leaveData: any) => {
-    setEditing(true);
-    setCurrentLeaveId(id);
-
-    try {
-      const result = await fetchLeaveData(
-        "",
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        id,
-      );
-
-      setFormData(result.data[0]);
-      setSelectedRoleLeave(result.data[0].leave_type_id);
-      setSelectedStaff(result.data[0].staff_id);
-      setSelectedLeaveselectedLeaveType(result.data[0].leave_type_id);
-
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-
-    setOpen(true); // Open the modal
-  };
-  const formatDate = (dateString: any) => {
-    if (!dateString) return "N/A"; // Handle null/undefined dates
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "N/A"; // Handle invalid dates
-    return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
-      date,
-    );
-  };
-
-  const getStatusColor = (status: string | undefined) => {
-    switch (status?.toLowerCase()) {
-      case "pending":
-        return "orange";
-      case "approve":
-        return "green";
-      case "disapprove":
-        return "red";
-      default:
-        return "gray"; // Default for "N/A" or unknown statuses
-    }
-  };
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      `${student.name} ${student.surname}` || "N/A",
-      student.type || "N/A",
-      `${formatDate(student.leave_from)} - ${formatDate(student.leave_to) || "N/A"}`,
-      student.leave_days || "N/A",
-      formatDate(student.date) || "N/A",
-
-      <span
-        key={student.id}
-        style={{ color: getStatusColor(student.status), fontWeight: "bold" }}
-      >
-        {student.status || "N/A"}
-      </span>,
-      <div key={student.id} className="flex">
-        <IconButton
-          onClick={() => handleEdit(student.id, student)}
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
-    ]);
-  };
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
-
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
-  useEffect(() => {
-    setSelectedSessionId(getselectedSessionId);
-  }, []);
-  const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
-    selectedRoleLeave?: string,
-  ) => {
-    try {
-      const resultStaffData = await fetchStaffData(
-        currentPage + 1,
-        rowsPerPage,
-        null,
-        selectedSection,
-        keyword,
-        selectedSessionId,
-        selectedRoleLeave,
-      );
-      setStaffData(resultStaffData.data);
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-
-    try {
-      const result = await fetchLeaveData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-      );
-
-      setTotalCount(result.totalCount);
-
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-
-    try {
-      const result = await fetchLeaveTypeData();
-      setLeaveTypeData(result.data);
-
-      const roleresult = await fetchRoleData();
-      setRoleData(roleresult.data);
-
-      // const leaveresult = await fetchLeaveData();
-      // setRoleLeaveData(leaveresult.data);
-
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
-
-  const handleSave = async () => {
-    if (
-      !selectedRoleLeave &&
-      !selectedStaff &&
-      !formData.leave_from &&
-      !formData.leave_to &&
-      !formData.status
-    ) {
-      toast.error("Please fill all required fields before submitting.");
-      return;
-    }
-    try {
-      let result;
-      if (editing) {
-        result = await editLeaveData(
-          currentLeaveId,
-          selectedRoleLeave,
-          selectedStaff,
-          selectedLeaveType,
-          formData.date,
-          formData.leave_type_id,
-          formData.leave_from,
-          formData.leave_to,
-          formData.employee_remark,
-          formData.admin_remark,
-          formData.document_file,
-          formData.status,
-        );
-      } else {
-        result = await createLeave(
-          selectedRoleLeave,
-          selectedStaff,
-          selectedLeaveType,
-          formData.date,
-          formData.leave_type_id,
-          formData.leave_from,
-          formData.leave_to,
-          formData.employee_remark,
-          formData.admin_remark,
-          formData.document_file,
-          formData.status,
-        );
-      }
-
-      if (result.status == 200) {
-        toast.success(
-          editing ? "Leave updated successfully" : "Leave applied successfully",
-        );
-        setFormData({
-          date: null as Date | null,
-
-          leave_type_id: "",
-          leave_from: null as Date | null,
-          leave_to: null as Date | null,
-          employee_remark: "",
-          admin_remark: "",
-          status: "",
-          document_file: null,
-        });
-
-        setSelectedRoleLeave("");
-        setSelectedStaff("");
-        setSelectedLeaveselectedLeaveType("");
-        setOpen(false); // Close the modal
-        setEditing(false); // Reset editing state
-        fetchData(page, rowsPerPage); // Refresh data after submit
-      } else {
-        toast.error("Failed to save leave");
-      }
-    } catch (error) {
-      console.error("An error occurred", error);
-      toast.error("An error occurred while saving leave");
-    }
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value, // For regular inputs like text or selects
-    }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -382,138 +245,89 @@ const QuestionBank = () => {
     }
   };
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+  const handleEdit = (id: number, subject: any) => {
+    setIsEditing(true);
+    setEditCategoryId(id);
+
+    setFormData({
+      subject_id: subject.subject_id,
+      question_type: subject.question_type,
+      level: subject.level,
+      class_id: subject.class_id,
+      section_id: subject.section_id,
+    });
   };
+
+  const handleCancel = () => {
+    setFormData({
+    subject_id: "",
+    question_type: "",
+    level: "",
+    class_id: "",
+    section_id: "",
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+
+  const formatSubjectData = (subjects: any[]) => {
+    return subjects.map((subject: any) => [
+      subject.subject_id || "N/A",
+      subject.question_type || "N/A",
+      subject.level || "N/A",
+      subject.class_id || "N/A",
+      subject.section_id || "N/A",
+      <div key={subject.id} className="flex">
+        <IconButton
+          onClick={() => handleEdit(subject.id, subject)}
+          aria-label="edit"
+        >
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(subject.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
+    ]);
+  };
+
+  useEffect(() => {
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSessionId");
+    if (savedSession) {
+      setSavedSession(savedSession);
+      // Use this value in your logic
+    }
+  }, []);
+
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+    // Clear the input field
+  };
+  
+  const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
 
-  const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(
-      page,
-      rowsPerPage,
-      selectedClass,
-      selectedSection,
-      keyword,
-      selectedRoleLeave,
-    );
-  };
-
-  useEffect(() => {
-    fetchData(
-      page,
-      rowsPerPage,
-      selectedClass,
-      selectedSection,
-      keyword,
-      selectedRoleLeave,
-    );
-  }, [
-    page,
-    rowsPerPage,
-    selectedClass,
-    selectedSection,
-    keyword,
-    selectedRoleLeave,
-  ]);
-  const [content, setContent] = useState("");
-
-  const handleEditorChange = (newContent: any) => {
-    setContent(newContent);
-    console.log("Content was updated:", newContent);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClickOpen1 = () => {
-    setOpen1(true);
-  };
-  const handleClose = () => {
-    setFormData({
-      date: null as Date | null,
-
-      leave_type_id: "",
-      leave_from: null as Date | null,
-      leave_to: null as Date | null,
-      employee_remark: "",
-      admin_remark: "",
-      status: "",
-      document_file: null,
-    });
-
-    setSelectedRoleLeave("");
-    setSelectedStaff("");
-    setSelectedLeaveselectedLeaveType("");
-    setOpen(false);
-    setEditing(false); // Reset editing state
-  };
-  const handleClose1 = () => {
-    setFormData({
-      date: null as Date | null,
-
-      leave_type_id: "",
-      leave_from: null as Date | null,
-      leave_to: null as Date | null,
-      employee_remark: "",
-      admin_remark: "",
-      status: "",
-      document_file: null,
-    });
-
-    setSelectedRoleLeave("");
-    setSelectedStaff("");
-    setSelectedLeaveselectedLeaveType("");
-    setOpen1(false);
-    setEditing(false); // Reset editing state
-  };
-  const fetchClassesAndSections = async () => {
-    try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]);
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
-  const handleStaffChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedStaff(event.target.value);
-  };
-
-  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedRoleLeave(event.target.value);
-  };
-
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-  };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value);
-  };
-
-  const handleLeaveType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLeaveselectedLeaveType(event.target.value);
-  };
-  useEffect(() => {
-    const session_value = localStorage.getItem("selectedSessionId");
-    if (session_value) {
-      setSavedSession(session_value);
-    }
-
-    fetchClassesAndSections();
-  }, [selectedClass]);
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -653,7 +467,7 @@ const QuestionBank = () => {
 
                 <div className="col-span-full flex">
                   <button
-                    onClick={handleSave}
+                    onClick={handleSubmit}
                     className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >
                     Save
@@ -815,7 +629,7 @@ const QuestionBank = () => {
 
                 <div className="col-span-full">
                   <button
-                    onClick={handleSave}
+                    onClick={handleSubmit}
                     className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >
                     Save

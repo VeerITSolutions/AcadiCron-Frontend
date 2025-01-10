@@ -16,23 +16,6 @@ import { getClasses } from "@/services/classesService"; // Import your classes A
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import {
   Group as GroupIcon,
@@ -48,32 +31,8 @@ import {
   Scale as ScaleIcon,
 } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; 
+import Link from "next/link";
 
-const columns = [
-  "Father Name",
-  "Mother Name",
-  "Guardian Name",
-  "Guardian Phone",
-  "Student Name (Sibling)",
-  "Class",
-  "Admission Date",
-  "Gender"
-];
-
-
-
-
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
-  responsive: "standard",
-  search: false,
-  filter: false,
-  viewColumns: false,
-  tableBodyMaxHeight: "500px",
-  selectableRows: "none",
-};
 
 const StudentReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -95,6 +54,30 @@ const StudentReport = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+
+  const columns = [
+    "Father Name",
+    "Mother Name",
+    "Guardian Name",
+    "Guardian Phone",
+    "Student Name (Sibling)",
+    "Class",
+    "Admission Date",
+    "Gender"
+  ];
+  
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+    pagination: false,
+    responsive: "standard",
+    search: false,
+    filter: false,
+    viewColumns: false,
+    tableBodyMaxHeight: "500px",
+    selectableRows: "none",
+  };
+  
 
   const handleDelete = async () => {
     try {
@@ -129,20 +112,14 @@ const StudentReport = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.section || "N/A",
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.father_name || "N/A",
+      student.mother_name || "N/A",
+      student.guardian_name || "N/A",
+      student.guardian_phone || "N/A",
+      `${student.firstname.trim()} ${student.lastname.trim()}`,
+      student.class_name || "N/A",
+      student.admission_date || "N/A",
       student.gender || "N/A",
-      student.dob || "N/A",
-      student.category || "N/A",
-      student.mobileno || "N/A",
-      student.localno || "N/A",
-      student.NationalNo || "N/A",
-      student.RTE || "N/A",
-
-
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -281,7 +258,7 @@ const StudentReport = () => {
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {reportLinks.map((link) => (
                 <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                  <a
+                  <Link
                     href={link.href}
                     className={`flex items-center hover:text-[#0070f3] ${
                       activePath === link.href
@@ -291,7 +268,7 @@ const StudentReport = () => {
                   >
                     <DescriptionIcon className="h-2 w-2 mr-2" />
                     {link.label}
-                  </a>
+                    </Link>
                 </li>
               ))}
             </ul>
@@ -352,7 +329,7 @@ const StudentReport = () => {
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={""}
+            title={"Sibling report"}
             data={data}
             columns={columns}
             options={{

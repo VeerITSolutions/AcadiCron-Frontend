@@ -6,7 +6,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
+import styles from "./StudentDetails.module.css";
 import Loader from "@/components/common/Loader";
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
@@ -27,48 +27,58 @@ import {
   Wc as WcIcon,
   Scale as ScaleIcon,
 } from '@mui/icons-material';
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchSubjectGroupData } from "@/services/subjectGroupService";
+import { fetchHomeWorkData } from "@/services/homeworkServices";
+import { fetchSubjectData } from "@/services/subjectsService";
+import Link from "next/link";
 
 
 
 const EvaluationReport = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
+  const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
+  const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
+  const [subject, setSubject] = useState<Array<any>>([]);
+  const [classes2, setClassessData2] = useState<Array<any>>([]);
+  const [section2, setSections2] = useState<Array<any>>([]);
+  const [subjectGroup2, setSubjectGroup2] = useState<Array<any>>([]);
+  const [subject2, setSubject2] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [classes, setClassessData] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [colorMode, setColorMode] = useColorMode();
-
+  const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<
+    string | undefined
+  >(undefined);
+  const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSubjectGroup2, setSelectedSubjectGroup2] = useState<
+    string | undefined
+  >(undefined);
   const [keyword, setKeyword] = useState<string>("");
-  const router = useRouter();
+  const pathname = usePathname();
+  const [activePath, setActivePath] = useState("");
+  const [open, setOpen] = useState(false);
 
+  
   const columns = [
     "Subject",
     "Homework Date",
@@ -77,76 +87,137 @@ const EvaluationReport = () => {
     "Complete%"
   ];
   
-  
   const options = {
     filterType: false,
     serverSide: true,
     selectableRows: "none",
-   responsive: "standard",
-  search: false,
-    filter: false, // Disable filter,
-    viewColumns: false, // Disable view columns button
+    responsive: "standard",
+    search: false,
+    filter: false, 
+    viewColumns: false, 
+  };
+
+  /* use Effect  */
+    useEffect(() => {
+      if (pathname) {
+        setActivePath(pathname); 
+      }
+    }, [pathname]);
+
+  useEffect(() => {
+    fetchData(
+      page,
+      rowsPerPage,
+      selectedClass,
+      selectedSection,
+      selectedSubjectGroup,
+      selectedSubject,
+      keyword,
+    );
+  }, [
+    page,
+    rowsPerPage,
+    selectedClass,
+    selectedSection,
+    selectedSection2,
+    selectedSubjectGroup,
+    selectedSubjectGroup2,
+    selectedSubject,
+    keyword,
+  ]);
+
+  useEffect(() => {
+    fetchClassesAndSections();
+  }, [selectedClass]);
+
+  useEffect(() => {
+    fetchClassesAndSections2(); 
+  }, [selectedClass2, selectedSection2]);
+
+
+
+  const formatDate = (dateString: any) => {
+    if (!dateString) return "N/A"; 
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "N/A"; 
+    return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
+      date,
+    );
   };
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
-      `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      student.subject_name || "N/A",
+      formatDate(student.homework_date) || "N/A",
+      formatDate(student.submit_date) || "N/A",
+      formatDate(student.incomplete) || "N/A",
+      formatDate(student.complete) || "N/A",
     ]);
   };
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
 
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
-  useEffect(() => {
-    setSelectedSessionId(getselectedSessionId);
-  }, []);
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
+    selectedSubjectGroup?: string,
+    selectedSubject?: string,
     keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentData(
+      const result = await fetchHomeWorkData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
         selectedSection,
+        selectedSubjectGroup,
+        selectedSubject,
         keyword,
-        selectedSessionId,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
+
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      setClassessData2(classesResult.data);
+
+      /* call condtion wise  */
+      if (selectedClass && selectedSection) {
+        const subjectgroupresult = await fetchSubjectGroupData(
+          "",
+          "",
+          selectedClass,
+          selectedSection,
+        );
+
+        setSubjectGroup(subjectgroupresult.data);
+      }
+      if (selectedSubjectGroup) {
+        const subjectresult = await fetchSubjectData(
+          "",
+          "",
+          selectedSubjectGroup,
+        );
+        setSubject(subjectresult.data);
+      }
+
+      if (selectedSubjectGroup2) {
+        const subjectresult2 = await fetchSubjectData(
+          "",
+          "",
+          selectedSubjectGroup2,
+        );
+        setSubject2(subjectresult2.data);
+      }
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
-
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
-
-  useEffect(() => {
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -157,46 +228,54 @@ const EvaluationReport = () => {
     setPage(0);
   };
 
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
-
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
     setPage(0);
   };
 
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
+  const handleSubjectGroupChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedSubjectGroup(event.target.value);
+  };
+
+  const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubject(event.target.value);
   };
 
   const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+    setPage(0);
+    fetchData(
+      page,
+      rowsPerPage,
+      selectedClass,
+      selectedSection,
+      selectedSubjectGroup,
+      selectedSubject,
+      keyword,
+    );
+  };
+
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
   };
 
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setSelectedSubjectGroup("");
+    setSelectedSubject("");
     setKeyword("");
   };
 
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
-
   const fetchClassesAndSections = async () => {
     try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      // Fetch sections if a class is selected
       if (selectedClass) {
         const sectionsResult = await fetchsectionByClassData(selectedClass);
         setSections(sectionsResult.data);
       } else {
-        setSections([]); // Clear sections if no class is selected
+        setSections([]);
       }
     } catch (error: any) {
       setError(error.message);
@@ -204,18 +283,32 @@ const EvaluationReport = () => {
     }
   };
 
+  const fetchClassesAndSections2 = async () => {
+    try {
+      if (selectedClass2) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass2);
+        setSections2(sectionsResult.data);
+      } else {
+        setSections2([]); 
+      }
+      if (selectedClass2 && selectedSection2) {
+        const subjectgroupresult = await fetchSubjectGroupData(
+          "",
+          "",
+          selectedClass2,
+          selectedSection2,
+        );
 
-  const pathname = usePathname(); // Get the current path
-  const [activePath, setActivePath] = useState("");
-
-  useEffect(() => {
-    if (pathname) {
-      setActivePath(pathname); // Set the active path
+        setSubjectGroup2(subjectgroupresult.data);
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
     }
-  }, [pathname]);
+  };
 
-  // Links for the reports
-  const reportLinks = [
+   // Links for the reports
+   const reportLinks = [
     { href: "/admin/student/studentreport", label: "Student Report" },
     { href: "/admin/student/guardianreport", label: "Guardian Report" },
     { href: "/admin/users/admissionreport", label: "Student History" },
@@ -228,7 +321,6 @@ const EvaluationReport = () => {
     { href: "/admin/report/boys_girls_ratio", label: "Student Gender Ratio Report" },
     { href: "/admin/report/student_teacher_ratio", label: "Student Teacher Ratio Report" },
   ];
-
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -248,7 +340,7 @@ const EvaluationReport = () => {
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {reportLinks.map((link) => (
         <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-          <a
+           <Link
             href={link.href}
             className={`flex items-center hover:text-[#0070f3] ${
               activePath === link.href
@@ -258,7 +350,7 @@ const EvaluationReport = () => {
           >
             <DescriptionIcon className="h-2 w-2 mr-2" />
             {link.label}
-          </a>
+            </Link>
         </li>
       ))}
     </ul>
@@ -269,8 +361,8 @@ const EvaluationReport = () => {
 <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
 <div className={`${styles.filters} p-5`} >
         <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Class:
+        <label className={styles.label}>
+            Class
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
@@ -285,12 +377,12 @@ const EvaluationReport = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Section:
+            Section
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              disabled={!selectedClass} 
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -301,30 +393,38 @@ const EvaluationReport = () => {
             </select>
           </label>
           <label className={styles.label}>
-            Subject Group:
+            Subject Group
             <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
+              value={selectedSubjectGroup || ""}
+              onChange={handleSubjectGroupChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              disabled={!selectedClass || !selectedSection}
             >
               <option value="">Select</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
-              {/* Add more class options here */}
+              {subjectGroup.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
             </select>
           </label>
+
           <label className={styles.label}>
-            Subject:
+            Subject
             <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
+              value={selectedSubject || ""}
+              onChange={handleSubjectChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              disabled={
+                !selectedClass || !selectedSection || !selectedSubjectGroup
+              }
             >
               <option value="">Select</option>
-              <option value="Class1">Math</option>
-              <option value="Class2">Hindi</option>
-              <option value="Class2">English</option>
-              {/* Add more class options here */}
+              {subject.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
             </select>
           </label>
           <div className={styles.searchGroup}>
@@ -345,7 +445,7 @@ const EvaluationReport = () => {
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={"Evaluation Report"}
+            title={"Homework Evaluation Report"}
             data={data}
             columns={columns}
             options={{
