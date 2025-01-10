@@ -16,23 +16,6 @@ import { getClasses } from "@/services/classesService"; // Import your classes A
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import {
   Group as GroupIcon,
@@ -54,7 +37,6 @@ import Link from "next/link";
 
 const GuardianReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
@@ -144,7 +126,6 @@ const GuardianReport = () => {
       student.localno || "N/A",
       student.NationalNo || "N/A",
       student.RTE || "N/A",
-
 
     ]);
   };

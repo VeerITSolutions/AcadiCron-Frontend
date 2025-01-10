@@ -50,29 +50,7 @@ import {
 import { usePathname } from "next/navigation"; 
 import Link from "next/link";
 
-const columns = [
-  "Admission No",
-  "Student Name",
-  "Admission Date",
-  "Class (Start - End)",
-  "Session (Start - End)",
-  "Years",
-  "Mobile Number",
-  "Guardian Name",
-  "Guardian Phone"
-];
 
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
-  responsive: "standard",
-  search: false,
-  filter: false,
-  viewColumns: false,
-  tableBodyMaxHeight: "500px",
-  selectableRows: "none",
-};
 
 const StudentReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -95,6 +73,30 @@ const StudentReport = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+
+  const columns = [
+    "Admission No",
+    "Student Name",
+    "Admission Date",
+    "Class (Start - End)",
+    "Session (Start - End)",
+    "Years",
+    "Mobile Number",
+    "Guardian Name",
+    "Guardian Phone"
+  ];
+  
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+    pagination: false,
+    responsive: "standard",
+    search: false,
+    filter: false,
+    viewColumns: false,
+    tableBodyMaxHeight: "500px",
+    selectableRows: "none",
+  };
 
   const handleDelete = async () => {
     try {

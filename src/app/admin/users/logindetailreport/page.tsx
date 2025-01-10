@@ -6,33 +6,16 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
+import styles from "./StudentDetails.module.css"; 
 import Loader from "@/components/common/Loader";
 import {
   fetchsectionByClassData,
   fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your classes API service
+} from "@/services/sectionsService";
+import { getClasses } from "@/services/classesService"; 
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import {
   Group as GroupIcon,
@@ -49,27 +32,7 @@ import {
 } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; 
 
-const columns = [
-  "Admission No",
-  "Student Name",
-  "Username",
-  "Password",
-  "Parent Username",
-  "Parent Password"
-];
 
-
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
-  responsive: "standard",
-  search: false,
-  filter: false,
-  viewColumns: false,
-  tableBodyMaxHeight: "500px",
-  selectableRows: "none",
-};
 
 const StudentReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -91,6 +54,27 @@ const StudentReport = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+
+  const columns = [
+    "Admission No",
+    "Student Name",
+    "Username",
+    "Password",
+    "Parent Username",
+    "Parent Password"
+  ];
+  
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+    pagination: false,
+    responsive: "standard",
+    search: false,
+    filter: false,
+    viewColumns: false,
+    tableBodyMaxHeight: "500px",
+    selectableRows: "none",
+  };
 
   const handleDelete = async () => {
     try {
