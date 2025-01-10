@@ -366,14 +366,11 @@ const StudentReport = () => {
           Gender:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              name="gender"
             >
               <option value="">Select</option>
-              {genderData.map((gen) => (
-                <option key={gen.gender} value={gen.gender}>
-                  {gen.gender}
-                </option>
-              ))}
-              
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
               
             </select>
           </label>
@@ -381,15 +378,11 @@ const StudentReport = () => {
           RTE:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              name="rte"
             >
               <option value="">Select</option>
-              {rteData.map((rte) => (
-                <option key={rte.rte} value={rte.rte}>
-                  {rte.rte}
-                </option>
-              ))}
-              
-              
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
           </label>
           <div className={styles.searchGroup}>
