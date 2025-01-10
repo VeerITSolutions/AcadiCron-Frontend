@@ -325,8 +325,8 @@ const StudentCategories = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     selectableRows: "none", // Disable row selection
     count: totalCount,
     page: page,

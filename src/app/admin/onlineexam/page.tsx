@@ -37,35 +37,17 @@ import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 
-const columns = [
-  "Exam",
-  "Quiz",
-  "Questions",
-  "Attempt",
-  "Exam From",
-  "Exam To",
-  "Duration",
-  "Exam Publish",
-  "Result Publish",
-  "Action",
-];
-
-const options = {
-  filterType: false,
-  serverSide: true,
-  responsive: "standard",
-  search: false,
-  selectableRows: "none",
-  filter: false,
-  viewColumns: false,
-};
-
 const OnlineExam = () => {
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const [IsQuiz, setIsQuiz] = useState(false);
+  const [IsActive, setIsActive] = useState(false);
+  const [IsMarksDisplay, setIsMarksDisplay] = useState(false);
+  const [IsRandomQuestion, setIsRandomQuestion] = useState(false);
+  const [IsNegMarking, setIsNegMarking] = useState(false);
+  const [IsPublishResult, setIsPublishResult] = useState(false);
   const [data, setData] = useState<Array<any>>([]);
   const [dataOnlineExamHead, setDataOnlineExamHead] = useState<Array<any>>([]);
-
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
 
@@ -89,13 +71,20 @@ const OnlineExam = () => {
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
-    invoice_no: "",
-    date: "",
-    inc_head_id: "",
-    amount: "",
-    note: "",
-    documents: "",
+    exam: "",
+    is_quiz: 0,
+    attempt: "",
+    exam_from: "",
+    exam_to: "",
+    auto_publish_date: "",
+    duration: "",
+    passing_percentage: "",
+    description: "",
+    is_active: "",
+    publish_result: "",
+    is_neg_marking: "",
+    is_marks_display: "",
+    is_random_question: "",
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -110,6 +99,41 @@ const OnlineExam = () => {
       setLoading(false);
     }
   };
+  const handleIsQuizChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setIsQuiz(e.target.checked);
+  };
+
+  const handleIsMarksDisplayChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setIsMarksDisplay(e.target.checked);
+  };
+
+  const handleIsRandomQuestionChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setIsRandomQuestion(e.target.checked);
+  };
+
+  const handleIsNegMarkingChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setIsNegMarking(e.target.checked);
+  };
+
+  const handlePublishResultChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setIsPublishResult(e.target.checked);
+  };
+
+  const handleIsActiveChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setIsActive(e.target.checked);
+  };
 
   const handleDelete = async (id: number) => {
     try {
@@ -122,42 +146,45 @@ const OnlineExam = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
-
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
+    setOpen(true);
 
     setFormData({
-      name: subject.name,
-      invoice_no: subject.invoice_no,
-      date: subject.date,
-      inc_head_id: subject.inc_head_id,
-      amount: subject.amount,
-      note: subject.note,
-      documents: subject?.documents || "",
+      exam: subject.exam,
+      is_quiz: subject.is_quiz,
+      attempt: subject.attempt,
+      exam_from: subject.exam_from,
+      exam_to: subject.exam_to,
+      auto_publish_date: subject.auto_publish_date,
+      duration: subject.duration,
+      passing_percentage: subject.passing_percentage,
+      description: subject.description,
+      is_active: subject.is_active,
+      publish_result: subject.publish_result,
+      is_neg_marking: subject.is_neg_marking,
+      is_marks_display: subject.is_marks_display,
+      is_random_question: subject.is_random_question,
     });
   };
 
   const handleCancel = () => {
     setFormData({
-      name: "",
-      invoice_no: "",
-      date: "",
-      inc_head_id: "",
-      amount: "",
-      note: "",
-      documents: "",
+      exam: "",
+      is_quiz: 0,
+      attempt: "",
+      exam_from: "",
+      exam_to: "",
+      auto_publish_date: "",
+      duration: "",
+      passing_percentage: "",
+      description: "",
+      is_active: "",
+      publish_result: "",
+      is_neg_marking: "",
+      is_marks_display: "",
+      is_random_question: "",
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -165,11 +192,15 @@ const OnlineExam = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.name || "N/A",
-      subject.invoice_no || "N/A",
-      subject.date || "N/A",
-      subject.OnlineExam_category || "N/A",
-      subject.amount || "N/A",
+      subject.exam || "N/A",
+      subject.is_quiz || "N/A",
+      subject.questions || "N/A",
+      subject.attempt || "N/A",
+      subject.exam_from || "N/A",
+      subject.exam_to || "N/A",
+      subject.duration || "N/A",
+      subject.is_active || "N/A",
+      subject.publish_result || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -212,19 +243,26 @@ const OnlineExam = () => {
         const result = await createOnlineExam(formData);
 
         setFormData({
-          name: "",
-          invoice_no: "",
-          date: "",
-          inc_head_id: "",
-          amount: "",
-          note: "",
-          documents: "",
+          exam: "",
+          is_quiz: 0,
+          attempt: "",
+          exam_from: "",
+          exam_to: "",
+          auto_publish_date: "",
+          duration: "",
+          passing_percentage: "",
+          description: "",
+          is_active: "",
+          publish_result: "",
+          is_neg_marking: "",
+          is_marks_display: "",
+          is_random_question: "",
         });
 
         setSelectedClass("");
         setSelectedSection([]);
         setSelectedSubject([]);
-
+        setOpen(false);
         if (result.success) {
           toast.success("OnlineExam created successfully");
         } else {
@@ -233,18 +271,26 @@ const OnlineExam = () => {
       }
       // Reset form after successful action
       setFormData({
-        name: "",
-        invoice_no: "",
-        date: "",
-        inc_head_id: "",
-        amount: "",
-        note: "",
-        documents: "",
+        exam: "",
+        is_quiz: 0,
+        attempt: "",
+        exam_from: "",
+        exam_to: "",
+        auto_publish_date: "",
+        duration: "",
+        passing_percentage: "",
+        description: "",
+        is_active: "",
+        publish_result: "",
+        is_neg_marking: "",
+        is_marks_display: "",
+        is_random_question: "",
       });
 
       setIsEditing(false);
       setEditCategoryId(null);
       fetchData(page, rowsPerPage); // Refresh data after submit
+      setOpen(false);
     } catch (error) {
       console.error("An error occurred", error);
     }
@@ -275,17 +321,23 @@ const OnlineExam = () => {
   };
   const handleClose = () => {
     setFormData({
-      date: null as Date | null,
-
-      leave_type_id: "",
-      leave_from: null as Date | null,
-      leave_to: null as Date | null,
-      employee_remark: "",
-      admin_remark: "",
-      status: "",
-      document_file: null,
+      exam: "",
+      is_quiz: 0,
+      attempt: "",
+      exam_from: "",
+      exam_to: "",
+      auto_publish_date: "",
+      duration: "",
+      passing_percentage: "",
+      description: "",
+      is_active: "",
+      publish_result: "",
+      is_neg_marking: "",
+      is_marks_display: "",
+      is_random_question: "",
     });
-
+    setOpen(false);
+  };
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditCategoryId(null);
@@ -301,6 +353,29 @@ const OnlineExam = () => {
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
+
+  const columns = [
+    "Exam",
+    "Quiz",
+    "Questions",
+    "Attempt",
+    "Exam From",
+    "Exam To",
+    "Duration",
+    "Exam Publish",
+    "Result Publish",
+    "Action",
+  ];
+
+  const options = {
+    filterType: false,
+    serverSide: true,
+    responsive: "standard",
+    search: false,
+    selectableRows: "none",
+    filter: false,
+    viewColumns: false,
+  };
 
   return (
     <DefaultLayout>
@@ -318,7 +393,7 @@ const OnlineExam = () => {
             className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
             onClick={handleClickOpen}
           >
-            {editing ? "Edit Exam" : "Add Exam"}
+            {isEditing ? "Edit Exam" : "Add Exam"}
           </button>
         </div>
         {loading ? (
@@ -349,7 +424,7 @@ const OnlineExam = () => {
           <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="flex items-center justify-between">
               <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Exam" : "Exam"}
+                {isEditing ? "Edit Exam" : "Exam"}
               </h3>
               <IconButton
                 onClick={handleClose}
@@ -367,7 +442,8 @@ const OnlineExam = () => {
                     <input
                       type="checkbox"
                       className="is_quiz"
-                      value="1"
+                      onChange={handleIsQuizChangeforcheckbox}
+                      value={formData.is_quiz}
                       name="is_quiz"
                     />
                     Quiz
@@ -383,7 +459,9 @@ const OnlineExam = () => {
                     Exam Title <span className="required">*</span>{" "}
                   </label>
                   <input
-                    value=""
+                    name="exam"
+                    value={formData.exam}
+                    onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -393,9 +471,9 @@ const OnlineExam = () => {
                     Exam From <span className="required">*</span>{" "}
                   </label>
                   <input
-                    id="dob"
-                    name="dob"
-                    value=""
+                    id="exam_from"
+                    name="exam_from"
+                    value={formData.exam_from}
                     onChange={handleInputChange}
                     type="date"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -407,9 +485,9 @@ const OnlineExam = () => {
                     Exam To <span className="required">*</span>{" "}
                   </label>
                   <input
-                    id="dob"
-                    name="dob"
-                    value=""
+                    id="exam_to"
+                    name="exam_to"
+                    value={formData.exam_to}
                     onChange={handleInputChange}
                     type="date"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -422,9 +500,9 @@ const OnlineExam = () => {
                     <span className="required">*</span>{" "}
                   </label>
                   <input
-                    id="dob"
-                    name="dob"
-                    value=""
+                    id="auto_publish_date"
+                    name="auto_publish_date"
+                    value={formData.auto_publish_date}
                     onChange={handleInputChange}
                     type="date"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -435,9 +513,9 @@ const OnlineExam = () => {
                     Time Duration <span className="required">*</span>
                   </label>
                   <input
-                    id="dob"
-                    name="dob"
-                    value=""
+                    id="duration"
+                    name="duration"
+                    value={formData.duration}
                     onChange={handleInputChange}
                     type="time"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -449,9 +527,9 @@ const OnlineExam = () => {
                     Attempt <span className="required">*</span>
                   </label>
                   <input
-                    id="dob"
-                    name="dob"
-                    value=""
+                    id="attempt"
+                    name="attempt"
+                    value={formData.attempt}
                     onChange={handleInputChange}
                     type="number"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -463,9 +541,9 @@ const OnlineExam = () => {
                     Passing Percentage <span className="required">*</span>
                   </label>
                   <input
-                    id="dob"
-                    name="dob"
-                    value=""
+                    id="passing_percentage"
+                    name="passing_percentage"
+                    value={formData.passing_percentage}
                     onChange={handleInputChange}
                     type="number"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -476,8 +554,9 @@ const OnlineExam = () => {
                     <input
                       type="checkbox"
                       className="is_active"
+                      value={formData.is_active}
+                      onChange={handleIsActiveChangeforcheckbox}
                       name="is_active"
-                      value="1"
                     />
                     Publish Exam{" "}
                   </label>
@@ -487,7 +566,8 @@ const OnlineExam = () => {
                       type="checkbox"
                       className="publish_result"
                       name="publish_result"
-                      value="1"
+                      value={formData.publish_result}
+                      onChange={handlePublishResultChangeforcheckbox}
                     />
                     Publish Result{" "}
                   </label>
@@ -497,7 +577,8 @@ const OnlineExam = () => {
                       type="checkbox"
                       className="is_neg_marking"
                       name="is_neg_marking"
-                      value="1"
+                      value={formData.is_neg_marking}
+                      onChange={handleIsNegMarkingChangeforcheckbox}
                     />
                     Negative Marking{" "}
                   </label>
@@ -507,7 +588,8 @@ const OnlineExam = () => {
                       type="checkbox"
                       className="is_marks_display"
                       name="is_marks_display"
-                      value="1"
+                      value={formData.is_marks_display}
+                      onChange={handleIsMarksDisplayChangeforcheckbox}
                     />
                     Display marks in Exam{" "}
                   </label>
@@ -517,7 +599,8 @@ const OnlineExam = () => {
                       type="checkbox"
                       className="is_random_question"
                       name="is_random_question"
-                      value="1"
+                      value={formData.is_random_question}
+                      onChange={handleIsRandomQuestionChangeforcheckbox}
                     />
                     Random Question Order{" "}
                   </label>
@@ -527,16 +610,18 @@ const OnlineExam = () => {
                     Description <span className="required">*</span>
                   </label>
 
-                  <textarea
+                  <input
                     id="description"
                     name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  ></textarea>
+                  ></input>
                 </div>
 
                 <div className="col-span-full">
                   <button
-                    onClick={handleSave}
+                    onClick={handleSubmit}
                     className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >
                     Save
