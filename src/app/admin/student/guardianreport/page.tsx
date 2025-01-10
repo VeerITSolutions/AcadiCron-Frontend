@@ -114,8 +114,7 @@ const GuardianReport = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.section || "N/A",
+      `${student.class_name.trim()} ${student.lastname.trim()}`,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.father_name || "N/A",
