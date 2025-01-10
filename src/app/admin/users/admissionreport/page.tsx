@@ -5,7 +5,7 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
+import { deleteStudentBluk, fetchAdmissionYearData, fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -48,6 +48,7 @@ import {
   Scale as ScaleIcon,
 } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; 
+import Link from "next/link";
 
 const columns = [
   "Admission No",
@@ -84,6 +85,7 @@ const StudentReport = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
+  const [admissionYear, setAdmissionYear] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
@@ -159,6 +161,8 @@ const StudentReport = () => {
     keyword?: string,
   ) => {
     try {
+
+      const resultYear = await fetchAdmissionYearData("");
       // Pass selectedClass and selectedSection as parameters to filter data
       if (selectedClass && selectedSection) {
         const result = await fetchStudentData(
@@ -176,11 +180,13 @@ const StudentReport = () => {
         setLoading(false);
       } else {
         setData([]);
+        setAdmissionYear(resultYear.data);
         setLoading(false);
       }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
+      
     }
   };
 
@@ -235,7 +241,7 @@ const StudentReport = () => {
   };
   const handleRefresh = () => {
     setSelectedClass("");
-    setSelectedSection("");
+    setAdmissionYear([]);
     setKeyword("");
   };
 
@@ -279,7 +285,7 @@ const StudentReport = () => {
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {reportLinks.map((link) => (
                 <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                  <a
+                  <Link
                     href={link.href}
                     className={`flex items-center hover:text-[#0070f3] ${
                       activePath === link.href
@@ -289,7 +295,7 @@ const StudentReport = () => {
                   >
                     <DescriptionIcon className="h-2 w-2 mr-2" />
                     {link.label}
-                  </a>
+                    </Link>
                 </li>
               ))}
             </ul>
@@ -322,7 +328,11 @@ const StudentReport = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-           
+              {admissionYear.map((adm) => (
+                <option key={adm.year} value={adm.year}>
+                  {adm.year}
+                </option>
+              ))}
             </select>
           </label>
          
@@ -342,7 +352,7 @@ const StudentReport = () => {
       ) : (
         <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
           <MUIDataTable
-            title={"Student Report"}
+            title={"Admission Report"}
             data={data}
             columns={columns}
             options={{
