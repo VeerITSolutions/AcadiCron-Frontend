@@ -49,6 +49,7 @@ import {
 } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; // Import usePathname for the current path
 import Link from "next/link";
+import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 const columns = [
   "Section",
   "Admission No",
@@ -88,6 +89,9 @@ const StudentReport = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [category, setCategory] = useState<Array<any>>([]);
+  const [genderData, setGenderData] = useState<Array<any>>([]);
+  const [rteData, setRteData] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -162,7 +166,10 @@ const StudentReport = () => {
     keyword?: string,
   ) => {
     try {
-      // Pass selectedClass and selectedSection as parameters to filter data
+      
+      const resultCategory = await fetchStudentCategoryData();
+      // const resultGender = await fetchStudentData();
+      // const resultRte = await fetchStudentData();
       if (selectedClass && selectedSection) {
         const result = await fetchStudentData(
           0,
@@ -173,12 +180,17 @@ const StudentReport = () => {
           selectedSessionId,
           1,
         );
+
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
+       
         setLoading(false);
       } else {
         setData([]);
+        setCategory(resultCategory.data);
+        // setGenderData(resultGender.data);
+        // setRteData(resultRte.data);
         setLoading(false);
       }
     } catch (error: any) {
@@ -342,9 +354,11 @@ const StudentReport = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="">SC</option>
-              <option value="">ST</option>
-              <option value="">OBC</option>
+              {category.map((category) => (
+                <option key={category.category_id} value={category.category_id}>
+                  {category.category}
+                </option>
+              ))}
               
             </select>
           </label>
@@ -354,8 +368,12 @@ const StudentReport = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="">Male</option>
-              <option value="">Female</option>
+              {genderData.map((gen) => (
+                <option key={gen.gender} value={gen.gender}>
+                  {gen.gender}
+                </option>
+              ))}
+              
               
             </select>
           </label>
@@ -365,8 +383,12 @@ const StudentReport = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="">Yes</option>
-              <option value="">No</option>
+              {rteData.map((rte) => (
+                <option key={rte.rte} value={rte.rte}>
+                  {rte.rte}
+                </option>
+              ))}
+              
               
             </select>
           </label>
