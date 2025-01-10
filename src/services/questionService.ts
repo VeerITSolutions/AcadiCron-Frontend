@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchquestionData = async (page?: number, perPage?: number) => {
+export const fetchQuestionData = async (page?: any, perPage?: any) => {
   const response = await apiClient.get(`/question`, {
     params: {
       page,
@@ -11,7 +11,7 @@ export const fetchquestionData = async (page?: number, perPage?: number) => {
 };
 
 
-export const createquestionData = async (data:any): Promise<any> => {
+export const createQuestionData = async (data:any): Promise<any> => {
   try {
     const response = await apiClient.post("/question", data);
     return response.data;
@@ -24,13 +24,13 @@ export const createquestionData = async (data:any): Promise<any> => {
 
 
 // Delete a student category by ID
-export const deletequestionData = async (id: number) => {
+export const deleteQuestionData = async (id: number) => {
   const response = await apiClient.delete(`/question/${id}`);
   return response.data;
 };
 
 // Edit a student category by ID
-export const editquestionData = async (id: number, data: any) => {
+export const editQuestionData = async (id: number, data: any) => {
   // Create an object with the name field
   const response = await apiClient.post(`/question/${id}`, data);
   return response.data;

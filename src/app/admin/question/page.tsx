@@ -19,10 +19,10 @@ import {
   fetchsectionData,
 } from "@/services/sectionsService"; // Import your section API service
 import {
-  fetchquestionData,
-  createquestionData,
-  deletequestionData,
-  editquestionData,
+  fetchQuestionData,
+  createQuestionData,
+  deleteQuestionData,
+  editQuestionData,
 } from "@/services/questionService";
 
 import styles from "./StudentDetails.module.css"; // Import CSS module
@@ -75,13 +75,12 @@ const QuestionBank = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
-  
-  
-   const [editing, setEditing] = useState(false); // Add state for editing
-    const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-       setSelectedClass(event.target.value);
-       setPage(0);
-     };
+
+  const [editing, setEditing] = useState(false); // Add state for editing
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -91,7 +90,6 @@ const QuestionBank = () => {
 
   const handleClose = () => {
     setFormData({
-
       subject_id: "",
       question_type: "",
       level: "",
@@ -107,7 +105,6 @@ const QuestionBank = () => {
   };
   const handleClose1 = () => {
     setFormData({
-
       subject_id: "",
       question_type: "",
       level: "",
@@ -121,24 +118,24 @@ const QuestionBank = () => {
 
   const handleEditorChange = (content: any, editor: any) => {
     try {
-        console.log("Content:", content);
-        // Perform additional logic
+      console.log("Content:", content);
+      // Perform additional logic
     } catch (error) {
-        console.error("Error in handleEditorChange:", error);
+      console.error("Error in handleEditorChange:", error);
     }
-};
+  };
 
-const handleSubmit = async () => {
+  const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editquestionData(editCategoryId, formData);
+        const result = await editQuestionData(editCategoryId, formData);
         if (result.success) {
           toast.success("Subject group updated successfully");
         } else {
           toast.error("Failed to update subject group");
         }
       } else {
-        const result = await createquestionData(formData);
+        const result = await createQuestionData(formData);
 
         setFormData({
           subject_id: "",
@@ -161,10 +158,10 @@ const handleSubmit = async () => {
       // Reset form after successful action
       setFormData({
         subject_id: "",
-    question_type: "",
-    level: "",
-    class_id: "",
-    section_id: "",
+        question_type: "",
+        level: "",
+        class_id: "",
+        section_id: "",
       });
 
       setIsEditing(false);
@@ -198,7 +195,6 @@ const handleSubmit = async () => {
   const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
     undefined,
   );
-  
 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
@@ -211,7 +207,7 @@ const handleSubmit = async () => {
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchquestionData(currentPage + 1, rowsPerPage);
+      const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
 
@@ -224,7 +220,7 @@ const handleSubmit = async () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deletequestionData(id);
+      await deleteQuestionData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -260,11 +256,11 @@ const handleSubmit = async () => {
 
   const handleCancel = () => {
     setFormData({
-    subject_id: "",
-    question_type: "",
-    level: "",
-    class_id: "",
-    section_id: "",
+      subject_id: "",
+      question_type: "",
+      level: "",
+      class_id: "",
+      section_id: "",
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -272,11 +268,11 @@ const handleSubmit = async () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.subject_id || "N/A",
+      subject.id || "N/A",
+      subject.subject_name || "N/A",
       subject.question_type || "N/A",
       subject.level || "N/A",
-      subject.class_id || "N/A",
-      subject.section_id || "N/A",
+      subject.question || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -306,7 +302,6 @@ const handleSubmit = async () => {
     }
   }, []);
 
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -320,7 +315,7 @@ const handleSubmit = async () => {
     setEditCategoryId(null);
     // Clear the input field
   };
-  
+
   const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
