@@ -17,7 +17,7 @@ export const createFeesGroup = async (name: string, description: string): Promis
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
-    throw new Error("Failed to create student house");
+    throw new Error("Failed to create Fees Group");
   }
 };
 

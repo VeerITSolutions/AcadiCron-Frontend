@@ -85,6 +85,9 @@ const StudentDetails = () => {
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
+  const today = new Date(); // Get today's date
+  const [weekStart, setWeekStart] = useState(getWeekStart(today));
+  const [weekEnd, setWeekEnd] = useState(getWeekEnd(weekStart));
 
   const getStartOfWeekDate = (currentDate: any) => {
     const dayOfWeek = currentDate.getDay(); // Get the day of the week (0 = Sunday, 1 = Monday, ...)
@@ -117,12 +120,9 @@ const StudentDetails = () => {
         setLoading(false);
       }
       if (selectedTeacherId) {
-        const currentDate = new Date(); // Current date
-        const weekStartDate = getStartOfWeekDate(currentDate);
-
         const result = await fetchSyllabusHTMLData(
           "current_week",
-          weekStartDate,
+          weekStart,
           selectedTeacherId,
         );
 
@@ -141,16 +141,13 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedTeacherId);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+  }, [page, rowsPerPage, weekStart]);
 
   const handleTeacherChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     fetchData(page, rowsPerPage, event.target.value);
     handleDateChange("");
     setSelectedTeacherId(event.target.value);
   };
-  const today = new Date(); // Get today's date
-  const [weekStart, setWeekStart] = useState(getWeekStart(today));
-  const [weekEnd, setWeekEnd] = useState(getWeekEnd(weekStart));
 
   // Function to calculate the start of the week
   function getWeekStart(date: any) {
@@ -178,6 +175,11 @@ const StudentDetails = () => {
     setWeekEnd(getWeekEnd(newStartDate));
   };
   const handleRefresh = () => {
+    const today = new Date(); // Get today's date
+    const weekStart = getWeekStart(today);
+
+    setWeekStart(weekStart);
+    setWeekEnd(getWeekEnd(weekStart));
     setSelectedTeacherId("");
     setIsFormVisibleHtml([]);
   };
@@ -278,7 +280,9 @@ const StudentDetails = () => {
                   {Object.entries(isFormVisibleHtml).map(([day, status]) => (
                     <td key={day} className="text text-center">
                       <div className="attachment-block clearfix">
-                        <b className="text text-center">{status}</b>
+                        <b className="text text-center">
+                          {status ? status : "N/A"}
+                        </b>
                       </div>
                     </td>
                   ))}

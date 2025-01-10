@@ -29,6 +29,7 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./StudentDetails.module.css";
+import { fetchSession } from "@/services/session";
 
 const Events = () => {
   const [error, setError] = useState<string | null>(null);
@@ -44,13 +45,23 @@ const Events = () => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-  const [classes, setClasses] = useState<Array<any>>([]);
+  const [classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
+  const [selectedSession, setSelectedSession] = useState<string | undefined>(
+    undefined,
+  );
+    const [selectedSection, setSelectedSection] = useState<string | undefined>(
+      undefined,
+    );
+  const [allSession, setAllSession] = useState<Array<any>>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
   const [open, setOpen] = useState(false);
+  const [keyword, setKeyword] = useState<string>("");
+  const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     event_for: "",
@@ -68,14 +79,40 @@ const Events = () => {
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchAlumniEventData(currentPage + 1, rowsPerPage);
+      const resultSession = await fetchSession();
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
+      setAllSession(resultSession.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
+
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+  
+
+   useEffect(() => {
+      fetchClassesAndSections(); // Fetch classes and sections on initial render
+      
+    }, [selectedClass]);
 
   const handleDelete = async (id: number) => {
     try {
@@ -132,6 +169,16 @@ const Events = () => {
     setSelectedClass(event.target.value);
   };
 
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+  const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSession(event.target.value);
+  };
+
+ 
+
   const handleCancel = () => {
     setFormData({
       title: "",
@@ -151,14 +198,21 @@ const Events = () => {
     setEditCategoryId(null);
   };
 
+  const formatDate = (date:any) => {
+    if (!date) return "N/A";
+    const d = new Date(date);
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "numeric", day: "numeric" });
+  };
+
+
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.title || "N/A",
       subject.class_id || "N/A",
       subject.section || "N/A",
       subject.session_id || "N/A",
-      subject.from_date || "N/A",
-      subject.to_date || "N/A",
+      `${formatDate(subject.from_date)  || "N/A"}`,
+      `${formatDate(subject.to_date)  || "N/A"}`,
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -188,13 +242,18 @@ const Events = () => {
     }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: value, // For regular inputs like text or selects
     }));
   };
+
 
   const handleSubmit = async () => {
     try {
@@ -214,21 +273,6 @@ const Events = () => {
           formData,
       
         );
-
-        setFormData({
-          title: "",
-          event_for: "",
-          session_id: savedSessionstate,
-          class_id: "",
-          section: "",
-          from_date: "",
-          to_date: "",
-          note: "",
-          photo: "",
-          is_active: false, 
-          event_notification_message: "",
-          show_onwebsite: false,
-        });
 
 
         if (result.success) {
@@ -255,6 +299,9 @@ const Events = () => {
 
       setIsEditing(false);
       setEditCategoryId(null);
+      setSelectedSession('');
+      setSelectedClass('');
+      setSelectedSection('');
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
@@ -303,7 +350,7 @@ const Events = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                {isEditing ? "Edit Add Expense" : "Select Date"}
+              Select Date
               </h3>
             </div>
 
@@ -330,17 +377,9 @@ const Events = () => {
                     type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                   >
-                    {isEditing ? "Update" : "Save"}
+                    Save
                   </button>
-                  {isEditing && (
-                    <button
-                      type="button"
-                      onClick={handleCancel} // Call the cancel function
-                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    >
-                      Cancel
-                    </button>
-                  )}
+                
                 </div>
               </div>
             </form>
@@ -385,7 +424,7 @@ const Events = () => {
           <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="flex items-center justify-between">
               <h3 className="font-medium text-black dark:text-white">
-                Add Event
+                {editing ? "Edit Event" : "Add Event"}
               </h3>
               <IconButton
                 onClick={handleClose}
@@ -431,17 +470,17 @@ const Events = () => {
                     Pass Out Session <span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleClassChange}
+                    name="session_id"
+                    value={selectedSession}
+                    onChange={handleSessionChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                    {allSession.map((cls: any) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.session}
+                    </option>
+                  ))}
                   </select>
                 </div>
                 <div className="field classlist">
@@ -449,8 +488,8 @@ const Events = () => {
                     Select Class <span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
+                    name="class_id"
+                    value={selectedClass || ""}
                     onChange={handleClassChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
@@ -467,17 +506,17 @@ const Events = () => {
                     Section <span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleClassChange}
+                    name="section"
+                    value={selectedSection || ""}
+                    onChange={handleSectionChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                    {section.map((sec) => (
+                    <option key={sec.section_id} value={sec.section_id}>
+                      {sec.section_name}
+                    </option>
+                  ))}
                   </select>
                 </div>
                 <div className="field">
@@ -485,10 +524,9 @@ const Events = () => {
                     Event Title <span className="required">*</span>
                   </label>
                   <input
-                    id="event_title"
-                    name="event_title"
+                    id="title"
+                    name="title"
                     onChange={handleInputChange}
-                    placeholder=""
                     type="text"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
@@ -498,8 +536,9 @@ const Events = () => {
                     Event From Date <span className="required">*</span>
                   </label>
                   <input
-                    id="event_from_date"
-                    name="event_from_date"
+                    id="from_date"
+                    name="from_date"
+                    value={formData.from_date}
                     onChange={handleInputChange}
                     type="date"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -510,8 +549,9 @@ const Events = () => {
                     Event To Date <span className="required">*</span>
                   </label>
                   <input
-                    id="event_to_date"
-                    name="event_to_date"
+                    id="to_date"
+                    name="to_date"
+                    value={formData.to_date}
                     onChange={handleInputChange}
                     type="date"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -522,9 +562,9 @@ const Events = () => {
                     Note <span className="required">*</span>
                   </label>
                   <textarea
-                    id="note"
                     name="note"
-                    placeholder=""
+                    value={formData.note}
+                    onChange={handleInputChange}
                     className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${styles["h-50"]}`}
                   ></textarea>
                 </div>
@@ -535,9 +575,9 @@ const Events = () => {
                     <span className="required">*</span>
                   </label>
                   <textarea
-                    id="notification"
-                    name="notification"
-                    placeholder=""
+                    name="event_notification_message"
+                    value={formData.event_notification_message}
+                    onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   ></textarea>
                 </div>
@@ -570,7 +610,10 @@ const Events = () => {
                   </label>
                 </div>
                 <div className="col-span-full">
-                  <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
+                  <button
+                    onClick={handleSubmit}
+                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                  >
                     Save
                   </button>
                 </div>
