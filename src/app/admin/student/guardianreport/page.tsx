@@ -48,6 +48,7 @@ import {
   Scale as ScaleIcon,
 } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; 
+import Link from "next/link";
 
 
 
@@ -283,7 +284,7 @@ const GuardianReport = () => {
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {reportLinks.map((link) => (
                 <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                  <a
+                  <Link
                     href={link.href}
                     className={`flex items-center hover:text-[#0070f3] ${
                       activePath === link.href
@@ -293,7 +294,7 @@ const GuardianReport = () => {
                   >
                     <DescriptionIcon className="h-2 w-2 mr-2" />
                     {link.label}
-                  </a>
+                    </Link>
                 </li>
               ))}
             </ul>

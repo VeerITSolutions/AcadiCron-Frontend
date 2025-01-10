@@ -168,8 +168,8 @@ const StudentReport = () => {
     try {
       
       const resultCategory = await fetchStudentCategoryData();
-      // const resultGender = await fetchStudentData();
-      // const resultRte = await fetchStudentData();
+      const resultGender = await fetchStudentData();
+      const resultRte = await fetchStudentData();
       if (selectedClass && selectedSection) {
         const result = await fetchStudentData(
           0,
@@ -189,8 +189,8 @@ const StudentReport = () => {
       } else {
         setData([]);
         setCategory(resultCategory.data);
-        // setGenderData(resultGender.data);
-        // setRteData(resultRte.data);
+        setGenderData(resultGender.data);
+        setRteData(resultRte.data);
         setLoading(false);
       }
     } catch (error: any) {
@@ -251,6 +251,9 @@ const StudentReport = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setCategory([]);
+    setGenderData([]);
+    setRteData([]);
     setKeyword("");
   };
 
@@ -366,23 +369,28 @@ const StudentReport = () => {
           Gender:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              name="gender"
             >
               <option value="">Select</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              
+              {[...new Set(genderData.map((gen) => gen.gender))].map((gender) => (
+              <option key={gender} value={gender}>
+              {gender}
+              </option>
+              ))}
             </select>
           </label>
           <label className={styles.label}>
           RTE:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              name="rte"
             >
               <option value="">Select</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
+              {[...new Set(rteData.map((rte) => rte.rte))].map((rte) => (
+              <option key={rte} value={rte}>
+                {rte}
+              </option>
+              ))}
+
+              
             </select>
           </label>
           <div className={styles.searchGroup}>
