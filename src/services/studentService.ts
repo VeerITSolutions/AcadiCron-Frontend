@@ -39,6 +39,15 @@ export const fetchStudentSingleData = async (id: string) => {
 };
 
 
+export const fetchAdmissionYearData = async (page?: any) => {
+  const response = await apiClient.get(`/admission-year`, {
+    params: {
+      page
+    },
+  });
+  return response.data;
+};
+
 // Delete a student category by ID
 export const deleteStudent = async (id: number) => {
   const response = await apiClient.delete(`/admin/dtstudentlist/${id}`);

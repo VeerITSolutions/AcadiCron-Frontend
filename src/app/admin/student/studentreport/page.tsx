@@ -6,33 +6,16 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
+import styles from "./StudentDetails.module.css";
 import Loader from "@/components/common/Loader";
 import {
   fetchsectionByClassData,
   fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your classes API service
+} from "@/services/sectionsService";
+import { getClasses } from "@/services/classesService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import {
   Group as GroupIcon,
@@ -47,38 +30,12 @@ import {
   Wc as WcIcon,
   Scale as ScaleIcon,
 } from '@mui/icons-material';
-import { usePathname } from "next/navigation"; // Import usePathname for the current path
+import { usePathname } from "next/navigation"; 
 import Link from "next/link";
-const columns = [
-  "Section",
-  "Admission No",
-  "Student Name",
-  "Father Name",
-  "Date of Birth",
-  "Gender",
-  "Category",
-  "Mobile Number",
-  "Local Identification Number",
-  "National Identification Number",
-  "RTE"
-];
-
-
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
-  responsive: "standard",
-  search: false,
-  filter: false,
-  viewColumns: false,
-  tableBodyMaxHeight: "500px",
-  selectableRows: "none",
-};
+import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 
 const StudentReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
@@ -88,6 +45,9 @@ const StudentReport = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [category, setCategory] = useState<Array<any>>([]);
+  const [genderData, setGenderData] = useState<Array<any>>([]);
+  const [rteData, setRteData] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
@@ -97,6 +57,32 @@ const StudentReport = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
+  const columns = [
+    "Section",
+    "Admission No",
+    "Student Name",
+    "Father Name",
+    "Date of Birth",
+    "Gender",
+    "Category",
+    "Mobile Number",
+    "Local Identification Number",
+    "National Identification Number",
+    "RTE"
+  ];
+
+  const options = {
+    filterType: "checkbox",
+    serverSide: true,
+    pagination: false,
+    responsive: "standard",
+    search: false,
+    filter: false,
+    viewColumns: false,
+    tableBodyMaxHeight: "500px",
+    selectableRows: "none",
+  };
+  
   const handleDelete = async () => {
     try {
       const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
@@ -130,20 +116,17 @@ const StudentReport = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.section || "N/A",
+      student.section_name || "N/A",
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.father_name || "N/A",
-      student.gender || "N/A",
       student.dob || "N/A",
+      student.gender || "N/A",
       student.category || "N/A",
       student.mobileno || "N/A",
-      student.localno || "N/A",
-      student.NationalNo || "N/A",
-      student.RTE || "N/A",
-
-
+      student.local_identification_no || "N/A",
+      student.national_identification_no || "N/A",
+      student.rte || "N/A",
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -162,7 +145,10 @@ const StudentReport = () => {
     keyword?: string,
   ) => {
     try {
-      // Pass selectedClass and selectedSection as parameters to filter data
+      
+      const resultCategory = await fetchStudentCategoryData();
+      const resultGender = await fetchStudentData();
+      const resultRte = await fetchStudentData();
       if (selectedClass && selectedSection) {
         const result = await fetchStudentData(
           0,
@@ -173,12 +159,17 @@ const StudentReport = () => {
           selectedSessionId,
           1,
         );
+
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
+       
         setLoading(false);
       } else {
         setData([]);
+        setCategory(resultCategory.data);
+        setGenderData(resultGender.data);
+        setRteData(resultRte.data);
         setLoading(false);
       }
     } catch (error: any) {
@@ -239,6 +230,9 @@ const StudentReport = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setCategory([]);
+    setGenderData([]);
+    setRteData([]);
     setKeyword("");
   };
 
@@ -342,9 +336,11 @@ const StudentReport = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="">SC</option>
-              <option value="">ST</option>
-              <option value="">OBC</option>
+              {category.map((category) => (
+                <option key={category.category_id} value={category.category_id}>
+                  {category.category}
+                </option>
+              ))}
               
             </select>
           </label>
@@ -354,9 +350,11 @@ const StudentReport = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="">Male</option>
-              <option value="">Female</option>
-              
+              {[...new Set(genderData.map((gen) => gen.gender))].map((gender) => (
+              <option key={gender} value={gender}>
+              {gender}
+              </option>
+              ))}
             </select>
           </label>
           <label className={styles.label}>
@@ -365,8 +363,12 @@ const StudentReport = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="">Yes</option>
-              <option value="">No</option>
+              {[...new Set(rteData.map((rte) => rte.rte))].map((rte) => (
+              <option key={rte} value={rte}>
+                {rte}
+              </option>
+              ))}
+
               
             </select>
           </label>

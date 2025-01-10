@@ -16,23 +16,6 @@ import { getClasses } from "@/services/classesService"; // Import your classes A
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import {
   Group as GroupIcon,
@@ -48,12 +31,12 @@ import {
   Scale as ScaleIcon,
 } from '@mui/icons-material';
 import { usePathname } from "next/navigation"; 
+import Link from "next/link";
 
 
 
 const GuardianReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
@@ -131,19 +114,17 @@ const GuardianReport = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.section || "N/A",
+      `${student.class_name.trim()} ${student.section_name.trim()}`,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
+      student.mobile_no || "N/A",
+      student.guardian_name || "N/A",
+      student.guardian_relation || "N/A",
+      student.guardian_phone || "N/A",
       student.father_name || "N/A",
-      student.gender || "N/A",
-      student.dob || "N/A",
-      student.category || "N/A",
-      student.mobileno || "N/A",
-      student.localno || "N/A",
-      student.NationalNo || "N/A",
-      student.RTE || "N/A",
-
+      student.father_phone || "N/A",
+      student.mother_name || "N/A",
+      student.mother_phone || "N/A",
 
     ]);
   };
@@ -283,7 +264,7 @@ const GuardianReport = () => {
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {reportLinks.map((link) => (
                 <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                  <a
+                  <Link
                     href={link.href}
                     className={`flex items-center hover:text-[#0070f3] ${
                       activePath === link.href
@@ -293,7 +274,7 @@ const GuardianReport = () => {
                   >
                     <DescriptionIcon className="h-2 w-2 mr-2" />
                     {link.label}
-                  </a>
+                    </Link>
                 </li>
               ))}
             </ul>

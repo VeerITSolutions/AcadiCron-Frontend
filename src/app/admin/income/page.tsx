@@ -164,9 +164,9 @@ const Income = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editIncome(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Income updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update income");
         }
       } else {
         const result = await createIncome(formData);
@@ -186,9 +186,9 @@ const Income = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Income created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create income");
         }
       }
       // Reset form after successful action

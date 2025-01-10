@@ -148,9 +148,9 @@ const Route = () => {
       if (isEditing && editCategoryId !== null) {
         const result = await editTransportRoute(editCategoryId, formData);
         if (result.success) {
-          toast.success("Subject group updated successfully");
+          toast.success("Route updated successfully");
         } else {
-          toast.error("Failed to update subject group");
+          toast.error("Failed to update route");
         }
       } else {
         const result = await createTransportRoute(formData);
@@ -165,9 +165,9 @@ const Route = () => {
         setSelectedSubject([]);
 
         if (result.success) {
-          toast.success("Subject group created successfully");
+          toast.success("Route created successfully");
         } else {
-          toast.error("Failed to create subject group");
+          toast.error("Failed to create route");
         }
       }
       // Reset form after successful action
