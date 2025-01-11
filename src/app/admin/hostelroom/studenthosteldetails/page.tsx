@@ -47,7 +47,6 @@ const columns = [
   "Cost Per Bed (₹)",
 ];
 
-
 const options = {
   filterType: "checkbox",
   serverSide: true,
@@ -115,16 +114,15 @@ const AlumniReport = () => {
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
-      student.class_name || "N/A",            
-      student.admission_no || "N/A",          
-      `${student.firstname.trim()} ${student.lastname.trim()}`,         
-      student.mobileno || "N/A",               
-      student.guardian_phone || "N/A",        
-      student.hostel_name || "N/A",            
-      student.room_number_name || "N/A",      
-      student.room_type || "N/A",              
-      student.cost_per_bed || "N/A",  
-
+      student.class_name || "N/A",
+      student.admission_no || "N/A",
+      `${student.firstname.trim()} ${student.lastname.trim()}`,
+      student.mobileno || "N/A",
+      student.guardian_phone || "N/A",
+      student.hostel_name || "N/A",
+      student.room_number_name || "N/A",
+      student.room_type || "N/A",
+      student.cost_per_bed || "N/A",
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -230,7 +228,6 @@ const AlumniReport = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-       
           <label className={styles.label}>
             Class:
             <select
@@ -263,18 +260,17 @@ const AlumniReport = () => {
             </select>
           </label>
           <label className={styles.label}>
-          Hostel Name:
+            Hostel Name:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="Hostel B">Hostel B</option>   
-              <option value="Hostel G">Hostel G</option>   
-              <option value="Combined C">Combined C</option>   
+              <option value="Hostel B">Hostel B</option>
+              <option value="Hostel G">Hostel G</option>
+              <option value="Combined C">Combined C</option>
               <option value="Hostel A">Hostel A</option>
               <option value="Hostel D">Hostel D</option>
               <option value="Hostel E">Hostel E</option>
-              
             </select>
           </label>
           <div className={styles.searchGroup}>

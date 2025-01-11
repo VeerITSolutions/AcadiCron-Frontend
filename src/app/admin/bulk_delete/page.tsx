@@ -50,7 +50,7 @@ const options = {
   filterType: "checkbox",
   serverSide: true,
   pagination: false,
- responsive: "standard",
+  responsive: "standard",
   search: false,
   filter: false,
   viewColumns: false,

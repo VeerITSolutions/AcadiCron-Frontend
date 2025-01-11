@@ -297,9 +297,9 @@ const FeesMaster = () => {
                     Fees Group *
                   </label>
                   <select
-                    name="fees_group"
+                    name="	fees_group"
                     value={formData.fees_group}
-                    onChange={handleSelectChange}
+                    onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>

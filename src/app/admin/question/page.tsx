@@ -25,6 +25,9 @@ import {
   editQuestionData,
 } from "@/services/questionService";
 
+import {
+  fetchSubjectData,
+} from "@/services/subjectsService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -38,11 +41,14 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
-import { getClasses } from "@/services/classesService";
+import { getClasses,
+  fetchclassesData,
+} from "@/services/classesService";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 import content from "mui-datatables";
+
 
 const columns = [
   "Q. ID",
@@ -75,6 +81,7 @@ const QuestionBank = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const [subjectData, setSubjectData] = useState<Array<any>>([]);
 
   const [editing, setEditing] = useState(false); // Add state for editing
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -85,7 +92,7 @@ const QuestionBank = () => {
     setOpen(true);
   };
   const handleClickOpen1 = () => {
-    setOpen(true);
+    setOpen1(true);
   };
 
   const handleClose = () => {
@@ -112,7 +119,7 @@ const QuestionBank = () => {
       section_id: "",
     });
 
-    setOpen(false);
+    setOpen1(false);
     setEditing(false); // Reset editing state
   };
 
@@ -124,6 +131,40 @@ const QuestionBank = () => {
       console.error("Error in handleEditorChange:", error);
     }
   };
+
+ const fetchClassesAndSections = async () => {
+     try {
+       const classesResult = await getClasses();
+       setClassessData(classesResult.data);
+ 
+       // Fetch sections if a class is selected
+       if (selectedClass) {
+         const sectionsResult = await fetchsectionByClassData(selectedClass);
+         setSections(sectionsResult.data);
+       } else {
+         setSections([]); // Clear sections if no class is selected
+       }
+     } catch (error: any) {
+       setError(error.message);
+       setLoading(false);
+     }
+   };
+     
+
+    const fetchQuestions = async (currentPage: number, rowsPerPage: number) => {
+       try {
+         const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
+         const resultSubjectData = await fetchSubjectData("", "");
+         setTotalCount(result.total);
+         setData(formatSubjectData(result.data));
+         setSubjectData(resultSubjectData.data);
+   
+         setLoading(false);
+       } catch (error: any) {
+         setError(error.message);
+         setLoading(false);
+       }
+     };
 
   const handleSubmit = async () => {
     try {
@@ -166,7 +207,9 @@ const QuestionBank = () => {
 
       setIsEditing(false);
       setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
+      fetchQuestions(page, rowsPerPage); // Refresh data after submit
+      setOpen(false);
+      setOpen1(false);
     } catch (error) {
       console.error("An error occurred", error);
     }
@@ -209,7 +252,7 @@ const QuestionBank = () => {
     try {
       const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
       setTotalCount(result.total);
-      setData(formatSubjectData(result.data));
+      setSubjectData(formatSubjectData(result.data));
 
       setLoading(false);
     } catch (error: any) {
@@ -217,6 +260,7 @@ const QuestionBank = () => {
       setLoading(false);
     }
   };
+
 
   const handleDelete = async (id: number) => {
     try {
@@ -290,8 +334,10 @@ const QuestionBank = () => {
     ]);
   };
 
+  
+
   useEffect(() => {
-    fetchData(page, rowsPerPage);
+    fetchQuestions(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
   useEffect(() => {
@@ -340,14 +386,14 @@ const QuestionBank = () => {
           <button
             type="submit"
             className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-            onClick={handleClickOpen1}
+            onClick={handleClickOpen}
           >
             {"Import"}
           </button>
           <button
             type="submit"
             className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-            onClick={handleClickOpen}
+            onClick={handleClickOpen1}
           >
             {editing ? "Edit Question" : "Add Question"}
           </button>
@@ -373,8 +419,8 @@ const QuestionBank = () => {
           </ThemeProvider>
         )}
         <Dialog
-          open={open1}
-          onClose={handleClose1}
+          open={open}
+          onClose={handleClose}
           className="dialog-min-width dark:bg-boxdark dark:drop-shadow-none"
         >
           <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
@@ -383,7 +429,7 @@ const QuestionBank = () => {
                 Import{" "}
               </h3>
               <IconButton
-                onClick={handleClose1}
+                onClick={handleClose}
                 className="text-black dark:text-white"
               >
                 <Close />
@@ -395,20 +441,21 @@ const QuestionBank = () => {
               <div className="grid gap-5.5 p-6.5">
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Subject <span className="required">*</span>
+                    Subject<span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleClassChange}
+                    name="subject_id" // Adding name attribute for dynamic handling
+                    value={formData.subject_id}
+                    onChange={handleSelectChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
+                    
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                  {subjectData.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
+                    </option>
+                  ))}
                   </select>
                 </div>
                 <div className="field">
@@ -480,17 +527,17 @@ const QuestionBank = () => {
           </DialogContent>
         </Dialog>
         <Dialog
-          open={open}
-          onClose={handleClose}
+          open={open1}
+          onClose={handleClose1}
           className="dialog-min-width dark:bg-boxdark dark:drop-shadow-none"
         >
           <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="flex items-center justify-between">
               <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Exam" : "Exam"}
+                {editing ? "Edit Add Question" : "Add Question"}
               </h3>
               <IconButton
-                onClick={handleClose}
+                onClick={handleClose1}
                 className="text-black dark:text-white"
               >
                 <Close />
@@ -505,17 +552,18 @@ const QuestionBank = () => {
                     Subject <span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleClassChange}
+                    name="subject_id" // Adding name attribute for dynamic handling
+                    value={formData.subject_id}
+                    onChange={handleSelectChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
+                    
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                  {subjectData.map((sec: any) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
+                    </option>
+                  ))}
                   </select>
                 </div>
                 <div className="field">

@@ -80,13 +80,12 @@ const StudentDetails = () => {
 
     try {
       const response = await createFeesReminder(JSON.stringify(formState)); // Convert formState to a JSON string
-
+      fetchData(page, rowsPerPage); // Refresh data after submit
       if (response.success) {
         toast.success("Data saved successfully!");
       }
     } catch (error) {
       console.error("Error saving data:", error);
-      alert("Error saving data.");
     }
   };
 
@@ -128,7 +127,7 @@ const StudentDetails = () => {
                             <label className="inline-flex items-center">
                               <input
                                 type="checkbox"
-                                checked={section.is_active}
+                                checked={!!Number(section.is_active)} // Convert "0" or "1" to boolean
                                 onChange={(e) =>
                                   handleChange(
                                     section.id,
