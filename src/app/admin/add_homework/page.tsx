@@ -918,7 +918,7 @@ const StudentDetails = () => {
             </div>
           </DialogTitle>
           <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
-          <div className="rounded-sm  bg-white dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="w-full flex">
         {/* Sidebar */}
         <div className="w-4/6 p-2">
@@ -965,7 +965,7 @@ const StudentDetails = () => {
       </div>
       </div>
       {/* Save Button */}
-      <div className="col-span-full">
+      <div className="col-span-full mt-4">
                   <button
                     onClick={handleSave2}
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
