@@ -229,6 +229,11 @@ const FeesMaster = () => {
     }
   };
 
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -372,7 +377,7 @@ const FeesMaster = () => {
                 />
               </div>
 
-              <div>
+              <div className="flex gap-2">
                 <button
                   type="button"
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
@@ -380,6 +385,15 @@ const FeesMaster = () => {
                 >
                   {isEditing ? "Update" : "Save"}
                 </button>
+
+                {isEditing && (
+                  <button
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
             </div>
           </div>
