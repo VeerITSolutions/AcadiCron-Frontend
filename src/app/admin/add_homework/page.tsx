@@ -907,7 +907,7 @@ const StudentDetails = () => {
           <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
             <div className="flex items-center justify-between">
               <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Homework" : "Add Homework"}
+              Evaluate Homework
               </h3>
               <IconButton
                 onClick={handleClose}
