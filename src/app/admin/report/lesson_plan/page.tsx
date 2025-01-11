@@ -25,10 +25,9 @@ import {
   AssignmentTurnedIn as AssignmentTurnedInIcon,
   Wc as WcIcon,
   Scale as ScaleIcon,
-} from '@mui/icons-material';
-import { usePathname } from "next/navigation"; 
+} from "@mui/icons-material";
+import { usePathname } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
-
 
 const LessonPlanReport = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -51,11 +50,8 @@ const LessonPlanReport = () => {
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
-  const columns = [
-    "Subject - Lesson - Topic",
-    "Status",
-  ];
-  
+  const columns = ["Subject - Lesson - Topic", "Status"];
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -72,7 +68,6 @@ const LessonPlanReport = () => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -182,7 +177,7 @@ const LessonPlanReport = () => {
     }
   };
 
-  const pathname = usePathname(); 
+  const pathname = usePathname();
   const [activePath, setActivePath] = useState("");
 
   useEffect(() => {
@@ -193,120 +188,122 @@ const LessonPlanReport = () => {
 
   const reportLinks = [
     { href: "/admin/report/lesson_plan", label: "Syllabus Status Report" },
-    { href: "/admin/report/teachersyllabusstatus", label: "Subject Lesson Plan Report" },
+    {
+      href: "/admin/report/teachersyllabusstatus",
+      label: "Subject Lesson Plan Report",
+    },
   ];
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
   return (
     <DefaultLayout>
-        <div className="col-md-12">
-              <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-                <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                  <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-                    <i className="fa fa-search mr-2 text-blue-600"></i> Lesson Plan Report
-                  </h3>
-                </div>
-                <div className="p-5">
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                    {reportLinks.map((link) => (
-                      <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                        <a
-                          href={link.href}
-                          className={`flex items-center hover:text-[#0070f3] ${
-                            activePath === link.href
-                              ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
-                              : "p-2"
-                          }`}
-                        >
-                          <DescriptionIcon className="h-2 w-2 mr-2" />
-                          {link.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-            <div className={`${styles.filters} p-5`} >
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              {classes.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.class}
-                </option>
+      <div className="col-md-12">
+        <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+          <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+            <h3 className="box-title text-gray-800 flex items-center !font-[Satoshi] !text-[1.25rem] text-2xl !font-semibold font-semibold !leading-[1.75rem]">
+              <i className="fa fa-search mr-2 text-blue-600"></i> Lesson Plan
+              Report
+            </h3>
+          </div>
+          <div className="p-5">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              {reportLinks.map((link) => (
+                <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
+                  <a
+                    href={link.href}
+                    className={`flex items-center hover:text-[#0070f3] ${
+                      activePath === link.href
+                        ? "rounded-md bg-blue-100 p-2 dark:bg-blue-800"
+                        : "p-2"
+                    }`}
+                  >
+                    <DescriptionIcon className="mr-2 h-2 w-2" />
+                    {link.label}
+                  </a>
+                </li>
               ))}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
-            >
-              <option value="">Select</option>
-              {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
-                  {sec.section_name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Subject Group:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="Class1">Class 1</option>
-              <option value="Class2">Class 2</option>
-    
-            </select>
-          </label>
-         
-          <div className={styles.searchGroup}>
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
+            </ul>
           </div>
         </div>
-   
       </div>
-      {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={" Lesson Plan Report List "}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
-        </ThemeProvider>
-      )}
+
+      <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className={`${styles.filters} p-5`}>
+          <div className={styles.filterGroup}>
+            <label className={styles.label}>
+              Class:
+              <select
+                value={selectedClass || ""}
+                onChange={handleClassChange}
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                {classes.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.class}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.label}>
+              Section:
+              <select
+                value={selectedSection || ""}
+                onChange={handleSectionChange}
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                disabled={!selectedClass} // Disable section dropdown if no class is selected
+              >
+                <option value="">Select</option>
+                {section.map((sec) => (
+                  <option key={sec.id} value={sec.id}>
+                    {sec.section_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.label}>
+              Subject Group:
+              <select
+                value={selectedClass || ""}
+                onChange={handleClassChange}
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="Class1">Class 1</option>
+                <option value="Class2">Class 2</option>
+              </select>
+            </label>
+
+            <div className={styles.searchGroup}>
+              <button onClick={handleSearch} className={styles.searchButton}>
+                Search
+              </button>
+              <button onClick={handleRefresh} className={styles.searchButton}>
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={" Lesson Plan Report List "}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }}
+            />
+          </ThemeProvider>
+        )}
       </div>
     </DefaultLayout>
   );

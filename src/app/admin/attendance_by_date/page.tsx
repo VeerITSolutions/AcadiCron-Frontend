@@ -36,8 +36,8 @@ const columns = ["Admission No", "Roll Number", "Name", "Note", "Attendance"];
 const options = {
   filterType: "checkbox",
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };

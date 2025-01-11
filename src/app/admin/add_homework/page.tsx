@@ -35,7 +35,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { Delete, Edit, Visibility } from "@mui/icons-material";
+import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
 
 const columns = [
   "Class",
@@ -107,16 +107,42 @@ const StudentDetails = () => {
 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
+  
   const [formData, setFormData] = useState({
     homework_date: null as Date | null,
     submit_date: null as Date | null,
     description: "",
+    evaluation_date: "",
     document: null,
   });
   const [editing, setEditing] = useState(false); // Add state for editing
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being
 
   const [open, setOpen] = useState(false);
+  const [evaluateOpen, setEvaluateOpen] = useState(false);
+
+
+  const columns = [
+    "Class",
+    "Section",
+    "Section Group",
+    "Subject",
+    "Homework Date",
+    "Submission Date",
+    "Evaluation Date",
+    "Created By",
+    "Action",
+  ];
+  
+  const options = {
+    filterType: false,
+    serverSide: true,
+    responsive: "standard",
+    search: false,
+    selectableRows: "none",
+    filter: false,
+    viewColumns: false,
+  };
 
   /* use Effect  */
 
@@ -207,6 +233,12 @@ const StudentDetails = () => {
       formatDate(student.evaluation_date) || "N/A",
       `${student.staff_name || ""} ${student.staff_surname || ""}` || "N/A",
       <div key={student.id} className="flex items-center space-x-2">
+        <IconButton
+          onClick={() => handleClickOpenEvaluate(student)}
+          aria-label="Show"
+        >
+          <Visibility />
+        </IconButton>
         <IconButton
           onClick={() => handleEdit(student.id, student)}
           aria-label="edit"
@@ -329,6 +361,7 @@ const StudentDetails = () => {
           homework_date: null as Date | null,
           submit_date: null as Date | null,
           description: "",
+          evaluation_date: "",
           document: null,
         });
         setSelectedClass2("");
@@ -443,11 +476,17 @@ const StudentDetails = () => {
     setOpen(true);
   };
 
+  const handleClickOpenEvaluate = (data: any) => {
+    setEvaluateOpen(true);
+    console.log(data);
+  };
+
   const handleClose = () => {
     setFormData({
       homework_date: null as Date | null,
       submit_date: null as Date | null,
       description: "",
+      evaluation_date: "",
       document: null,
     });
 
@@ -456,6 +495,7 @@ const StudentDetails = () => {
     setSelectedSubjectGroup2("");
     setSelectedSubject2("");
     setOpen(false);
+    setEvaluateOpen(false);
     setEditing(false); // Reset editing state
   };
 
@@ -515,6 +555,32 @@ const StudentDetails = () => {
     }
   };
 
+  const [students, setStudents] = useState([
+    { id: 1, name: "Angel Vishwakarma (347)", selected: false },
+    { id: 2, name: "Bhakti Idole (346)", selected: false },
+    { id: 3, name: "Anaya Dhote (345)", selected: false },
+  ]);
+  const [evaluationDate, setEvaluationDate] = useState("");
+
+  const handleCheckboxChange = (id: any) => {
+    setStudents((prev) =>
+      prev.map((student) =>
+        student.id === id
+          ? { ...student, selected: !student.selected }
+          : student,
+      ),
+    );
+  };
+
+  const handleSave2 = () => {
+    console.log(
+      "Selected Students:",
+      students.filter((s) => s.selected),
+    );
+    console.log("Evaluation Date:", evaluationDate);
+    // Add your save logic here
+  };
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -543,7 +609,7 @@ const StudentDetails = () => {
               value={selectedSection || ""}
               onChange={handleSectionChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} 
+              disabled={!selectedClass}
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -856,6 +922,86 @@ const StudentDetails = () => {
                 </div>
               </div>
             </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          open={evaluateOpen}
+          onClose={handleClose}
+          className="dark:bg-boxdark dark:drop-shadow-none"
+        >
+          <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-black dark:text-white">
+                Evaluate Homework
+              </h3>
+              <IconButton
+                onClick={handleClose}
+                className="text-black dark:text-white"
+              >
+                <Close />
+              </IconButton>
+            </div>
+          </DialogTitle>
+          <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="flex w-full">
+                {/* Sidebar */}
+                <div className="w-4/6 p-2">
+                  <h2 className="mb-3 font-medium text-black dark:text-white">
+                    Students List
+                  </h2>
+                  {students.map((student) => (
+                    <label
+                      key={student.id}
+                      className="mb-2 block flex cursor-pointer items-center space-x-2 text-sm font-medium text-black dark:text-white"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={student.selected}
+                        onChange={() => handleCheckboxChange(student.id)}
+                        className="h-3 w-3"
+                      />
+                      <span>{student.name}</span>
+                    </label>
+                  ))}
+                </div>
+
+        {/* Homework Details */}
+        <div className="w-3/6 p-2">
+          <h2 className="font-medium text-black dark:text-white mb-3">Summary</h2>
+          <div className="mb-4">
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Homework Date:</strong> 01/11/2025</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Submission Date:</strong> 01/12/2025</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Evaluation Date:</strong> {evaluationDate || "Not Set"}</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Created By:</strong> Priya Tendulkar</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Class:</strong> B.Sc.</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Section:</strong> A</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Subject:</strong> English</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Description:</strong> addd</p>
+          </div>
+          <label className="mb-4 block text-sm font-medium text-black dark:text-white">
+            Evaluation Date:
+            <input
+              type="date"
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary mt-3"
+              value={evaluationDate}
+              onChange={(e) => setEvaluationDate(e.target.value)}
+            />
+          </label>
+        </div>
+      </div>
+      </div>
+      {/* Save Button */}
+      <div className="col-span-full mt-4">
+                  <button
+                    onClick={handleSave2}
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
+                    Save
+                  </button>
+                </div>
+   
           </DialogContent>
         </Dialog>
       </div>
