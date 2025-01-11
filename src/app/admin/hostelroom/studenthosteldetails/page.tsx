@@ -253,7 +253,7 @@ const AlumniReport = () => {
             >
               <option value="">Select</option>
               {section.map((sec) => (
-                <option key={sec.id} value={sec.id}>
+                <option key={sec.section_id} value={sec.section_id}>
                   {sec.section_name}
                 </option>
               ))}
