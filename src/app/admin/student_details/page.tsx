@@ -85,7 +85,7 @@ const StudentDetails = () => {
       student.category_name || "N/A",
       student.mobileno,
       <div key={student.id} className="flex text-left">
-        <IconButton onClick={() => handleDelete(student.id)} aria-label="Show">
+        <IconButton onClick={() => handleView(student.id)} aria-label="Show">
           <Visibility />
         </IconButton>
         <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
@@ -155,7 +155,7 @@ const StudentDetails = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleView = async (id: number) => {
     // Assuming id is the student_id
     router.push(`/admin/student/${id}`);
   };

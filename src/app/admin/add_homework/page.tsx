@@ -35,7 +35,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { Delete, Edit, Visibility } from "@mui/icons-material";
+import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
 
 const columns = [
   "Class",
@@ -117,6 +117,7 @@ const StudentDetails = () => {
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being
 
   const [open, setOpen] = useState(false);
+  const [evaluateOpen, setEvaluateOpen] = useState(false);
 
   /* use Effect  */
 
@@ -163,6 +164,8 @@ const StudentDetails = () => {
     }
   };
 
+
+
   const handleDateChange = (selectedDates: Date[], name: string) => {
     if (selectedDates.length > 0) {
       const formattedDate = selectedDates[0].toLocaleDateString("en-CA"); // Format to YYYY-MM-DD
@@ -207,6 +210,9 @@ const StudentDetails = () => {
       formatDate(student.evaluation_date) || "N/A",
       `${student.staff_name || ""} ${student.staff_surname || ""}` || "N/A",
       <div key={student.id} className="flex items-center space-x-2">
+       <IconButton onClick={() => handleClickOpenEvaluate(student)} aria-label="Show">
+                <Visibility />
+              </IconButton>
         <IconButton
           onClick={() => handleEdit(student.id, student)}
           aria-label="edit"
@@ -219,6 +225,7 @@ const StudentDetails = () => {
         >
           <Delete />
         </IconButton>
+        
       </div>,
     ]);
   };
@@ -442,6 +449,11 @@ const StudentDetails = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+ 
+  const handleClickOpenEvaluate = (data: any) => {
+    setEvaluateOpen(true);
+    console.log(data);
+  };
 
   const handleClose = () => {
     setFormData({
@@ -456,6 +468,7 @@ const StudentDetails = () => {
     setSelectedSubjectGroup2("");
     setSelectedSubject2("");
     setOpen(false);
+    setEvaluateOpen(false);
     setEditing(false); // Reset editing state
   };
 
@@ -514,6 +527,31 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
+
+
+
+  const [students, setStudents] = useState([
+    { id: 1, name: "Angel Vishwakarma (347)", selected: false },
+    { id: 2, name: "Bhakti Idole (346)", selected: false },
+    { id: 3, name: "Anaya Dhote (345)", selected: false },
+  ]);
+  const [evaluationDate, setEvaluationDate] = useState("");
+
+  const handleCheckboxChange = (id: any) => {
+    setStudents((prev) =>
+      prev.map((student) =>
+        student.id === id ? { ...student, selected: !student.selected } : student
+      )
+    );
+  };
+
+  const handleSave2 = () => {
+    console.log("Selected Students:", students.filter((s) => s.selected));
+    console.log("Evaluation Date:", evaluationDate);
+    // Add your save logic here
+  };
+
+
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -856,6 +894,86 @@ const StudentDetails = () => {
                 </div>
               </div>
             </div>
+          </DialogContent>
+        </Dialog>
+
+
+
+        <Dialog
+          open={evaluateOpen}
+          onClose={handleClose}
+          className="dark:bg-boxdark dark:drop-shadow-none"
+        >
+          <DialogTitle className="dark:bg-boxdark dark:drop-shadow-none">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-black dark:text-white">
+                {editing ? "Edit Homework" : "Add Homework"}
+              </h3>
+              <IconButton
+                onClick={handleClose}
+                className="text-black dark:text-white"
+              >
+                <Close />
+              </IconButton>
+            </div>
+          </DialogTitle>
+          <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
+          <div className="rounded-sm  bg-white dark:border-strokedark dark:bg-boxdark">
+          <div className="w-full flex">
+        {/* Sidebar */}
+        <div className="w-4/6 p-2">
+          <h2 className="text-xl font-bold mb-4">Students List</h2>
+          {students.map((student) => (
+            <label
+              key={student.id}
+              className="flex items-center space-x-2 mb-2 cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                checked={student.selected}
+                onChange={() => handleCheckboxChange(student.id)}
+                className="h-3 w-3"
+              />
+              <span>{student.name}</span>
+            </label>
+          ))}
+        </div>
+
+        {/* Homework Details */}
+        <div className="w-3/6 p-2">
+          <h2 className="text-xl font-bold mb-4">Summary</h2>
+          <div className="mb-4">
+            <p><strong>Homework Date:</strong> 01/11/2025</p>
+            <p><strong>Submission Date:</strong> 01/12/2025</p>
+            <p><strong>Evaluation Date:</strong> {evaluationDate || "Not Set"}</p>
+            <p><strong>Created By:</strong> Priya Tendulkar</p>
+            <p><strong>Class:</strong> B.Sc.</p>
+            <p><strong>Section:</strong> A</p>
+            <p><strong>Subject:</strong> English</p>
+            <p><strong>Description:</strong> addd</p>
+          </div>
+          <label className="block mb-4">
+            <span className="text-gray-700">Evaluation Date:</span>
+            <input
+              type="date"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+              value={evaluationDate}
+              onChange={(e) => setEvaluationDate(e.target.value)}
+            />
+          </label>
+        </div>
+      </div>
+      </div>
+      {/* Save Button */}
+      <div className="col-span-full">
+                  <button
+                    onClick={handleSave2}
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
+                    Save
+                  </button>
+                </div>
+   
           </DialogContent>
         </Dialog>
       </div>
