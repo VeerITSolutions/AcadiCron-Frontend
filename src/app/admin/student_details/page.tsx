@@ -241,7 +241,7 @@ const StudentDetails = () => {
             >
               <option value="">Select</option>
               {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
+                <option key={sec.id} value={sec.id}>
                   {sec.section_name}
                 </option>
               ))}

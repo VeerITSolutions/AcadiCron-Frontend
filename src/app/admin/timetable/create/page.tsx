@@ -26,7 +26,6 @@ import {
 import { getClasses } from "@/services/classesService"; // Import your classes API service
 import styles from "./StudentDetails.module.css"; // Import CSS module
 
-
 const StudentDetails = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,8 +46,8 @@ const StudentDetails = () => {
     undefined,
   );
   const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<
-  string | undefined
->(undefined);
+    string | undefined
+  >(undefined);
 
   const columns = [
     "Monday",
@@ -69,10 +68,8 @@ const StudentDetails = () => {
     download: false,
     print: false,
     viewColumns: false,
-   responsive: "standard",
-
+    responsive: "standard",
   };
-
 
   const [rows, setRows] = useState<{ [key: string]: any[] }>({
     Monday: [
@@ -209,7 +206,7 @@ const StudentDetails = () => {
           selectedSubjectGroup || "", // Pass selectedSubjectGroup to fetch the specific group
           "",
           selectedClass,
-          selectedSection
+          selectedSection,
         );
         if (subjectgroupresult && subjectgroupresult.data) {
           setSubjectGroup(subjectgroupresult.data);
@@ -225,13 +222,11 @@ const StudentDetails = () => {
     }
   };
 
-
   useEffect(() => {
     if (selectedClass && selectedSection) {
       fetchData();
     }
   }, [selectedClass, selectedSection, selectedSubjectGroup]);
-
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -269,7 +264,7 @@ const StudentDetails = () => {
             >
               <option value="">Select</option>
               {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
+                <option key={sec.id} value={sec.id}>
                   {sec.section_name}
                 </option>
               ))}
@@ -328,18 +323,18 @@ const StudentDetails = () => {
               </TabList>
             </Box>
 
-          {columns.map((day) => (
-            <TabPanel key={day} value={day}>
-              <div className="container mx-auto">
-                {/* Add Row Button */}
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => addRow(day)}
-                    className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  >
-                    Add Row
-                  </button>
-                </div>
+            {columns.map((day) => (
+              <TabPanel key={day} value={day}>
+                <div className="container mx-auto">
+                  {/* Add Row Button */}
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => addRow(day)}
+                      className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    >
+                      Add Row
+                    </button>
+                  </div>
 
                   {/* Timetable */}
                   <table className="mb-5 mt-5 min-w-full table-auto border-collapse shadow">

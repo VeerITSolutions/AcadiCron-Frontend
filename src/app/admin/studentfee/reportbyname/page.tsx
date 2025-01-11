@@ -28,7 +28,7 @@ import {
   AssignmentTurnedIn as AssignmentTurnedInIcon,
   Wc as WcIcon,
   Scale as ScaleIcon,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 import { usePathname } from "next/navigation";
 import {
   Dialog,
@@ -53,7 +53,6 @@ import {
   deleteLeaveData,
   editLeaveData,
 } from "@/services/leaveService";
-
 
 const StudentReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -92,10 +91,9 @@ const StudentReport = () => {
     "Discount (₹)",
     "Fine (₹)",
     "Paid (₹)",
-    "Balance (₹)"
+    "Balance (₹)",
   ];
-  
-  
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -226,7 +224,6 @@ const StudentReport = () => {
     second_title: "",
     third_title: "",
     fourth_title: "",
-    
   });
 
   useEffect(() => {
@@ -237,7 +234,7 @@ const StudentReport = () => {
           try {
             const data = await fetchStudentSingleData(id);
             const formattedData2 = await fetchStudentFeesData(id);
-    
+
             setFormData({
               class_name: data.data.class_name,
 
@@ -318,15 +315,15 @@ const StudentReport = () => {
   }, []);
 
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-      null,
-    );
-  
-    const getselectedSessionId = useLoginDetails(
-      (state) => state.selectedSessionId,
-    );
-    useEffect(() => {
-      setSelectedSessionId(getselectedSessionId);
-    }, []);
+    null,
+  );
+
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+  useEffect(() => {
+    setSelectedSessionId(getselectedSessionId);
+  }, []);
 
   const fetchData = async (
     currentPage: number,
@@ -407,7 +404,6 @@ const StudentReport = () => {
     }
   };
 
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -421,8 +417,6 @@ const StudentReport = () => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
 
-
-
   const handleRowSelectionChange = (
     curRowSelected: { dataIndex: number; index: number }[],
     allRowsSelected: { dataIndex: number; index: number }[],
@@ -430,8 +424,6 @@ const StudentReport = () => {
   ) => {
     setSelectedRows(rowsSelected); // Update selected rows
   };
-
-
 
   const fetchClassesAndSections = async () => {
     try {
@@ -479,7 +471,7 @@ const StudentReport = () => {
   };
 
   const handleSearch = () => {
-    setPage(0); 
+    setPage(0);
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
@@ -507,9 +499,18 @@ const StudentReport = () => {
   // Links for the reports
   const reportLinks = [
     { href: "/admin/studentfee/reportbyname", label: "Fees Statement" },
-    { href: "/admin/transaction/studentacademicreport", label: "Balance Fees Report" },
-    { href: "/admin/studentfee/collection_report", label: "Fees Collection Report" },
-    { href: "/admin/report/onlinefees_report", label: "Online Fees Collection Report" },
+    {
+      href: "/admin/transaction/studentacademicreport",
+      label: "Balance Fees Report",
+    },
+    {
+      href: "/admin/studentfee/collection_report",
+      label: "Fees Collection Report",
+    },
+    {
+      href: "/admin/report/onlinefees_report",
+      label: "Online Fees Collection Report",
+    },
     { href: "/admin/report/income", label: "Income Report" },
     { href: "/admin/report/expense", label: "Expense Report" },
     { href: "/admin/report/payroll", label: "Payroll Report" },
@@ -522,10 +523,10 @@ const StudentReport = () => {
 
   return (
     <DefaultLayout>
-  <div className="col-md-12">
-        <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+      <div className="col-md-12">
+        <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
           <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-            <h3 className="box-title text-2xl font-medium text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-medium">
+            <h3 className="box-title text-gray-800 flex items-center !font-[Satoshi] !text-[1.25rem] text-2xl !font-medium font-medium !leading-[1.75rem]">
               <i className="fa fa-search mr-2 text-blue-600"></i> Finance
             </h3>
           </div>
@@ -537,11 +538,11 @@ const StudentReport = () => {
                     href={link.href}
                     className={`flex items-center font-medium hover:text-[#0070f3] ${
                       activePath === link.href
-                        ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
+                        ? "rounded-md bg-blue-100 p-2 dark:bg-blue-800"
                         : "p-2"
                     }`}
                   >
-                    <DescriptionIcon className="h-2 w-2 mr-2" />
+                    <DescriptionIcon className="mr-2 h-2 w-2" />
                     {link.label}
                   </a>
                 </li>
@@ -551,302 +552,301 @@ const StudentReport = () => {
         </div>
       </div>
 
-
-<div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-      <div className={`${styles.filters} p-5`} >
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              {classes.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.class}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass}
-            >
-              <option value="">Select</option>
-              {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
-                  {sec.section_name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={styles.label}>
-          Student:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="">SC</option>
-              <option value="">ST</option>
-              <option value="">OBC</option>
-              
-            </select>
-          </label>
-        
-          <div className={styles.searchGroup}>
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
-        <div className="border-b border-stroke p-4 dark:bg-boxdark dark:drop-shadow-none">
-          <div className="flex items-start">
-            <div className="flex w-1/5 items-center justify-center">
-              <img
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
-                alt="User Profile"
-                className="mx-auto h-24 w-24 rounded-full"
-              />
-            </div>
-
-            <div className="ml-4 w-4/5">
-              <table className="w-full table-auto border-collapse">
-                <tbody>
-                  <tr>
-                    <th className="border-b border-b border-stroke p-4 px-4 py-2 text-left font-medium dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-                      Name
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.firstname} {formData.lastname}
-                    </td>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Class Section
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.class_name}  {formData.section_name}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Father Name
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.father_name}
-                    </td>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Admission No
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.admission_no}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Mobile Number
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.mobileno}
-                    </td>
-                    <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Roll Number
-                    </th>
-                    <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.roll_no}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      Category
-                    </th>
-                    <td className="px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.category_name}
-                    </td>
-                    <th className="px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
-                      RTE
-                    </th>
-
-                    <td className="px-4 py-2 dark:border-strokedark dark:text-white">
-                      {formData.rte}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        {loading ? (
-          <Loader />
-        ) : (
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-          title={`${currentDate}`}
-          data={data}
-          className={`${styles["miui-box-shadow"]}`}
-          columns={columns}
-          options={{
-          ...options,
-          count: totalCount,
-          page: page,
-          rowsPerPage: rowsPerPage,
-          onChangePage: handlePageChange,
-          onChangeRowsPerPage: handleRowsPerPageChange,
-          }}
-          />;
-          </ThemeProvider>
-        )}
-        <Dialog open={open} onClose={handleClose}>
-          <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
-            <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
-              {/* Title */}
-              <h3 className="font-medium text-black dark:text-white">
-                {editing ? "Edit Leave" : "Collect Fees"}
-              </h3>
-              <svg
-                onClick={handleClose}
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="cursor-pointer text-black dark:text-white"
+      <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className={`${styles.filters} p-5`}>
+          <div className={styles.filterGroup}>
+            <label className={styles.label}>
+              Class:
+              <select
+                value={selectedClass || ""}
+                onChange={handleClassChange}
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </div>
+                <option value="">Select</option>
+                {classes.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.class}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.label}>
+              Section:
+              <select
+                value={selectedSection || ""}
+                onChange={handleSectionChange}
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                disabled={!selectedClass}
+              >
+                <option value="">Select</option>
+                {section.map((sec) => (
+                  <option key={sec.id} value={sec.id}>
+                    {sec.section_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.label}>
+              Student:
+              <select
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="">SC</option>
+                <option value="">ST</option>
+                <option value="">OBC</option>
+              </select>
+            </label>
 
-            <div className="grid gap-5.5 p-4.5 dark:bg-boxdark dark:drop-shadow-none">
-              {/* Date Picker, Payment Mode, Note */}
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Date
-                </label>
-                <div className="relative">
-                  <Flatpickr
-                    options={{
-                      dateFormat: "m/d/Y",
-                    }}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    placeholder="mm/dd/yyyy"
+            <div className={styles.searchGroup}>
+              <button onClick={handleSearch} className={styles.searchButton}>
+                Search
+              </button>
+              <button onClick={handleRefresh} className={styles.searchButton}>
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
+          <div className="border-b border-stroke p-4 dark:bg-boxdark dark:drop-shadow-none">
+            <div className="flex items-start">
+              <div className="flex w-1/5 items-center justify-center">
+                <img
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
+                  alt="User Profile"
+                  className="mx-auto h-24 w-24 rounded-full"
+                />
+              </div>
+
+              <div className="ml-4 w-4/5">
+                <table className="w-full table-auto border-collapse">
+                  <tbody>
+                    <tr>
+                      <th className="border-b border-b border-stroke p-4 px-4 py-2 text-left font-medium dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                        Name
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.firstname} {formData.lastname}
+                      </td>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Class Section
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.class_name} {formData.section_name}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Father Name
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.father_name}
+                      </td>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Admission No
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.admission_no}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Mobile Number
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.mobileno}
+                      </td>
+                      <th className="border-b border-stroke px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Roll Number
+                      </th>
+                      <td className="border-b border-stroke px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.roll_no}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        Category
+                      </th>
+                      <td className="px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.category_name}
+                      </td>
+                      <th className="px-4 py-2 text-left font-medium dark:border-strokedark dark:text-white">
+                        RTE
+                      </th>
+
+                      <td className="px-4 py-2 dark:border-strokedark dark:text-white">
+                        {formData.rte}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {loading ? (
+            <Loader />
+          ) : (
+            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <MUIDataTable
+                title={`${currentDate}`}
+                data={data}
+                className={`${styles["miui-box-shadow"]}`}
+                columns={columns}
+                options={{
+                  ...options,
+                  count: totalCount,
+                  page: page,
+                  rowsPerPage: rowsPerPage,
+                  onChangePage: handlePageChange,
+                  onChangeRowsPerPage: handleRowsPerPageChange,
+                }}
+              />
+              ;
+            </ThemeProvider>
+          )}
+          <Dialog open={open} onClose={handleClose}>
+            <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
+              <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
+                {/* Title */}
+                <h3 className="font-medium text-black dark:text-white">
+                  {editing ? "Edit Leave" : "Collect Fees"}
+                </h3>
+                <svg
+                  onClick={handleClose}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="cursor-pointer text-black dark:text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
                   />
-                  <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M15.7504 2.9812H14.2879V2.36245C14.2879 2.02495 14.0066 1.71558 13.641 1.71558C13.2754 1.71558 12.9941 1.99683 12.9941 2.36245V2.9812H4.97852V2.36245C4.97852 2.02495 4.69727 1.71558 4.33164 1.71558C3.96602 1.71558 3.68477 1.99683 3.68477 2.36245V2.9812H2.25039C1.29414 2.9812 0.478516 3.7687 0.478516 4.75308V14.5406C0.478516 15.4968 1.26602 16.3125 2.25039 16.3125H15.7504C16.7066 16.3125 17.5223 15.525 17.5223 14.5406V4.72495C17.5223 3.7687 16.7066 2.9812 15.7504 2.9812ZM1.77227 8.21245H4.16289V10.9968H1.77227V8.21245ZM5.42852 8.21245H8.38164V10.9968H5.42852V8.21245ZM8.38164 12.2625V15.0187H5.42852V12.2625H8.38164V12.2625ZM9.64727 12.2625H12.6004V15.0187H9.64727V12.2625ZM9.64727 10.9968V8.21245H12.6004V10.9968H9.64727ZM13.8379 8.21245H16.2285V10.9968H13.8379V8.21245ZM2.25039 4.24683H3.71289V4.83745C3.71289 5.17495 3.99414 5.48433 4.35977 5.48433C4.72539 5.48433 5.00664 5.20308 5.00664 4.83745V4.24683H13.0504V4.83745C13.0504 5.17495 13.3316 5.48433 13.6973 5.48433C14.0629 5.48433 14.3441 5.20308 14.3441 4.83745V4.24683H15.7504C16.0316 4.24683 16.2566 4.47183 16.2566 4.75308V6.94683H1.77227V4.75308C1.77227 4.47183 1.96914 4.24683 2.25039 4.24683ZM1.77227 14.5125V12.2343H4.16289V14.9906H2.25039C1.96914 15.0187 1.77227 14.7937 1.77227 14.5125ZM15.7504 15.0187H13.8379V12.2625H16.2285V14.5406C16.2566 14.7937 16.0316 15.0187 15.7504 15.0187Z"
-                        fill="#64748B"
-                      />
-                    </svg>
+                </svg>
+              </div>
+
+              <div className="grid gap-5.5 p-4.5 dark:bg-boxdark dark:drop-shadow-none">
+                {/* Date Picker, Payment Mode, Note */}
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Date
+                  </label>
+                  <div className="relative">
+                    <Flatpickr
+                      options={{
+                        dateFormat: "m/d/Y",
+                      }}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      placeholder="mm/dd/yyyy"
+                    />
+                    <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15.7504 2.9812H14.2879V2.36245C14.2879 2.02495 14.0066 1.71558 13.641 1.71558C13.2754 1.71558 12.9941 1.99683 12.9941 2.36245V2.9812H4.97852V2.36245C4.97852 2.02495 4.69727 1.71558 4.33164 1.71558C3.96602 1.71558 3.68477 1.99683 3.68477 2.36245V2.9812H2.25039C1.29414 2.9812 0.478516 3.7687 0.478516 4.75308V14.5406C0.478516 15.4968 1.26602 16.3125 2.25039 16.3125H15.7504C16.7066 16.3125 17.5223 15.525 17.5223 14.5406V4.72495C17.5223 3.7687 16.7066 2.9812 15.7504 2.9812ZM1.77227 8.21245H4.16289V10.9968H1.77227V8.21245ZM5.42852 8.21245H8.38164V10.9968H5.42852V8.21245ZM8.38164 12.2625V15.0187H5.42852V12.2625H8.38164V12.2625ZM9.64727 12.2625H12.6004V15.0187H9.64727V12.2625ZM9.64727 10.9968V8.21245H12.6004V10.9968H9.64727ZM13.8379 8.21245H16.2285V10.9968H13.8379V8.21245ZM2.25039 4.24683H3.71289V4.83745C3.71289 5.17495 3.99414 5.48433 4.35977 5.48433C4.72539 5.48433 5.00664 5.20308 5.00664 4.83745V4.24683H13.0504V4.83745C13.0504 5.17495 13.3316 5.48433 13.6973 5.48433C14.0629 5.48433 14.3441 5.20308 14.3441 4.83745V4.24683H15.7504C16.0316 4.24683 16.2566 4.47183 16.2566 4.75308V6.94683H1.77227V4.75308C1.77227 4.47183 1.96914 4.24683 2.25039 4.24683ZM1.77227 14.5125V12.2343H4.16289V14.9906H2.25039C1.96914 15.0187 1.77227 14.7937 1.77227 14.5125ZM15.7504 15.0187H13.8379V12.2625H16.2285V14.5406C16.2566 14.7937 16.0316 15.0187 15.7504 15.0187Z"
+                          fill="#64748B"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Payment Mode
-                </label>
-                <label className="mr-4 inline-flex items-center">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="Cash"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2 dark:text-white"> Cash</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="Cheque"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2">Cheque</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="DD"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2">DD</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="bank_transfer"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2">Bank Transfer</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="upi"
-                    className="form-radio"
-                  />
-                  <span className="ml-2 dark:text-white">UPI</span>
-                </label>
-                <label className="mr-4 inline-flex items-center dark:text-white">
-                  <input
-                    type="radio"
-                    name="payment_mode_fee"
-                    value="card"
-                    className="form-radio dark:text-white"
-                  />
-                  <span className="ml-2 dark:text-white">Card</span>
-                </label>
-              </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Payment Mode
+                  </label>
+                  <label className="mr-4 inline-flex items-center">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="Cash"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2 dark:text-white"> Cash</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="Cheque"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2">Cheque</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="DD"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2">DD</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="bank_transfer"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2">Bank Transfer</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="upi"
+                      className="form-radio"
+                    />
+                    <span className="ml-2 dark:text-white">UPI</span>
+                  </label>
+                  <label className="mr-4 inline-flex items-center dark:text-white">
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value="card"
+                      className="form-radio dark:text-white"
+                    />
+                    <span className="ml-2 dark:text-white">Card</span>
+                  </label>
+                </div>
 
-              <div className="field">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Note
-                </label>
-                <input
-                  name="reason"
-                  type="text"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
+                <div className="field">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Note
+                  </label>
+                  <input
+                    name="reason"
+                    type="text"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
-              <div className="dark:bg-boxdark dark:drop-shadow-none">
-                <button
-                  onClick={handleSubmit}
-                  className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-                >
-                  {editing ? "Update" : "Save"}
-                </button>
+                <div className="dark:bg-boxdark dark:drop-shadow-none">
+                  <button
+                    onClick={handleSubmit}
+                    className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+                  >
+                    {editing ? "Update" : "Save"}
+                  </button>
+                </div>
               </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </DefaultLayout>
   );

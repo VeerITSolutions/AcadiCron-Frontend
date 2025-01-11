@@ -249,7 +249,7 @@ const StudentDetails = () => {
             >
               <option value="">Select</option>
               {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
+                <option key={sec.id} value={sec.id}>
                   {sec.section_name}
                 </option>
               ))}
@@ -262,7 +262,6 @@ const StudentDetails = () => {
               onChange={handleSubjectGroupChange}
               disabled={!selectedClass || !selectedSection}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-
             >
               <option value="">Select</option>
               {subjectGroup.map((cls) => (
@@ -282,7 +281,6 @@ const StudentDetails = () => {
                 !selectedClass || !selectedSection || !selectedSubjectGroup
               }
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-
             >
               <option value="">Select</option>
               {subject.map((cls) => (

@@ -51,11 +51,10 @@ const options = {
   serverSide: true,
   responsive: "standard",
   search: false,
-  selectableRows: "none", 
-  filter: false, 
+  selectableRows: "none",
+  filter: false,
   viewColumns: false,
 };
-
 
 const ManageAlumni = () => {
   const [colorMode, setColorMode] = useColorMode();
@@ -133,7 +132,7 @@ const ManageAlumni = () => {
         selectedSessionId,
       );
 
-       const resultSession = await fetchSession();
+      const resultSession = await fetchSession();
 
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
@@ -163,8 +162,6 @@ const ManageAlumni = () => {
       setLoading(false);
     }
   };
-  
- 
 
   const handleDelete = async (id: number) => {
     // Assuming id is the student_id
@@ -181,7 +178,6 @@ const ManageAlumni = () => {
 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
-    
   }, [selectedClass]);
 
   useEffect(() => {
@@ -230,16 +226,16 @@ const ManageAlumni = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-          Pass Out Session
+            Pass Out Session
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-               {allSession.map((cls: any) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.session}
-                    </option>
-                  ))}
+              {allSession.map((cls: any) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.session}
+                </option>
+              ))}
             </select>
           </label>
           <label className={styles.label}>
@@ -267,7 +263,7 @@ const ManageAlumni = () => {
             >
               <option value="">Select</option>
               {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
+                <option key={sec.id} value={sec.id}>
                   {sec.section_name}
                 </option>
               ))}
@@ -275,8 +271,8 @@ const ManageAlumni = () => {
           </label>
 
           <label className={styles.label}>
-          Search By Admission Number
-          <input
+            Search By Admission Number
+            <input
               type="text"
               placeholder="Search By Admission Number"
               value={keyword}
@@ -284,9 +280,8 @@ const ManageAlumni = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             />
           </label>
-         
+
           <div className={styles.searchGroup}>
-          
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>

@@ -50,8 +50,8 @@ const columns = [
 const options = {
   filterType: "checkbox",
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "none", // Disable row selection
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
@@ -260,7 +260,7 @@ const StudentDetails = () => {
             >
               <option value="">Select</option>
               {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
+                <option key={sec.id} value={sec.id}>
                   {sec.section_name}
                 </option>
               ))}
