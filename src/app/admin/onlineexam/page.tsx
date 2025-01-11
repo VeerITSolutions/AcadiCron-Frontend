@@ -40,12 +40,12 @@ import { useLoginDetails } from "@/store/logoStore";
 const OnlineExam = () => {
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
-  const [IsQuiz, setIsQuiz] = useState(false);
-  const [IsActive, setIsActive] = useState(false);
-  const [IsMarksDisplay, setIsMarksDisplay] = useState(false);
-  const [IsRandomQuestion, setIsRandomQuestion] = useState(false);
-  const [IsNegMarking, setIsNegMarking] = useState(false);
-  const [IsPublishResult, setIsPublishResult] = useState(false);
+  const [IsQuiz, setIsQuiz] = useState(0);
+  const [IsActive, setIsActive] = useState(0);
+  const [IsMarksDisplay, setIsMarksDisplay] = useState(0);
+  const [IsRandomQuestion, setIsRandomQuestion] = useState(0);
+  const [IsNegMarking, setIsNegMarking] = useState(0);
+  const [IsPublishResult, setIsPublishResult] = useState(0);
   const [data, setData] = useState<Array<any>>([]);
   const [dataOnlineExamHead, setDataOnlineExamHead] = useState<Array<any>>([]);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
@@ -80,11 +80,11 @@ const OnlineExam = () => {
     duration: "",
     passing_percentage: "",
     description: "",
-    is_active: "",
-    publish_result: "",
-    is_neg_marking: "",
-    is_marks_display: "",
-    is_random_question: "",
+    is_active: 0,
+    publish_result: 0,
+    is_neg_marking: 0,
+    is_marks_display: 0,
+    is_random_question: 0,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -102,37 +102,55 @@ const OnlineExam = () => {
   const handleIsQuizChangeforcheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setIsQuiz(e.target.checked);
+    setFormData({
+      ...formData,
+      is_quiz: e.target.checked ? 1 : 0,
+    });
   };
 
   const handleIsMarksDisplayChangeforcheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setIsMarksDisplay(e.target.checked);
+    setFormData({
+      ...formData,
+      is_marks_display: e.target.checked ? 1 : 0,
+    });
   };
 
   const handleIsRandomQuestionChangeforcheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setIsRandomQuestion(e.target.checked);
+    setFormData({
+      ...formData,
+      is_random_question: e.target.checked ? 1 : 0,
+    });
   };
 
   const handleIsNegMarkingChangeforcheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setIsNegMarking(e.target.checked);
+    setFormData({
+      ...formData,
+      is_neg_marking: e.target.checked ? 1 : 0,
+    });
   };
 
   const handlePublishResultChangeforcheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setIsPublishResult(e.target.checked);
+    setFormData({
+      ...formData,
+      publish_result: e.target.checked ? 1 : 0,
+    });
   };
 
   const handleIsActiveChangeforcheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setIsActive(e.target.checked);
+    setFormData({
+      ...formData,
+      is_active: e.target.checked ? 1 : 0,
+    });
   };
 
   const handleDelete = async (id: number) => {
@@ -180,11 +198,11 @@ const OnlineExam = () => {
       duration: "",
       passing_percentage: "",
       description: "",
-      is_active: "",
-      publish_result: "",
-      is_neg_marking: "",
-      is_marks_display: "",
-      is_random_question: "",
+      is_active: 0,
+      publish_result: 0,
+      is_neg_marking: 0,
+      is_marks_display: 0,
+      is_random_question: 0,
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -252,11 +270,11 @@ const OnlineExam = () => {
           duration: "",
           passing_percentage: "",
           description: "",
-          is_active: "",
-          publish_result: "",
-          is_neg_marking: "",
-          is_marks_display: "",
-          is_random_question: "",
+          is_active: 0,
+          publish_result: 0,
+          is_neg_marking: 0,
+          is_marks_display: 0,
+          is_random_question: 0,
         });
 
         setSelectedClass("");
@@ -280,11 +298,11 @@ const OnlineExam = () => {
         duration: "",
         passing_percentage: "",
         description: "",
-        is_active: "",
-        publish_result: "",
-        is_neg_marking: "",
-        is_marks_display: "",
-        is_random_question: "",
+        is_active: 0,
+        publish_result: 0,
+        is_neg_marking: 0,
+        is_marks_display: 0,
+        is_random_question: 0,
       });
 
       setIsEditing(false);
@@ -330,11 +348,11 @@ const OnlineExam = () => {
       duration: "",
       passing_percentage: "",
       description: "",
-      is_active: "",
-      publish_result: "",
-      is_neg_marking: "",
-      is_marks_display: "",
-      is_random_question: "",
+      is_active: 0,
+      publish_result: 0,
+      is_neg_marking: 0,
+      is_marks_display: 0,
+      is_random_question: 0,
     });
     setOpen(false);
   };
@@ -445,6 +463,7 @@ const OnlineExam = () => {
                       onChange={handleIsQuizChangeforcheckbox}
                       value={formData.is_quiz}
                       name="is_quiz"
+                      checked={formData.is_quiz === 1}
                     />
                     Quiz
                   </label>
@@ -554,9 +573,10 @@ const OnlineExam = () => {
                     <input
                       type="checkbox"
                       className="is_active"
+                      name="is_active"
                       value={formData.is_active}
                       onChange={handleIsActiveChangeforcheckbox}
-                      name="is_active"
+                      checked={formData.is_active === 1}
                     />
                     Publish Exam{" "}
                   </label>
@@ -568,6 +588,7 @@ const OnlineExam = () => {
                       name="publish_result"
                       value={formData.publish_result}
                       onChange={handlePublishResultChangeforcheckbox}
+                      checked={formData.publish_result === 1}
                     />
                     Publish Result{" "}
                   </label>
@@ -579,6 +600,7 @@ const OnlineExam = () => {
                       name="is_neg_marking"
                       value={formData.is_neg_marking}
                       onChange={handleIsNegMarkingChangeforcheckbox}
+                      checked={formData.is_neg_marking === 1}
                     />
                     Negative Marking{" "}
                   </label>
@@ -590,6 +612,7 @@ const OnlineExam = () => {
                       name="is_marks_display"
                       value={formData.is_marks_display}
                       onChange={handleIsMarksDisplayChangeforcheckbox}
+                      checked={formData.is_marks_display === 1}
                     />
                     Display marks in Exam{" "}
                   </label>
@@ -601,6 +624,7 @@ const OnlineExam = () => {
                       name="is_random_question"
                       value={formData.is_random_question}
                       onChange={handleIsRandomQuestionChangeforcheckbox}
+                      checked={formData.is_random_question === 1}
                     />
                     Random Question Order{" "}
                   </label>
