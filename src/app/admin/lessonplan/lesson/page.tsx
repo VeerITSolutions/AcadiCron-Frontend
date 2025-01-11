@@ -42,6 +42,12 @@ const FeesMaster = () => {
   const [section, setSections] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
+
+  const [loaderClasses, setLoaderClassessData] = useState(false);
+  const [loaderSection, setLoaderSections] = useState(false);
+  const [loaderSubject, setLoaderSubject] = useState(false);
+  const [loaderSubjectGroup, setLoaderSubjectGroup] = useState(false);
+
   const [colorMode, setColorMode] = useColorMode();
 
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
@@ -76,14 +82,17 @@ const FeesMaster = () => {
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
       if (selectedClass) {
+        setLoaderSections(true);
         const sectionsResult = await fetchsectionByClassData(selectedClass);
         setSections(sectionsResult.data);
+        setLoaderSections(false);
       } else {
         setSections([]); // Clear sections if no class is selected
       }
 
       /* call condtion wise  */
       if (selectedClass && selectedSection) {
+        setLoaderSubjectGroup(true);
         const subjectgroupresult = await fetchSubjectGroupData(
           "",
           "",
@@ -92,15 +101,18 @@ const FeesMaster = () => {
         );
 
         setSubjectGroup(subjectgroupresult.data);
+        setLoaderSubjectGroup(false);
       }
 
       if (selectedSubjectGroup) {
+        setLoaderSubject(true);
         const subjectresult = await fetchSubjectData(
           "",
           "",
           selectedSubjectGroup,
         );
         setSubject(subjectresult.data);
+        setLoaderSubject(false);
       }
 
       setLoading(false);
@@ -310,59 +322,80 @@ const FeesMaster = () => {
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Section:
                 </label>
-                <select
-                  value={selectedSection || ""}
-                  disabled={!selectedClass}
-                  onChange={handleSectionChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {section.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
-                    </option>
-                  ))}
-                </select>
+                {loaderSection ? (
+                  <div className="flex w-full items-center justify-center py-3">
+                    <div className="loader-spinner border-gray-200 h-6 w-6 animate-spin rounded-full border-4 border-t-primary"></div>
+                  </div>
+                ) : (
+                  <select
+                    value={selectedSection || ""}
+                    disabled={!selectedClass}
+                    onChange={handleSectionChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {section.map((sec) => (
+                      <option key={sec.section_id} value={sec.section_id}>
+                        {sec.section_name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <div className="">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Subject Group <span className="required">*</span>
                 </label>
-                <select
-                  value={selectedSubjectGroup || ""}
-                  onChange={handleSubjectGroupChange}
-                  disabled={!selectedClass || !selectedSection}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {subjectGroup.map((cls) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.name}
-                    </option>
-                  ))}
-                </select>
+
+                {loaderSubjectGroup ? (
+                  <div className="flex w-full items-center justify-center py-3">
+                    <div className="loader-spinner border-gray-200 h-6 w-6 animate-spin rounded-full border-4 border-t-primary"></div>
+                  </div>
+                ) : (
+                  <select
+                    value={selectedSubjectGroup || ""}
+                    onChange={handleSubjectGroupChange}
+                    disabled={!selectedClass || !selectedSection}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {subjectGroup.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <div className="">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Subject
                 </label>
-                <select
-                  value={selectedSubject || ""}
-                  onChange={handleSubjectChange}
-                disabled={
-                    !selectedClass || !selectedSection || !selectedSubjectGroup
-                  }
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {subject.map((cls) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.name}
-                    </option>
-                  ))}
-                </select>
+                {loaderSubject ? (
+                  <div className="flex w-full items-center justify-center py-3">
+                    <div className="loader-spinner border-gray-200 h-6 w-6 animate-spin rounded-full border-4 border-t-primary"></div>
+                  </div>
+                ) : (
+                  <select
+                    value={selectedSubject || ""}
+                    onChange={handleSubjectChange}
+                    disabled={
+                      !selectedClass ||
+                      !selectedSection ||
+                      !selectedSubjectGroup
+                    }
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {subject.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <div>
