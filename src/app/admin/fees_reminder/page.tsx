@@ -127,7 +127,7 @@ const StudentDetails = () => {
                             <label className="inline-flex items-center">
                               <input
                                 type="checkbox"
-                                checked={section.is_active}
+                                checked={!!Number(section.is_active)} // Convert "0" or "1" to boolean
                                 onChange={(e) =>
                                   handleChange(
                                     section.id,
