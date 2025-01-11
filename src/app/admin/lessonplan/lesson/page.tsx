@@ -75,6 +75,12 @@ const FeesMaster = () => {
 
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
 
       /* call condtion wise  */
       if (selectedClass && selectedSection) {
@@ -87,6 +93,7 @@ const FeesMaster = () => {
 
         setSubjectGroup(subjectgroupresult.data);
       }
+      console.log("selectedSubjectGroup", selectedSubjectGroup);
       if (selectedSubjectGroup) {
         const subjectresult = await fetchSubjectData(
           "",
@@ -122,9 +129,6 @@ const FeesMaster = () => {
   ) => {
     setSelectedSubjectGroup(event.target.value);
   };
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
 
   const handleEdit = (
     id: number,
@@ -195,7 +199,14 @@ const FeesMaster = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage, selectedClass, selectedSection]);
+  }, [
+    page,
+    rowsPerPage,
+    selectedClass,
+    selectedSection,
+    selectedSubjectGroup,
+    selectedSubject,
+  ]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -278,28 +289,6 @@ const FeesMaster = () => {
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
     setPage(0);
-  };
-
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
-
-  const fetchClassesAndSections = async () => {
-    try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]); // Clear sections if no class is selected
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
   };
 
   /* if (loading) return <Loader />; */
