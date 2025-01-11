@@ -117,7 +117,7 @@ const GuardianReport = () => {
       `${student.class_name.trim()} ${student.section_name.trim()}`,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.mobile_no || "N/A",
+      student.mobileno || "N/A",
       student.guardian_name || "N/A",
       student.guardian_relation || "N/A",
       student.guardian_phone || "N/A",

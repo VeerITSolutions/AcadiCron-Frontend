@@ -122,7 +122,7 @@ const StudentReport = () => {
       student.father_name || "N/A",
       student.dob || "N/A",
       student.gender || "N/A",
-      student.category || "N/A",
+      student.category_name || "N/A",
       student.mobileno || "N/A",
       student.local_identification_no || "N/A",
       student.national_identification_no || "N/A",
