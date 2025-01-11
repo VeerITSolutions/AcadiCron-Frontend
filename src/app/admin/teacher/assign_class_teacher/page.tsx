@@ -4,16 +4,12 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-
-import {
-  createFeesMaster,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
-
 import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
-import { fetchClassAssingTeacherData } from "@/services/classesAssingTeacherService"; // Import your section API service
+import { fetchClassAssingTeacherData,
+  editClassAssignTeacher,
+  deleteClassAssignTeacher,
+  createClassAssignTeacher
+ } from "@/services/classesAssingTeacherService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your section API service
 import {
   createStaff,
@@ -53,14 +49,11 @@ const FeesMaster = () => {
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
-    fees_group: "",
-    fees_type: "",
-    due_date: "",
-    amount: "",
-    fine_type: "",
-    percentage: "",
-    description: "",
-    fine_amount: "",
+    class_id: "",
+    staff_id: "",
+    section_id: "",
+    session_id:"",
+
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -112,7 +105,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteClassAssignTeacher(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -120,29 +113,17 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (
-    id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
-  ) => {
+  const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      fees_group: fees_group_value,
-      fees_type: fees_type_value,
-      due_date: due_date_value,
-      amount: amount_value,
-      fine_type: fine_type_value,
-      percentage: percentage_value,
-      description: description_value,
-      fine_amount: fine_amount_value,
+      class_id: subject?.class_id || "",
+      staff_id: subject?.staff_id || "",
+      section_id: subject?.section_id || "",
+      session_id: subject?.session_id || "",
+
+    
     });
   };
 
@@ -150,34 +131,24 @@ const FeesMaster = () => {
     return students.map((student: any) => [
       student.class,
       student.section || "N/A",
-      student.name || "N/A",
+
+      `${student.name || "N/A"} ${student.surname || "N/A"}`,
+
 
       <div key={student.id} className="flex">
-        <IconButton
-          onClick={() =>
-            handleEdit(
-              student.id,
-              student.class,
-              student.section,
-              student.due_date,
-              student.amount,
-              student.fine_type,
-              student.percentage,
-              student.description,
-              student.fine_amount,
-            )
-          }
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
+      <IconButton
+        onClick={() => handleEdit(student.id, student)}
+        aria-label="edit"
+      >
+        <Edit />
+      </IconButton>
+      <IconButton
+        onClick={() => handleDelete(student.id)}
+        aria-label="delete"
+      >
+        <Delete />
+      </IconButton>
+    </div>,
     ]);
   };
 
@@ -196,54 +167,33 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
-          editCategoryId,
-
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
+        const result = await editClassAssignTeacher(editCategoryId, formData);
         if (result.success) {
-          toast.success("Student House updated successfully");
+          toast.success("Updated successfully");
         } else {
-          toast.error("Failed to update Student House");
+          toast.error("Failed to update");
         }
       } else {
-        const result = await createFeesMaster(
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
+        const result = await createClassAssignTeacher(formData);
+
         if (result.success) {
-          toast.success("Student House saved successfully");
+          toast.success("Created successfully");
         } else {
-          toast.error("Failed to save Student House");
+          toast.error("Failed to create expenses");
         }
       }
-
+      // Reset form after successful action
       setFormData({
-        fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
+        class_id: "",
+        staff_id: "",
+        section_id: "",
+        session_id: "",
       });
 
       setIsEditing(false);
       setEditCategoryId(null);
+      setSelectedClass('');
+      setSelectedSection('');
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
@@ -311,19 +261,16 @@ search: false,
   };
 
   const handleCancel = () => {
+    setFormData({
+      class_id: "",
+          staff_id: "",
+          section_id: "",
+          session_id: "",
+    });
     setIsEditing(false);
     setEditCategoryId(null);
-    setFormData({
-      fees_group: "",
-      fees_type: "",
-      due_date: "",
-      amount: "",
-      fine_type: "",
-      percentage: "",
-      description: "",
-      fine_amount: "",
-    });
   };
+
 
   return (
     <DefaultLayout>
@@ -346,6 +293,7 @@ search: false,
                 <select
                   value={selectedClass || ""}
                   onChange={handleClassChange}
+                  name="class_id"
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select</option>
@@ -364,6 +312,7 @@ search: false,
                 <select
                   value={selectedSection || ""}
                   onChange={handleSectionChange}
+                  name="section_id"
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   disabled={!selectedClass} // Disable section dropdown if no class is selected
                 >
@@ -390,6 +339,7 @@ search: false,
                       type="checkbox"
                       value={teachers.id}
                       name="class_teacher"
+                      onChange={handleInputChange}
                     />
                     {`${teachers.name} ${teachers.surname} (${teachers.id})`}
                   </label>
@@ -400,10 +350,13 @@ search: false,
                 <button
                   type="submit"
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={(e) => {
+                    e.preventDefault(); 
+                    handleSubmit();
+                  }}
                 >
                   {isEditing ? "Update" : "Save"}
                 </button>
-
                 {isEditing && (
                   <button
                     type="button"

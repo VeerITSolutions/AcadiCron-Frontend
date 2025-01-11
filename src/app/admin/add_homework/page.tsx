@@ -52,8 +52,8 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
-  responsive: "standard",
-  search: false,
+ responsive: "standard",
+search: false,
   selectableRows: "none",
   filter: false,
   viewColumns: false,
@@ -107,10 +107,12 @@ const StudentDetails = () => {
 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
+  
   const [formData, setFormData] = useState({
     homework_date: null as Date | null,
     submit_date: null as Date | null,
     description: "",
+    evaluation_date: "",
     document: null,
   });
   const [editing, setEditing] = useState(false); // Add state for editing
@@ -118,6 +120,29 @@ const StudentDetails = () => {
 
   const [open, setOpen] = useState(false);
   const [evaluateOpen, setEvaluateOpen] = useState(false);
+
+
+  const columns = [
+    "Class",
+    "Section",
+    "Section Group",
+    "Subject",
+    "Homework Date",
+    "Submission Date",
+    "Evaluation Date",
+    "Created By",
+    "Action",
+  ];
+  
+  const options = {
+    filterType: false,
+    serverSide: true,
+    responsive: "standard",
+    search: false,
+    selectableRows: "none",
+    filter: false,
+    viewColumns: false,
+  };
 
   /* use Effect  */
 
@@ -336,6 +361,7 @@ const StudentDetails = () => {
           homework_date: null as Date | null,
           submit_date: null as Date | null,
           description: "",
+          evaluation_date: "",
           document: null,
         });
         setSelectedClass2("");
@@ -460,6 +486,7 @@ const StudentDetails = () => {
       homework_date: null as Date | null,
       submit_date: null as Date | null,
       description: "",
+      evaluation_date: "",
       document: null,
     });
 
@@ -940,59 +967,41 @@ const StudentDetails = () => {
                   ))}
                 </div>
 
-                {/* Homework Details */}
-                <div className="w-3/6 p-2">
-                  <h2 className="mb-3 font-medium text-black dark:text-white">
-                    Summary
-                  </h2>
-                  <div className="mb-4">
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Homework Date:</strong> 01/11/2025
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Submission Date:</strong> 01/12/2025
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Evaluation Date:</strong>{" "}
-                      {evaluationDate || "Not Set"}
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Created By:</strong> Priya Tendulkar
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Class:</strong> B.Sc.
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Section:</strong> A
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Subject:</strong> English
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Description:</strong> addd
-                    </p>
-                  </div>
-                  <label className="mb-4 block text-sm font-medium text-black dark:text-white">
-                    Evaluation Date:
-                    <input
-                      type="date"
-                      className="mt-3 w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      value={evaluationDate}
-                      onChange={(e) => setEvaluationDate(e.target.value)}
-                    />
-                  </label>
+        {/* Homework Details */}
+        <div className="w-3/6 p-2">
+          <h2 className="font-medium text-black dark:text-white mb-3">Summary</h2>
+          <div className="mb-4">
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Homework Date:</strong> 01/11/2025</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Submission Date:</strong> 01/12/2025</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Evaluation Date:</strong> {evaluationDate || "Not Set"}</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Created By:</strong> Priya Tendulkar</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Class:</strong> B.Sc.</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Section:</strong> A</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Subject:</strong> English</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Description:</strong> addd</p>
+          </div>
+          <label className="mb-4 block text-sm font-medium text-black dark:text-white">
+            Evaluation Date:
+            <input
+              type="date"
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary mt-3"
+              value={evaluationDate}
+              onChange={(e) => setEvaluationDate(e.target.value)}
+            />
+          </label>
+        </div>
+      </div>
+      </div>
+      {/* Save Button */}
+      <div className="col-span-full mt-4">
+                  <button
+                    onClick={handleSave2}
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
+                    Save
+                  </button>
                 </div>
-              </div>
-            </div>
-            {/* Save Button */}
-            <div className="col-span-full mt-4">
-              <button
-                onClick={handleSave2}
-                className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-              >
-                Save
-              </button>
-            </div>
+   
           </DialogContent>
         </Dialog>
       </div>
