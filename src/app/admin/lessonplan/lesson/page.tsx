@@ -351,7 +351,7 @@ const FeesMaster = () => {
                 <select
                   value={selectedSubject || ""}
                   onChange={handleSubjectChange}
-                  disabled={
+                disabled={
                     !selectedClass || !selectedSection || !selectedSubjectGroup
                   }
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"

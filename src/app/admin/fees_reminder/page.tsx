@@ -80,13 +80,12 @@ const StudentDetails = () => {
 
     try {
       const response = await createFeesReminder(JSON.stringify(formState)); // Convert formState to a JSON string
-
+      fetchData(page, rowsPerPage); // Refresh data after submit
       if (response.success) {
         toast.success("Data saved successfully!");
       }
     } catch (error) {
       console.error("Error saving data:", error);
-      alert("Error saving data.");
     }
   };
 
