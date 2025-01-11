@@ -39,7 +39,32 @@ fine_amount?:string
 };
 
 
+export const createFeesMaster= async (
+  fees_group?:any,
+  fees_type?:any,
+  due_date?:any,
+  amount?:any,
+  fine_type?:any,
+  percentage?:any,
+  descriptiond?: any,
+  fine_amount?:string
 
+  ): Promise<any> => {
+    try {
+      const response = await apiClient.post("/fees-master", {
+        fees_group,
+        fees_type,
+        due_date,
+        amount,
+        fine_type,
+        percentage,
+        fine_amount });
+      return response.data;
+    } catch (error) {
+      console.error("An error occurred", error);
+      throw new Error("Failed to create Fees");
+    }
+  };
 // Delete a student category by ID
 export const deleteFeesMasterData = async (id: number) => {
   const response = await apiClient.delete(`/fees-master/${id}`);

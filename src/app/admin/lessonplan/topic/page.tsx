@@ -8,7 +8,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import {
-  createFeesMaster,
+  createFeesMasterData,
   deleteFeesMasterData,
   editFeesMasterData,
   fetchStudentFeesMasterData,
@@ -219,7 +219,7 @@ const FeesMaster = () => {
           toast.error("Failed to update Student House");
         }
       } else {
-        const result = await createFeesMaster(
+        const result = await createFeesMasterData(
           formData.fees_group,
           formData.fees_type,
           formData.due_date,

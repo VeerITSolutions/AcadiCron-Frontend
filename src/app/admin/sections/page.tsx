@@ -6,13 +6,6 @@ import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 
 import {
-  createFeesMaster,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
-
-import {
   fetchsectionData,
   createsection,
   deletesection,
@@ -174,8 +167,8 @@ const FeesMaster = () => {
   const options = {
     filterType: false,
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     selectableRows: "none", // Disable row selection
     page: page,
