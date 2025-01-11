@@ -29,7 +29,7 @@ import {
 } from '@mui/icons-material';
 import { useLoginDetails } from "@/store/logoStore";
 import { fetchSubjectGroupData } from "@/services/subjectGroupService";
-import { fetchHomeWorkData } from "@/services/homeworkServices";
+import { fetchHomeWorkData, fetchSearchHomeWorkData } from "@/services/homeworkServices";
 import { fetchSubjectData } from "@/services/subjectsService";
 import Link from "next/link";
 
@@ -150,8 +150,8 @@ const EvaluationReport = () => {
       student.subject_name || "N/A",
       formatDate(student.homework_date) || "N/A",
       formatDate(student.submit_date) || "N/A",
-      formatDate(student.incomplete) || "N/A",
-      formatDate(student.complete) || "N/A",
+      `${student.report?.completed || 0}/${(student.report?.total || 0) - (student.report?.completed || 0)}`, // Completed/Incomplete
+      `${student.report?.percentage || 0}%`, // Percentage
     ]);
   };
 
@@ -165,7 +165,7 @@ const EvaluationReport = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchHomeWorkData(
+      const result = await fetchSearchHomeWorkData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
