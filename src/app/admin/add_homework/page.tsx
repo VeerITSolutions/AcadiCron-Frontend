@@ -37,27 +37,7 @@ import {
 import { toast } from "react-toastify";
 import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
 
-const columns = [
-  "Class",
-  "Section",
-  "Section Group",
-  "Subject",
-  "Homework Date",
-  "Submission Date",
-  "Evaluation Date",
-  "Created By",
-  "Action",
-];
 
-const options = {
-  filterType: false,
-  serverSide: true,
- responsive: "standard",
-search: false,
-  selectableRows: "none",
-  filter: false,
-  viewColumns: false,
-};
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -107,10 +87,12 @@ const StudentDetails = () => {
 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
+  
   const [formData, setFormData] = useState({
     homework_date: null as Date | null,
     submit_date: null as Date | null,
     description: "",
+    evaluation_date: "",
     document: null,
   });
   const [editing, setEditing] = useState(false); // Add state for editing
@@ -118,6 +100,29 @@ const StudentDetails = () => {
 
   const [open, setOpen] = useState(false);
   const [evaluateOpen, setEvaluateOpen] = useState(false);
+
+
+  const columns = [
+    "Class",
+    "Section",
+    "Section Group",
+    "Subject",
+    "Homework Date",
+    "Submission Date",
+    "Evaluation Date",
+    "Created By",
+    "Action",
+  ];
+  
+  const options = {
+    filterType: false,
+    serverSide: true,
+    responsive: "standard",
+    search: false,
+    selectableRows: "none",
+    filter: false,
+    viewColumns: false,
+  };
 
   /* use Effect  */
 
@@ -336,6 +341,7 @@ const StudentDetails = () => {
           homework_date: null as Date | null,
           submit_date: null as Date | null,
           description: "",
+          evaluation_date: "",
           document: null,
         });
         setSelectedClass2("");
@@ -460,6 +466,7 @@ const StudentDetails = () => {
       homework_date: null as Date | null,
       submit_date: null as Date | null,
       description: "",
+      evaluation_date: "",
       document: null,
     });
 
@@ -956,6 +963,7 @@ const StudentDetails = () => {
             Evaluation Date:
             <input
               type="date"
+              name="evaluation_date"
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary mt-3"
               value={evaluationDate}
               onChange={(e) => setEvaluationDate(e.target.value)}
