@@ -23,6 +23,13 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { fetchSubjectData } from "@/services/subjectsService";
 import { fetchSubjectGroupData } from "@/services/subjectGroupService";
+import {
+  createLesson,
+  deleteLesson,
+  editLesson,
+  fetchLesson,
+} from "@/services/lessonService";
+import { set } from "date-fns";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -50,14 +57,10 @@ const FeesMaster = () => {
     undefined,
   );
   const [formData, setFormData] = useState({
-    fees_group: "",
-    fees_type: "",
-    due_date: "",
-    amount: "",
-    fine_type: "",
-    percentage: "",
-    description: "",
-    fine_amount: "",
+    session_id: "",
+    subject_group_subject_id: "",
+    subject_group_class_sections_id: "",
+    name: "",
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -65,13 +68,10 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      /* const result = await fetchStudentFeesMasterData(
-        currentPage + 1,
-        rowsPerPage,
-      );
-      setTotalCount(result.totalCounts.feegroupCount);
-      setData(formatStudentCategoryData(result.data.feegroupList));
-      setLoading(false); */
+      const result = await fetchLesson(currentPage + 1, rowsPerPage);
+      setTotalCount(result.totalCount);
+      setData(formatStudentCategoryData(result.data));
+      setLoading(false);
 
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
@@ -93,7 +93,7 @@ const FeesMaster = () => {
 
         setSubjectGroup(subjectgroupresult.data);
       }
-      console.log("selectedSubjectGroup", selectedSubjectGroup);
+
       if (selectedSubjectGroup) {
         const subjectresult = await fetchSubjectData(
           "",
@@ -112,7 +112,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteLesson(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -130,59 +130,32 @@ const FeesMaster = () => {
     setSelectedSubjectGroup(event.target.value);
   };
 
-  const handleEdit = (
-    id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
-  ) => {
+  const handleEdit = (id: any, data: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+    setSelectedClass(data.session_id);
+    setSelectedSection(data.subject_group_subject_id);
+    setSelectedSubjectGroup(data.subject_group_class_sections_id);
+    setSelectedSubject(data.subject_group_class_sections_id);
     setFormData({
-      fees_group: fees_group_value,
-      fees_type: fees_type_value,
-      due_date: due_date_value,
-      amount: amount_value,
-      fine_type: fine_type_value,
-      percentage: percentage_value,
-      description: description_value,
-      fine_amount: fine_amount_value,
+      session_id: "",
+      subject_group_subject_id: "",
+      subject_group_class_sections_id: "",
+      name: "",
     });
   };
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
-      student.fees_group || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
-      student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
 
+      student.session_id || "N/A",
+      student.subject_group_subject_id || "N/A",
+      student.subject_group_class_sections_id || "N/A",
+      student.name || "N/A",
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
-          onClick={() =>
-            handleEdit(
-              student.id,
-              student.fees_group,
-              student.fees_type,
-              student.due_date,
-              student.amount,
-              student.fine_type,
-              student.percentage,
-              student.description,
-              student.fine_amount,
-            )
-          }
+          onClick={() => handleEdit(student.id, student)}
           aria-label="edit"
         >
           <Edit />
@@ -219,50 +192,33 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
+        const result = await editLesson(
           editCategoryId,
 
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
+          formData,
         );
         if (result.success) {
-          toast.success("Student House updated successfully");
+          toast.success(" updated successfully");
         } else {
-          toast.error("Failed to update Student House");
+          toast.error("Failed to update ");
         }
       } else {
-        const result = await createFeesMasterData(
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
-        if (result.success) {
-          toast.success("Student House saved successfully");
+        const resultLesson = await createLesson(formData);
+        if (resultLesson.success) {
+          toast.success("saved successfully");
         } else {
-          toast.error("Failed to save Student House");
+          toast.error("Failed to save ");
         }
       }
-
+      setSelectedClass("");
+      setSelectedSection("");
+      setSelectedSubjectGroup("");
+      setSelectedSubject("");
       setFormData({
-        fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
+        session_id: "",
+        subject_group_subject_id: "",
+        subject_group_class_sections_id: "",
+        name: "",
       });
 
       setIsEditing(false);
@@ -271,6 +227,11 @@ const FeesMaster = () => {
     } catch (error) {
       console.error("An error occurred", error);
     }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryId(null);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -308,6 +269,7 @@ const FeesMaster = () => {
     responsive: "standard",
     search: false,
     count: totalCount,
+    selectableRows: "none", // Disable row selection
     page: page,
     rowsPerPage: rowsPerPage,
     onChangePage: handlePageChange,
@@ -389,7 +351,7 @@ const FeesMaster = () => {
                 <select
                   value={selectedSubject || ""}
                   onChange={handleSubjectChange}
-                  disabled={
+                disabled={
                     !selectedClass || !selectedSection || !selectedSubjectGroup
                   }
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
@@ -410,17 +372,28 @@ const FeesMaster = () => {
                 <input
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   type="text"
-                  name="lesson_name"
+                  name="name"
+                  onChange={handleInputChange}
                 />
               </div>
 
-              <div>
+              <div className="flex gap-2">
                 <button
-                  type="submit"
+                  type="button"
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={handleSubmit}
                 >
                   {isEditing ? "Update" : "Save"}
                 </button>
+
+                {isEditing && (
+                  <button
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
             </div>
           </div>
