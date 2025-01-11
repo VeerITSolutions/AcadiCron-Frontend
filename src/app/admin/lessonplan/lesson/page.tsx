@@ -30,6 +30,7 @@ import {
   fetchLesson,
 } from "@/services/lessonService";
 import { set } from "date-fns";
+import { useLoginDetails } from "@/store/logoStore";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -62,11 +63,18 @@ const FeesMaster = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
     undefined,
   );
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+  const [names, setNames] = useState([""]); // Initialize with one input field
   const [formData, setFormData] = useState({
-    session_id: "",
-    subject_group_subject_id: "",
-    subject_group_class_sections_id: "",
-    name: "",
+    selectedClass: "",
+    selectedSection: "",
+    selectedSubjectGroup: "",
+    selectedSubject: "",
+    currentSessionId: getselectedSessionId,
+
+    name: names,
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -150,10 +158,13 @@ const FeesMaster = () => {
     setSelectedSubjectGroup(data.subject_group_class_sections_id);
     setSelectedSubject(data.subject_group_class_sections_id);
     setFormData({
-      session_id: "",
-      subject_group_subject_id: "",
-      subject_group_class_sections_id: "",
-      name: "",
+      selectedClass: "",
+      selectedSection: "",
+      selectedSubjectGroup: "",
+      selectedSubject: "",
+      currentSessionId: getselectedSessionId,
+
+      name: names,
     });
   };
 
@@ -215,7 +226,16 @@ const FeesMaster = () => {
           toast.error("Failed to update ");
         }
       } else {
-        const resultLesson = await createLesson(formData);
+        const updateData = {
+          selectedClass: selectedClass,
+          selectedSection: selectedSection,
+          selectedSubjectGroup: selectedSubjectGroup,
+          selectedSubject: selectedSubject,
+          currentSessionId: getselectedSessionId,
+
+          name: names,
+        };
+        const resultLesson = await createLesson(updateData);
         if (resultLesson.success) {
           toast.success("saved successfully");
         } else {
@@ -226,11 +246,15 @@ const FeesMaster = () => {
       setSelectedSection("");
       setSelectedSubjectGroup("");
       setSelectedSubject("");
+      setNames([""]);
       setFormData({
-        session_id: "",
-        subject_group_subject_id: "",
-        subject_group_class_sections_id: "",
-        name: "",
+        selectedClass: "",
+        selectedSection: "",
+        selectedSubjectGroup: "",
+        selectedSubject: "",
+        currentSessionId: getselectedSessionId,
+
+        name: names,
       });
 
       setIsEditing(false);
@@ -240,7 +264,6 @@ const FeesMaster = () => {
       console.error("An error occurred", error);
     }
   };
-  const [names, setNames] = useState([""]); // Initialize with one input field
 
   // Handle input change for dynamic inputs
   const handleInputChangeName = (index: any, value: any) => {
