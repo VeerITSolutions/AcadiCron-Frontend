@@ -922,11 +922,11 @@ const StudentDetails = () => {
           <div className="w-full flex">
         {/* Sidebar */}
         <div className="w-4/6 p-2">
-          <h2 className="text-xl font-bold mb-4">Students List</h2>
+          <h2 className="font-medium text-black dark:text-white mb-3">Students List</h2>
           {students.map((student) => (
             <label
               key={student.id}
-              className="flex items-center space-x-2 mb-2 cursor-pointer"
+              className="flex items-center space-x-2 mb-2 cursor-pointer block text-sm font-medium text-black dark:text-white"
             >
               <input
                 type="checkbox"
@@ -941,22 +941,22 @@ const StudentDetails = () => {
 
         {/* Homework Details */}
         <div className="w-3/6 p-2">
-          <h2 className="text-xl font-bold mb-4">Summary</h2>
+          <h2 className="font-medium text-black dark:text-white mb-3">Summary</h2>
           <div className="mb-4">
-            <p><strong>Homework Date:</strong> 01/11/2025</p>
-            <p><strong>Submission Date:</strong> 01/12/2025</p>
-            <p><strong>Evaluation Date:</strong> {evaluationDate || "Not Set"}</p>
-            <p><strong>Created By:</strong> Priya Tendulkar</p>
-            <p><strong>Class:</strong> B.Sc.</p>
-            <p><strong>Section:</strong> A</p>
-            <p><strong>Subject:</strong> English</p>
-            <p><strong>Description:</strong> addd</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Homework Date:</strong> 01/11/2025</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Submission Date:</strong> 01/12/2025</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Evaluation Date:</strong> {evaluationDate || "Not Set"}</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Created By:</strong> Priya Tendulkar</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Class:</strong> B.Sc.</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Section:</strong> A</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Subject:</strong> English</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Description:</strong> addd</p>
           </div>
-          <label className="block mb-4">
-            <span className="text-gray-700">Evaluation Date:</span>
+          <label className="mb-4 block text-sm font-medium text-black dark:text-white">
+            Evaluation Date:
             <input
               type="date"
-              className="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary mt-3"
               value={evaluationDate}
               onChange={(e) => setEvaluationDate(e.target.value)}
             />
