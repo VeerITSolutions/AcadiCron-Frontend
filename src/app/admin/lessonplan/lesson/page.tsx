@@ -6,7 +6,7 @@ import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 
 import {
-  createFeesMaster,
+  createFeesMasterData,
   deleteFeesMasterData,
   editFeesMasterData,
   fetchStudentFeesMasterData,
@@ -226,7 +226,7 @@ const FeesMaster = () => {
           toast.error("Failed to update Student House");
         }
       } else {
-        const result = await createFeesMaster(
+        const result = await createFeesMasterData(
           formData.fees_group,
           formData.fees_type,
           formData.due_date,

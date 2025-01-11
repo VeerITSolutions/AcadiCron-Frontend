@@ -5,7 +5,6 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import {
-  createFeesMaster,
   deleteFeesMasterData,
   editFeesMasterData,
   fetchStudentFeesMasterData,
