@@ -11,9 +11,9 @@ export const fetchClassAssingTeacherData = async (page?: number, perPage?: numbe
 };
 
 
-export const createClassAssignTeacher = async (house_name: string, description: string): Promise<any> => {
+export const createClassAssignTeacher = async (data: any): Promise<any> => {
   try {
-    const response = await apiClient.post("/class-teacher", { house_name, description });
+    const response = await apiClient.post("/class-teacher", data);
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -30,8 +30,7 @@ export const deleteClassAssignTeacher = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editClassAssignTeacher = async (id: number, house_name: string, description: string) => {
-  const data = { house_name, description }; // Create an object with the name field
+export const editClassAssignTeacher = async (id: number, data: any) => {
   const response = await apiClient.post(`/class-teacher/${id}`, data);
   return response.data;
 };

@@ -36,15 +36,15 @@ import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 
 const columns = [
-"Admission No",
-"Student Name",
-"Class",
-"Gender",
-"Current Email",
-"Date of Birth",
-"Current Address",
-"Occupation",
-"Current Phone",
+  "Admission No",
+  "Student Name",
+  "Class",
+  "Gender",
+  "Current Email",
+  "Date of Birth",
+  "Current Address",
+  "Occupation",
+  "Current Phone",
 ];
 
 const options = {
@@ -123,7 +123,6 @@ const AlumniReport = () => {
       student.address || "N/A",
       student.occupation || "N/A",
       student.mobileno || "N/A",
-
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -229,13 +228,12 @@ const AlumniReport = () => {
     <DefaultLayout>
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-        <label className={styles.label}>
-        Pass Out Session:
+          <label className={styles.label}>
+            Pass Out Session:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              
             </select>
           </label>
           <label className={styles.label}>
@@ -263,7 +261,7 @@ const AlumniReport = () => {
             >
               <option value="">Select</option>
               {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
+                <option key={sec.id} value={sec.id}>
                   {sec.section_name}
                 </option>
               ))}

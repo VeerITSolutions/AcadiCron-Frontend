@@ -61,8 +61,8 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "none",
   filter: false,
   viewColumns: false,
@@ -483,7 +483,7 @@ const StudentDetails = () => {
             >
               <option value="">Select</option>
               {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
+                <option key={sec.id} value={sec.id}>
                   {sec.section_name}
                 </option>
               ))}
@@ -507,9 +507,8 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-boxdark dark:drop-shadow-none dark:text-white border border-stroke dark:border-strokedark">
-        <div
-          className="mb-4 pl-4 pt-4 text-right flex justify-end items-center" >
+      <div className="border border-stroke bg-white dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className="mb-4 flex items-center justify-end pl-4 pt-4 text-right">
           <button
             type="submit"
             className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" // Added margin-right for spacing
@@ -526,7 +525,6 @@ const StudentDetails = () => {
             <MUIDataTable
               title={"Approve Leave List"}
               data={data}
-             
               columns={columns}
               options={{
                 ...options,
