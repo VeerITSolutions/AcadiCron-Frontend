@@ -210,7 +210,7 @@ const IssueItem = () => {
           toast.success("Created successfully");
           router.push(`/admin/issueitem`);
         } else {
-          toast.error("Failed to create expenses");
+          toast.error("Failed to create issue item");
         }
       }
       // Reset form after successful action

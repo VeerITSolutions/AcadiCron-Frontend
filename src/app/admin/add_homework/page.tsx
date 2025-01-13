@@ -94,7 +94,7 @@ const StudentDetails = () => {
 
   const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
     undefined,
-  );
+  );  
   const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
     undefined,
   );

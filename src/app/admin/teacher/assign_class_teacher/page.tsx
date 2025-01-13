@@ -28,7 +28,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
-const FeesMaster = () => {
+const AssignClassTeacher = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
@@ -116,25 +116,22 @@ const FeesMaster = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
       class_id: subject?.class_id || "",
       staff_id: subject?.staff_id || "",
       section_id: subject?.section_id || "",
       session_id: subject?.session_id || "",
-
-    
     });
+
   };
+  
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.class,
       student.section || "N/A",
-
       `${student.name || "N/A"} ${student.surname || "N/A"}`,
-
-
       <div key={student.id} className="flex">
       <IconButton
         onClick={() => handleEdit(student.id, student)}
@@ -248,8 +245,8 @@ const FeesMaster = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page: page,
     selectableRows: "none", // Disable row selection
@@ -269,7 +266,9 @@ search: false,
     });
     setIsEditing(false);
     setEditCategoryId(null);
-  };
+    setSelectedClass('');
+    setSelectedSection('');
+  };  
 
 
   return (
@@ -338,7 +337,7 @@ search: false,
                       className="mr-3"
                       type="checkbox"
                       value={teachers.id}
-                      name="class_teacher"
+                      name="staff_id"
                       onChange={handleInputChange}
                     />
                     {`${teachers.name} ${teachers.surname} (${teachers.id})`}
@@ -390,4 +389,4 @@ search: false,
   );
 };
 
-export default FeesMaster;
+export default AssignClassTeacher;
