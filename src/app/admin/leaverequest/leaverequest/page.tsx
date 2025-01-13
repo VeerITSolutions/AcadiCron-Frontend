@@ -119,7 +119,8 @@ const StudentDetails = () => {
 
   const handleDateChange = (selectedDates: Date[], name: string) => {
     if (selectedDates.length > 0) {
-      const formattedDate = selectedDates[0].toISOString().split("T")[0]; // Format to YYYY-MM-DD
+      const formattedDate = selectedDates[0].toLocaleDateString("en-CA"); // Format to YYYY-MM-DD
+
       setFormData((prevState) => ({
         ...prevState,
         [name]: formattedDate, // Update the specific field dynamically
@@ -562,7 +563,7 @@ const StudentDetails = () => {
                         handleDateChange(selectedDates, "date")
                       }
                       options={{
-                        dateFormat: "m/d/Y",
+                        dateFormat: "Y-m-d",
                       }}
                       name="date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -613,7 +614,7 @@ const StudentDetails = () => {
                         handleDateChange(selectedDates, "leave_from")
                       }
                       options={{
-                        dateFormat: "m/d/Y",
+                        dateFormat: "Y-m-d",
                       }}
                       name="leave_from"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -647,7 +648,7 @@ const StudentDetails = () => {
                         handleDateChange(selectedDates, "leave_to")
                       }
                       options={{
-                        dateFormat: "m/d/Y",
+                        dateFormat: "Y-m-d",
                       }}
                       name="leave_to"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"

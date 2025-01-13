@@ -45,6 +45,7 @@ import {
   ThumbUp,
 } from "@mui/icons-material";
 import { useLoginDetails, useLogoStore } from "@/store/logoStore";
+import { fetchStudentData } from "@/services/studentService";
 
 const columns = [
   "Student Name",
@@ -89,6 +90,22 @@ const StudentDetails = () => {
   const [selectedStudent, setSelectedStudent] = useState<string | undefined>(
     undefined,
   );
+
+  const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedSubjectGroup2, setSelectedSubjectGroup2] = useState<
+    string | undefined
+  >(undefined);
+
+  const [classes2, setClassessData2] = useState<Array<any>>([]);
+  const [section2, setSections2] = useState<Array<any>>([]);
+  const [subjectGroup2, setSubjectGroup2] = useState<Array<any>>([]);
+  const [subject2, setSubject2] = useState<Array<any>>([]);
+
   const [getRoleId, SetGetRoleId] = useState("");
 
   const [keyword, setKeyword] = useState<string>("");
@@ -102,7 +119,7 @@ const StudentDetails = () => {
     created_at: "",
     docs: "",
     reason: "",
-    approve_by: "",
+    approve_by: getRoleId,
     request_type: "",
     class_name: "",
     section_name: "",
@@ -126,12 +143,9 @@ const StudentDetails = () => {
     }
   };
 
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
+  const handleClassChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass2(event.target.value);
+  };
   const getroleId = useLoginDetails((state) => state.roleId);
   useEffect(() => {
     setSelectedSessionId(getselectedSessionId);
@@ -140,6 +154,47 @@ const StudentDetails = () => {
       SetGetRoleId(getroleId);
     }
   }, []);
+const handleSectionChange2 = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedSection2(event.target.value);
+  };
+
+  const handleSubjectGroupChange2 = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedSubjectGroup2(event.target.value);
+  };
+
+  
+
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+  
+  const fetchClassesAndSections2 = async () => {
+    try {
+      // Fetch sections if a class is selected
+      if (selectedClass2) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass2);
+        setSections2(sectionsResult.data);
+      } else {
+        setSections2([]); // Clear sections if no class is selected
+      }
+     
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchClassesAndSections2(); // Fetch classes and sections on initial render
+  }, [selectedClass2, selectedSection2, selectedSubjectGroup2]);
+
 
   const fetchData = async (
     currentPage: number,
@@ -157,7 +212,16 @@ const StudentDetails = () => {
         keyword,
         selectedSessionId,
       );
-      setStudentName(result.data);
+        const studentresult = await fetchStudentData(
+                currentPage + 1,
+                rowsPerPage,
+                selectedClass2,
+                selectedSection2,
+                keyword,
+                selectedSessionId,
+              );
+
+      setStudentName(studentresult.data);
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
@@ -233,7 +297,7 @@ const StudentDetails = () => {
           created_at: "",
           docs: "",
           reason: "",
-          approve_by: "",
+          approve_by: getRoleId,
           request_type: "",
           class_name: "",
           section_name: "",
@@ -243,6 +307,9 @@ const StudentDetails = () => {
 
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
+
+        setSelectedClass2("");
+    setSelectedSection2("");
         fetchData(page, rowsPerPage); // Refresh data after submit
       } else {
         toast.error("Failed to save leave");
@@ -302,7 +369,7 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+  }, [page, rowsPerPage, selectedClass, selectedSection, keyword , selectedClass2, selectedSection2]);
 
   const handleClickOpen = (isEditing: any) => {
     setEditing(isEditing); // Set editing state based on action
@@ -311,6 +378,8 @@ const StudentDetails = () => {
   const handleClose = () => {
     setOpen(false);
     setEditing(false); // Reset editing state
+    setSelectedClass2("");
+    setSelectedSection2("");
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -336,6 +405,8 @@ const StudentDetails = () => {
     setSelectedClass("");
     setSelectedSection("");
     setSelectedStudent("");
+    setSelectedClass2("");
+    setSelectedSection2("");
     setKeyword("");
   };
 
@@ -431,13 +502,14 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
+  }, [selectedClass, ]);
 
   const fetchClassesAndSections = async () => {
     try {
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
 
+      setClassessData2(classesResult.data);
       // Fetch sections if a class is selected
       if (selectedClass) {
         const sectionsResult = await fetchsectionByClassData(selectedClass);
@@ -564,12 +636,12 @@ const StudentDetails = () => {
                     Class:
                   </label>
                   <select
-                    value={selectedClass || ""}
-                    onChange={handleClassChange}
+                    value={selectedClass2 || ""}
+                    onChange={handleClassChange2}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {classes.map((cls) => (
+                    {classes2.map((cls) => (
                       <option key={cls.id} value={cls.id}>
                         {cls.class}
                       </option>
@@ -583,13 +655,13 @@ const StudentDetails = () => {
                     Section:
                   </label>
                   <select
-                    value={selectedSection || ""}
-                    onChange={handleSectionChange}
+                    value={selectedSection2 || ""}
+                    onChange={handleSectionChange2}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={!selectedClass} // Disable section dropdown if no class is selected
+                    disabled={!selectedClass2} // Disable section dropdown if no class is selected
                   >
                     <option value="">Select</option>
-                    {section.map((sec) => (
+                    {section2.map((sec) => (
                       <option key={sec.section_id} value={sec.section_id}>
                         {sec.section_name}
                       </option>
@@ -603,15 +675,16 @@ const StudentDetails = () => {
                     Student <span className="required">*</span>
                   </label>
                   <select
+                  name=""
                     value={selectedStudent || ""}
                     onChange={handleStudentChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={!selectedClass || !selectedSection}
+                    disabled={!selectedClass2 || !selectedSection2}
                   >
                     <option value="">Select</option>
                     {studentName.map((sec) => (
-                      <option key={sec.student_id} value={sec.student_id}>
-                        {sec.student_name}
+                      <option key={sec.id} value={sec.id}>
+                        {sec.firstname} {sec.lastname}
                       </option>
                     ))}
                   </select>

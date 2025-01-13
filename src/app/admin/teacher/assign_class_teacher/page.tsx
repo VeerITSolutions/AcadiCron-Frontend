@@ -27,8 +27,9 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { useLoginDetails } from "@/store/logoStore";
 
-const FeesMaster = () => {
+const AssignClassTeacher = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
@@ -116,25 +117,22 @@ const FeesMaster = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-
+  
     setFormData({
       class_id: subject?.class_id || "",
       staff_id: subject?.staff_id || "",
       section_id: subject?.section_id || "",
       session_id: subject?.session_id || "",
-
-    
     });
+
   };
+  
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.class,
       student.section || "N/A",
-
       `${student.name || "N/A"} ${student.surname || "N/A"}`,
-
-
       <div key={student.id} className="flex">
       <IconButton
         onClick={() => handleEdit(student.id, student)}
@@ -151,6 +149,7 @@ const FeesMaster = () => {
     </div>,
     ]);
   };
+  const [selectedTeachers, setSelectedTeachers] = useState<number[]>([]);
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
@@ -164,6 +163,19 @@ const FeesMaster = () => {
     }));
   };
 
+  const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const teacherId = parseInt(event.target.value);
+    if (event.target.checked) {
+      // Add the teacher ID to the selected list
+      setSelectedTeachers((prev) => [...prev, teacherId]);
+    } else {
+      // Remove the teacher ID from the selected list
+      setSelectedTeachers((prev) => prev.filter((id) => id !== teacherId));
+    }
+  };
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
@@ -174,7 +186,15 @@ const FeesMaster = () => {
           toast.error("Failed to update");
         }
       } else {
-        const result = await createClassAssignTeacher(formData);
+
+        const data = {
+          class_id:  selectedClass,
+          section_id: selectedSection,
+          staff_id: selectedTeachers,
+          session_id : getselectedSessionId
+          
+        };
+        const result = await createClassAssignTeacher(data);
 
         if (result.success) {
           toast.success("Created successfully");
@@ -189,11 +209,13 @@ const FeesMaster = () => {
         section_id: "",
         session_id: "",
       });
+      
 
       setIsEditing(false);
       setEditCategoryId(null);
       setSelectedClass('');
       setSelectedSection('');
+      setTeacherData([]);
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
@@ -211,12 +233,12 @@ const FeesMaster = () => {
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
-    setPage(0);
+    
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
-    setPage(0);
+    
   };
 
   useEffect(() => {
@@ -248,8 +270,8 @@ const FeesMaster = () => {
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page: page,
     selectableRows: "none", // Disable row selection
@@ -269,7 +291,10 @@ search: false,
     });
     setIsEditing(false);
     setEditCategoryId(null);
-  };
+    setSelectedClass('');
+    setSelectedSection('');
+    setTeacherData([]);
+  };  
 
 
   return (
@@ -337,9 +362,9 @@ search: false,
                     <input
                       className="mr-3"
                       type="checkbox"
-                      value={teachers.id}
-                      name="class_teacher"
-                      onChange={handleInputChange}
+                     value={teachers.id}
+                      name="staff_id"
+                      onChange={handleInputChange2}
                     />
                     {`${teachers.name} ${teachers.surname} (${teachers.id})`}
                   </label>
@@ -390,4 +415,4 @@ search: false,
   );
 };
 
-export default FeesMaster;
+export default AssignClassTeacher;
