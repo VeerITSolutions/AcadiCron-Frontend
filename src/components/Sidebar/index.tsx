@@ -9,7 +9,7 @@ import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { fetchSchSetting } from "@/services/schSetting";
 import { fetchSession } from "@/services/session";
-import { useLogoStore } from "@/store/logoStore";
+import { useLoginDetails, useLogoStore } from "@/store/logoStore";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -24,7 +24,10 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
-  const [defaultSession, setDefaultSession] = useState("");
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+  const [defaultSession, setDefaultSession] = useState(getselectedSessionId);
   const [defaultSessionYear, setDefaultSessionYear] = useState("");
 
   const [allSession, setAllSession] = useState<Session[]>([]);
@@ -35,7 +38,10 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   /*  const [sidebarOpen, setSidebarOpen] = useState(false); */
   const [modalOpen, setModalOpen] = useState(false);
-  const [savedSessionstate, setSavedSession] = useState("");
+  const getselectedSessionYear = useLoginDetails(
+    (state) => state.selectedSessionName,
+  );
+  const [savedSessionstate, setSavedSession] = useState(getselectedSessionYear);
   const [getRoleId, SetGetRoleId] = useState("");
   const [image, setImage] = useState("");
 
