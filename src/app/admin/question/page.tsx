@@ -14,6 +14,7 @@ import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
 import { fetchRoleData } from "@/services/roleService";
 import { Editor } from "@tinymce/tinymce-react";
+
 import {
   fetchsectionByClassData,
   fetchsectionData,
@@ -82,6 +83,8 @@ const QuestionBank = () => {
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [subjectData, setSubjectData] = useState<Array<any>>([]);
+  const [Classes, setClassessData] = useState<Array<any>>([]);
+  const [section, setSections] = useState<Array<any>>([]);
 
   const [editing, setEditing] = useState(false); // Add state for editing
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -119,6 +122,8 @@ const QuestionBank = () => {
       section_id: "",
     });
 
+ 
+
     setOpen1(false);
     setEditing(false); // Reset editing state
   };
@@ -149,6 +154,23 @@ const QuestionBank = () => {
        setLoading(false);
      }
    };
+   const fetchClassesAndSections2 = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
+
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
      
 
     const fetchQuestions = async (currentPage: number, rowsPerPage: number) => {
@@ -165,6 +187,8 @@ const QuestionBank = () => {
          setLoading(false);
        }
      };
+
+   
 
   const handleSubmit = async () => {
     try {
@@ -207,7 +231,7 @@ const QuestionBank = () => {
 
       setIsEditing(false);
       setEditCategoryId(null);
-      fetchQuestions(page, rowsPerPage); // Refresh data after submit
+      fetchData(page, rowsPerPage); // Refresh data after submit
       setOpen(false);
       setOpen1(false);
     } catch (error) {
@@ -220,15 +244,28 @@ const QuestionBank = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [classes, setClassessData] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
+   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
+  const [selectedLevel, setSelectedLevel] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedType, setSelectedType] = useState<string | undefined>(
+    undefined,
+  );
+  
+  
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+
+ 
+    const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
+      undefined,
+    );  
+    const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
+      undefined,
+    );
   const [selectedRoleLeave, setSelectedRoleLeave] = useState<
     string | undefined
   >(undefined);
@@ -248,11 +285,17 @@ const QuestionBank = () => {
     class_id: "",
     section_id: "",
   });
+
+  
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
+   
       const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
+      const resultSubjectData = await fetchSubjectData("", "");
       setTotalCount(result.total);
-      setSubjectData(formatSubjectData(result.data));
+      setData(formatSubjectData(result.data));
+      setSubjectData(resultSubjectData.data);
+   
 
       setLoading(false);
     } catch (error: any) {
@@ -335,18 +378,27 @@ const QuestionBank = () => {
   };
 
   
-
+ useEffect(() => {
+    fetchData(
+      page,
+      rowsPerPage,
+      
+    );
+  }, [
+    page,
+    rowsPerPage,
+    selectedSubject,
+    selectedClass,
+    selectedSection,
+    keyword,
+  ]);
   useEffect(() => {
-    fetchQuestions(page, rowsPerPage);
-  }, [page, rowsPerPage]);
-
-  useEffect(() => {
-    const savedSession = localStorage.getItem("selectedSessionId");
-    if (savedSession) {
-      setSavedSession(savedSession);
-      // Use this value in your logic
-    }
-  }, []);
+      fetchClassesAndSections(); // Fetch classes and sections on initial render
+    }, [selectedClass]);
+  
+    useEffect(() => {
+      fetchClassesAndSections2(); // Fetch classes and sections on initial render
+    }, [selectedClass2, selectedSection2]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -368,6 +420,17 @@ const QuestionBank = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
+  const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSection(event.target.value);
+    setPage(0);
+  };
+
+ 
+const handleSectionChange2 = (
+ event: React.ChangeEvent<HTMLSelectElement>,
+) => {
+ setSelectedSection2(event.target.value);
+};
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -469,11 +532,11 @@ const QuestionBank = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                    {Classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
                   </select>
                 </div>
                 <div className="field">
@@ -483,15 +546,15 @@ const QuestionBank = () => {
                   <select
                     name="class_id" // Adding name attribute for dynamic handling
                     value={selectedClass}
-                    onChange={handleClassChange}
+                    onChange={handleSectionChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                    {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
                   </select>
                 </div>
                 <div className="field">
@@ -571,17 +634,17 @@ const QuestionBank = () => {
                     Question Type <span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
+                    name="question_type" // Adding name attribute for dynamic handling
+                    value={selectedType}
                     onChange={handleClassChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                    <option value="">Single Choice</option>
+                    <option value="">Multiple Choice</option>
+                    <option value="">True/False</option>
+                    <option value="">Descriptive</option>
+                   
                   </select>
                 </div>
                 <div className="field">
@@ -589,17 +652,16 @@ const QuestionBank = () => {
                     Question level <span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
+                    name="Question_level" // Adding name attribute for dynamic handling
+                    value={selectedLevel}
                     onChange={handleClassChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                    <option value="">Low</option>
+                    <option value="">Medium</option>
+                    <option value="">High</option>
+                    
                   </select>
                 </div>
                 <div className="field">
@@ -612,12 +674,12 @@ const QuestionBank = () => {
                     onChange={handleClassChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
-                    <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                      <option value="">Select</option>
+                      {Classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.class}
+                </option>
+              ))}
                   </select>
                 </div>
                 <div className="field">
@@ -625,17 +687,17 @@ const QuestionBank = () => {
                     Section <span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleClassChange}
+                    name="Section" // Adding name attribute for dynamic handling
+                    value={selectedSection2 || ""}
+                    onChange={handleSectionChange2}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
+                    {section.map((sec) => (
+                <option key={sec.section_id} value={sec.section_id}>
+                  {sec.section_name}
+                </option>
+              ))}
                   </select>
                 </div>
                 <div className="field">
