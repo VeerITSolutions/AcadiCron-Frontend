@@ -105,6 +105,7 @@ const FeesMaster = () => {
           "",
           selectedClass,
           selectedSection,
+          getselectedSessionId
         );
 
         setSubjectGroup(subjectgroupresult.data);
@@ -116,6 +117,7 @@ const FeesMaster = () => {
           "",
           "",
           selectedSubjectGroup,
+          getselectedSessionId
         );
         setSubject(subjectresult.data);
         setLoaderSubject(false);
