@@ -150,9 +150,9 @@ const FeesMaster = () => {
 
   const handleEdit = (id: any, data: any) => {
     setSelectedClass(data.classid);
-    setSelectedSection(data.csectionid);
+    setSelectedSection(data.sectionid);
     setSelectedSubjectGroup(data.subjectgroupsid);
-    setSelectedSubject(data.subjectid);
+    setSelectedSubject(data.subject_group_subject_id);
     setNames([data.name]);
 
     setFormData({
@@ -171,11 +171,10 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-
       student.cname || "N/A",
       student.sname || "N/A",
-      student.subject_group_class_sections_id || "N/A",
+      student.sgname || "N/A",
+      student.subname || "N/A",
       student.name || "N/A",
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
