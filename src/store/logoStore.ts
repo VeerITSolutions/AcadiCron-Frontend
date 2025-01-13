@@ -14,6 +14,7 @@ interface UserDetails {
   roleName: string | null;
   isSuperAdmin: string | null;
   selectedSessionId: string | null;
+  selectedSessionName: string | null;
   setRoleId: (roleId: string) => void;
   setUserDetails: (userDetails: UserDetails) => void; // Function to update all user details
 }
@@ -32,6 +33,7 @@ export const useLoginDetails = create<UserDetails>((set) => ({
   roleName: null,
   isSuperAdmin: null,
   selectedSessionId: null,
+  selectedSessionName: null,
   setRoleId: (roleId: string) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('role_id', roleId); // Store the roleId in localStorage
@@ -63,6 +65,7 @@ export function useInitializeLoginDetails() {
       const roleNameFromStorage = localStorage.getItem('role_name') || '';
       const isSuperAdminFromStorage = localStorage.getItem('is_superadmin') || '';
       const selectedSessionIdFromStorage = localStorage.getItem('selectedSessionId') || '';
+      const selectedSessionYearFromStorage = localStorage.getItem('selectedSessionYear') || '';
 
       // Set all values into the Zustand store using setUserDetails
       setUserDetails({
@@ -72,6 +75,7 @@ export function useInitializeLoginDetails() {
         roleName: roleNameFromStorage,
         isSuperAdmin: isSuperAdminFromStorage,
         selectedSessionId: selectedSessionIdFromStorage,
+        selectedSessionName: selectedSessionYearFromStorage,
         setRoleId: () => {}, // Optional: add empty function for `setRoleId` if you don't need to use it in this context
         setUserDetails: () => {}, // Optional: add empty function for `setUserDetails` if you don't need to use it in this context
       });
