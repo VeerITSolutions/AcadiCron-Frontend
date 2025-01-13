@@ -5,17 +5,11 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 
-import {
-  createFeesMasterData,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
-import styles from "./User.module.css";
+
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
@@ -29,9 +23,9 @@ import {
   editLesson,
   fetchLesson,
 } from "@/services/lessonService";
-import { set } from "date-fns";
+
 import { useLoginDetails } from "@/store/logoStore";
-import { get } from "http";
+
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -49,8 +43,6 @@ const FeesMaster = () => {
   const [loaderSection, setLoaderSections] = useState(false);
   const [loaderSubject, setLoaderSubject] = useState(false);
   const [loaderSubjectGroup, setLoaderSubjectGroup] = useState(false);
-
-  const [colorMode, setColorMode] = useColorMode();
 
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
@@ -83,7 +75,13 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchLesson(currentPage + 1, rowsPerPage, "", "", getselectedSessionId);
+      const result = await fetchLesson(
+        currentPage + 1,
+        rowsPerPage,
+        "",
+        "",
+        getselectedSessionId,
+      );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -105,7 +103,7 @@ const FeesMaster = () => {
           "",
           selectedClass,
           selectedSection,
-          getselectedSessionId
+          getselectedSessionId,
         );
 
         setSubjectGroup(subjectgroupresult.data);
@@ -117,7 +115,7 @@ const FeesMaster = () => {
           "",
           "",
           selectedSubjectGroup,
-          getselectedSessionId
+          getselectedSessionId,
         );
         setSubject(subjectresult.data);
         setLoaderSubject(false);
@@ -151,11 +149,12 @@ const FeesMaster = () => {
   };
 
   const handleEdit = (id: any, data: any) => {
-    setSelectedClass(data.class_id);
-    setSelectedSection(data.class_id);
-    setSelectedSubjectGroup(data.class_id);
-    setSelectedSubject(data.class_id);
-    setNames(data.name);
+    setSelectedClass(data.classid);
+    setSelectedSection(data.sectionid);
+    setSelectedSubjectGroup(data.subjectgroupsid);
+    setSelectedSubject(data.subject_group_subject_id);
+    setNames([data.name]);
+
     setFormData({
       selectedClass: "",
       selectedSection: "",
@@ -172,11 +171,10 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-
       student.cname || "N/A",
       student.sname || "N/A",
-      student.subject_group_class_sections_id || "N/A",
+      student.sgname || "N/A",
+      student.subname || "N/A",
       student.name || "N/A",
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
@@ -217,11 +215,16 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editLesson(
-          editCategoryId,
+        const updateData = {
+          selectedClass: selectedClass,
+          selectedSection: selectedSection,
+          selectedSubjectGroup: selectedSubjectGroup,
+          selectedSubject: selectedSubject,
+          currentSessionId: getselectedSessionId,
 
-          formData,
-        );
+          name: names,
+        };
+        const result = await editLesson(editCategoryId, updateData);
         if (result.success) {
           toast.success(" updated successfully");
         } else {
@@ -455,15 +458,19 @@ const FeesMaster = () => {
                   </select>
                 )}
               </div>
-              <div className="field flex justify-end">
-                <button
-                  type="button"
-                  onClick={handleAddMore}
-                  className="rounded bg-green-500 px-5 py-3 text-white hover:bg-green-700"
-                >
-                  Add More
-                </button>
-              </div>
+              {!editCategoryId ? (
+                <div className="field flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleAddMore}
+                    className="rounded bg-green-500 px-5 py-3 text-white hover:bg-green-700"
+                  >
+                    Add More
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
 
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -480,13 +487,18 @@ const FeesMaster = () => {
                         handleInputChangeName(index, e.target.value)
                       }
                     />
-                    <button
-                      type="button"
-                      onClick={() => handleRemove(index)}
-                      className="bg-red-500 hover:bg-red-700 text-dark rounded px-3 py-2 dark:text-white dark:focus:border-primary"
-                    >
-                      Remove
-                    </button>
+
+                    {!editCategoryId ? (
+                      <button
+                        type="button"
+                        onClick={() => handleRemove(index)}
+                        className="bg-red-500 hover:bg-red-700 text-dark rounded px-3 py-2 dark:text-white dark:focus:border-primary"
+                      >
+                        Remove
+                      </button>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 ))}
               </div>

@@ -9,11 +9,13 @@ interface LogoState {
 
 interface UserDetails {
   roleId: string;
+  userId: string;
   username: string | null;
   surname: string | null;
   roleName: string | null;
   isSuperAdmin: string | null;
   selectedSessionId: string | null;
+  selectedSessionName: string | null;
   setRoleId: (roleId: string) => void;
   setUserDetails: (userDetails: UserDetails) => void; // Function to update all user details
 }
@@ -27,11 +29,13 @@ export const useLogoStore = create<LogoState>((set) => ({
 // Create Zustand store for user login details
 export const useLoginDetails = create<UserDetails>((set) => ({
   roleId: '', // Initial empty value for roleId
+  userId: '',
   username: null,
   surname: null,
   roleName: null,
   isSuperAdmin: null,
   selectedSessionId: null,
+  selectedSessionName: null,
   setRoleId: (roleId: string) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('role_id', roleId); // Store the roleId in localStorage
@@ -41,6 +45,7 @@ export const useLoginDetails = create<UserDetails>((set) => ({
   setUserDetails: (userDetails: UserDetails) => {
     set({
       roleId: userDetails.roleId,
+      userId: userDetails.userId,
       username: userDetails.username,
       surname: userDetails.surname,
       roleName: userDetails.roleName,
@@ -58,20 +63,24 @@ export function useInitializeLoginDetails() {
     if (typeof window !== 'undefined') {
       // Get user details from localStorage
       const roleIdFromStorage = localStorage.getItem('role_id') || '';
+      const userIdFromStorage = localStorage.getItem('user_id') || '';
       const usernameFromStorage = localStorage.getItem('username') || '';
       const surnameFromStorage = localStorage.getItem('surname') || '';
       const roleNameFromStorage = localStorage.getItem('role_name') || '';
       const isSuperAdminFromStorage = localStorage.getItem('is_superadmin') || '';
       const selectedSessionIdFromStorage = localStorage.getItem('selectedSessionId') || '';
+      const selectedSessionYearFromStorage = localStorage.getItem('selectedSessionYear') || '';
 
       // Set all values into the Zustand store using setUserDetails
       setUserDetails({
         roleId: roleIdFromStorage,
+        userId: userIdFromStorage,
         username: usernameFromStorage,
         surname: surnameFromStorage,
         roleName: roleNameFromStorage,
         isSuperAdmin: isSuperAdminFromStorage,
         selectedSessionId: selectedSessionIdFromStorage,
+        selectedSessionName: selectedSessionYearFromStorage,
         setRoleId: () => {}, // Optional: add empty function for `setRoleId` if you don't need to use it in this context
         setUserDetails: () => {}, // Optional: add empty function for `setUserDetails` if you don't need to use it in this context
       });

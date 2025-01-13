@@ -4,26 +4,29 @@ import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { ThemeProvider } from "@mui/material/styles";
-import useColorMode from "@/hooks/useColorMode";
-import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  createFeesMasterData,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
+
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
+
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
-import styles from "./User.module.css";
-import { fetchSubjectGroupData } from "@/services/subjectGroupService";
+import { ThemeProvider } from "@mui/material/styles";
+import useColorMode from "@/hooks/useColorMode";
+import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { fetchSubjectData } from "@/services/subjectsService";
+import { fetchSubjectGroupData } from "@/services/subjectGroupService";
+
+import { useLoginDetails } from "@/store/logoStore";
+import {
+  createTopic,
+  deleteTopic,
+  editTopic,
+  fetchTopic,
+} from "@/services/topicService";
+
 const FeesMaster = () => {
-  const [colorMode, setColorMode] = useColorMode();
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
@@ -33,8 +36,13 @@ const FeesMaster = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
+  const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
+
+  const [loaderClasses, setLoaderClassessData] = useState(false);
+  const [loaderSection, setLoaderSections] = useState(false);
+  const [loaderSubject, setLoaderSubject] = useState(false);
+  const [loaderSubjectGroup, setLoaderSubjectGroup] = useState(false);
 
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
@@ -42,22 +50,28 @@ const FeesMaster = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [selectedLesson, setSelectedLesson] = useState<string | undefined>(
+    undefined,
+  );
+
   const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<
     string | undefined
   >(undefined);
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
     undefined,
   );
-
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+  const [names, setNames] = useState([""]); // Initialize with one input field
   const [formData, setFormData] = useState({
-    fees_group: "",
-    fees_type: "",
-    due_date: "",
-    amount: "",
-    fine_type: "",
-    percentage: "",
-    description: "",
-    fine_amount: "",
+    selectedClass: "",
+    selectedSection: "",
+    selectedSubjectGroup: "",
+    selectedSubject: "",
+    currentSessionId: getselectedSessionId,
+
+    name: names,
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -65,16 +79,26 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      /* const result = await fetchStudentFeesMasterData(
+      const result = await fetchTopic(
         currentPage + 1,
         rowsPerPage,
+        "",
+        "",
+        getselectedSessionId,
       );
-      setTotalCount(result.totalCounts.feegroupCount);
-      setData(formatStudentCategoryData(result.data.feegroupList));
-      setLoading(false); */
+      setTotalCount(result.totalCount);
+      setData(formatStudentCategoryData(result.data));
+      setLoading(false);
 
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+        setLoaderSections(false);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
 
       /* call condtion wise  */
       if (selectedClass && selectedSection) {
@@ -83,17 +107,22 @@ const FeesMaster = () => {
           "",
           selectedClass,
           selectedSection,
+          getselectedSessionId,
         );
 
         setSubjectGroup(subjectgroupresult.data);
+        setLoaderSubjectGroup(false);
       }
+
       if (selectedSubjectGroup) {
         const subjectresult = await fetchSubjectData(
           "",
           "",
           selectedSubjectGroup,
+          getselectedSessionId,
         );
         setSubject(subjectresult.data);
+        setLoaderSubject(false);
       }
 
       setLoading(false);
@@ -105,7 +134,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteTopic(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -113,59 +142,50 @@ const FeesMaster = () => {
     }
   };
 
-  const handleEdit = (
-    id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
+  const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubject(event.target.value);
+  };
+  const handleLessonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedLesson(event.target.value);
+  };
+
+  const handleSubjectGroupChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
-    setIsEditing(true);
-    setEditCategoryId(id);
+    setSelectedSubjectGroup(event.target.value);
+  };
+
+  const handleEdit = (id: any, data: any) => {
+    setSelectedClass(data.classid);
+    setSelectedSection(data.sectionid);
+    setSelectedSubjectGroup(data.subjectgroupsid);
+    setSelectedSubject(data.subject_group_subject_id);
+    setNames([data.name]);
 
     setFormData({
-      fees_group: fees_group_value,
-      fees_type: fees_type_value,
-      due_date: due_date_value,
-      amount: amount_value,
-      fine_type: fine_type_value,
-      percentage: percentage_value,
-      description: description_value,
-      fine_amount: fine_amount_value,
+      selectedClass: "",
+      selectedSection: "",
+      selectedSubjectGroup: "",
+      selectedSubject: "",
+      currentSessionId: getselectedSessionId,
+
+      name: names,
     });
+
+    setIsEditing(true);
+    setEditCategoryId(id);
   };
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
-      student.fees_group || "N/A",
-      student.fees_type || "N/A",
-      student.due_date || "N/A",
-      student.amount || "N/A",
-      student.fine_type || "N/A",
-      student.percentage || "N/A",
-      student.description || "N/A",
-      student.fine_amount || "N/A",
-
-      <div key={student.id} className="flex">
+      student.cname || "N/A",
+      student.sname || "N/A",
+      student.sgname || "N/A",
+      student.subname || "N/A",
+      student.name || "N/A",
+      <div key={student.id} className="flex items-center space-x-2">
         <IconButton
-          onClick={() =>
-            handleEdit(
-              student.id,
-              student.fees_group,
-              student.fees_type,
-              student.due_date,
-              student.amount,
-              student.fine_type,
-              student.percentage,
-              student.description,
-              student.fine_amount,
-            )
-          }
+          onClick={() => handleEdit(student.id, student)}
           aria-label="edit"
         >
           <Edit />
@@ -185,6 +205,7 @@ const FeesMaster = () => {
   }, [
     page,
     rowsPerPage,
+    selectedClass,
     selectedSection,
     selectedSubjectGroup,
     selectedSubject,
@@ -201,50 +222,51 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
-          editCategoryId,
+        const updateData = {
+          selectedClass: selectedClass,
+          selectedSection: selectedSection,
+          selectedSubjectGroup: selectedSubjectGroup,
+          selectedSubject: selectedSubject,
+          currentSessionId: getselectedSessionId,
 
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
+          name: names,
+        };
+        const result = await editTopic(editCategoryId, updateData);
         if (result.success) {
-          toast.success("Student House updated successfully");
+          toast.success(" updated successfully");
         } else {
-          toast.error("Failed to update Student House");
+          toast.error("Failed to update ");
         }
       } else {
-        const result = await createFeesMasterData(
-          formData.fees_group,
-          formData.fees_type,
-          formData.due_date,
-          formData.amount,
-          formData.fine_type,
-          formData.percentage,
-          formData.description,
-          formData.fine_amount,
-        );
-        if (result.success) {
-          toast.success("Student House saved successfully");
+        const updateData = {
+          selectedClass: selectedClass,
+          selectedSection: selectedSection,
+          selectedSubjectGroup: selectedSubjectGroup,
+          selectedSubject: selectedSubject,
+          currentSessionId: getselectedSessionId,
+
+          name: names,
+        };
+        const resultLesson = await createTopic(updateData);
+        if (resultLesson.success) {
+          toast.success("saved successfully");
         } else {
-          toast.error("Failed to save Student House");
+          toast.error("Failed to save ");
         }
       }
-
+      setSelectedClass("");
+      setSelectedSection("");
+      setSelectedSubjectGroup("");
+      setSelectedSubject("");
+      setNames([""]);
       setFormData({
-        fees_group: "",
-        fees_type: "",
-        due_date: "",
-        amount: "",
-        fine_type: "",
-        percentage: "",
-        description: "",
-        fine_amount: "",
+        selectedClass: "",
+        selectedSection: "",
+        selectedSubjectGroup: "",
+        selectedSubject: "",
+        currentSessionId: getselectedSessionId,
+
+        name: names,
       });
 
       setIsEditing(false);
@@ -255,51 +277,59 @@ const FeesMaster = () => {
     }
   };
 
+  // Handle input change for dynamic inputs
+  const handleInputChangeName = (index: any, value: any) => {
+    const updatedNames = [...names];
+    updatedNames[index] = value;
+    setNames(updatedNames);
+  };
+
+  // Add a new input field
+  const handleAddMore = () => {
+    setNames([...names, ""]);
+  };
+
+  // Remove an input field
+  const handleRemove = (index: any) => {
+    const updatedNames = names.filter((_, i) => i !== index);
+    setNames(updatedNames);
+  };
+  const handleCancelEdit = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setSelectedSubjectGroup("");
+    setSelectedSubject("");
+    setNames([""]);
+    setFormData({
+      selectedClass: "",
+      selectedSection: "",
+      selectedSubjectGroup: "",
+      selectedSubject: "",
+      currentSessionId: getselectedSessionId,
+
+      name: names,
+    });
+
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
-
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
+    setPage(0);
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
+    setPage(0);
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
-  };
-
-  const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSubject(event.target.value);
-  };
-
-  const handleSubjectGroupChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSelectedSubjectGroup(event.target.value);
-  };
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
-
-  const fetchClassesAndSections = async () => {
-    try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]); // Clear sections if no class is selected
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
+    setPage(0);
   };
 
   /* if (loading) return <Loader />; */
@@ -320,6 +350,7 @@ const FeesMaster = () => {
     responsive: "standard",
     search: false,
     count: totalCount,
+    selectableRows: "none", // Disable row selection
     page: page,
     rowsPerPage: rowsPerPage,
     onChangePage: handlePageChange,
@@ -360,91 +391,165 @@ const FeesMaster = () => {
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Section:
                 </label>
-                <select
-                  value={selectedSection || ""}
-                  disabled={!selectedClass}
-                  onChange={handleSectionChange}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {section.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
-                    </option>
-                  ))}
-                </select>
+                {loaderSection ? (
+                  <div className="flex w-full items-center justify-center py-3">
+                    <div className="loader-spinner border-gray-200 h-6 w-6 animate-spin rounded-full border-4 border-t-primary"></div>
+                  </div>
+                ) : (
+                  <select
+                    value={selectedSection || ""}
+                    disabled={!selectedClass}
+                    onChange={handleSectionChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {section.map((sec) => (
+                      <option key={sec.section_id} value={sec.section_id}>
+                        {sec.section_name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <div className="">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Subject Group <span className="required">*</span>
                 </label>
-                <select
-                  value={selectedSubjectGroup || ""}
-                  onChange={handleSubjectGroupChange}
-                  disabled={!selectedClass || !selectedSection}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {subjectGroup.map((cls) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.name}
-                    </option>
-                  ))}
-                </select>
+
+                {loaderSubjectGroup ? (
+                  <div className="flex w-full items-center justify-center py-3">
+                    <div className="loader-spinner border-gray-200 h-6 w-6 animate-spin rounded-full border-4 border-t-primary"></div>
+                  </div>
+                ) : (
+                  <select
+                    value={selectedSubjectGroup || ""}
+                    onChange={handleSubjectGroupChange}
+                    disabled={!selectedClass || !selectedSection}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {subjectGroup.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <div className="">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Subject
                 </label>
-                <select
-                  value={selectedSubject || ""}
-                  onChange={handleSubjectChange}
-                  disabled={
-                    !selectedClass || !selectedSection || !selectedSubjectGroup
-                  }
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {subject.map((cls) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.name}
-                    </option>
-                  ))}
-                </select>
+                {loaderSubject ? (
+                  <div className="flex w-full items-center justify-center py-3">
+                    <div className="loader-spinner border-gray-200 h-6 w-6 animate-spin rounded-full border-4 border-t-primary"></div>
+                  </div>
+                ) : (
+                  <select
+                    value={selectedSubject || ""}
+                    onChange={handleSubjectChange}
+                    disabled={
+                      !selectedClass ||
+                      !selectedSection ||
+                      !selectedSubjectGroup
+                    }
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {subject.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
-              <div className="">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  {" "}
-                  Lesson <span className="required">*</span>
-                </label>
-                <select
-                  id="section_id"
-                  name="section_id"
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                </select>
-              </div>
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Topic Name<span className="required">*</span>
+                  Lesson Name <span className="required">*</span>
                 </label>
-                <input
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  type="text"
-                  name="topic_name"
-                />
+                <div className="mb-3 flex items-center gap-3">
+                  <select
+                    value={selectedLesson || ""}
+                    onChange={handleLessonChange}
+                    disabled={!selectedClass || !selectedSection}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+                  >
+                    <option value="">Select</option>
+                    {subject.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
+
+              {!editCategoryId ? (
+                <div className="field flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleAddMore}
+                    className="rounded bg-green-500 px-5 py-3 text-white hover:bg-green-700"
+                  >
+                    Add More
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
+
               <div>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Topic Name <span className="required">*</span>
+                </label>
+                {names.map((name, index) => (
+                  <div key={index} className="mb-3 flex items-center gap-3">
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name={`name[${index}]`}
+                      value={name}
+                      onChange={(e) =>
+                        handleInputChangeName(index, e.target.value)
+                      }
+                    />
+
+                    {!editCategoryId ? (
+                      <button
+                        type="button"
+                        onClick={() => handleRemove(index)}
+                        className="bg-red-500 hover:bg-red-700 text-dark rounded px-3 py-2 dark:text-white dark:focus:border-primary"
+                      >
+                        Remove
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex gap-2">
                 <button
-                  type="submit"
+                  type="button"
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  onClick={handleSubmit}
                 >
                   {isEditing ? "Update" : "Save"}
                 </button>
+
+                {isEditing && (
+                  <button
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
             </div>
           </div>
