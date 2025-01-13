@@ -149,11 +149,12 @@ const FeesMaster = () => {
   };
 
   const handleEdit = (id: any, data: any) => {
-    setSelectedClass(data.class_id);
-    setSelectedSection(data.class_id);
-    setSelectedSubjectGroup(data.class_id);
-    setSelectedSubject(data.class_id);
-    setNames(data.name);
+    setSelectedClass(data.classid);
+    setSelectedSection(data.csectionid);
+    setSelectedSubjectGroup(data.subjectgroupsid);
+    setSelectedSubject(data.subjectid);
+    setNames([data.name]);
+
     setFormData({
       selectedClass: "",
       selectedSection: "",
