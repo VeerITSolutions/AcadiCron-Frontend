@@ -31,6 +31,7 @@ import {
 } from "@/services/lessonService";
 import { set } from "date-fns";
 import { useLoginDetails } from "@/store/logoStore";
+import { get } from "http";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -82,7 +83,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchLesson(currentPage + 1, rowsPerPage);
+      const result = await fetchLesson(currentPage + 1, rowsPerPage, "", "", getselectedSessionId);
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -90,7 +91,6 @@ const FeesMaster = () => {
       const classesResult = await getClasses();
       setClassessData(classesResult.data);
       if (selectedClass) {
-        setLoaderSections(true);
         const sectionsResult = await fetchsectionByClassData(selectedClass);
         setSections(sectionsResult.data);
         setLoaderSections(false);
@@ -100,7 +100,6 @@ const FeesMaster = () => {
 
       /* call condtion wise  */
       if (selectedClass && selectedSection) {
-        setLoaderSubjectGroup(true);
         const subjectgroupresult = await fetchSubjectGroupData(
           "",
           "",
@@ -113,7 +112,6 @@ const FeesMaster = () => {
       }
 
       if (selectedSubjectGroup) {
-        setLoaderSubject(true);
         const subjectresult = await fetchSubjectData(
           "",
           "",
@@ -151,12 +149,11 @@ const FeesMaster = () => {
   };
 
   const handleEdit = (id: any, data: any) => {
-    setIsEditing(true);
-    setEditCategoryId(id);
-    setSelectedClass(data.session_id);
-    setSelectedSection(data.subject_group_subject_id);
-    setSelectedSubjectGroup(data.subject_group_class_sections_id);
-    setSelectedSubject(data.subject_group_class_sections_id);
+    setSelectedClass(data.class_id);
+    setSelectedSection(data.class_id);
+    setSelectedSubjectGroup(data.class_id);
+    setSelectedSubject(data.class_id);
+    setNames(data.name);
     setFormData({
       selectedClass: "",
       selectedSection: "",
@@ -166,14 +163,17 @@ const FeesMaster = () => {
 
       name: names,
     });
+
+    setIsEditing(true);
+    setEditCategoryId(id);
   };
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
 
-      student.session_id || "N/A",
-      student.subject_group_subject_id || "N/A",
+      student.cname || "N/A",
+      student.sname || "N/A",
       student.subject_group_class_sections_id || "N/A",
       student.name || "N/A",
       <div key={student.id} className="flex items-center space-x-2">
@@ -283,6 +283,21 @@ const FeesMaster = () => {
     setNames(updatedNames);
   };
   const handleCancelEdit = () => {
+    setSelectedClass("");
+    setSelectedSection("");
+    setSelectedSubjectGroup("");
+    setSelectedSubject("");
+    setNames([""]);
+    setFormData({
+      selectedClass: "",
+      selectedSection: "",
+      selectedSubjectGroup: "",
+      selectedSubject: "",
+      currentSessionId: getselectedSessionId,
+
+      name: names,
+    });
+
     setIsEditing(false);
     setEditCategoryId(null);
   };

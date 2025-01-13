@@ -1,12 +1,13 @@
 import apiClient from "./apiClient";
 
-export const fetchLesson = async (page?: any, perPage?: any, type?: any, selectedSearchType?: any) => {
+export const fetchLesson = async (page?: any, perPage?: any, type?: any, selectedSearchType?: any , sessionId? : any) => {
   const response = await apiClient.get(`/lesson`, {
     params: {
       page,
       perPage,
       type,
-      selectedSearchType
+      selectedSearchType,
+      sessionId
     }
   });
   return response.data;
