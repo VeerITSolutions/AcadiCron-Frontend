@@ -119,7 +119,7 @@ const StudentDetails = () => {
     created_at: "",
     docs: "",
     reason: "",
-    approve_by: "",
+    approve_by: getRoleId,
     request_type: "",
     class_name: "",
     section_name: "",
@@ -146,7 +146,14 @@ const StudentDetails = () => {
   const handleClassChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass2(event.target.value);
   };
+  const getroleId = useLoginDetails((state) => state.roleId);
+  useEffect(() => {
+    setSelectedSessionId(getselectedSessionId);
 
+    if (getroleId) {
+      SetGetRoleId(getroleId);
+    }
+  }, []);
 const handleSectionChange2 = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
@@ -167,14 +174,7 @@ const handleSectionChange2 = (
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
-  const getroleId = useLoginDetails((state) => state.roleId);
-  useEffect(() => {
-    setSelectedSessionId(getselectedSessionId);
-
-    if (getroleId) {
-      SetGetRoleId(getroleId);
-    }
-  }, []);
+  
   const fetchClassesAndSections2 = async () => {
     try {
       // Fetch sections if a class is selected
@@ -297,7 +297,7 @@ const handleSectionChange2 = (
           created_at: "",
           docs: "",
           reason: "",
-          approve_by: "",
+          approve_by: getRoleId,
           request_type: "",
           class_name: "",
           section_name: "",
@@ -675,6 +675,7 @@ const handleSectionChange2 = (
                     Student <span className="required">*</span>
                   </label>
                   <select
+                  name=""
                     value={selectedStudent || ""}
                     onChange={handleStudentChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
