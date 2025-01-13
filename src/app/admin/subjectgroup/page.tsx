@@ -84,6 +84,9 @@ const FeesMaster = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
+    setSelectedClass("");
+    setSelectedSection([]);
+    setSelectedSubject([]);
 
     setFormData({
       name: subject.name,
@@ -113,6 +116,9 @@ const FeesMaster = () => {
     });
     setIsEditing(false);
     setEditCategoryId(null);
+    setSelectedClass("");
+    setSelectedSection([]);
+    setSelectedSubject([]);
   };
 
   const formatSubjectData = (subjects: any[]) => {
@@ -213,6 +219,9 @@ const FeesMaster = () => {
 
       setIsEditing(false);
       setEditCategoryId(null);
+      setSelectedClass("");
+      setSelectedSection([]);
+      setSelectedSubject([]);
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
