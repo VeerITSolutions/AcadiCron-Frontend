@@ -27,6 +27,7 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import { useLoginDetails } from "@/store/logoStore";
 
 const AssignClassTeacher = () => {
   const [error, setError] = useState<string | null>(null);
@@ -148,6 +149,7 @@ const AssignClassTeacher = () => {
     </div>,
     ]);
   };
+  const [selectedTeachers, setSelectedTeachers] = useState<number[]>([]);
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
@@ -161,6 +163,19 @@ const AssignClassTeacher = () => {
     }));
   };
 
+  const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const teacherId = parseInt(event.target.value);
+    if (event.target.checked) {
+      // Add the teacher ID to the selected list
+      setSelectedTeachers((prev) => [...prev, teacherId]);
+    } else {
+      // Remove the teacher ID from the selected list
+      setSelectedTeachers((prev) => prev.filter((id) => id !== teacherId));
+    }
+  };
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
@@ -171,7 +186,15 @@ const AssignClassTeacher = () => {
           toast.error("Failed to update");
         }
       } else {
-        const result = await createClassAssignTeacher(formData);
+
+        const data = {
+          class_id:  selectedClass,
+          section_id: selectedSection,
+          staff_id: selectedTeachers,
+          session_id : getselectedSessionId
+          
+        };
+        const result = await createClassAssignTeacher(data);
 
         if (result.success) {
           toast.success("Created successfully");
@@ -186,11 +209,13 @@ const AssignClassTeacher = () => {
         section_id: "",
         session_id: "",
       });
+      
 
       setIsEditing(false);
       setEditCategoryId(null);
       setSelectedClass('');
       setSelectedSection('');
+      setTeacherData([]);
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
@@ -208,12 +233,12 @@ const AssignClassTeacher = () => {
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
-    setPage(0);
+    
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
-    setPage(0);
+    
   };
 
   useEffect(() => {
@@ -268,6 +293,7 @@ const AssignClassTeacher = () => {
     setEditCategoryId(null);
     setSelectedClass('');
     setSelectedSection('');
+    setTeacherData([]);
   };  
 
 
@@ -336,9 +362,9 @@ const AssignClassTeacher = () => {
                     <input
                       className="mr-3"
                       type="checkbox"
-                      value={teachers.id}
+                     value={teachers.id}
                       name="staff_id"
-                      onChange={handleInputChange}
+                      onChange={handleInputChange2}
                     />
                     {`${teachers.name} ${teachers.surname} (${teachers.id})`}
                   </label>
