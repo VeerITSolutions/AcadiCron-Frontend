@@ -30,6 +30,7 @@ import {
   fetchLesson,
 } from "@/services/lessonService";
 import { set } from "date-fns";
+import { useLoginDetails } from "@/store/logoStore";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -62,11 +63,18 @@ const FeesMaster = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
     undefined,
   );
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+  const [names, setNames] = useState([""]); // Initialize with one input field
   const [formData, setFormData] = useState({
-    session_id: "",
-    subject_group_subject_id: "",
-    subject_group_class_sections_id: "",
-    name: "",
+    selectedClass: "",
+    selectedSection: "",
+    selectedSubjectGroup: "",
+    selectedSubject: "",
+    currentSessionId: getselectedSessionId,
+
+    name: names,
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -150,10 +158,13 @@ const FeesMaster = () => {
     setSelectedSubjectGroup(data.subject_group_class_sections_id);
     setSelectedSubject(data.subject_group_class_sections_id);
     setFormData({
-      session_id: "",
-      subject_group_subject_id: "",
-      subject_group_class_sections_id: "",
-      name: "",
+      selectedClass: "",
+      selectedSection: "",
+      selectedSubjectGroup: "",
+      selectedSubject: "",
+      currentSessionId: getselectedSessionId,
+
+      name: names,
     });
   };
 
@@ -215,7 +226,16 @@ const FeesMaster = () => {
           toast.error("Failed to update ");
         }
       } else {
-        const resultLesson = await createLesson(formData);
+        const updateData = {
+          selectedClass: selectedClass,
+          selectedSection: selectedSection,
+          selectedSubjectGroup: selectedSubjectGroup,
+          selectedSubject: selectedSubject,
+          currentSessionId: getselectedSessionId,
+
+          name: names,
+        };
+        const resultLesson = await createLesson(updateData);
         if (resultLesson.success) {
           toast.success("saved successfully");
         } else {
@@ -226,11 +246,15 @@ const FeesMaster = () => {
       setSelectedSection("");
       setSelectedSubjectGroup("");
       setSelectedSubject("");
+      setNames([""]);
       setFormData({
-        session_id: "",
-        subject_group_subject_id: "",
-        subject_group_class_sections_id: "",
-        name: "",
+        selectedClass: "",
+        selectedSection: "",
+        selectedSubjectGroup: "",
+        selectedSubject: "",
+        currentSessionId: getselectedSessionId,
+
+        name: names,
       });
 
       setIsEditing(false);
@@ -241,6 +265,23 @@ const FeesMaster = () => {
     }
   };
 
+  // Handle input change for dynamic inputs
+  const handleInputChangeName = (index: any, value: any) => {
+    const updatedNames = [...names];
+    updatedNames[index] = value;
+    setNames(updatedNames);
+  };
+
+  // Add a new input field
+  const handleAddMore = () => {
+    setNames([...names, ""]);
+  };
+
+  // Remove an input field
+  const handleRemove = (index: any) => {
+    const updatedNames = names.filter((_, i) => i !== index);
+    setNames(updatedNames);
+  };
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditCategoryId(null);
@@ -397,17 +438,40 @@ const FeesMaster = () => {
                   </select>
                 )}
               </div>
+              <div className="field flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleAddMore}
+                  className="rounded bg-green-500 px-5 py-3 text-white hover:bg-green-700"
+                >
+                  Add More
+                </button>
+              </div>
 
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Lesson Name
+                  Lesson Name <span className="required">*</span>
                 </label>
-                <input
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  type="text"
-                  name="name"
-                  onChange={handleInputChange}
-                />
+                {names.map((name, index) => (
+                  <div key={index} className="mb-3 flex items-center gap-3">
+                    <input
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name={`name[${index}]`}
+                      value={name}
+                      onChange={(e) =>
+                        handleInputChangeName(index, e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(index)}
+                      className="bg-red-500 hover:bg-red-700 text-dark rounded px-3 py-2 dark:text-white dark:focus:border-primary"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
               </div>
 
               <div className="flex gap-2">

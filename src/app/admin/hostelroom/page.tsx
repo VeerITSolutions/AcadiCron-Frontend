@@ -57,7 +57,6 @@ const HostelRoom = () => {
     room_no: "",
     no_of_bed: "",
     cost_per_bed: "",
-    title: "",
     description: "",
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
@@ -110,7 +109,6 @@ const HostelRoom = () => {
       room_no: subject.room_no,
       no_of_bed: subject.no_of_bed,
       cost_per_bed: subject.cost_per_bed,
-      title: subject.title,
       description: subject.description,
     });
   };
@@ -122,7 +120,7 @@ const HostelRoom = () => {
       room_no: "",
       no_of_bed: "",
       cost_per_bed: "",
-      title: "",
+
       description: "",
     });
     setIsEditing(false);
@@ -183,7 +181,7 @@ const HostelRoom = () => {
           room_no: "",
           no_of_bed: "",
           cost_per_bed: "",
-          title: "",
+
           description: "",
         });
 
@@ -204,7 +202,7 @@ const HostelRoom = () => {
         room_no: "",
         no_of_bed: "",
         cost_per_bed: "",
-        title: "",
+
         description: "",
       });
 
