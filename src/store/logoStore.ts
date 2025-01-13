@@ -9,6 +9,7 @@ interface LogoState {
 
 interface UserDetails {
   roleId: string;
+  userId: string;
   username: string | null;
   surname: string | null;
   roleName: string | null;
@@ -28,6 +29,7 @@ export const useLogoStore = create<LogoState>((set) => ({
 // Create Zustand store for user login details
 export const useLoginDetails = create<UserDetails>((set) => ({
   roleId: '', // Initial empty value for roleId
+  userId: '',
   username: null,
   surname: null,
   roleName: null,
@@ -43,6 +45,7 @@ export const useLoginDetails = create<UserDetails>((set) => ({
   setUserDetails: (userDetails: UserDetails) => {
     set({
       roleId: userDetails.roleId,
+      userId: userDetails.userId,
       username: userDetails.username,
       surname: userDetails.surname,
       roleName: userDetails.roleName,
@@ -60,6 +63,7 @@ export function useInitializeLoginDetails() {
     if (typeof window !== 'undefined') {
       // Get user details from localStorage
       const roleIdFromStorage = localStorage.getItem('role_id') || '';
+      const userIdFromStorage = localStorage.getItem('user_id') || '';
       const usernameFromStorage = localStorage.getItem('username') || '';
       const surnameFromStorage = localStorage.getItem('surname') || '';
       const roleNameFromStorage = localStorage.getItem('role_name') || '';
@@ -70,6 +74,7 @@ export function useInitializeLoginDetails() {
       // Set all values into the Zustand store using setUserDetails
       setUserDetails({
         roleId: roleIdFromStorage,
+        userId: userIdFromStorage,
         username: usernameFromStorage,
         surname: surnameFromStorage,
         roleName: roleNameFromStorage,

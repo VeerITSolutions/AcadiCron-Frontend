@@ -11,6 +11,11 @@ export const fetchLeaveTypeData = async (page?: number, perPage?: number) => {
 };
 
 
+export const fetchAlloatedLeaveTypeData = async (id: any) => {
+  const response = await apiClient.get(`/leave-type/${id}`);
+  return response.data;
+};
+
 export const createLeaveType = async (type: string): Promise<any> => {
   try {
     const response = await apiClient.post("/leave-type", { type });
