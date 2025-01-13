@@ -17,14 +17,14 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { fetchSubjectData } from "@/services/subjectsService";
 import { fetchSubjectGroupData } from "@/services/subjectGroupService";
-import {
-  createLesson,
-  deleteLesson,
-  editLesson,
-  fetchLesson,
-} from "@/services/lessonService";
 
 import { useLoginDetails } from "@/store/logoStore";
+import {
+  createTopic,
+  deleteTopic,
+  editTopic,
+  fetchTopic,
+} from "@/services/topicService";
 
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
@@ -79,7 +79,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchLesson(
+      const result = await fetchTopic(
         currentPage + 1,
         rowsPerPage,
         "",
@@ -134,7 +134,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteLesson(id);
+      await deleteTopic(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -231,7 +231,7 @@ const FeesMaster = () => {
 
           name: names,
         };
-        const result = await editLesson(editCategoryId, updateData);
+        const result = await editTopic(editCategoryId, updateData);
         if (result.success) {
           toast.success(" updated successfully");
         } else {
@@ -247,7 +247,7 @@ const FeesMaster = () => {
 
           name: names,
         };
-        const resultLesson = await createLesson(updateData);
+        const resultLesson = await createTopic(updateData);
         if (resultLesson.success) {
           toast.success("saved successfully");
         } else {
