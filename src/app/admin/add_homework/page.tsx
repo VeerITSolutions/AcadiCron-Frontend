@@ -37,7 +37,10 @@ import {
 import { toast } from "react-toastify";
 import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
 import { useLoginDetails } from "@/store/logoStore";
-import { fetchStudentData } from "@/services/studentService";
+import {
+  fetchStudentData,
+  fetchStudentHomeworkData,
+} from "@/services/studentService";
 
 const columns = [
   "Class",
@@ -224,7 +227,6 @@ const StudentDetails = () => {
       setformSubjectName(currentData.subject_name);
       setformDesc(currentData.description);
     }
-    fetchStudentOnly(currentData);
   }, [currentData]); // Run this effect when `currentData` changes
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -515,6 +517,9 @@ const StudentDetails = () => {
   const handleClickOpenEvaluate = (data: any) => {
     setEvaluateOpen(true);
     setCurrentData(data);
+    if (data.id) {
+      fetchStudentOnly(data.id);
+    }
   };
 
   const handleClose = () => {
@@ -567,17 +572,12 @@ const StudentDetails = () => {
   };
   const fetchStudentOnly = async (data: any) => {
     try {
-      // Fetch sections if a class is selected
-      const getresult = await fetchStudentData(
-        "",
-        "",
-        data.class_id,
-        data.section_id,
-        "",
-        data.session_id,
-      );
+      // Fetch se ctions if a class is selected
+      if (data) {
+        const getresult = await fetchStudentHomeworkData(data);
 
-      setStudents(formatStudentDataInForm(getresult.data));
+        setStudents(formatStudentDataInForm(getresult.data));
+      }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -618,16 +618,12 @@ const StudentDetails = () => {
     }
   };
 
-  const [students, setStudents] = useState([
-    { id: 1, name: "Angel Vishwakarma (347)", selected: false },
-    { id: 2, name: "Bhakti Idole (346)", selected: false },
-    { id: 3, name: "Anaya Dhote (345)", selected: false },
-  ]);
+  const [students, setStudents] = useState([]);
   const [evaluationDate, setEvaluationDate] = useState("");
 
   const handleCheckboxChange = (id: any) => {
-    setStudents((prev) =>
-      prev.map((student) =>
+    setStudents((prev: any) =>
+      prev.map((student: any) =>
         student.id === id
           ? { ...student, selected: !student.selected }
           : student,
@@ -1007,7 +1003,7 @@ const StudentDetails = () => {
                   <h2 className="mb-3 font-medium text-black dark:text-white">
                     Students List
                   </h2>
-                  {students.map((student) => (
+                  {students?.map((student: any) => (
                     <label
                       key={student.id}
                       className="mb-2 block flex cursor-pointer items-center space-x-2 text-sm font-medium text-black dark:text-white"
