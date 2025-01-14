@@ -17,6 +17,7 @@ import { fetchSubjectData } from "@/services/subjectsService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import { getLessonBySubjectId } from "@/services/lessonService";
+import { useLoginDetails } from "@/store/logoStore";
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -47,7 +48,9 @@ const StudentDetails = () => {
   );
 
   const [keyword, setKeyword] = useState<string>("");
-
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   const columns = [
     "#",
     "Lesson - Topic",
@@ -130,6 +133,7 @@ const StudentDetails = () => {
           "",
           selectedClass,
           selectedSection,
+          getselectedSessionId,
         );
 
         setSubjectGroup(subjectgroupresult.data);
@@ -139,6 +143,7 @@ const StudentDetails = () => {
           "",
           "",
           selectedSubjectGroup,
+          getselectedSessionId,
         );
         setSubject(subjectresult.data);
       }
@@ -307,7 +312,7 @@ const StudentDetails = () => {
         ) : (
           <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
-              title={" Syllabus Status For: Maths (1) "}
+              title={`Syllabus Status `} /* For: ${selectedSubject} */
               data={data}
               className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
               columns={columns}
