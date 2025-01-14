@@ -488,7 +488,11 @@ const StudentDetails = () => {
         <div className="flex flex-wrap">
           {/* Profile Sidebar */}
           <div className="w-full p-2 md:w-1/4">
-            <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+            <div
+              className={`rounded-lg p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none ${
+                formData.is_active === "no" ? "bg-[#f0dddd]" : "bg-white"
+              }`}
+            >
               <div className="text-center">
                 <img
                   src={imageUrl || defaultImage}
@@ -736,6 +740,18 @@ const StudentDetails = () => {
                                           : defaultFatherImage
                                       }
                                       alt="Profile"
+                                      onError={(e) => {
+                                        (e.target as HTMLImageElement).src =
+                                          "data:image/svg+xml;charset=UTF-8," +
+                                          encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+        <circle cx="50" cy="50" r="48" fill="#cbd5e0" stroke="#4a5568" stroke-width="2" />
+        <text x="50" y="50" text-anchor="middle" font-size="20" fill="#4a5568" font-weight="bold" dy="7">
+          No Image
+        </text>
+      </svg>
+    `);
+                                      }}
                                     />
                                   </td>
                                 </tr>
@@ -771,6 +787,18 @@ const StudentDetails = () => {
                                           : defaultFemalImage
                                       }
                                       alt="Profile"
+                                      onError={(e) => {
+                                        (e.target as HTMLImageElement).src =
+                                          "data:image/svg+xml;charset=UTF-8," +
+                                          encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+        <circle cx="50" cy="50" r="48" fill="#cbd5e0" stroke="#4a5568" stroke-width="2" />
+        <text x="50" y="50" text-anchor="middle" font-size="20" fill="#4a5568" font-weight="bold" dy="7">
+          No Image
+        </text>
+      </svg>
+    `);
+                                      }}
                                     />
                                   </td>
                                 </tr>
@@ -806,6 +834,18 @@ const StudentDetails = () => {
                                           : defaultFemalImage
                                       }
                                       alt="Profile"
+                                      onError={(e) => {
+                                        (e.target as HTMLImageElement).src =
+                                          "data:image/svg+xml;charset=UTF-8," +
+                                          encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+        <circle cx="50" cy="50" r="48" fill="#cbd5e0" stroke="#4a5568" stroke-width="2" />
+        <text x="50" y="50" text-anchor="middle" font-size="20" fill="#4a5568" font-weight="bold" dy="7">
+          No Image
+        </text>
+      </svg>
+    `);
+                                      }}
                                     />
                                   </td>
                                 </tr>

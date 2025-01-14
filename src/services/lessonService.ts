@@ -24,6 +24,18 @@ export const createLesson = async (data: any): Promise<any> => {
   }
 };
 
+export const getLessonBySubjectIdLessonTable = async (data: any): Promise<any> => {
+  try {
+    const response = await apiClient.post(`/get-lesson-by-subject-id`, data);
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create student house");
+  }
+};
+
+
+
 export const getLessonBySubjectId = async (subId: any, classSectionId : any): Promise<any> => {
   try {
     const response = await apiClient.post(`/get-lessonplan-by-subjectid`, {subId,classSectionId});

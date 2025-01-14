@@ -42,6 +42,10 @@ const Events = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const [IsEmail, setIsEmail] = useState(0);
+  const [IsSms, setIsSms] = useState(0);
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
@@ -53,9 +57,9 @@ const Events = () => {
   const [selectedSession, setSelectedSession] = useState<string | undefined>(
     undefined,
   );
-    const [selectedSection, setSelectedSection] = useState<string | undefined>(
-      undefined,
-    );
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    undefined,
+  );
   const [allSession, setAllSession] = useState<Array<any>>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
@@ -65,15 +69,17 @@ const Events = () => {
   const [formData, setFormData] = useState({
     title: "",
     event_for: "",
-    session_id: savedSessionstate,
+    session_id: "",
     class_id: "",
     section: "",
     from_date: "",
     to_date: "",
     note: "",
     photo: "",
-    is_active: false, 
+    is_active: false,
     event_notification_message: "",
+    is_email: 0,
+    is_sms: 0,
     show_onwebsite: false,
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
@@ -107,12 +113,10 @@ const Events = () => {
       setLoading(false);
     }
   };
-  
 
-   useEffect(() => {
-      fetchClassesAndSections(); // Fetch classes and sections on initial render
-      
-    }, [selectedClass]);
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
 
   const handleDelete = async (id: number) => {
     try {
@@ -149,70 +153,112 @@ const Events = () => {
     setEditCategoryId(id);
 
     setFormData({
-      title: subject.title || "", 
-      event_for: subject.event_for || "", 
-      session_id: savedSessionstate,
-      class_id: subject.class_id || "", 
-      section: subject.section || "", 
-      from_date: subject.from_date || "", 
-      to_date: subject.to_date || "", 
-      note: subject.note || "", 
-      photo: subject.photo || "", 
-      is_active: subject.is_active ?? false, 
-      event_notification_message: subject.event_notification_message || "", 
-      show_onwebsite: subject.show_onwebsite ?? false, 
+      title: subject.title || "",
+      event_for: subject.event_for || "",
+      session_id: subject.session_id || "",
+      class_id: subject.class_id || "",
+      section: subject.section || "",
+      from_date: subject.from_date || "",
+      to_date: subject.to_date || "",
+      note: subject.note || "",
+      photo: subject.photo || "",
+      is_active: subject.is_active ?? false,
+      event_notification_message: subject.event_notification_message || "",
+      is_email: subject.is_email,
+      is_sms: subject.is_sms,
+      show_onwebsite: subject.show_onwebsite ?? false,
     });
-
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
+    setFormData({
+      ...formData,
+      class_id: event.target.value, // For regular inputs like text or selects
+    });
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
     setPage(0);
+    setFormData({
+      ...formData,
+      section: event.target.value, // For regular inputs like text or selects
+    });
   };
   const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSession(event.target.value);
+    setFormData({
+      ...formData,
+      session_id: event.target.value, // For regular inputs like text or selects
+    });
   };
 
- 
+  const handleIsEmailChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setFormData({
+      ...formData,
+      is_email: e.target.checked ? 1 : 0,
+    });
+  };
+
+  const handleIsSmsChangeforcheckbox = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setFormData({
+      ...formData,
+      is_sms: e.target.checked ? 1 : 0,
+    });
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+    setFormData({
+      ...formData,
+      event_for: event.target.value, // For regular inputs like text or selects
+    });
+  };
 
   const handleCancel = () => {
     setFormData({
       title: "",
       event_for: "",
-      session_id: savedSessionstate,
+      session_id: "",
       class_id: "",
       section: "",
       from_date: "",
       to_date: "",
       note: "",
       photo: "",
-      is_active: false, 
+      is_active: false,
       event_notification_message: "",
+      is_email: 0,
+      is_sms: 0,
       show_onwebsite: false,
     });
     setIsEditing(false);
     setEditCategoryId(null);
   };
 
-  const formatDate = (date:any) => {
+  const formatDate = (date: any) => {
     if (!date) return "N/A";
     const d = new Date(date);
-    return d.toLocaleDateString("en-US", { year: "numeric", month: "numeric", day: "numeric" });
+    return d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
   };
-
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.title || "N/A",
-      subject.class_id || "N/A",
-      subject.section || "N/A",
+      subject.eventclass || "N/A",
+      subject.eventsection || "N/A",
       subject.session_id || "N/A",
-      `${formatDate(subject.from_date)  || "N/A"}`,
-      `${formatDate(subject.to_date)  || "N/A"}`,
+      `${formatDate(subject.from_date) || "N/A"}`,
+      `${formatDate(subject.to_date) || "N/A"}`,
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -254,26 +300,17 @@ const Events = () => {
     }));
   };
 
-
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editAlumniEventData(
-          editCategoryId,
-          formData,
-        
-        );
+        const result = await editAlumniEventData(editCategoryId, formData);
         if (result.success) {
           toast.success("Updated successfully");
         } else {
           toast.error("Failed to update");
         }
       } else {
-        const result = await createAlumniEventData(
-          formData,
-      
-        );
-
+        const result = await createAlumniEventData(formData);
 
         if (result.success) {
           toast.success("Created successfully");
@@ -292,16 +329,18 @@ const Events = () => {
         to_date: "",
         note: "",
         photo: "",
-        is_active: false, 
+        is_active: false,
         event_notification_message: "",
+        is_email: 0,
+        is_sms: 0,
         show_onwebsite: false,
       });
 
       setIsEditing(false);
       setEditCategoryId(null);
-      setSelectedSession('');
-      setSelectedClass('');
-      setSelectedSection('');
+      setSelectedSession("");
+      setSelectedClass("");
+      setSelectedSection("");
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
@@ -350,7 +389,7 @@ const Events = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-              Select Date
+                Select Date
               </h3>
             </div>
 
@@ -379,7 +418,6 @@ const Events = () => {
                   >
                     Save
                   </button>
-                
                 </div>
               </div>
             </form>
@@ -447,9 +485,10 @@ const Events = () => {
                     <input
                       type="radio"
                       className={`${styles["radio"]}`}
-                      name="guardian_is"
-                      value="All Alumni" // Unique value for Father
-                      onChange={handleInputChange}
+                      name="event_for"
+                      value="All Alumni"
+                      checked={selectedValue === "All Alumni"}
+                      onChange={handleChange}
                     />{" "}
                     All Alumni
                   </label>
@@ -458,9 +497,10 @@ const Events = () => {
                     <input
                       type="radio"
                       className={`${styles["radio"]}`}
-                      name="guardian_is"
-                      value="Class" // Unique value for Mother
-                      onChange={handleInputChange}
+                      name="event_for"
+                      value="Class"
+                      checked={selectedValue === "Class"}
+                      onChange={handleChange}
                     />{" "}
                     Class
                   </label>
@@ -477,10 +517,10 @@ const Events = () => {
                   >
                     <option value="">Select</option>
                     {allSession.map((cls: any) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.session}
-                    </option>
-                  ))}
+                      <option key={cls.id} value={cls.id}>
+                        {cls.session}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field classlist">
@@ -513,10 +553,10 @@ const Events = () => {
                   >
                     <option value="">Select</option>
                     {section.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
-                    </option>
-                  ))}
+                      <option key={sec.section_id} value={sec.section_id}>
+                        {sec.section_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -582,18 +622,14 @@ const Events = () => {
                   ></textarea>
                 </div>
                 <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Event For <span className="required">*</span>
-                    &nbsp;&nbsp;&nbsp;
-                  </label>
-
                   <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
                     <input
                       type="checkbox"
                       className={`${styles["checkbox"]}`}
-                      name="email_sms"
-                      value="All Alumni" // Unique value for Father
-                      onChange={handleInputChange}
+                      onChange={handleIsEmailChangeforcheckbox}
+                      value={formData.is_email}
+                      name="is_email"
+                      checked={formData.is_email === 1}
                     />{" "}
                     Email
                   </label>
@@ -602,9 +638,10 @@ const Events = () => {
                     <input
                       type="checkbox"
                       className={`${styles["checkbox"]}`}
-                      name="email_sms"
-                      value="Class" // Unique value for Mother
-                      onChange={handleInputChange}
+                      onChange={handleIsSmsChangeforcheckbox}
+                      value={formData.is_sms}
+                      name="is_sms"
+                      checked={formData.is_sms === 1}
                     />{" "}
                     SMS
                   </label>

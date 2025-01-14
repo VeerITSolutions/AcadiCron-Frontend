@@ -25,6 +25,7 @@ import {
   editTopic,
   fetchTopic,
 } from "@/services/topicService";
+import { getLessonBySubjectIdLessonTable } from "@/services/lessonService";
 
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +38,7 @@ const FeesMaster = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
+  const [lessondata, setLessonData] = useState<Array<any>>([]);
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
 
   const [loaderClasses, setLoaderClassessData] = useState(false);
@@ -125,6 +127,22 @@ const FeesMaster = () => {
         setLoaderSubject(false);
       }
 
+      if (selectedSubject) {
+        const updateData = {
+          selectedClass: selectedClass,
+          selectedSection: selectedSection,
+          selectedSubjectGroup: selectedSubjectGroup,
+          selectedSubject: selectedSubject,
+          currentSessionId: getselectedSessionId,
+
+          name: names,
+        };
+        const lessonDataResulst =
+          await getLessonBySubjectIdLessonTable(updateData);
+        setLessonData(lessonDataResulst.data);
+        setLoaderSubject(false);
+      }
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -160,6 +178,7 @@ const FeesMaster = () => {
     setSelectedSection(data.sectionid);
     setSelectedSubjectGroup(data.subjectgroupsid);
     setSelectedSubject(data.subject_group_subject_id);
+    setSelectedLesson(data.lesson_id);
     setNames([data.name]);
 
     setFormData({
@@ -182,6 +201,7 @@ const FeesMaster = () => {
       student.sname || "N/A",
       student.sgname || "N/A",
       student.subname || "N/A",
+      student.lessonname || "N/A",
       student.name || "N/A",
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
@@ -223,12 +243,9 @@ const FeesMaster = () => {
     try {
       if (isEditing && editCategoryId !== null) {
         const updateData = {
-          selectedClass: selectedClass,
-          selectedSection: selectedSection,
-          selectedSubjectGroup: selectedSubjectGroup,
-          selectedSubject: selectedSubject,
+          id: editCategoryId,
+          lessonId: selectedLesson,
           currentSessionId: getselectedSessionId,
-
           name: names,
         };
         const result = await editTopic(editCategoryId, updateData);
@@ -239,12 +256,8 @@ const FeesMaster = () => {
         }
       } else {
         const updateData = {
-          selectedClass: selectedClass,
-          selectedSection: selectedSection,
-          selectedSubjectGroup: selectedSubjectGroup,
-          selectedSubject: selectedSubject,
+          lessonId: selectedLesson,
           currentSessionId: getselectedSessionId,
-
           name: names,
         };
         const resultLesson = await createTopic(updateData);
@@ -259,6 +272,8 @@ const FeesMaster = () => {
       setSelectedSubjectGroup("");
       setSelectedSubject("");
       setNames([""]);
+      setSelectedLesson("");
+
       setFormData({
         selectedClass: "",
         selectedSection: "",
@@ -299,6 +314,7 @@ const FeesMaster = () => {
     setSelectedSection("");
     setSelectedSubjectGroup("");
     setSelectedSubject("");
+    setSelectedLesson("");
     setNames([""]);
     setFormData({
       selectedClass: "",
@@ -479,7 +495,7 @@ const FeesMaster = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {subject.map((cls) => (
+                    {lessondata?.map((cls) => (
                       <option key={cls.id} value={cls.id}>
                         {cls.name}
                       </option>

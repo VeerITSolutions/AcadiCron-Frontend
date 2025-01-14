@@ -73,7 +73,7 @@ const StudentDetails = () => {
   const [selectedRoleLeave, setSelectedRoleLeave] = useState<
     string | undefined
   >(undefined);
-  const [selectedLeaveType, setSelectedLeaveselectedLeaveType] = useState<
+  const [selectedLeaveType, setSelectedLeaveType] = useState<
     string | undefined
   >(undefined);
   const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
@@ -178,7 +178,7 @@ const StudentDetails = () => {
       setFormData(result.data[0]);
       setSelectedRoleLeave(result.data[0].leave_type_id);
       setSelectedStaff(result.data[0].staff_id);
-      setSelectedLeaveselectedLeaveType(result.data[0].leave_type_id);
+      setSelectedLeaveType(result.data[0].leave_type_id);
 
       setLoading(false);
     } catch (error: any) {
@@ -312,7 +312,9 @@ const StudentDetails = () => {
 
         setSelectedRoleLeave("");
         setSelectedStaff("");
-        setSelectedLeaveselectedLeaveType("");
+        
+
+        setSelectedLeaveType("");
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
         fetchData(page, rowsPerPage); // Refresh data after submit
@@ -367,7 +369,7 @@ const StudentDetails = () => {
   };
 
   const handleLeaveType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLeaveselectedLeaveType(event.target.value);
+    setSelectedLeaveType(event.target.value);
   };
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
