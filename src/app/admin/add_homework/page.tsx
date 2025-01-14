@@ -22,7 +22,7 @@ import {
 } from "@/services/homeworkServices";
 import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 import { fetchSubjectData } from "@/services/subjectsService";
-
+import DOMPurify from "dompurify";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -141,7 +141,7 @@ const StudentDetails = () => {
     "Created By",
     "Action",
   ];
-
+  const sanitizeHtml = (html: any) => DOMPurify.sanitize(html);
   const options = {
     filterType: false,
     serverSide: true,
@@ -1032,7 +1032,11 @@ const StudentDetails = () => {
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
                       <strong>Description:</strong>{" "}
-                      {formDesc ? formDesc : "N/A"}
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: sanitizeHtml(formDesc),
+                        }}
+                      ></span>
                     </p>
                   </div>
                   <label className="mb-4 block text-sm font-medium text-black dark:text-white">
