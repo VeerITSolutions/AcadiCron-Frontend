@@ -82,9 +82,13 @@ const QuestionBank = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const [selectedSubject1, setSelectedSubject1] = useState<string[]>([]);
   const [subjectData, setSubjectData] = useState<Array<any>>([]);
+  const [subjectData1, setSubjectData1] = useState<Array<any>>([]);
   const [Classes, setClassessData] = useState<Array<any>>([]);
+  const [Classes1, setClassessData1] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [section1, setSections1] = useState<Array<any>>([]);
 
   const [editing, setEditing] = useState(false); // Add state for editing
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -101,10 +105,9 @@ const QuestionBank = () => {
   const handleClose = () => {
     setFormData({
       subject_id: "",
-      question_type: "",
-      level: "",
-      class_id: "",
-      section_id: "",
+        class_id: "",
+        section_id: "",
+        Attach_file:"",
     });
 
     setSelectedRoleLeave("");
@@ -114,7 +117,7 @@ const QuestionBank = () => {
     setEditing(false); // Reset editing state
   };
   const handleClose1 = () => {
-    setFormData({
+    setFormData1({
       subject_id: "",
       question_type: "",
       level: "",
@@ -156,12 +159,12 @@ const QuestionBank = () => {
    };
    const fetchClassesAndSections2 = async () => {
     try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
+      const classesResult1 = await getClasses();
+      setClassessData(classesResult1.data);
 
       // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
+      if (selectedClass1) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass1);
         setSections(sectionsResult.data);
       } else {
         setSections([]); // Clear sections if no class is selected
@@ -204,6 +207,53 @@ const QuestionBank = () => {
 
         setFormData({
           subject_id: "",
+          class_id: "",
+          section_id: "",
+          Attach_file:"",
+        });
+
+        setSelectedClass("");
+        setSelectedSection("");
+        setSelectedSubject([]);
+
+        if (result.success) {
+          toast.success("Question created successfully");
+        } else {
+          toast.error("Failed to create Question");
+        }
+      }
+      // Reset form after successful action
+      setFormData({
+        subject_id: "",
+        class_id: "",
+        section_id: "",
+        Attach_file:"",
+      });
+
+      setIsEditing(false);
+      setEditCategoryId(null);
+      fetchData(page, rowsPerPage); // Refresh data after submit
+      setOpen(false);
+      setOpen1(false);
+    } catch (error) {
+      console.error("An error occurred", error);
+    }
+  };
+
+  const handleSubmit1 = async () => {
+    try {
+      if (isEditing && editCategoryId !== null) {
+        const result = await editQuestionData(editCategoryId, formData);
+        if (result.success) {
+          toast.success("Subject group updated successfully");
+        } else {
+          toast.error("Failed to update subject group");
+        }
+      } else {
+        const result = await createQuestionData(formData);
+
+        setFormData1({
+          subject_id: "",
           question_type: "",
           level: "",
           class_id: "",
@@ -221,7 +271,7 @@ const QuestionBank = () => {
         }
       }
       // Reset form after successful action
-      setFormData({
+      setFormData1({
         subject_id: "",
         question_type: "",
         level: "",
@@ -247,6 +297,9 @@ const QuestionBank = () => {
    const [selectedClass, setSelectedClass] = useState<string | undefined>(
     undefined,
   );
+  const [selectedClass1, setSelectedClass1] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedLevel, setSelectedLevel] = useState<string | undefined>(
     undefined,
   );
@@ -260,10 +313,8 @@ const QuestionBank = () => {
   );
 
  
-    const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
-      undefined,
-    );  
-    const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
+   
+    const [selectedSection1, setSelectedSection1] = useState<string | undefined>(
       undefined,
     );
   const [selectedRoleLeave, setSelectedRoleLeave] = useState<
@@ -279,6 +330,12 @@ const QuestionBank = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
+    subject_id: "",
+    class_id: "",
+    section_id: "",
+    Attach_file:"",
+  });
+  const [formData1, setFormData1] = useState({
     subject_id: "",
     question_type: "",
     level: "",
@@ -334,6 +391,13 @@ const QuestionBank = () => {
 
     setFormData({
       subject_id: subject.subject_id,
+      class_id: subject.class_id,
+      section_id: subject.section_id,
+      Attach_file:subject.Attach_file,
+    });
+
+    setFormData1({
+      subject_id: subject.subject_id,
       question_type: subject.question_type,
       level: subject.level,
       class_id: subject.class_id,
@@ -343,6 +407,16 @@ const QuestionBank = () => {
 
   const handleCancel = () => {
     setFormData({
+      subject_id: "",
+      class_id: "",
+      section_id: "",
+      Attach_file:"",
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+  const handleCancel1 = () => {
+    setFormData1({
       subject_id: "",
       question_type: "",
       level: "",
@@ -354,6 +428,29 @@ const QuestionBank = () => {
   };
 
   const formatSubjectData = (subjects: any[]) => {
+    return subjects.map((subject: any) => [
+      subject.subject_id|| "N/A",
+      subject.class_id|| "N/A",
+      subject.section_id|| "N/A",
+      subject.Attach_file|| "N/A",
+      <div key={subject.id} className="flex">
+        <IconButton
+          onClick={() => handleEdit(subject.id, subject)}
+          aria-label="edit"
+        >
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(subject.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
+    ]);
+  };
+
+  const formatSubjectData1 = (subjects: any[]) => {
     return subjects.map((subject: any) => [
       subject.id || "N/A",
       subject.subject_name || "N/A",
@@ -398,7 +495,7 @@ const QuestionBank = () => {
   
     useEffect(() => {
       fetchClassesAndSections2(); // Fetch classes and sections on initial render
-    }, [selectedClass2, selectedSection2]);
+    }, [selectedClass1, selectedSection1]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -415,6 +512,7 @@ const QuestionBank = () => {
   };
 
   const handlePageChange = (newPage: number) => setPage(newPage);
+  const handlePageChange2 = (newPage: number) => setPage(newPage);
 
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
@@ -429,7 +527,7 @@ const QuestionBank = () => {
 const handleSectionChange2 = (
  event: React.ChangeEvent<HTMLSelectElement>,
 ) => {
- setSelectedSection2(event.target.value);
+ setSelectedSection1(event.target.value);
 };
 
   /* if (loading) return <Loader />; */
@@ -670,16 +768,16 @@ const handleSectionChange2 = (
                   </label>
                   <select
                     name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
+                    value={selectedClass1}
                     onChange={handleClassChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                       <option value="">Select</option>
                       {Classes.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.class}
-                </option>
-              ))}
+                  <option key={cls.id} value={cls.id}>
+                    {cls.class}
+                  </option>
+                ))}
                   </select>
                 </div>
                 <div className="field">
@@ -688,7 +786,7 @@ const handleSectionChange2 = (
                   </label>
                   <select
                     name="Section" // Adding name attribute for dynamic handling
-                    value={selectedSection2 || ""}
+                    value={selectedSection1}
                     onChange={handleSectionChange2}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
@@ -734,7 +832,7 @@ const handleSectionChange2 = (
 
                 <div className="col-span-full">
                   <button
-                    onClick={handleSubmit}
+                    onClick={handleSubmit1}
                     className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >
                     Save
