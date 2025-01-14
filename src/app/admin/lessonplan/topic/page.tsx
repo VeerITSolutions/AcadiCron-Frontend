@@ -499,7 +499,7 @@ const FeesMaster = () => {
                     <option value="">Select</option>
                     {lessondata?.map((cls) => (
                       <option key={cls.id} value={cls.id}>
-                        {cls.id}
+                        {cls.name}
                       </option>
                     ))}
                   </select>
