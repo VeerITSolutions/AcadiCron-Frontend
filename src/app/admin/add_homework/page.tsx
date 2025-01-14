@@ -74,7 +74,15 @@ const StudentDetails = () => {
   const [section, setSections] = useState<Array<any>>([]);
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
-
+  const [formhomeworkdate, setformhomeworkdate] = useState<string | null>(null);
+  const [formsubmissiondate, setformsubmissiondate] = useState<string | null>(
+    null,
+  );
+  const [formCreatedBy, setformCreatedBy] = useState<string | null>(null);
+  const [formClassName, setformClassName] = useState<string | null>(null);
+  const [formSectionName, setformSectionName] = useState<string | null>(null);
+  const [formSubjectName, setformSubjectName] = useState<string | null>(null);
+  const [formDesc, setformDesc] = useState<string | null>(null);
   const [classes2, setClassessData2] = useState<Array<any>>([]);
   const [section2, setSections2] = useState<Array<any>>([]);
   const [subjectGroup2, setSubjectGroup2] = useState<Array<any>>([]);
@@ -385,9 +393,30 @@ const StudentDetails = () => {
     }
   };
 
+  const [currentData, setCurrentData] = useState<any>(null);
+
+  useEffect(() => {
+    if (currentData) {
+      setformhomeworkdate(formatDate(currentData.homework_date));
+      setformsubmissiondate(formatDate(currentData.submit_date));
+      setformCreatedBy(currentData.created_by);
+      setformClassName(currentData.class_name);
+      setformSectionName(currentData.section_name);
+      setformSubjectName(currentData.subject_name);
+      setformDesc(currentData.description);
+
+      setSelectedClass2(currentData.class_id);
+      setSelectedSection2(currentData.section_id);
+      setSelectedSubjectGroup2(currentData.subject_groups_id);
+      setSelectedSubject2(currentData.subject_id);
+    }
+  }, [currentData]); // Run this effect when `currentData` changes
+
   const handleEdit = async (id: number, data: any) => {
     setEditing(true);
     setCurrentLeaveId(id);
+
+    setCurrentData(data);
 
     try {
       console.log(data);
@@ -989,29 +1018,36 @@ const StudentDetails = () => {
                   </h2>
                   <div className="mb-4">
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Homework Date:</strong> 01/11/2025
+                      <strong>Homework Date:</strong>{" "}
+                      {formhomeworkdate ? formhomeworkdate : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Submission Date:</strong> 01/12/2025
+                      <strong>Submission Date:</strong>{" "}
+                      {formsubmissiondate ? formsubmissiondate : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
                       <strong>Evaluation Date:</strong>{" "}
                       {evaluationDate || "Not Set"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Created By:</strong> Priya Tendulkar
+                      <strong>Created By:</strong>{" "}
+                      {formCreatedBy ? formCreatedBy : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Class:</strong> B.Sc.
+                      <strong>Class:</strong>{" "}
+                      {formClassName ? formClassName : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Section:</strong> A
+                      <strong>Section:</strong>{" "}
+                      {formSectionName ? formSectionName : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Subject:</strong> English
+                      <strong>Subject:</strong>{" "}
+                      {formSubjectName ? formSectionName : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Description:</strong> addd
+                      <strong>Description:</strong>{" "}
+                      {formDesc ? formDesc : "N/A"}
                     </p>
                   </div>
                   <label className="mb-4 block text-sm font-medium text-black dark:text-white">
