@@ -488,7 +488,11 @@ const StudentDetails = () => {
         <div className="flex flex-wrap">
           {/* Profile Sidebar */}
           <div className="w-full p-2 md:w-1/4">
-            <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+          <div
+            className={`rounded-lg p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none ${
+              formData.is_active === "no" ? "bg-[#f0dddd]" : "bg-white"
+            }`}
+            >
               <div className="text-center">
                 <img
                   src={imageUrl || defaultImage}

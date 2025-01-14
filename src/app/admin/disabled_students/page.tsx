@@ -80,7 +80,7 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
+     `${student.class || "N/A"} (${student.section || "N/A"})`,
       student.father_name || "N/A",
       "N/A",
       student.gender || "N/A",

@@ -47,10 +47,6 @@ const StudentDetails = () => {
     fetchData(0, rowsPerPage);
   };
 
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.admission_no,
@@ -187,13 +183,6 @@ const StudentDetails = () => {
             </select>
           </label>
           <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
-            />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
