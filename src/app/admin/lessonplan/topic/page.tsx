@@ -178,6 +178,7 @@ const FeesMaster = () => {
     setSelectedSection(data.sectionid);
     setSelectedSubjectGroup(data.subjectgroupsid);
     setSelectedSubject(data.subject_group_subject_id);
+    setSelectedLesson(data.lesson_id);
     setNames([data.name]);
 
     setFormData({
@@ -200,6 +201,7 @@ const FeesMaster = () => {
       student.sname || "N/A",
       student.sgname || "N/A",
       student.subname || "N/A",
+      student.lessonname || "N/A",
       student.name || "N/A",
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
@@ -241,12 +243,9 @@ const FeesMaster = () => {
     try {
       if (isEditing && editCategoryId !== null) {
         const updateData = {
-          selectedClass: selectedClass,
-          selectedSection: selectedSection,
-          selectedSubjectGroup: selectedSubjectGroup,
-          selectedSubject: selectedSubject,
+          id: editCategoryId,
+          lessonId: selectedLesson,
           currentSessionId: getselectedSessionId,
-
           name: names,
         };
         const result = await editTopic(editCategoryId, updateData);
@@ -257,12 +256,8 @@ const FeesMaster = () => {
         }
       } else {
         const updateData = {
-          selectedClass: selectedClass,
-          selectedSection: selectedSection,
-          selectedSubjectGroup: selectedSubjectGroup,
-          selectedSubject: selectedSubject,
+          lessonId: selectedLesson,
           currentSessionId: getselectedSessionId,
-
           name: names,
         };
         const resultLesson = await createTopic(updateData);
@@ -277,6 +272,8 @@ const FeesMaster = () => {
       setSelectedSubjectGroup("");
       setSelectedSubject("");
       setNames([""]);
+      setSelectedLesson("");
+
       setFormData({
         selectedClass: "",
         selectedSection: "",
@@ -317,6 +314,7 @@ const FeesMaster = () => {
     setSelectedSection("");
     setSelectedSubjectGroup("");
     setSelectedSubject("");
+    setSelectedLesson("");
     setNames([""]);
     setFormData({
       selectedClass: "",
