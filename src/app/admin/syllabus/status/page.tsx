@@ -46,7 +46,13 @@ const StudentDetails = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
     undefined,
   );
+  const [enabled, setEnabled] = useState(false);
 
+  const handleToggleChange = (index: number) => {
+    const updatedStates = [...toggleStates];
+    updatedStates[index] = !updatedStates[index];
+    setToggleStates(updatedStates);
+  };
   const [keyword, setKeyword] = useState<string>("");
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
@@ -62,6 +68,7 @@ const StudentDetails = () => {
   const options = {
     filterType: false,
     serverSide: true,
+    pagination: false,
     responsive: "standard",
     search: false,
     selectableRows: "none",
@@ -86,7 +93,7 @@ const StudentDetails = () => {
     rowsPerPage,
     selectedClass,
     selectedSection,
-
+    selectedSubjectGroup,
     selectedSubject,
     keyword,
   ]);
@@ -96,15 +103,48 @@ const StudentDetails = () => {
   }, [selectedClass]);
 
   /* use effect End  */
+  const [toggleStates, setToggleStates] = useState(
+    data.map(() => false), // Initialize all toggles to `false`
+  );
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any, index: number) => [
       index + 1, // Incrementing the index to start from 1 instead of 0
       student.name,
-      `${student.firstname} ${student.lastname}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      "",
+      "",
+      <div key={`toggle-${index}`}>
+        <label
+          htmlFor={`toggle-${index}`}
+          className="flex select-none items-center"
+        >
+          <div className="relative">
+            <input
+              id={`toggle-${index}`} // Dynamic id
+              type="checkbox"
+              className="sr-only"
+              checked={toggleStates[index]} // Bind to the current student's toggle state
+              onChange={() => handleToggleChange(index)} // Update state for this toggle
+            />
+            {/* Toggle Background */}
+            <div
+              className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
+                toggleStates[index]
+                  ? "bg-green-500"
+                  : "bg-meta-9 dark:bg-[#5A616B]"
+              }`}
+            ></div>
+            {/* Toggle Handle */}
+            <div
+              className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
+                toggleStates[index]
+                  ? "translate-x-full bg-primary dark:bg-white"
+                  : ""
+              }`}
+            ></div>
+          </div>
+        </label>
+      </div>,
     ]);
   };
 
@@ -318,9 +358,7 @@ const StudentDetails = () => {
               columns={columns}
               options={{
                 ...options,
-                count: totalCount,
-                page: page,
-                rowsPerPage: rowsPerPage,
+
                 onChangePage: handlePageChange,
                 onChangeRowsPerPage: handleRowsPerPageChange,
               }}
