@@ -37,6 +37,7 @@ import {
 import { toast } from "react-toastify";
 import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
 import { useLoginDetails } from "@/store/logoStore";
+import { fetchStudentData } from "@/services/studentService";
 
 const columns = [
   "Class",
@@ -211,6 +212,21 @@ const StudentDetails = () => {
     }
   };
 
+  const [currentData, setCurrentData] = useState<any>(null);
+
+  useEffect(() => {
+    if (currentData) {
+      setformhomeworkdate(formatDate(currentData.homework_date));
+      setformsubmissiondate(formatDate(currentData.submit_date));
+      setformCreatedBy(currentData.created_by);
+      setformClassName(currentData.class_name);
+      setformSectionName(currentData.section_name);
+      setformSubjectName(currentData.subject_name);
+      setformDesc(currentData.description);
+    }
+    fetchStudentOnly(currentData);
+  }, [currentData]); // Run this effect when `currentData` changes
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     const file = files ? files[0] : null;
@@ -264,6 +280,14 @@ const StudentDetails = () => {
         </IconButton>
       </div>,
     ]);
+  };
+
+  const formatStudentDataInForm = (students: any[]) => {
+    return students.map((student: any) => ({
+      id: student.id,
+      name: `${student.firstname || ""}  ${student.lastname || ""} (${student.id})`,
+      selected: false,
+    }));
   };
 
   const fetchData = async (
@@ -392,20 +416,6 @@ const StudentDetails = () => {
       toast.error("An error occurred while saving leave");
     }
   };
-
-  const [currentData, setCurrentData] = useState<any>(null);
-
-  useEffect(() => {
-    if (currentData) {
-      setformhomeworkdate(formatDate(currentData.homework_date));
-      setformsubmissiondate(formatDate(currentData.submit_date));
-      setformCreatedBy(currentData.created_by);
-      setformClassName(currentData.class_name);
-      setformSectionName(currentData.section_name);
-      setformSubjectName(currentData.subject_name);
-      setformDesc(currentData.description);
-    }
-  }, [currentData]); // Run this effect when `currentData` changes
 
   const handleEdit = async (id: number, data: any) => {
     setEditing(true);
@@ -555,7 +565,24 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
+  const fetchStudentOnly = async (data: any) => {
+    try {
+      // Fetch sections if a class is selected
+      const getresult = await fetchStudentData(
+        "",
+        "",
+        data.class_id,
+        data.section_id,
+        "",
+        data.session_id,
+      );
 
+      setStudents(formatStudentDataInForm(getresult.data));
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
   const fetchClassesAndSections2 = async () => {
     try {
       // Fetch sections if a class is selected
