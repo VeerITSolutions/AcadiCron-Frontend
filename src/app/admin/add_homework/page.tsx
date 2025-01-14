@@ -404,11 +404,6 @@ const StudentDetails = () => {
       setformSectionName(currentData.section_name);
       setformSubjectName(currentData.subject_name);
       setformDesc(currentData.description);
-
-      setSelectedClass2(currentData.class_id);
-      setSelectedSection2(currentData.section_id);
-      setSelectedSubjectGroup2(currentData.subject_groups_id);
-      setSelectedSubject2(currentData.subject_id);
     }
   }, [currentData]); // Run this effect when `currentData` changes
 
@@ -416,10 +411,7 @@ const StudentDetails = () => {
     setEditing(true);
     setCurrentLeaveId(id);
 
-    setCurrentData(data);
-
     try {
-      console.log(data);
       setFormData(data);
       setSelectedClass2(data.class_id);
       setSelectedSection2(data.section_id);
@@ -512,7 +504,7 @@ const StudentDetails = () => {
 
   const handleClickOpenEvaluate = (data: any) => {
     setEvaluateOpen(true);
-    console.log(data);
+    setCurrentData(data);
   };
 
   const handleClose = () => {
@@ -616,14 +608,7 @@ const StudentDetails = () => {
     );
   };
 
-  const handleSave2 = () => {
-    console.log(
-      "Selected Students:",
-      students.filter((s) => s.selected),
-    );
-    console.log("Evaluation Date:", evaluationDate);
-    // Add your save logic here
-  };
+  const handleSave2 = () => {};
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
