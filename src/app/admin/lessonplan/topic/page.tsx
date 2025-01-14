@@ -25,6 +25,7 @@ import {
   editTopic,
   fetchTopic,
 } from "@/services/topicService";
+import { getLessonBySubjectIdLessonTable } from "@/services/lessonService";
 
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +38,7 @@ const FeesMaster = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
+  const [lessondata, setLessonData] = useState<Array<any>>([]);
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
 
   const [loaderClasses, setLoaderClassessData] = useState(false);
@@ -122,6 +124,22 @@ const FeesMaster = () => {
           getselectedSessionId,
         );
         setSubject(subjectresult.data);
+        setLoaderSubject(false);
+      }
+
+      if (selectedSubject) {
+        const updateData = {
+          selectedClass: selectedClass,
+          selectedSection: selectedSection,
+          selectedSubjectGroup: selectedSubjectGroup,
+          selectedSubject: selectedSubject,
+          currentSessionId: getselectedSessionId,
+
+          name: names,
+        };
+        const lessonDataResulst =
+          await getLessonBySubjectIdLessonTable(updateData);
+        setLessonData(lessonDataResulst.data);
         setLoaderSubject(false);
       }
 
@@ -479,9 +497,9 @@ const FeesMaster = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:border-strokedark dark:bg-boxdark dark:bg-form-input dark:text-white dark:drop-shadow-none dark:focus:border-primary"
                   >
                     <option value="">Select</option>
-                    {subject.map((cls) => (
+                    {lessondata?.map((cls) => (
                       <option key={cls.id} value={cls.id}>
-                        {cls.name}
+                        {cls.id}
                       </option>
                     ))}
                   </select>
