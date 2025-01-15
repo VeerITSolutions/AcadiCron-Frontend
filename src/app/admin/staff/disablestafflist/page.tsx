@@ -47,8 +47,10 @@ const columns = [
 const options = {
   filterType: "checkbox",
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
+  selectableRows: "none", // Disable row selection
+
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
@@ -197,12 +199,12 @@ const StudentDetails = () => {
           </label>
 
           <div className={styles.searchGroup}>
-            <input
+          <input
               type="text"
               placeholder="Search By Keyword"
               value={keyword}
               onChange={handleKeywordChange}
-              className={`${styles.searchInput} dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none`}
+              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
