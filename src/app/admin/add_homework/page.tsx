@@ -22,7 +22,7 @@ import {
 } from "@/services/homeworkServices";
 import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 import { fetchSubjectData } from "@/services/subjectsService";
-import DOMPurify from "dompurify";
+
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -36,8 +36,6 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
-import { useLoginDetails } from "@/store/logoStore";
-import { fetchStudentData } from "@/services/studentService";
 
 const columns = [
   "Class",
@@ -54,8 +52,8 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
-  responsive: "standard",
-  search: false,
+ responsive: "standard",
+search: false,
   selectableRows: "none",
   filter: false,
   viewColumns: false,
@@ -75,15 +73,7 @@ const StudentDetails = () => {
   const [section, setSections] = useState<Array<any>>([]);
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
-  const [formhomeworkdate, setformhomeworkdate] = useState<string | null>(null);
-  const [formsubmissiondate, setformsubmissiondate] = useState<string | null>(
-    null,
-  );
-  const [formCreatedBy, setformCreatedBy] = useState<string | null>(null);
-  const [formClassName, setformClassName] = useState<string | null>(null);
-  const [formSectionName, setformSectionName] = useState<string | null>(null);
-  const [formSubjectName, setformSubjectName] = useState<string | null>(null);
-  const [formDesc, setformDesc] = useState<string | null>(null);
+
   const [classes2, setClassessData2] = useState<Array<any>>([]);
   const [section2, setSections2] = useState<Array<any>>([]);
   const [subjectGroup2, setSubjectGroup2] = useState<Array<any>>([]);
@@ -104,7 +94,7 @@ const StudentDetails = () => {
 
   const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
     undefined,
-  );
+  );  
   const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
     undefined,
   );
@@ -117,7 +107,7 @@ const StudentDetails = () => {
 
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
-
+  
   const [formData, setFormData] = useState({
     homework_date: null as Date | null,
     submit_date: null as Date | null,
@@ -131,6 +121,7 @@ const StudentDetails = () => {
   const [open, setOpen] = useState(false);
   const [evaluateOpen, setEvaluateOpen] = useState(false);
 
+
   const columns = [
     "Class",
     "Section",
@@ -142,7 +133,7 @@ const StudentDetails = () => {
     "Created By",
     "Action",
   ];
-  const sanitizeHtml = (html: any) => DOMPurify.sanitize(html);
+  
   const options = {
     filterType: false,
     serverSide: true,
@@ -176,17 +167,14 @@ const StudentDetails = () => {
     selectedSubject,
     keyword,
   ]);
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass, selectedSection, selectedSubjectGroup]);
+  }, [selectedClass]);
 
   useEffect(() => {
     fetchClassesAndSections2(); // Fetch classes and sections on initial render
-  }, [selectedClass2, selectedSection2, selectedSubjectGroup2]);
+  }, [selectedClass2, selectedSection2]);
 
   /* use effect End  */
 
@@ -211,21 +199,6 @@ const StudentDetails = () => {
       }));
     }
   };
-
-  const [currentData, setCurrentData] = useState<any>(null);
-
-  useEffect(() => {
-    if (currentData) {
-      setformhomeworkdate(formatDate(currentData.homework_date));
-      setformsubmissiondate(formatDate(currentData.submit_date));
-      setformCreatedBy(currentData.created_by);
-      setformClassName(currentData.class_name);
-      setformSectionName(currentData.section_name);
-      setformSubjectName(currentData.subject_name);
-      setformDesc(currentData.description);
-    }
-    fetchStudentOnly(currentData);
-  }, [currentData]); // Run this effect when `currentData` changes
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
@@ -282,14 +255,6 @@ const StudentDetails = () => {
     ]);
   };
 
-  const formatStudentDataInForm = (students: any[]) => {
-    return students.map((student: any) => ({
-      id: student.id,
-      name: `${student.firstname || ""}  ${student.lastname || ""} (${student.id})`,
-      selected: false,
-    }));
-  };
-
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -325,7 +290,6 @@ const StudentDetails = () => {
           "",
           selectedClass,
           selectedSection,
-          getselectedSessionId,
         );
 
         setSubjectGroup(subjectgroupresult.data);
@@ -335,7 +299,6 @@ const StudentDetails = () => {
           "",
           "",
           selectedSubjectGroup,
-          getselectedSessionId,
         );
         setSubject(subjectresult.data);
       }
@@ -422,6 +385,7 @@ const StudentDetails = () => {
     setCurrentLeaveId(id);
 
     try {
+      console.log(data);
       setFormData(data);
       setSelectedClass2(data.class_id);
       setSelectedSection2(data.section_id);
@@ -514,7 +478,7 @@ const StudentDetails = () => {
 
   const handleClickOpenEvaluate = (data: any) => {
     setEvaluateOpen(true);
-    setCurrentData(data);
+    console.log(data);
   };
 
   const handleClose = () => {
@@ -565,24 +529,7 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
-  const fetchStudentOnly = async (data: any) => {
-    try {
-      // Fetch sections if a class is selected
-      const getresult = await fetchStudentData(
-        "",
-        "",
-        data.class_id,
-        data.section_id,
-        "",
-        data.session_id,
-      );
 
-      setStudents(formatStudentDataInForm(getresult.data));
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
   const fetchClassesAndSections2 = async () => {
     try {
       // Fetch sections if a class is selected
@@ -598,19 +545,9 @@ const StudentDetails = () => {
           "",
           selectedClass2,
           selectedSection2,
-          getselectedSessionId,
         );
 
         setSubjectGroup2(subjectgroupresult.data);
-      }
-      if (selectedSubjectGroup2) {
-        const subjectresult = await fetchSubjectData(
-          "",
-          "",
-          selectedSubjectGroup2,
-          getselectedSessionId,
-        );
-        setSubject2(subjectresult.data);
       }
     } catch (error: any) {
       setError(error.message);
@@ -635,7 +572,14 @@ const StudentDetails = () => {
     );
   };
 
-  const handleSave2 = () => {};
+  const handleSave2 = () => {
+    console.log(
+      "Selected Students:",
+      students.filter((s) => s.selected),
+    );
+    console.log("Evaluation Date:", evaluationDate);
+    // Add your save logic here
+  };
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -1023,70 +967,41 @@ const StudentDetails = () => {
                   ))}
                 </div>
 
-                {/* Homework Details */}
-                <div className="w-3/6 p-2">
-                  <h2 className="mb-3 font-medium text-black dark:text-white">
-                    Summary
-                  </h2>
-                  <div className="mb-4">
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Homework Date:</strong>{" "}
-                      {formhomeworkdate ? formhomeworkdate : "N/A"}
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Submission Date:</strong>{" "}
-                      {formsubmissiondate ? formsubmissiondate : "N/A"}
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Evaluation Date:</strong>{" "}
-                      {evaluationDate || "Not Set"}
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Created By:</strong>{" "}
-                      {formCreatedBy ? formCreatedBy : "N/A"}
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Class:</strong>{" "}
-                      {formClassName ? formClassName : "N/A"}
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Section:</strong>{" "}
-                      {formSectionName ? formSectionName : "N/A"}
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Subject:</strong>{" "}
-                      {formSubjectName ? formSectionName : "N/A"}
-                    </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Description:</strong>{" "}
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: sanitizeHtml(formDesc),
-                        }}
-                      ></span>
-                    </p>
-                  </div>
-                  <label className="mb-4 block text-sm font-medium text-black dark:text-white">
-                    Evaluation Date:
-                    <input
-                      type="date"
-                      className="mt-3 w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      value={evaluationDate}
-                      onChange={(e) => setEvaluationDate(e.target.value)}
-                    />
-                  </label>
+        {/* Homework Details */}
+        <div className="w-3/6 p-2">
+          <h2 className="font-medium text-black dark:text-white mb-3">Summary</h2>
+          <div className="mb-4">
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Homework Date:</strong> 01/11/2025</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Submission Date:</strong> 01/12/2025</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Evaluation Date:</strong> {evaluationDate || "Not Set"}</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Created By:</strong> Priya Tendulkar</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Class:</strong> B.Sc.</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Section:</strong> A</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Subject:</strong> English</p>
+            <p className="mb-3 block text-sm font-medium text-black dark:text-white"><strong>Description:</strong> addd</p>
+          </div>
+          <label className="mb-4 block text-sm font-medium text-black dark:text-white">
+            Evaluation Date:
+            <input
+              type="date"
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary mt-3"
+              value={evaluationDate}
+              onChange={(e) => setEvaluationDate(e.target.value)}
+            />
+          </label>
+        </div>
+      </div>
+      </div>
+      {/* Save Button */}
+      <div className="col-span-full mt-4">
+                  <button
+                    onClick={handleSave2}
+                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                  >
+                    Save
+                  </button>
                 </div>
-              </div>
-            </div>
-            {/* Save Button */}
-            <div className="col-span-full mt-4">
-              <button
-                onClick={handleSave2}
-                className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-              >
-                Save
-              </button>
-            </div>
+   
           </DialogContent>
         </Dialog>
       </div>

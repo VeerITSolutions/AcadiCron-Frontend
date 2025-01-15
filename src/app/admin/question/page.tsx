@@ -91,203 +91,7 @@ const QuestionBank = () => {
   const [section1, setSections1] = useState<Array<any>>([]);
 
   const [editing, setEditing] = useState(false); // Add state for editing
-  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedClass(event.target.value);
-    setPage(0);
-  };
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClickOpen1 = () => {
-    setOpen1(true);
-  };
 
-  const handleClose = () => {
-    setFormData({
-      subject_id: "",
-        class_id: "",
-        section_id: "",
-        Attach_file:"",
-    });
-
-    setSelectedRoleLeave("");
-    setSelectedStaff("");
-    setSelectedLeaveselectedLeaveType("");
-    setOpen(false);
-    setEditing(false); // Reset editing state
-  };
-  const handleClose1 = () => {
-    setFormData1({
-      subject_id: "",
-      question_type: "",
-      level: "",
-      class_id: "",
-      section_id: "",
-    });
-
- 
-
-    setOpen1(false);
-    setEditing(false); // Reset editing state
-  };
-
-  const handleEditorChange = (content: any, editor: any) => {
-    try {
-      console.log("Content:", content);
-      // Perform additional logic
-    } catch (error) {
-      console.error("Error in handleEditorChange:", error);
-    }
-  };
-
- const fetchClassesAndSections = async () => {
-     try {
-       const classesResult = await getClasses();
-       setClassessData(classesResult.data);
- 
-       // Fetch sections if a class is selected
-       if (selectedClass) {
-         const sectionsResult = await fetchsectionByClassData(selectedClass);
-         setSections(sectionsResult.data);
-       } else {
-         setSections([]); // Clear sections if no class is selected
-       }
-     } catch (error: any) {
-       setError(error.message);
-       setLoading(false);
-     }
-   };
-   const fetchClassesAndSections2 = async () => {
-    try {
-      const classesResult1 = await getClasses();
-      setClassessData(classesResult1.data);
-
-      // Fetch sections if a class is selected
-      if (selectedClass1) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass1);
-        setSections(sectionsResult.data);
-      } else {
-        setSections([]); // Clear sections if no class is selected
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
-     
-
-    const fetchQuestions = async (currentPage: number, rowsPerPage: number) => {
-       try {
-         const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
-         const resultSubjectData = await fetchSubjectData("", "");
-         setTotalCount(result.total);
-         setData(formatSubjectData(result.data));
-         setSubjectData(resultSubjectData.data);
-   
-         setLoading(false);
-       } catch (error: any) {
-         setError(error.message);
-         setLoading(false);
-       }
-     };
-
-   
-
-  const handleSubmit = async () => {
-    try {
-      if (isEditing && editCategoryId !== null) {
-        const result = await editQuestionData(editCategoryId, formData);
-        if (result.success) {
-          toast.success("Subject group updated successfully");
-        } else {
-          toast.error("Failed to update subject group");
-        }
-      } else {
-        const result = await createQuestionData(formData);
-
-        setFormData({
-          subject_id: "",
-          class_id: "",
-          section_id: "",
-          Attach_file:"",
-        });
-
-        setSelectedClass("");
-        setSelectedSection("");
-        setSelectedSubject([]);
-
-        if (result.success) {
-          toast.success("Question created successfully");
-        } else {
-          toast.error("Failed to create Question");
-        }
-      }
-      // Reset form after successful action
-      setFormData({
-        subject_id: "",
-        class_id: "",
-        section_id: "",
-        Attach_file:"",
-      });
-
-      setIsEditing(false);
-      setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
-      setOpen(false);
-      setOpen1(false);
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  };
-
-  const handleSubmit1 = async () => {
-    try {
-      if (isEditing && editCategoryId !== null) {
-        const result = await editQuestionData(editCategoryId, formData);
-        if (result.success) {
-          toast.success("Subject group updated successfully");
-        } else {
-          toast.error("Failed to update subject group");
-        }
-      } else {
-        const result = await createQuestionData(formData);
-
-        setFormData1({
-          subject_id: "",
-          question_type: "",
-          level: "",
-          class_id: "",
-          section_id: "",
-        });
-
-        setSelectedClass("");
-        setSelectedSection("");
-        setSelectedSubject([]);
-
-        if (result.success) {
-          toast.success("Question created successfully");
-        } else {
-          toast.error("Failed to create Question");
-        }
-      }
-      // Reset form after successful action
-      setFormData1({
-        subject_id: "",
-        question_type: "",
-        level: "",
-        class_id: "",
-        section_id: "",
-      });
-
-      setIsEditing(false);
-      setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
-      setOpen(false);
-      setOpen1(false);
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  };
   const [roleleavedata, setRoleLeaveData] = useState<Array<Array<string>>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -331,9 +135,9 @@ const QuestionBank = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
     subject_id: "",
-    class_id: "",
-    section_id: "",
-    Attach_file:"",
+      class_id: "",
+      section_id: "",
+      Attach_file:"",
   });
   const [formData1, setFormData1] = useState({
     subject_id: "",
@@ -492,10 +296,6 @@ const QuestionBank = () => {
   useEffect(() => {
       fetchClassesAndSections(); // Fetch classes and sections on initial render
     }, [selectedClass]);
-  
-    useEffect(() => {
-      fetchClassesAndSections2(); // Fetch classes and sections on initial render
-    }, [selectedClass1, selectedSection1]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -524,11 +324,243 @@ const QuestionBank = () => {
   };
 
  
-const handleSectionChange2 = (
- event: React.ChangeEvent<HTMLSelectElement>,
-) => {
- setSelectedSection1(event.target.value);
+
+
+const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  setSelectedClass(event.target.value);
+  setPage(0);
 };
+  const handleClassChange1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass1(event.target.value);
+  };
+const handleClickOpen = () => {
+  setOpen(true);
+};
+const handleClickOpen1 = () => {
+  setOpen1(true);
+};
+
+const handleClose = () => {
+  setFormData({
+    subject_id: "",
+      class_id: "",
+      section_id: "",
+      Attach_file:"",
+  });
+
+  setSelectedRoleLeave("");
+  setSelectedStaff("");
+  setSelectedLeaveselectedLeaveType("");
+  setOpen(false);
+  setEditing(false); // Reset editing state
+};
+const handleClose1 = () => {
+  setFormData1({
+    subject_id: "",
+    question_type: "",
+    level: "",
+    class_id: "",
+    section_id: "",
+  });
+
+
+
+  setOpen1(false);
+  setEditing(false); // Reset editing state
+};
+
+const handleEditorChange = (content: any, editor: any) => {
+  try {
+    console.log("Content:", content);
+    // Perform additional logic
+  } catch (error) {
+    console.error("Error in handleEditorChange:", error);
+  }
+};
+
+const fetchClassesAndSections = async () => {
+   try {
+     const classesResult = await getClasses();
+     setClassessData(classesResult.data);
+
+     // Fetch sections if a class is selected
+     if (selectedClass) {
+       const sectionsResult = await fetchsectionByClassData(selectedClass);
+       setSections(sectionsResult.data);
+     } else {
+       setSections([]); // Clear sections if no class is selected
+     }
+   } catch (error: any) {
+     setError(error.message);
+     setLoading(false);
+   }
+ };
+
+   
+
+  const fetchQuestions = async (currentPage: number, rowsPerPage: number) => {
+     try {
+       const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
+       const resultSubjectData = await fetchSubjectData("", "");
+       setTotalCount(result.total);
+       setData(formatSubjectData(result.data));
+       setSubjectData(resultSubjectData.data);
+ 
+       setLoading(false);
+     } catch (error: any) {
+       setError(error.message);
+       setLoading(false);
+     }
+   };
+
+ 
+
+ const handleSave = async () => {
+    try {
+      let result;
+      if (editing) {
+        result = await editQuestionData(
+          selectedClass,
+          selectedSection,
+          selectedSubject,
+          formData.subject_id,
+          formData.class_id,
+          formData.section_id,
+          formData.Attach_file,
+        );
+
+        fetchData(page, rowsPerPage);
+      } else {
+        result = await createQuestionData(
+          selectedClass,
+        );
+        fetchData(page, rowsPerPage); // Refresh data after submit
+      }
+      if (result.success) {
+        toast.success(
+          editing
+            ? "Question updated successfully"
+            : "Question applied successfully",
+        );
+        setFormData({
+        subject_id: "",
+        class_id: "",
+        section_id: "",
+        Attach_file:"",
+        });
+        setSelectedClass("");
+        setSelectedSection("");
+        setSelectedSubject([]);
+        setOpen(false); // Close the modal
+        setEditing(false); // Reset editing state
+        fetchData(page, rowsPerPage); // Refresh data after submit
+      } else {
+        toast.error("Failed to save question");
+      }
+    } catch (error) {
+      console.error("An error occurred", error);
+      toast.error("An error occurred while saving Question");
+    }
+  };
+
+  const handleSave2 = async () => {
+    try {
+      let result;
+      if (editing) {
+        result = await editQuestionData(
+          selectedClass,
+          selectedSection,
+          selectedSubject,
+          formData.subject_id,
+          formData1.question_type,
+          formData1.level,
+          formData.class_id,
+          formData.section_id,
+      );
+      
+        fetchData(page, rowsPerPage);
+      } else {
+        result = await createQuestionData(
+          selectedClass,
+        );
+        fetchData(page, rowsPerPage); // Refresh data after submit
+      }
+      if (result.success) {
+        toast.success(
+          editing
+            ? "Question updated successfully"
+            : "Question applied successfully",
+        );
+        setFormData1({
+          subject_id: "",
+          question_type: "",
+          level: "",
+          class_id: "",
+          section_id: "",
+        });
+        setSelectedClass("");
+        setSelectedSection("");
+        setSelectedSubject([]);
+        setOpen(false); // Close the modal
+        setEditing(false); // Reset editing state
+        fetchData(page, rowsPerPage); // Refresh data after submit
+      } else {
+        toast.error("Failed to save question");
+      }
+    } catch (error) {
+      console.error("An error occurred", error);
+      toast.error("An error occurred while saving Question");
+    }
+  };
+
+// const handleSubmit1 = async () => {
+//   try {
+//     if (isEditing && editCategoryId !== null) {
+//       const result = await editQuestionData(editCategoryId, formData);
+//       if (result.success) {
+//         toast.success("Subject group updated successfully");
+//       } else {
+//         toast.error("Failed to update subject group");
+//       }
+//     } else {
+//       const result = await createQuestionData(formData);
+
+//       setFormData1({
+//         subject_id: "",
+//         question_type: "",
+//         level: "",
+//         class_id: "",
+//         section_id: "",
+//       });
+
+//       setSelectedClass("");
+//       setSelectedSection("");
+//       setSelectedSubject([]);
+
+//       if (result.success) {
+//         toast.success("Question created successfully");
+//       } else {
+//         toast.error("Failed to create Question");
+//       }
+//     }
+//     // Reset form after successful action
+//     setFormData1({
+//       subject_id: "",
+//       question_type: "",
+//       level: "",
+//       class_id: "",
+//       section_id: "",
+//     });
+
+//     setIsEditing(false);
+//     setEditCategoryId(null);
+//     fetchData(page, rowsPerPage); // Refresh data after submit
+//     setOpen(false);
+//     setOpen1(false);
+//   } catch (error) {
+//     console.error("An error occurred", error);
+//   }
+// };
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -625,8 +657,8 @@ const handleSectionChange2 = (
                   </label>
                   <select
                     name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleClassChange}
+                    value={selectedClass1}
+                    onChange={handleClassChange1}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
@@ -642,9 +674,9 @@ const handleSectionChange2 = (
                     Section <span className="required">*</span>
                   </label>
                   <select
-                    name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass}
-                    onChange={handleSectionChange}
+                    name="section_id" // Adding name attribute for dynamic handling
+                    value={formData.section_id}
+                    onChange={handleSelectChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
@@ -670,7 +702,7 @@ const handleSectionChange2 = (
 
                 <div className="col-span-full flex">
                   <button
-                    onClick={handleSubmit}
+                    onClick={handleSave}
                     className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >
                     Save
@@ -768,7 +800,7 @@ const handleSectionChange2 = (
                   </label>
                   <select
                     name="class_id" // Adding name attribute for dynamic handling
-                    value={selectedClass1}
+                    value={selectedClass}
                     onChange={handleClassChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
@@ -786,8 +818,8 @@ const handleSectionChange2 = (
                   </label>
                   <select
                     name="Section" // Adding name attribute for dynamic handling
-                    value={selectedSection1}
-                    onChange={handleSectionChange2}
+                    value={selectedSection1 || ""}
+                    onChange={handleSectionChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value="">Select</option>
@@ -832,7 +864,7 @@ const handleSectionChange2 = (
 
                 <div className="col-span-full">
                   <button
-                    onClick={handleSubmit1}
+                    onClick={handleSave2}
                     className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                   >
                     Save
