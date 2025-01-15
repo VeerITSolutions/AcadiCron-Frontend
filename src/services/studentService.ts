@@ -16,6 +16,13 @@ export const fetchStudentData = async (page?: any, perPage?: any,selectedClass? 
   });
   return response.data;
 };
+export const fetchStudentHomeworkData = async (id?: any) => {
+  const response = await apiClient.post(`/get-students-homework`,  {
+    'id': id
+  });
+  return response.data;
+};
+
 export const fetchStudentCalculateData= async (page?: number, perPage?: number,selectedClass?:any,
   selectedSection?:any,
   keyword?:any,
