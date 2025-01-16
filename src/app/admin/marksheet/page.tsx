@@ -450,6 +450,8 @@ const ExaminationMarksheet = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="template"
+                    value={formData.template}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -460,6 +462,8 @@ const ExaminationMarksheet = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="heading"
+                    value={formData.heading}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -470,6 +474,8 @@ const ExaminationMarksheet = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -480,6 +486,8 @@ const ExaminationMarksheet = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="exam_name"
+                    value={formData.exam_name}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -490,6 +498,8 @@ const ExaminationMarksheet = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="school_name"
+                    value={formData.school_name}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -500,6 +510,8 @@ const ExaminationMarksheet = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="exam_center"
+                    value={formData.exam_center}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -509,7 +521,9 @@ const ExaminationMarksheet = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="footer_text"
+                    name="content_footer"
+                    value={formData.content_footer}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -590,7 +604,7 @@ const ExaminationMarksheet = () => {
                       accept="image/*"
                       onChange={handleFileChange}
                       id="file"
-                      name="background_image"
+                      name="background_img"
                       className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                     />
                   </div>
