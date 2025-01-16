@@ -78,11 +78,11 @@ const IssueItem = () => {
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchItemIssue(currentPage + 1, rowsPerPage);
-      const resultUserType = await fetchRoleData("", "");
+      // const resultUserType = await fetchRoleData("", "");
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-      setuserTypeData(resultUserType.data);
+      // setuserTypeData(resultUserType.data);
 
       setLoading(false);
     } catch (error: any) {
