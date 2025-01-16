@@ -28,23 +28,23 @@ export const viewTemplateMarksheet = async (id :any , idsToGenerate? : any): Pro
 
       idsToGenerate: idsToGenerate
     };
-    const response = await apiClient.post(`/certificate-view/${id}`,requestData );
+    const response = await apiClient.post(`/marksheet-view/${id}`,requestData );
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
-    throw new Error("Failed to create certificate");
+    throw new Error("Failed to create marksheet");
   }
 };
 
 export const viewTemplateMarksheetGenerate = async (id :any ,class_id? : any, data? : any  ): Promise<any> => {
   try {
 
-    const certificate_id = id;
-    const response = await apiClient.post(`/certificate-view-generate/${id}`,{data,class_id,certificate_id } );
+    const marksheet_id = id;
+    const response = await apiClient.post(`/marksheet-view-generate/${id}`,{data,class_id,marksheet_id } );
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
-    throw new Error("Failed to create certificate");
+    throw new Error("Failed to create marksheet");
   }
 };
 

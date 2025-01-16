@@ -23,6 +23,8 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ExaminationMarksheet = () => {
 
@@ -426,6 +428,38 @@ const ExaminationMarksheet = () => {
 
   return (
     <DefaultLayout>
+
+{isFormVisible && (
+        <>
+          <Dialog
+            open={isFormVisible}
+            onClose={handleButtonClick2}
+            className="w-full"
+          >
+            <DialogTitle className="flex justify-end p-4">
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={handleButtonClick2}
+                aria-label="close"
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+
+            <div className="flex h-full w-full items-center justify-center">
+              <DialogContent className="h-full w-full dark:bg-boxdark dark:drop-shadow-none">
+                <div
+                  className="w-full"
+                  dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
+                />
+              </DialogContent>
+            </div>
+          </Dialog>
+        </>
+      )}
+
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
