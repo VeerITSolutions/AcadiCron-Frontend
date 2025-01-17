@@ -18,8 +18,10 @@ import { createAdmitCard, deleteAdmitCard, editAdmitCard, fetchAdmitCard, viewAd
 import { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
 
 const AdmitCard = () => {
+  const [customFileds, setCustomFileds] = useState<Array<Array<any>>>([]);
   const [error, setError] = useState<string | null>(null);
    const [data, setData] = useState<Array<Array<any>>>([]);
    const { themType, setThemType } = useGlobalState();
@@ -87,12 +89,12 @@ const AdmitCard = () => {
       setData(formatAdmitCardData(result.data));
       setLoading(false);
 
-      // const resultcutomFields = await fetchGetCustomFiledsData(
-      //   currentPage + 1,
-      //   rowsPerPage,
-      // );
+      const resultcutomFields = await fetchGetCustomFiledsData(
+        currentPage + 1,
+        rowsPerPage,
+      );
 
-      // setCustomFileds(resultcutomFields.data);
+      setCustomFileds(resultcutomFields.data);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
