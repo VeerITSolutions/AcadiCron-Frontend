@@ -229,125 +229,128 @@ const MultiClassStudent = () => {
           </div>
         </div>
       </div>
-      {loading ? <LoaderSpiner /> : ""}
-      <div className="grid grid-cols-1 gap-6 dark:border-strokedark dark:bg-boxdark sm:grid-cols-2 lg:grid-cols-3 ">
-        {studentsData.length > 0
-          ? Object.values(studentsData).map(
-              (student: any, studentKey: number) => (
-                <div
-                  key={studentKey}
-                  className="border-gray-300 dark:border-gray-700 dark:bg-gray-800 flex flex-col rounded-lg border bg-white p-6 shadow-lg"
-                >
-                  {/* Header Section */}
-                  <div className="mb-6 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-gray-800 text-lg font-semibold dark:text-white">
-                        {student.firstname} {student.lastname}
-                      </h3>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleAddRow}
-                      className="btn-primary flex h-8 w-8 items-center justify-center rounded bg-blue-500 hover:bg-blue-600"
-                    >
-                      <Add className="text-xs text-white" />
-                    </button>
-                  </div>
 
-                  {/* Hidden Inputs */}
-                  <input type="hidden" name="student_id" value="993" />
+
+      {loading ? <LoaderSpiner /> : ""}
+   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+  {studentsData.length > 0
+    ? Object.values(studentsData).map(
+        (student: any, studentKey: number) => (
+          <div
+            key={studentKey}
+            className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-auto sm:h-[400px] w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
+          >
+            {/* Header Section */}
+            <div className="flex items-center justify-between mb-6 p-4">
+              <div className="flex items-center gap-2">
+                <h3 className="text-small font-semibold">
+                  {student.firstname} {student.lastname} ({student.admission_no})
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={handleAddRow}
+                className="btn-primary w-8 h-8 flex justify-center items-center rounded bg-blue-500 hover:bg-blue-600"
+              >
+                <Add className="text-white text-xs" />
+              </button>
+            </div>
+
+            {/* Hidden Inputs */}
+            <input type="hidden" name="student_id" value="993" />
+            <input
+              type="hidden"
+              name="nxt_row"
+              className="nxt_row"
+              value={rows.length}
+            />
+
+            {/* Dynamic Rows Section */}
+            <div className="flex flex-col gap-4 max-w-full flex-grow overflow-y-auto p-4">
+              {rows.map((row: any) => (
+                <div
+                  key={row.id}
+                  className="flex items-center gap-4 w-full"
+                >
                   <input
                     type="hidden"
-                    name="nxt_row"
-                    className="nxt_row"
-                    value={rows.length}
+                    name="row_count[]"
+                    value={row.id}
                   />
-
-                  {/* Dynamic Rows Section */}
-                  <div className="flex max-w-full flex-grow flex-col gap-4 overflow-y-auto">
-                    {rows.map((row: any) => (
-                      <div
-                        key={row.id}
-                        className="flex w-full items-center gap-4 border-b pb-4"
-                      >
-                        <input
-                          type="hidden"
-                          name="row_count[]"
-                          value={row.id}
-                        />
-                        <div className="flex-1">
-                          <label
-                            htmlFor={`class_id_${row.id}`}
-                            className="text-gray-700 dark:text-gray-300 mb-2 block text-sm font-medium"
-                          >
-                            Class
-                          </label>
-                          <select
-                            value={selectedClass2 || ""}
-                            onChange={handleClassChange2}
-                            className="border-gray-300 text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 w-full rounded-lg border bg-transparent px-4 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                          >
-                            <option value="">Select</option>
-                            {classes2.map((cls) => (
-                              <option key={cls.id} value={cls.id}>
-                                {cls.class}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <div className="flex-1">
-                          <label
-                            htmlFor={`section_id_${row.id}`}
-                            className="text-gray-700 dark:text-gray-300 mb-2 block text-sm font-medium"
-                          >
-                            Section
-                          </label>
-                          <select
-                            value={selectedSection2 || ""}
-                            onChange={handleSectionChange2}
-                            className="border-gray-300 text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 w-full rounded-lg border bg-transparent px-4 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                            disabled={!selectedClass2}
-                          >
-                            <option value="">Select</option>
-                            {section2.map((sec) => (
-                              <option
-                                key={sec.section_id}
-                                value={sec.section_id}
-                              >
-                                {sec.section_name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <div className="mt-6 flex w-[5%] items-center justify-center">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleRemoveRow(rows[rows.length - 1]?.id)
-                            }
-                            className="btn-error bg-red-500 hover:bg-red-600 flex items-center justify-center rounded p-2 text-white"
-                          >
-                            <DeleteIcon />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Footer Section */}
-                  <div className="bg-gray-100 dark:bg-gray-700 mt-auto w-full p-4 text-right">
-                    <button
-                      type="submit"
-                      className="btn-primary rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
+                  <div className="flex-1">
+                    <label
+                      htmlFor={`class_id_${row.id}`}
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
                     >
-                      Update
+                      Class
+                    </label>
+                    <select
+                      value={selectedClass2 || ""}
+                      onChange={handleClassChange2}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    >
+                      <option value="">Select</option>
+                      {classes2.map((cls) => (
+                        <option key={cls.id} value={cls.id}>
+                          {cls.class}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex-1">
+                    <label
+                      htmlFor={`section_id_${row.id}`}
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    >
+                      Section
+                    </label>
+                    <select
+                      value={selectedSection2 || ""}
+                      onChange={handleSectionChange2}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      disabled={!selectedClass2}
+                    >
+                      <option value="">Select</option>
+                      {section2.map((sec) => (
+                        <option
+                          key={sec.section_id}
+                          value={sec.section_id}
+                        >
+                          {sec.section_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="mt-8 flex items-center justify-center w-[5%]">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleRemoveRow(rows[rows.length - 1]?.id)
+                      }
+                      className="btn-error py-2 rounded flex items-center"
+                    >
+                      <DeleteIcon />
                     </button>
                   </div>
                 </div>
-              ),
-            )
-          : ""}
-      </div>
+              ))}
+            </div>
+
+            {/* Footer Section */}
+            <div className="text-left bg-[#C1C1C1] p-4 mt-auto bottom-0 w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+              <button
+                type="submit"
+                className="text-white btn-primary flex items-center gap-1 rounded bg-blue-500 hover:bg-blue-600 py-2 px-4 text-sm"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        ),
+      )
+    : ""}
+</div>
+
     </DefaultLayout>
   );
 };
