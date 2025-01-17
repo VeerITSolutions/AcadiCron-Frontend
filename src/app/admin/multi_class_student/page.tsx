@@ -19,6 +19,7 @@ const MultiClassStudent = () => {
   const [activeStudent, setActiveStudent] = useState<string | null>(null);
   const [studentRows, setStudentRows] = useState<Record<string, any>>({});
   const [studentsData, setStudentsData] = useState<any[]>([]);
+  const [updateData, setUpdateData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -79,7 +80,7 @@ const MultiClassStudent = () => {
 
   const handleSearch = () => {
     setPage(0);
-    fetchData(0, rowsPerPage, selectedClass, selectedSection, keyword);
+    fetchData( selectedClass, selectedSection, keyword);
   };
 
   const handleRefresh = () => {
@@ -145,13 +146,13 @@ const MultiClassStudent = () => {
   };
 
   const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
     try {
+     const resultUpdate = await fetchUpdatetMultiClass( selectedClass2,
+      selectedSection2);
       if (selectedSection && selectedClass) {
         setLoading(true);
         const result = await fetchStudentMultiClassData(
@@ -162,10 +163,10 @@ const MultiClassStudent = () => {
         );
 
         setTotalCount(result.totalCount);
-
         setStudentsData(result.data);
         setLoading(false);
       }
+      setUpdateData(resultUpdate.data);
     } catch (error: any) {
       console.error("Fetch error:", error);
       setError(error.message);
@@ -190,7 +191,7 @@ const MultiClassStudent = () => {
       ...prev,
       [studentId]: [
         ...(prev[studentId] || []),
-        { id: (prev[studentId]?.length || 0) + 1, selectedClass2: "", selectedSection2: "" },
+        { id: (prev[studentId]?.length || 0) + 1, class_id: "", section_id: "" },
       ],
     }));
   };
@@ -200,7 +201,7 @@ const MultiClassStudent = () => {
       const updatedRows = (prev[studentId] || []).filter((row: any) => row.id !== rowId);
       return {
         ...prev,
-        [studentId]: updatedRows.length > 0 ? updatedRows : [{ id: 1, selectedClass2: "", selectedSection2: "" }],
+        [studentId]: updatedRows.length > 0 ? updatedRows : [{ id: 1, class_id: "", section_id: "" }],
       };
     });
   };
@@ -361,6 +362,7 @@ const MultiClassStudent = () => {
         <div className="text-left bg-[#C1C1C1] p-4 mt-auto bottom-0 w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
           <button
             type="submit"
+            onClick={() => fetchData(selectedClass2, selectedSection2)}
             className="text-white btn-primary flex items-center gap-1 rounded bg-blue-500 hover:bg-blue-600 py-2 px-4 text-sm"
           >
             Update

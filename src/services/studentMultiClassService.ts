@@ -15,16 +15,12 @@ export const fetchStudentMultiClassData = async (selectedClass? :any,
   return response.data;
 };
 
-export const fetchUpdatetMultiClass = async (page: number, perPage: number,selectedClass :any,
-  selectedSection :any,
-  keyword:any) => {
+export const fetchUpdatetMultiClass = async (selectedClass :any,
+  selectedSection :any) => {
   const response = await apiClient.post(`/update-multi-class`, {
     params: {
-      page,
-      perPage,
       selectedClass,
-      selectedSection,
-      keyword
+      selectedSection
     },
   });
   return response.data;
