@@ -6,14 +6,19 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
 import styles from "./StudentDetails.module.css";
-import DeleteIcon from '@mui/icons-material/Delete';
-import {Add, Remove, Calculate } from "@mui/icons-material";  // Import Calculate icon
-import { fetchStudentMultiClassData, fetchUpdatetMultiClass } from "@/services/studentMultiClassService";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Add, Remove, Calculate } from "@mui/icons-material"; // Import Calculate icon
+import {
+  fetchStudentMultiClassData,
+  fetchUpdatetMultiClass,
+} from "@/services/studentMultiClassService";
+import { useLoginDetails } from "@/store/logoStore";
+import LoaderSpiner from "@/components/common/LoaderSpiner";
 
 const MultiClassStudent = () => {
   // const [studentsData, setStudentsData] = useState<Array<Array<string>>>([]);
   const [studentsData, setStudentsData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -21,7 +26,9 @@ const MultiClassStudent = () => {
   const [classes, setClassesData] = useState<Array<any>>([]);
   const [sections, setSectionsData] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>("");
-  const [selectedSection, setSelectedSection] = useState<string | undefined>("");
+  const [selectedSection, setSelectedSection] = useState<string | undefined>(
+    "",
+  );
   const [keyword, setKeyword] = useState<string>("");
   const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
     undefined,
@@ -38,7 +45,9 @@ const MultiClassStudent = () => {
     setSelectedClass(event.target.value);
     setPage(0);
   };
-  
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
     setPage(0);
@@ -48,28 +57,26 @@ const MultiClassStudent = () => {
     setSelectedClass2(event.target.value);
   };
 
-const handleSectionChange2 = (
+  const handleSectionChange2 = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setSelectedSection2(event.target.value);
   };
-  
 
   const handleSearch = () => {
     setPage(0);
     fetchData(0, rowsPerPage, selectedClass, selectedSection, keyword);
   };
 
- 
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
     setSelectedClass2("");
     setSelectedSection2("");
     setKeyword("");
-    fetchData(0, rowsPerPage);
-  };
 
+    setStudentsData([]);
+  };
 
   useEffect(() => {
     fetchClassesAndSections();
@@ -93,10 +100,9 @@ const handleSectionChange2 = (
   };
 
   useEffect(() => {
-    fetchClassesAndSections2(); 
+    fetchClassesAndSections2();
   }, [selectedClass2, selectedSection2]);
 
- 
   const fetchClassesAndSections2 = async () => {
     try {
       const classesResult = await getClasses();
@@ -119,32 +125,34 @@ const handleSectionChange2 = (
     rowsPerPage: number,
     selectedClass?: string,
     selectedSection?: string,
-    keyword?: string
+    keyword?: string,
   ) => {
     try {
-      const result = await fetchStudentMultiClassData(
-        selectedClass,
-        selectedSection,
-        keyword
-      );
-      console.log('Fetch result:', result);
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setStudentsData(formattedData);
-      setLoading(false);
+      if (selectedSection && selectedClass) {
+        setLoading(true);
+        const result = await fetchStudentMultiClassData(
+          selectedClass,
+          selectedSection,
+          getselectedSessionId,
+          keyword,
+        );
+
+        setTotalCount(result.totalCount);
+
+        setStudentsData(result.data);
+        setLoading(false);
+      }
     } catch (error: any) {
-      console.error('Fetch error:', error); 
+      console.error("Fetch error:", error);
       setError(error.message);
       setLoading(false);
     }
   };
-  
 
   const [rows, setRows] = useState(() => {
     // Initialize with one row only
     return [{ id: 1, selectedClass2: "", selectedSection2: "" }];
   });
-
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -161,115 +169,21 @@ const handleSectionChange2 = (
 
   const handleRemoveRow = (id: any) => {
     const updatedRows = rows.filter((row: any) => row.id !== id);
-    setRows(updatedRows.length > 0 ? updatedRows : [{ id: 1, selectedClass2: "", selectedSection2: "" }]);
+    setRows(
+      updatedRows.length > 0
+        ? updatedRows
+        : [{ id: 1, selectedClass2: "", selectedSection2: "" }],
+    );
   };
 
   const handleChange = (id: any, field: any, value: any) => {
     setRows(
       rows.map((row: any) =>
-        row.id === id ? { ...row, [field]: value } : row
-      )
+        row.id === id ? { ...row, [field]: value } : row,
+      ),
     );
   };
 
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6" key={student.id}>
-      <form
-      action=""
-      method="POST"
-      className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-auto sm:h-[400px] w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
-      >
-      <div className="flex flex-col justify-between p-4 h-auto sm:h-[400px]">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <h3 className="text-small font-semibold">Aaradhya Korde (794)</h3>
-          </div>
-          <button
-            type="button"
-            onClick={handleAddRow}
-            className="btn-primary w-8 h-8 flex justify-center items-center rounded bg-blue-500 hover:bg-blue-600"
-          >
-            <Add className="text-white text-xs" />
-          </button>
-        </div>
-
-        <input type="hidden" name="student_id" value="993" />
-        <input type="hidden" name="nxt_row" className="nxt_row" value={rows.length} />
-
-        <div className="flex flex-col gap-4 max-w-full flex-grow overflow-y-auto">
-          {rows.map((row: any) => (
-            <div key={row.id} className="flex items-center gap-4 w-full">
-              <input type="hidden" name="row_count[]" value={row.id} />
-              <div className="flex-1">
-                <label
-                  htmlFor={`class_id_${row.id}`}
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                >
-                  Class
-                </label>
-                <select
-                  value={selectedClass2 || ""}
-                  onChange={handleClassChange2}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {classes2.map((cls) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.class}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex-1">
-                <label
-                  htmlFor={`section_id_${row.id}`}
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                >
-                  Section
-                </label>
-                <select
-                  value={selectedSection2 || ""}
-                  onChange={handleSectionChange2}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  disabled={!selectedClass2}
-                >
-                  <option value="">Select</option>
-                  {section2.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mt-8 flex items-center justify-center w-[5%]">
-                <button
-                  type="button"
-                  onClick={() => handleRemoveRow(rows[rows.length - 1]?.id)}
-                  className="btn-error py-2 rounded flex items-center"
-                >
-                  <DeleteIcon />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="text-left bg-[#C1C1C1] p-4 mt-auto bottom-0 w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-        <button
-          type="submit"
-          className="text-white btn-primary flex items-center gap-1 rounded bg-blue-500 hover:bg-blue-600 py-2 px-4 text-sm"
-        >
-          Update
-        </button>
-      </div>
-      </form>
-    </div>
-    ));
-  };
-  
-
-  
   return (
     <DefaultLayout>
       <div className={styles.filters}>
@@ -315,104 +229,125 @@ const handleSectionChange2 = (
           </div>
         </div>
       </div>
+      {loading ? <LoaderSpiner /> : ""}
+      <div className="grid grid-cols-1 gap-6 dark:border-strokedark dark:bg-boxdark sm:grid-cols-2 lg:grid-cols-3 ">
+        {studentsData.length > 0
+          ? Object.values(studentsData).map(
+              (student: any, studentKey: number) => (
+                <div
+                  key={studentKey}
+                  className="border-gray-300 dark:border-gray-700 dark:bg-gray-800 flex flex-col rounded-lg border bg-white p-6 shadow-lg"
+                >
+                  {/* Header Section */}
+                  <div className="mb-6 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-gray-800 text-lg font-semibold dark:text-white">
+                        {student.firstname} {student.lastname}
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddRow}
+                      className="btn-primary flex h-8 w-8 items-center justify-center rounded bg-blue-500 hover:bg-blue-600"
+                    >
+                      <Add className="text-xs text-white" />
+                    </button>
+                  </div>
 
-   
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-  <form
-    action=""
-    method="POST"
-    className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-auto sm:h-[400px] w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
-  >
-    <div className="flex flex-col justify-between p-4 h-auto sm:h-[400px]">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <h3 className="text-small font-semibold">Aaradhya Korde (794)</h3>
-        </div>
-        <button
-          type="button"
-          onClick={handleAddRow}
-          className="btn-primary w-8 h-8 flex justify-center items-center rounded bg-blue-500 hover:bg-blue-600"
-        >
-          <Add className="text-white text-xs" />
-        </button>
+                  {/* Hidden Inputs */}
+                  <input type="hidden" name="student_id" value="993" />
+                  <input
+                    type="hidden"
+                    name="nxt_row"
+                    className="nxt_row"
+                    value={rows.length}
+                  />
+
+                  {/* Dynamic Rows Section */}
+                  <div className="flex max-w-full flex-grow flex-col gap-4 overflow-y-auto">
+                    {rows.map((row: any) => (
+                      <div
+                        key={row.id}
+                        className="flex w-full items-center gap-4 border-b pb-4"
+                      >
+                        <input
+                          type="hidden"
+                          name="row_count[]"
+                          value={row.id}
+                        />
+                        <div className="flex-1">
+                          <label
+                            htmlFor={`class_id_${row.id}`}
+                            className="text-gray-700 dark:text-gray-300 mb-2 block text-sm font-medium"
+                          >
+                            Class
+                          </label>
+                          <select
+                            value={selectedClass2 || ""}
+                            onChange={handleClassChange2}
+                            className="border-gray-300 text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 w-full rounded-lg border bg-transparent px-4 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                          >
+                            <option value="">Select</option>
+                            {classes2.map((cls) => (
+                              <option key={cls.id} value={cls.id}>
+                                {cls.class}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="flex-1">
+                          <label
+                            htmlFor={`section_id_${row.id}`}
+                            className="text-gray-700 dark:text-gray-300 mb-2 block text-sm font-medium"
+                          >
+                            Section
+                          </label>
+                          <select
+                            value={selectedSection2 || ""}
+                            onChange={handleSectionChange2}
+                            className="border-gray-300 text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 w-full rounded-lg border bg-transparent px-4 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                            disabled={!selectedClass2}
+                          >
+                            <option value="">Select</option>
+                            {section2.map((sec) => (
+                              <option
+                                key={sec.section_id}
+                                value={sec.section_id}
+                              >
+                                {sec.section_name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="mt-6 flex w-[5%] items-center justify-center">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemoveRow(rows[rows.length - 1]?.id)
+                            }
+                            className="btn-error bg-red-500 hover:bg-red-600 flex items-center justify-center rounded p-2 text-white"
+                          >
+                            <DeleteIcon />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Footer Section */}
+                  <div className="bg-gray-100 dark:bg-gray-700 mt-auto w-full p-4 text-right">
+                    <button
+                      type="submit"
+                      className="btn-primary rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+              ),
+            )
+          : ""}
       </div>
-
-      <input type="hidden" name="student_id" value="993" />
-      <input type="hidden" name="nxt_row" className="nxt_row" value={rows.length} />
-
-      <div className="flex flex-col gap-4 max-w-full flex-grow overflow-y-auto">
-        {rows.map((row: any) => (
-          <div key={row.id} className="flex items-center gap-4 w-full">
-            <input type="hidden" name="row_count[]" value={row.id} />
-            <div className="flex-1">
-              <label
-                htmlFor={`class_id_${row.id}`}
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-              >
-                Class
-              </label>
-              <select
-                value={selectedClass2 || ""}
-                onChange={handleClassChange2}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="">Select</option>
-                {classes2.map((cls) => (
-                  <option key={cls.id} value={cls.id}>
-                    {cls.class}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex-1">
-              <label
-                htmlFor={`section_id_${row.id}`}
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-              >
-                Section
-              </label>
-              <select
-                value={selectedSection2 || ""}
-                onChange={handleSectionChange2}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                disabled={!selectedClass2}
-              >
-                <option value="">Select</option>
-                {section2.map((sec) => (
-                  <option key={sec.section_id} value={sec.section_id}>
-                    {sec.section_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="mt-8 flex items-center justify-center w-[5%]">
-              <button
-                type="button"
-                onClick={() => handleRemoveRow(rows[rows.length - 1]?.id)}
-                className="btn-error py-2 rounded flex items-center"
-              >
-                <DeleteIcon />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-    <div className="text-left bg-[#C1C1C1] p-4 mt-auto bottom-0 w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-      <button
-        type="submit"
-        className="text-white btn-primary flex items-center gap-1 rounded bg-blue-500 hover:bg-blue-600 py-2 px-4 text-sm"
-      >
-        Update
-      </button>
-    </div>
-  </form>
-
-
-
-  
-</div>
-
     </DefaultLayout>
   );
 };

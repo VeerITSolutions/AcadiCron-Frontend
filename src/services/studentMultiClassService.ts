@@ -1,13 +1,14 @@
 import apiClient from "./apiClient";
 
 
-export const fetchStudentMultiClassData = async (selectedClass :any,
-  selectedSection :any,
-  keyword:any) => {
+export const fetchStudentMultiClassData = async (selectedClass? :any,
+  selectedSection? :any,getselectedSessionId?  : any,
+  keyword?:any) => {
   const response = await apiClient.get(`/multi-class`, {
     params: {
       selectedClass,
       selectedSection,
+      getselectedSessionId,
       keyword
     },
   });
@@ -28,4 +29,3 @@ export const fetchUpdatetMultiClass = async (page: number, perPage: number,selec
   });
   return response.data;
 };
-
