@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
@@ -9,75 +8,91 @@ import { fetchsectionByClassData } from "@/services/sectionsService";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  fetchSubjectGroupData,
-  createSubjectGroup,
-  deleteSubjectGroup,
-  editSubjectGroup,
-  createSubjectGroupAdd,
-} from "@/services/subjectGroupService";
-
 import { fetchSubjectData } from "@/services/subjectsService";
 import { Edit, Delete, Visibility, } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { createAdmitCard, deleteAdmitCard, editAdmitCard, fetchAdmitCard, viewAdmitCard } from "@/services/TemplateAdmitcardService";
+import { useState, useEffect, useRef } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AdmitCard = () => {
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<Array<any>>([]);
-  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
-  const [createdata, setcreatedata] = useState<Array<any>>([]);
-  const [enabled, setEnabled] = useState(false);
+   const [data, setData] = useState<Array<Array<any>>>([]);
+   const { themType, setThemType } = useGlobalState();
+   const [certificate_name, setCertificateName] = useState<string>("");
+   const [isFormVisible, setIsFormVisible] = useState(false);
+   const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<string>("");
+   const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
+   const fileInputRef = useRef<HTMLInputElement>(null);
+   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
+   const [createdata, setcreatedata] = useState<Array<any>>([]);
+   const [enabled, setEnabled] = useState(false);
+   const [loading, setLoading] = useState(true);
+   const [page, setPage] = useState(0);
+   const [rowsPerPage, setRowsPerPage] = useState(10);
+   const [totalCount, setTotalCount] = useState(0);
+   const [isEditing, setIsEditing] = useState<boolean>(false);
+   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+   const [savedSessionstate, setSavedSession] = useState("");
+   const [isNameEnabled, setIsNameEnabled] = useState(false);
+   const [isFatherNameEnabled, setIsFatherNameEnabled] = useState(false);
+   const [isMotherNameEnabled, setIsMotherNameEnabled] = useState(false);
+   const [isExamSessionEnabled, setIsExamSessionEnabled] = useState(false);
+   const [isAdmissionNoEnabled, setIsAdmissionNoEnabled] = useState(false);
+   const [isDivisionEnabled, setIsDivisionEnabled] = useState(false);
+   const [isRollNoEnabled, setIsRollNoEnabled] = useState(false);
+   const [isPhotoEnabled, setIsPhotoEnabled] = useState(false);
+   const [isClassEnabled, setIsClassEnabled] = useState(false);
+   const [isSectionEnabled, setIsSectionEnabled] = useState(false);
+   const [selectedSection, setSelectedSection] = useState<string[]>([]);
+   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+   const [isDOBEnabled, setIsDOBEnabled] = useState(false);
+   const [isAddressEnabled, setIsAddressEnabled] = useState(false);
+   const [isGenderEnabled, setIsGenderEnabled] = useState(false);
 
-
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [totalCount, setTotalCount] = useState(0);
-  const [colorMode, setColorMode] = useColorMode();
-
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-
-  const [classes, setClasses] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedSection, setSelectedSection] = useState<string[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
-  const [savedSessionstate, setSavedSession] = useState("");
-  const [isNameEnabled, setIsNameEnabled] = useState(false);
-  const [isFatherNameEnabled, setIsFatherNameEnabled] = useState(false);
-  const [isMotherNameEnabled, setIsMotherNameEnabled] = useState(false);
-  const [isDOBEnabled, setIsDOBEnabled] = useState(false);
-  const [isAdmissionNoEnabled, setIsAdmissionNoEnabled] = useState(false);
-  const [isRollNoEnabled, setIsRollNoEnabled] = useState(false);
-  const [isAddressEnabled, setIsAddressEnabled] = useState(false);
-  const [isGenderEnabled, setIsGenderEnabled] = useState(false);
-  const [isPhotoEnabled, setIsPhotoEnabled] = useState(false);
-  const [isClassEnabled, setIsClassEnabled] = useState(false);
-  const [isSectionEnabled, setIsSectionEnabled] = useState(false);
-
-  const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    session_id: savedSessionstate,
+    template: '',
+    heading: '',
+    title: '',
+    left_logo: '',
+    right_logo: '',
+    exam_name: '',
+    school_name: '',
+    exam_center: '',
+    sign: '',
+    background_img: '',
+    is_name: false,
+    is_father_name: false,
+    is_mother_name: false,
+    is_dob: false,
+    is_admission_no: false,
+    is_roll_no: false,
+    is_address: false,
+    is_gender: false,
+    is_photo: false,
+    is_class: false,
+    is_section: false,
+    content_footer: ''
   });
-  const fetchData = async (currentPage: number, rowsPerPage: number) => {
+  
+ const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchSubjectGroupData(currentPage + 1, rowsPerPage);
-
-      const resultSubjectData = await fetchSubjectData();
-
-      setTotalCount(result.total);
-      setData(formatSubjectData(result.data));
-      setDataSubject(resultSubjectData.data);
+      const result = await fetchAdmitCard(currentPage + 1, rowsPerPage);
+      setTotalCount(result.totalCount);
+      setData(formatAdmitCardData(result.data));
       setLoading(false);
+
+      // const resultcutomFields = await fetchGetCustomFiledsData(
+      //   currentPage + 1,
+      //   rowsPerPage,
+      // );
+
+      // setCustomFileds(resultcutomFields.data);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -86,167 +101,285 @@ const AdmitCard = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteSubjectGroup(id);
+      await deleteAdmitCard(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
-      toast.error("Delete failed");
       console.error("Delete failed", error);
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
 
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
-
-  const handleEdit = (id: number, subject: any) => {
+  const handleEdit = (id: number, data: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      name: subject.name,
-      description: subject.description,
-      session_id: savedSessionstate,
+      template: data.template || "",
+      heading: data.heading || "",
+      title: data.title || "",
+      left_logo: data.left_logo || "",
+      right_logo: data.right_logo || "",
+      exam_name: data.exam_name || "",
+      school_name: data.school_name || "",
+      exam_center: data.exam_center || "",
+      sign: data.sign || "",
+      background_img: data.background_img || "",
+      is_name: data.is_name || false,
+      is_father_name: data.is_father_name || false,
+      is_mother_name: data.is_mother_name || false,
+      is_dob: data.is_dob || false,
+      is_admission_no: data.is_admission_no || false,
+      is_roll_no: data.is_roll_no || false,
+      is_address: data.is_address || false,
+      is_gender: data.is_gender || false,
+      is_photo: data.is_photo || false,
+      is_class: data.is_class || false,
+      is_section: data.is_section || false,
+      content_footer: data.content_footer || ""
     });
-
-    setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
-    setSelectedSection(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.section?.id,
-      ),
-    );
-
-    setSelectedClass(
-      subject.class_sections.map(
-        (classSection: any) => classSection?.class_section?.class?.id,
-      ),
-    );
+    
   };
 
-  const handleCancel = () => {
-    setFormData({
-      name: "",
-      description: "",
-      session_id: savedSessionstate,
-    });
-    setIsEditing(false);
-    setEditCategoryId(null);
-  };
 
-  const formatSubjectData = (subjects: any[]) => {
-    return subjects.map((subject: any) => [
-      subject.certificate_name || "N/A",
-      subject.background_image || "N/A",
-      <div key={subject.id} className="flex">
-      
-         <IconButton  aria-label="Show">
-          <Visibility />
-        </IconButton>
-        <IconButton
-          onClick={() => handleEdit(subject.id, subject)}
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(subject.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
-    ]);
-  };
-
-  useEffect(() => {
-    fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage]);
-
-  useEffect(() => {
-    const savedSession = localStorage.getItem("selectedSessionId");
-    if (savedSession) {
-      setSavedSession(savedSession);
-      // Use this value in your logic
-    }
-  }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async () => {
-    try {
-      if (isEditing && editCategoryId !== null) {
-        const result = await editSubjectGroup(
-          editCategoryId,
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
-        if (result.success) {
-          toast.success("Subject group updated successfully");
-        } else {
-          toast.error("Failed to update subject group");
+   const fetchData2 = async () => {
+      try {
+        if (isFormVisible === true) {
+          const result = await viewAdmitCard(isFormVisibleHtmlId);
+  
+          if (result && result.success) {
+            setIsFormVisibleHtml(result.data); // Append returned HTML
+            setIsFormVisible(true); // Show the HTML
+          } else {
+            console.error("Failed to load certificate preview");
+          }
         }
-      } else {
-        const result = await createSubjectGroupAdd(
-          formData,
-          selectedSubject,
-          selectedSection,
-          savedSessionstate,
-        );
+      } catch (error: any) {}
+    };
+    useEffect(() => {
+      fetchData2();
+    }, [isFormVisible]);
+  
+    const handleButtonClick = (id: any) => {
+      setIsFormVisible((prev) => !prev); // Toggle modal state
+      setIsFormVisibleHtmlId(id); // Toggle modal state
+    };
+  
+    const handleButtonClick2 = async () => {
+      setIsFormVisible((prev) => !prev); // Toggle modal state
+    };
 
-        setFormData({
-          name: "",
-          description: "",
-          session_id: savedSessionstate,
-        });
 
-        setSelectedClass("");
-        setSelectedSection([]);
-        setSelectedSubject([]);
 
-        if (result.success) {
-          toast.success("Subject group created successfully");
-        } else {
-          toast.error("Failed to create subject group");
-        }
+    const formatAdmitCardData = (students: any[]) => {
+      return students.map((student: any) => [
+        student.template || "N/A",
+        student.background_img ? (
+          <img
+            src={
+              process.env.NEXT_PUBLIC_BASE_URL +
+              `/uploads/marksheet/${student.background_img}`
+            }
+            width="40"
+            alt={student.certificate_name || "Marksheet Image"}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src =
+                "data:image/svg+xml;charset=UTF-8," +
+                encodeURIComponent(`
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="40" height="40" fill="currentColor">
+                <rect x="10" y="10" width="44" height="32" rx="4" ry="4" fill="#cbd5e0" />
+                <text x="32" y="30" text-anchor="middle" font-size="10" fill="#4a5568" font-weight="bold">
+                  CERTIFICATE
+                </text>
+                <circle cx="32" cy="45" r="5" fill="#4a5568" />
+              </svg>
+            `);
+            }}
+          />
+        ) : (
+          "N/A"
+        ),
+        <div key={student.id} className="flex">
+          <IconButton aria-label="Show">
+            <div className="" onClick={() => handleButtonClick(student.id)}>
+              {" "}
+              <Visibility />
+            </div>
+          </IconButton>
+  
+          <IconButton
+            onClick={() => handleEdit(student.id, student)}
+            aria-label="edit"
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => handleDelete(student.id)}
+            aria-label="delete"
+          >
+            <Delete />
+          </IconButton>
+        </div>,
+      ]);
+    };
+
+    useEffect(() => {
+      fetchData(page, rowsPerPage);
+    }, [page, rowsPerPage]);
+  
+  
+    useEffect(() => {
+      const savedSession = localStorage.getItem("selectedSessionId");
+      if (savedSession) {
+        setSavedSession(savedSession);
+        // Use this value in your logic
       }
-      // Reset form after successful action
-      setFormData({
-        name: "",
-        description: "",
-        session_id: savedSessionstate,
-      });
+    }, []);
 
+   const handleInputChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+      const { name, value } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    };
+  
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, files } = e.target;
+      const file = files ? files[0] : null;
+  
+      if (file && name) {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: file, // Dynamically set the file in formData using the input's name attribute
+        }));
+      }
+    };
+  
+    const handleSubmit = async () => {
+      try {
+        let result;
+  
+        const data = {
+          ...formData,
+          enable_student_image: enabled,
+        };
+  
+        // Check if we are editing an existing category
+        if (isEditing && editCategoryId !== null) {
+          result = await editAdmitCard(editCategoryId, data);
+        } else {
+          result = await createAdmitCard(data);
+        }
+  
+        // Handle the API response
+        if (result.success) {
+          toast.success(
+            isEditing ? "Updated successfully" : "Saved successfully",
+          );
+          // Reset form data
+          setFormData({
+            template: '',
+            heading: '',
+            title: '',
+            left_logo: '',
+            right_logo: '',
+            exam_name: '',
+            school_name: '',
+            exam_center: '',
+            sign: '',
+            background_img: '',
+            is_name: false,
+            is_father_name: false,
+            is_mother_name: false,
+            is_dob: false,
+            is_admission_no: false,
+            is_roll_no: false,
+            is_address: false,
+            is_gender: false,
+            is_photo: false,
+            is_class: false,
+            is_section: false,
+            content_footer: ''
+          });
+          setIsEditing(false);
+          setEditCategoryId(null);
+          fetchData(page, rowsPerPage); // Refresh data after submit
+          resetFileInput(); // Reset the file input
+        } else {
+          // Handle errors
+          const errorMessage = result.message || "An error occurred";
+          const errors = result.errors || {};
+  
+          toast.error(errorMessage); // Show the main error message
+  
+          // Optionally display individual field errors
+          if (errors.name) {
+            toast.error(`Name: ${errors.name.join(", ")}`);
+          }
+          if (errors.code) {
+            toast.error(`Code: ${errors.code.join(", ")}`);
+          }
+          if (errors.amount) {
+            toast.error(`Amount: ${errors.amount.join(", ")}`);
+          }
+          if (errors.description) {
+            toast.error(`Description: ${errors.description.join(", ")}`);
+          }
+        }
+      } catch (error) {
+        console.error("An error occurred", error);
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    };
+  
+  
+    const handlePageChange = (newPage: number) => {
+      setPage(newPage);
+    };
+  
+    const handleRowsPerPageChange = (newRowsPerPage: number) => {
+      setRowsPerPage(newRowsPerPage);
+      setPage(0);
+    };
+  
+    const handleCancel = () => {
+      setFormData({
+        template: '',
+        heading: '',
+        title: '',
+        left_logo: '',
+        right_logo: '',
+        exam_name: '',
+        school_name: '',
+        exam_center: '',
+        sign: '',
+        background_img: '',
+        is_name: false,
+        is_father_name: false,
+        is_mother_name: false,
+        is_dob: false,
+        is_admission_no: false,
+        is_roll_no: false,
+        is_address: false,
+        is_gender: false,
+        is_photo: false,
+        is_class: false,
+        is_section: false,
+        content_footer: ''
+      });
       setIsEditing(false);
       setEditCategoryId(null);
-      fetchData(page, rowsPerPage); // Refresh data after submit
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  };
-
-  const handlePageChange = (newPage: number) => setPage(newPage);
-
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-    setPage(0);
-  };
-
+    };
+  
+    const resetFileInput = () => {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Reset the value of the file input
+      }
+    };
+  
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -273,6 +406,38 @@ const AdmitCard = () => {
 
   return (
     <DefaultLayout>
+      {isFormVisible && (
+        <>
+          <Dialog
+            open={isFormVisible}
+            onClose={handleButtonClick2}
+            className="w-full"
+          >
+            <DialogTitle className="flex justify-end p-4">
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={handleButtonClick2}
+                aria-label="close"
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+
+            <div className="flex h-full w-full items-center justify-center">
+              <DialogContent className="h-full w-full dark:bg-boxdark dark:drop-shadow-none">
+                <div
+                  className="w-full"
+                  dangerouslySetInnerHTML={{ __html: isFormVisibleHtml }}
+                />
+              </DialogContent>
+            </div>
+          </Dialog>
+        </>
+      )}
+
+
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -297,6 +462,8 @@ const AdmitCard = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="template"
+                    value={formData.template}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -307,6 +474,8 @@ const AdmitCard = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="heading"
+                    value={formData.heading}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -317,6 +486,8 @@ const AdmitCard = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -327,6 +498,8 @@ const AdmitCard = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="exam_name"
+                    value={formData.exam_name}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -337,6 +510,8 @@ const AdmitCard = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="school_name"
+                    value={formData.school_name}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -347,6 +522,8 @@ const AdmitCard = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
                     name="exam_center"
+                    value={formData.exam_center}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -356,7 +533,9 @@ const AdmitCard = () => {
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="footer_text"
+                    name="content_footer"
+                    value={formData.content_footer}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -411,7 +590,7 @@ const AdmitCard = () => {
                       accept="image/*"
                       onChange={handleFileChange}
                       id="file"
-                      name="background_image"
+                      name="background_img"
                       className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -475,7 +654,7 @@ const AdmitCard = () => {
                   {isEditing && (
                     <button
                       type="button"
-                      onClick={handleCancel} // Call the cancel function
+                      onClick={handleCancel}
                       className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                     >
                       Cancel
