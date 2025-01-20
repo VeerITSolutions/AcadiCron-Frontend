@@ -18,6 +18,13 @@ import LoaderSpiner from "@/components/common/LoaderSpiner";
 const MultiClassStudent = () => {
   const [activeStudent, setActiveStudent] = useState<string | null>(null);
   const [studentRows, setStudentRows] = useState<Record<string, any>>({});
+  const [classSectionMapping, setClassSectionMapping] = useState<{
+    [admissionNo: string]: {
+      selectedClass: string;
+      selectedSection: string;
+      sections: any[];
+    };
+  }>({});
   const [studentsData, setStudentsData] = useState<any[]>([]);
   const [updateData, setUpdateData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -55,32 +62,46 @@ const MultiClassStudent = () => {
     setPage(0);
   };
 
-  const handleClassChange2 = (admissionNo: string, rowId: number, value: string) => {
-    setSelectedClass2(value); // Update selectedClass2
-    setActiveStudent(admissionNo); // Set the active student
+  const handleClassChange2 = async (
+    admissionNo: string,
+    rowId: number,
+    value: string,
+  ) => {
+    const sectionsResult = value
+      ? await fetchsectionByClassData(value)
+      : { data: [] }; // Fetch sections or reset if class is empty
+
     setStudentRows((prevState) => ({
       ...prevState,
       [admissionNo]: prevState[admissionNo].map((row: any) =>
-        row.id === rowId ? { ...row, selectedClass2: value } : row
+        row.id === rowId
+          ? {
+              ...row,
+              selectedClass2: value,
+              selectedSection2: "",
+              sections: sectionsResult.data,
+            }
+          : row,
       ),
     }));
   };
-  
-  const handleSectionChange2 = (admissionNo: string, rowId: number, value: string) => {
-    setSelectedSection2(value); // Update selectedSection2
-    setActiveStudent(admissionNo); // Set the active student
+
+  const handleSectionChange2 = (
+    admissionNo: string,
+    rowId: number,
+    value: string,
+  ) => {
     setStudentRows((prevState) => ({
       ...prevState,
       [admissionNo]: prevState[admissionNo].map((row: any) =>
-        row.id === rowId ? { ...row, selectedSection2: value } : row
+        row.id === rowId ? { ...row, selectedSection2: value } : row,
       ),
     }));
   };
-  
 
   const handleSearch = () => {
     setPage(0);
-    fetchData( selectedClass, selectedSection, keyword);
+    fetchData(selectedClass, selectedSection, keyword);
   };
 
   const handleRefresh = () => {
@@ -96,7 +117,9 @@ const MultiClassStudent = () => {
   useEffect(() => {
     if (studentsData.length > 0) {
       const initialRows = studentsData.reduce((acc: any, student: any) => {
-        acc[student.admission_no] = [{ id: 1, selectedClass2: "", selectedSection2: "" }];
+        acc[student.admission_no] = [
+          { id: 1, selectedClass2: "", selectedSection2: "" },
+        ];
         return acc;
       }, {});
       setStudentRows(initialRows);
@@ -151,8 +174,10 @@ const MultiClassStudent = () => {
     keyword?: string,
   ) => {
     try {
-     const resultUpdate = await fetchUpdatetMultiClass( selectedClass2,
-      selectedSection2);
+      const resultUpdate = await fetchUpdatetMultiClass(
+        selectedClass2,
+        selectedSection2,
+      );
       if (selectedSection && selectedClass) {
         setLoading(true);
         const result = await fetchStudentMultiClassData(
@@ -185,28 +210,35 @@ const MultiClassStudent = () => {
     }
   }, [rows]);
 
-
   const handleAddRow = (studentId: string) => {
     setStudentRows((prev) => ({
       ...prev,
       [studentId]: [
         ...(prev[studentId] || []),
-        { id: (prev[studentId]?.length || 0) + 1, class_id: "", section_id: "" },
+        {
+          id: (prev[studentId]?.length || 0) + 1,
+          class_id: "",
+          section_id: "",
+        },
       ],
     }));
   };
 
   const handleRemoveRow = (studentId: string, rowId: number) => {
     setStudentRows((prev) => {
-      const updatedRows = (prev[studentId] || []).filter((row: any) => row.id !== rowId);
+      const updatedRows = (prev[studentId] || []).filter(
+        (row: any) => row.id !== rowId,
+      );
       return {
         ...prev,
-        [studentId]: updatedRows.length > 0 ? updatedRows : [{ id: 1, class_id: "", section_id: "" }],
+        [studentId]:
+          updatedRows.length > 0
+            ? updatedRows
+            : [{ id: 1, class_id: "", section_id: "" }],
       };
     });
   };
 
-  
   const handleChange = (id: any, field: any, value: any) => {
     setRows(
       rows.map((row: any) =>
@@ -215,8 +247,6 @@ const MultiClassStudent = () => {
     );
   };
 
-
-  
   return (
     <DefaultLayout>
       <div className={styles.filters}>
@@ -263,116 +293,116 @@ const MultiClassStudent = () => {
         </div>
       </div>
 
-
       {loading ? <LoaderSpiner /> : ""}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-  {studentsData.length > 0 &&
-    Object.values(studentsData).map((student: any) => (
-      <div
-        key={student.admission_no}
-        className="border border-stroke rounded shadow-md dark:border-strokedark bg-white flex flex-col h-auto sm:h-[400px] w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white"
-      >
-        {/* Header Section */}
-        <div className="flex items-center justify-between mb-6 p-4">
-          <div className="flex items-center gap-2">
-            <h3 className="text-small font-semibold">
-              {student.firstname} {student.lastname} ({student.admission_no})
-            </h3>
-          </div>
-          <button
-            type="button"
-            onClick={() => handleAddRow(student.admission_no)}
-            className="btn-primary w-8 h-8 flex justify-center items-center rounded bg-blue-500 hover:bg-blue-600"
-          >
-            <Add className="text-white text-xs" />
-          </button>
-        </div>
-
-        {/* Dynamic Rows Section */}
-        <div className="flex flex-col gap-4 max-w-full flex-grow overflow-y-auto p-4">
-          {(studentRows[student.admission_no] || []).map((row: any) => (
-            <div key={row.id} className="flex items-center gap-4 w-full">
-              <div className="flex-1">
-                <label
-                  htmlFor={`class_id_${student.admission_no}_${row.id}`}
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                >
-                  Class
-                </label>
-                <select
-                 value={
-                  activeStudent === student.admission_no && selectedClass2 !== ""
-                    ? selectedClass2
-                    : row.selectedClass2 || ""
-                }
-                onChange={(e) =>
-                  handleClassChange2(student.admission_no, row.id, e.target.value)
-                }
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="">Select</option>
-                  {classes2.map((cls) => (
-                    <option key={cls.id} value={cls.id}>
-                      {cls.class}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex-1">
-                <label
-                  htmlFor={`section_id_${student.admission_no}_${row.id}`}
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                >
-                  Section
-                </label>
-                <select
-                   value={
-                    activeStudent === student.admission_no && selectedSection2 !== ""
-                      ? selectedSection2
-                      : row.selectedSection2 || ""
-                  }
-                  onChange={(e) =>
-                    handleSectionChange2(student.admission_no, row.id, e.target.value)
-                  }
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  disabled={!row.selectedClass2}
-                >
-                  <option value="">Select</option>
-                  {section2.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mt-8 flex items-center justify-center w-[5%]">
+      <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {studentsData.length > 0 &&
+          Object.values(studentsData).map((student: any) => (
+            <div
+              key={student.admission_no}
+              className="flex h-auto w-full flex-col rounded border border-stroke bg-white shadow-md dark:border-strokedark dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none sm:h-[400px]"
+            >
+              {/* Header Section */}
+              <div className="mb-6 flex items-center justify-between p-4">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-small font-semibold">
+                    {student.firstname} {student.lastname} (
+                    {student.admission_no})
+                  </h3>
+                </div>
                 <button
                   type="button"
-                  onClick={() => handleRemoveRow(student.admission_no, row.id)}
-                  className="btn-error py-2 rounded flex items-center"
+                  onClick={() => handleAddRow(student.admission_no)}
+                  className="btn-primary flex h-8 w-8 items-center justify-center rounded bg-blue-500 hover:bg-blue-600"
                 >
-                  <DeleteIcon />
+                  <Add className="text-xs text-white" />
+                </button>
+              </div>
+
+              {/* Dynamic Rows Section */}
+              <div className="flex max-w-full flex-grow flex-col gap-4 overflow-y-auto p-4">
+                {(studentRows[student.admission_no] || []).map((row: any) => (
+                  <div key={row.id} className="flex w-full items-center gap-4">
+                    <div className="flex-1">
+                      <label
+                        htmlFor={`class_id_${student.admission_no}_${row.id}`}
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      >
+                        Class
+                      </label>
+                      <select
+                        value={row.selectedClass2 || ""}
+                        onChange={(e) =>
+                          handleClassChange2(
+                            student.admission_no,
+                            row.id,
+                            e.target.value,
+                          )
+                        }
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="">Select</option>
+                        {classes2.map((cls) => (
+                          <option key={cls.id} value={cls.id}>
+                            {cls.class}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex-1">
+                      <label
+                        htmlFor={`section_id_${student.admission_no}_${row.id}`}
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      >
+                        Section
+                      </label>
+                      <select
+                        value={row.selectedSection2 || ""}
+                        onChange={(e) =>
+                          handleSectionChange2(
+                            student.admission_no,
+                            row.id,
+                            e.target.value,
+                          )
+                        }
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        disabled={!row.selectedClass2} // Disable if no class is selected
+                      >
+                        <option value="">Select</option>
+                        {(row.sections || []).map((sec: any) => (
+                          <option key={sec.section_id} value={sec.section_id}>
+                            {sec.section_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="mt-8 flex w-[5%] items-center justify-center">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleRemoveRow(student.admission_no, row.id)
+                        }
+                        className="btn-error flex items-center rounded py-2"
+                      >
+                        <DeleteIcon />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer Section */}
+              <div className="bottom-0 mt-auto w-full bg-[#C1C1C1] p-4 text-left dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                <button
+                  type="submit"
+                  onClick={() => fetchData(selectedClass2, selectedSection2)}
+                  className="btn-primary flex items-center gap-1 rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
+                >
+                  Update
                 </button>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Footer Section */}
-        <div className="text-left bg-[#C1C1C1] p-4 mt-auto bottom-0 w-full dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-          <button
-            type="submit"
-            onClick={() => fetchData(selectedClass2, selectedSection2)}
-            className="text-white btn-primary flex items-center gap-1 rounded bg-blue-500 hover:bg-blue-600 py-2 px-4 text-sm"
-          >
-            Update
-          </button>
-        </div>
       </div>
-    ))}
-</div>
-
-
     </DefaultLayout>
   );
 };
