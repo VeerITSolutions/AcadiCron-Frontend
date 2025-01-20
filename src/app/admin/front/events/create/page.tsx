@@ -9,7 +9,7 @@ import {
   fetchNotificationData,
   deleteNotificationData,
 } from "@/services/notificationService";
-import "react-quill/dist/quill.snow.css";
+
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
@@ -167,50 +167,50 @@ const FrontAdd = () => {
                   />
                 </div>
                 <div className="flex">
-                <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                   Venue<span className="required">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                    className="rounded-lg border-[1.5px] border-stroke bg-transparent mr-3 px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Event Start
-                  </label>
-                  <input
-                    id="publish_date"
-                    name="publish_date"
-                    value={
-                      formData.publish_date ||
-                      new Date().toISOString().split("T")[0]
-                    }
-                    onChange={handleInputChange}
-                    type="date"
-                    className="rounded-lg border-[1.5px] border-stroke bg-transparent mr-3 px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                </div>
-                <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Event End
-                  </label>
-                  <input
-                    id="publish_date"
-                    name="publish_date"
-                    value={
-                      formData.publish_date ||
-                      new Date().toISOString().split("T")[0]
-                    }
-                    onChange={handleInputChange}
-                    type="date"
-                    className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                </div>
+                  <div className="field mb-6">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Venue<span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleInputChange}
+                      className="mr-3 rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div className="field mb-6">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Event Start
+                    </label>
+                    <input
+                      id="publish_date"
+                      name="publish_date"
+                      value={
+                        formData.publish_date ||
+                        new Date().toISOString().split("T")[0]
+                      }
+                      onChange={handleInputChange}
+                      type="date"
+                      className="mr-3 rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                  </div>
+                  <div className="field mb-6">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Event End
+                    </label>
+                    <input
+                      id="publish_date"
+                      name="publish_date"
+                      value={
+                        formData.publish_date ||
+                        new Date().toISOString().split("T")[0]
+                      }
+                      onChange={handleInputChange}
+                      type="date"
+                      className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                  </div>
                 </div>
                 <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -237,8 +237,6 @@ const FrontAdd = () => {
                   />
                 </div>
 
-                
-
                 <div className="field mb-6 pt-9">
                   <label className="block text-sm font-medium text-black dark:text-white">
                     Upload File
@@ -255,19 +253,15 @@ const FrontAdd = () => {
 
               {/* Second Column */}
               <div className="col-span-1">
-              <div className="field mb-6 pt-9 flex">
-                  
-                  <input
-                    type="checkbox" id="enableSwitch" className="gap-6"
-                  />
-                  <label className="block text-sm ml-2 font-medium text-black dark:text-white position: relative; display: inline-block; width: 34px; height: 20px;">
-                  Sidebar Setting
+                <div className="field mb-6 flex pt-9">
+                  <input type="checkbox" id="enableSwitch" className="gap-6" />
+                  <label className="position: relative; display: inline-block; width: 34px; height: 20px; ml-2 block text-sm font-medium text-black dark:text-white">
+                    Sidebar Setting
                   </label>
-                  
                 </div>
-              <div className="field mb-6 pt-9">
+                <div className="field mb-6 pt-9">
                   <label className="block text-sm font-medium text-black dark:text-white">
-                   Featured Image
+                    Featured Image
                   </label>
                   <input
                     className="form-control mt-2 w-full"

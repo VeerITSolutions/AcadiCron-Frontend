@@ -8,11 +8,9 @@ import {
   deleteNotificationData,
   fetchNotificationData,
 } from "@/services/notificationService";
-import "react-quill/dist/quill.snow.css";
+
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useRouter } from "next/navigation";
-// Dynamic import for ReactQuill
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const NoticeForm = () => {
   const [loading, setLoading] = useState(true);
@@ -150,17 +148,6 @@ const NoticeForm = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Message
                   </label>
-                  <ReactQuill
-                    value={formData.message} // Controlled value
-                    onChange={
-                      (content) =>
-                        handleInputChange({
-                          target: { name: "message", value: content },
-                        }) // Custom event shape
-                    }
-                    modules={modules}
-                    style={{ height: "300px" }}
-                  />
                 </div>
 
                 <div className="field mb-6 pt-9">

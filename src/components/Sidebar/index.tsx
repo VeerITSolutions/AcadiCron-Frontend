@@ -27,7 +27,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
-  const [defaultSession, setDefaultSession] = useState(getselectedSessionId);
+
   const [defaultSessionYear, setDefaultSessionYear] = useState("");
 
   const [allSession, setAllSession] = useState<Session[]>([]);
@@ -93,7 +93,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       const sessionId = localStorage.getItem("selectedSessionId");
       if (!sessionId) {
         localStorage.setItem("selectedSessionId", response.data.session_id);
-        setDefaultSession(response.data.session_id);
+
       }
     } catch (error: any) {
       console.error("Error fetching school settings:", error);
@@ -124,7 +124,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         localStorage.setItem("selectedSessionYear", result.session);
 
         setSavedSession(result.session);
-        setDefaultSession(value);
+
 
         setModalOpen(false);
         window.location.reload();
@@ -1428,7 +1428,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none dark:border-strokedark dark:bg-boxdark"
-                value={defaultSession} // Bind the select value to savedSessionstate
+                value={getselectedSessionId ?? ''} // Bind the select value to savedSessionstate
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
                 {allSession?.map((cls: any) => (

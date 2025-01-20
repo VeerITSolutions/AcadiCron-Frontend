@@ -9,7 +9,6 @@ import {
   fetchNotificationData,
   deleteNotificationData,
 } from "@/services/notificationService";
-import "react-quill/dist/quill.snow.css";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
@@ -227,7 +226,7 @@ const NoticeForm = () => {
                     }
                     onChange={handleInputChange}
                     type="date"
-                    className="w-full dark:text-white rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
 
@@ -244,7 +243,7 @@ const NoticeForm = () => {
                     }
                     onChange={handleInputChange}
                     type="date"
-                    className="w-full dark:text-white rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
 

@@ -7,10 +7,8 @@ import {
   createNotification,
   editNotificationData,
 } from "@/services/notificationService";
-import "react-quill/dist/quill.snow.css";
 
 // Dynamic import for ReactQuill
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const NoticeForm = () => {
   const [value, setValue] = useState<string>(""); // State for message content
@@ -157,12 +155,6 @@ const NoticeForm = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Message
                   </label>
-                  <ReactQuill
-                    value={value}
-                    onChange={setValue}
-                    modules={modules}
-                    style={{ height: "300px" }}
-                  />
                 </div>
 
                 <div className="field mb-6 pt-9">
