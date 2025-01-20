@@ -44,7 +44,7 @@ export const deleteSubjectGroup = async (id: number) => {
 };
 
 // Edit a student category by ID
-export const editSubjectGroup = async (id: number, name: any, subject_group: any, section_group: any, session_id : any) => {
-  const response = await apiClient.post(`/subject-groups/${id}`, { name, subject_group, section_group, session_id});
+export const editSubjectGroup = async (id: number, data: any, subject_group: any, section_group: any, session_id : any) => {
+  const response = await apiClient.post(`/subject-groups/${id}`, { data, subject_group, section_group, session_id});
   return response.data;
 };
