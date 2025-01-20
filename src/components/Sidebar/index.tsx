@@ -493,7 +493,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 label: "Approve Leave Request",
                 route: "/admin/leaverequest/leaverequest",
               },
-              { label: "Apply Leave", route: "/admin/staff/leaverequest" },
+              /*   { label: "Apply Leave", route: "/admin/staff/leaverequest" }, */
               { label: "Leave Type", route: "/admin/leavetypes" },
 
               { label: "Department", route: "/admin/department/department" },
