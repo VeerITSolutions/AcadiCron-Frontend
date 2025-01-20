@@ -28,7 +28,7 @@ export const createLeave = async (
   document_file?: any,
   status?: any): Promise<any> => {
   try {
-    const response = await apiClient.post("/leave-request", { date, selectedLeaveType,
+    const response = await apiClient.post("/leave-request", { date, leave_type_id, selectedLeaveType,
  selectedRoleLeave,
 selectedStaff,
 leave_from, leave_to, employee_remark, admin_remark, document_file  ,status});

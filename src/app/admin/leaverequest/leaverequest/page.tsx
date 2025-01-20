@@ -143,7 +143,7 @@ const StudentDetails = () => {
       );
 
       setFormData(result.data[0]);
-      setSelectedRoleLeave(result.data[0].leave_type_id);
+      setSelectedRoleLeave(result.data[0].applied_by);
       setSelectedStaff(result.data[0].staff_id);
       setSelectedLeaveselectedLeaveType(result.data[0].leave_type_id);
 
