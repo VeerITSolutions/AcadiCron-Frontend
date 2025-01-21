@@ -147,7 +147,7 @@ const ItemStore = () => {
       // Use this value in your logic
     }
   }, []);
-
+  
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {

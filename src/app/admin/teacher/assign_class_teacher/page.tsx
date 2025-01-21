@@ -117,6 +117,9 @@ const AssignClassTeacher = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
+    setSelectedClass('');
+    setSelectedSection('');
+    setSelectedTeachers([]);
   
     setFormData({
       class_id: subject?.class_id || "",
@@ -210,12 +213,11 @@ const AssignClassTeacher = () => {
         session_id: "",
       });
       
-
       setIsEditing(false);
       setEditCategoryId(null);
       setSelectedClass('');
       setSelectedSection('');
-      setTeacherData([]);
+      setSelectedTeachers([]);
       fetchData(page, rowsPerPage); // Refresh data after submit
     } catch (error) {
       console.error("An error occurred", error);
@@ -285,15 +287,15 @@ const AssignClassTeacher = () => {
   const handleCancel = () => {
     setFormData({
       class_id: "",
-          staff_id: "",
-          section_id: "",
-          session_id: "",
+      staff_id: "",
+      section_id: "",
+      session_id: "",
     });
     setIsEditing(false);
     setEditCategoryId(null);
     setSelectedClass('');
     setSelectedSection('');
-    setTeacherData([]);
+    setSelectedTeachers([]);
   };  
 
 
