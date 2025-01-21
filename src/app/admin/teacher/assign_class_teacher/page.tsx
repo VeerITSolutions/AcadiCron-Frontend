@@ -109,13 +109,15 @@ const AssignClassTeacher = () => {
     }
   };
 
+
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-    setSelectedClass('');
-    setSelectedSection('');
-    setSelectedTeachers([]);
   
+    setSelectedClass(""); 
+    setSelectedSection(""); 
+    setSelectedTeachers([]);
+
     setFormData({
       class_id: subject?.class_id || "",
       staff_id: subject?.staff_id || "",
@@ -124,6 +126,7 @@ const AssignClassTeacher = () => {
     });
 
   };
+  
   
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
@@ -179,22 +182,24 @@ const AssignClassTeacher = () => {
 
  const handleSubmit = async () => {
   try {
+    const data = {
+      class_id: selectedClass,
+      section_id: selectedSection,
+      staff_id: selectedTeachers,
+      session_id: getselectedSessionId,
+    };
+
     if (isEditing && editCategoryId !== null) {
-      const result = await editClassAssignTeacher(editCategoryId, formData);
+      // Editing existing record
+      const result = await editClassAssignTeacher(editCategoryId, data);
       if (result.success) {
         toast.success("Updated successfully");
       } else {
         toast.error("Failed to update");
       }
     } else {
-      const data = {
-        class_id: selectedClass,
-        section_id: selectedSection,
-        staff_id: selectedTeachers,
-        session_id: getselectedSessionId,
-      };
+      // Creating a new record
       const result = await createClassAssignTeacher(data);
-
       if (result.success) {
         toast.success("Created successfully");
       } else {
