@@ -12,10 +12,6 @@ import { fetchClassAssingTeacherData,
  } from "@/services/classesAssingTeacherService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your section API service
 import {
-  createStaff,
-  deleteStaff,
-  fetchStaffData,
-  editStaffData,
   getStaffbyrole,
 } from "@/services/staffService";
 import { Edit, Delete } from "@mui/icons-material";
@@ -34,7 +30,6 @@ const AssignClassTeacher = () => {
   const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
   const [teacher, setTeacherData] = useState<Array<Array<any>>>([]);
-
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -47,6 +42,9 @@ const AssignClassTeacher = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [selectedTeachers, setSelectedTeachers] = useState<number[]>([]);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
@@ -56,9 +54,6 @@ const AssignClassTeacher = () => {
     session_id:"",
 
   });
-
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -130,7 +125,6 @@ const AssignClassTeacher = () => {
 
   };
   
-
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.class,
@@ -152,7 +146,7 @@ const AssignClassTeacher = () => {
     </div>,
     ]);
   };
-  const [selectedTeachers, setSelectedTeachers] = useState<number[]>([]);
+ 
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
@@ -176,53 +170,57 @@ const AssignClassTeacher = () => {
       setSelectedTeachers((prev) => prev.filter((id) => id !== teacherId));
     }
   };
+
+
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
-  const handleSubmit = async () => {
-    try {
-      if (isEditing && editCategoryId !== null) {
-        const result = await editClassAssignTeacher(editCategoryId, formData);
-        if (result.success) {
-          toast.success("Updated successfully");
-        } else {
-          toast.error("Failed to update");
-        }
+
+
+ const handleSubmit = async () => {
+  try {
+    if (isEditing && editCategoryId !== null) {
+      const result = await editClassAssignTeacher(editCategoryId, formData);
+      if (result.success) {
+        toast.success("Updated successfully");
       } else {
-
-        const data = {
-          class_id:  selectedClass,
-          section_id: selectedSection,
-          staff_id: selectedTeachers,
-          session_id : getselectedSessionId
-          
-        };
-        const result = await createClassAssignTeacher(data);
-
-        if (result.success) {
-          toast.success("Created successfully");
-        } else {
-          toast.error("Failed to create expenses");
-        }
+        toast.error("Failed to update");
       }
-      // Reset form after successful action
-      setFormData({
-        class_id: "",
-        staff_id: "",
-        section_id: "",
-        session_id: "",
-      });
-      
-      setIsEditing(false);
-      setEditCategoryId(null);
-      setSelectedClass('');
-      setSelectedSection('');
-      setSelectedTeachers([]);
-      fetchData(page, rowsPerPage); // Refresh data after submit
-    } catch (error) {
-      console.error("An error occurred", error);
+    } else {
+      const data = {
+        class_id: selectedClass,
+        section_id: selectedSection,
+        staff_id: selectedTeachers,
+        session_id: getselectedSessionId,
+      };
+      const result = await createClassAssignTeacher(data);
+
+      if (result.success) {
+        toast.success("Created successfully");
+      } else {
+        toast.error("Failed to create expenses");
+      }
     }
-  };
+
+    // Reset form after successful action
+    setFormData({
+      class_id: "",
+      staff_id: "",
+      section_id: "",
+      session_id: "",
+    });
+
+    setIsEditing(false);
+    setEditCategoryId(null);
+    setSelectedClass("");
+    setSelectedSection("");
+    setTeacherData([]); 
+    fetchData(page, rowsPerPage); 
+  } catch (error) {
+    console.error("An error occurred", error);
+  }
+};
+
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
