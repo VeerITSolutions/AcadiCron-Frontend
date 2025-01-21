@@ -42,7 +42,7 @@ const AssignClassTeacher = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [selectedTeachers, setSelectedTeachers] = useState<number[]>([]);
+  const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [colorMode, setColorMode] = useColorMode();
@@ -109,25 +109,27 @@ const AssignClassTeacher = () => {
     }
   };
 
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
   
-    setSelectedClass(""); 
-    setSelectedSection(""); 
-    setSelectedTeachers([]);
-
     setFormData({
-      class_id: subject?.class_id || "",
-      staff_id: subject?.staff_id || "",
-      section_id: subject?.section_id || "",
-      session_id: subject?.session_id || "",
+      class_id: subject.class || "", 
+      staff_id: subject.staff_id || "", 
+      section_id: subject.section_name || "", 
+      session_id: subject.session_id || "", 
     });
-
+  
+    if (Array.isArray(subject.teachers) && subject.teachers.length > 0) {
+      const teacherIds = subject.teachers.map((teacher: any) => teacher.id);
+      setSelectedTeachers(teacherIds); 
+    } else {
+      setSelectedTeachers([]);
+    }
   };
   
-  
+
+
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.class,
@@ -155,22 +157,25 @@ const AssignClassTeacher = () => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  // const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const teacherId = parseInt(event.target.value);
+  //   if (event.target.checked) {
+  //     // Add the teacher ID to the selected list
+  //     setSelectedTeachers((prev) => [...prev, teacherId]);
+  //   } else {
+  //     // Remove the teacher ID from the selected list
+  //     setSelectedTeachers((prev) => prev.filter((id) => id !== teacherId));
+  //   }
+  // };
 
-  const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const teacherId = parseInt(event.target.value);
+  const handleInputChange2 = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    sectionId: string,
+  ) => {
     if (event.target.checked) {
-      // Add the teacher ID to the selected list
-      setSelectedTeachers((prev) => [...prev, teacherId]);
+      setSelectedTeachers((prev) => [...prev, sectionId]);
     } else {
-      // Remove the teacher ID from the selected list
-      setSelectedTeachers((prev) => prev.filter((id) => id !== teacherId));
+      setSelectedTeachers((prev) => prev.filter((id) => id !== sectionId));
     }
   };
 
@@ -219,7 +224,7 @@ const AssignClassTeacher = () => {
     setEditCategoryId(null);
     setSelectedClass("");
     setSelectedSection("");
-    setTeacherData([]); 
+    setSelectedTeachers([]);  
     fetchData(page, rowsPerPage); 
   } catch (error) {
     console.error("An error occurred", error);
@@ -367,9 +372,10 @@ const AssignClassTeacher = () => {
                     <input
                       className="mr-3"
                       type="checkbox"
-                     value={teachers.id}
+                      value={teachers.id}
+                      checked={selectedTeachers.includes(teachers.id)}
                       name="staff_id"
-                      onChange={handleInputChange2}
+                      onChange={(e) => handleInputChange2(e, teachers.id)}
                     />
                     {`${teachers.name} ${teachers.surname} (${teachers.id})`}
                   </label>
