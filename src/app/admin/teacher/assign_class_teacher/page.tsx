@@ -113,15 +113,11 @@ const AssignClassTeacher = () => {
     setIsEditing(true);
     setEditCategoryId(id);
   
-    setFormData({
-      class_id: subject.class || "", 
-      staff_id: subject.staff_id || "", 
-      section_id: subject.section_name || "", 
-      session_id: subject.session_id || "", 
-    });
+    setSelectedClass(subject.class_id);
+    setSelectedSection(subject.section_id);
   
-    if (Array.isArray(subject.teachers) && subject.teachers.length > 0) {
-      const teacherIds = subject.teachers.map((teacher: any) => teacher.id);
+    if (Array.isArray(subject.staff_data) && subject.teachers.length > 0) {
+      const teacherIds = subject.staff_data.map((teacher: any) => teacher.id);
       setSelectedTeachers(teacherIds); 
     } else {
       setSelectedTeachers([]);
@@ -134,21 +130,26 @@ const AssignClassTeacher = () => {
     return students.map((student: any) => [
       student.class,
       student.section || "N/A",
-      `${student.name || "N/A"} ${student.surname || "N/A"}`,
+      // Ensure staff_data is an array before using map
+      Array.isArray(student.staff_data) && student.staff_data.length > 0
+        ? student.staff_data
+            .map((staff: any) => `${staff.name || "N/A"} ${staff.surname || "N/A"}`)
+            .join(", ")
+        : "N/A",
       <div key={student.id} className="flex">
-      <IconButton
-        onClick={() => handleEdit(student.id, student)}
-        aria-label="edit"
-      >
-        <Edit />
-      </IconButton>
-      <IconButton
-        onClick={() => handleDelete(student.id)}
-        aria-label="delete"
-      >
-        <Delete />
-      </IconButton>
-    </div>,
+        <IconButton
+          onClick={() => handleEdit(student.id, student)}
+          aria-label="edit"
+        >
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
     ]);
   };
  
