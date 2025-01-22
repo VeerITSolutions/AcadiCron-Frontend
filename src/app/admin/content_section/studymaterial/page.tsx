@@ -29,7 +29,10 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { fetchContentData } from "@/services/ContentService";
+import {
+  fetchContentData,
+  deleteContentData,
+} from "@/services/ContentService";
 const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
 
 const options = {
@@ -123,15 +126,13 @@ const StudentDetails = () => {
   };
 
   const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
-
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
+    try {
+      await deleteContentData(id);
+      toast.success("Delete successful");
+      fetchData(page, rowsPerPage);
+    } catch (error) {
+      console.error("Delete failed", error);
+    }
   };
 
   useEffect(() => {

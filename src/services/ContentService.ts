@@ -35,3 +35,9 @@ export const editContentForUpload = async (id: number, data: any) => {
   const response = await apiClient.post(`/content-for-upload/${id}`, data);
   return response.data;
 };
+
+
+export const deleteContentData = async (id: number) => {
+  const response = await apiClient.delete(`/content/${id}`);
+  return response.data;
+};
