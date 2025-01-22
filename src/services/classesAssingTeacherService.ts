@@ -24,8 +24,8 @@ export const createClassAssignTeacher = async (data: any): Promise<any> => {
 
 
 // Delete a student category by ID
-export const deleteClassAssignTeacher = async (id: number) => {
-  const response = await apiClient.delete(`/class-teacher/${id}`);
+export const deleteClassAssignTeacher = async (class_id: any, section_id: any) => {
+  const response = await apiClient.delete(`/class-teacher/${class_id}/${section_id}`);
   return response.data;
 };
 

@@ -24,6 +24,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { useLoginDetails } from "@/store/logoStore";
+import React from "react";
 
 const AssignClassTeacher = () => {
   const [error, setError] = useState<string | null>(null);
@@ -89,19 +90,12 @@ const AssignClassTeacher = () => {
       setLoading(false);
     }
 
-    try {
-      const result = await fetchsectionData(currentPage + 1, rowsPerPage); // Fetch the section data from API
-      setSections(result.data); // Assuming your API returns section data as an array
-      setLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch sections", error);
-      setLoading(false);
-    }
+   
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (class_id : any , section_id: any) => {
     try {
-      await deleteClassAssignTeacher(id);
+      await deleteClassAssignTeacher(class_id, section_id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -115,59 +109,66 @@ const AssignClassTeacher = () => {
   
     setSelectedClass(subject.class_id);
     setSelectedSection(subject.section_id);
-  
-    if (Array.isArray(subject.staff_data) && subject.teachers.length > 0) {
-      const teacherIds = subject.staff_data.map((teacher: any) => teacher.id);
-      setSelectedTeachers(teacherIds); 
-    } else {
+    console.log(subject.staff_data);
+    const map_data = JSON.parse(subject.staff_data);
+    const selectedTeachers =  subject.staff_data
+    ? map_data.map((teacher: any) => teacher.id) // Fetch the teacher IDs
+    : [];
+    console.log('selectedTeachers', selectedTeachers);
+    if(selectedTeachers.length > 0){
+      setSelectedTeachers(selectedTeachers); 
+    }else{
       setSelectedTeachers([]);
     }
+    
+    
   };
   
 
 
   const formatStudentCategoryData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.class,
-      student.section || "N/A",
-      // Ensure staff_data is an array before using map
-      Array.isArray(student.staff_data) && student.staff_data.length > 0
-        ? student.staff_data
-            .map((staff: any) => `${staff.name || "N/A"} ${staff.surname || "N/A"}`)
-            .join(", ")
-        : "N/A",
-      <div key={student.id} className="flex">
-        <IconButton
-          onClick={() => handleEdit(student.id, student)}
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
-    ]);
+    return students.map((student: any) => {
+      // Handle staff_data and safely parse it
+      const staffData = student.staff_data ? JSON.parse(student.staff_data) : [];
+      const staffNames = staffData
+        .map((staff: any) => `${staff.name || "N/A"} ${staff.surname || "N/A"} ( ${staff.id || "N/A"})`)
+        .map((name : any, index : any) => (
+          <React.Fragment key={index}>
+            {name} 
+            <br />
+          </React.Fragment>
+        ));
+  
+      return [
+        student.class,
+        student.section || "N/A", // Default to "N/A" if section is not provided
+        staffNames.length > 0 ? staffNames : "N/A", // Display names with line breaks or "N/A"
+        <div key={student.id} className="flex">
+          <IconButton
+            onClick={() => handleEdit(student.id, student)}
+            aria-label="edit"
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => handleDelete(student.class_id, student.section_id)}
+            aria-label="delete"
+          >
+            <Delete />
+          </IconButton>
+        </div>
+      ];
+    });
   };
+  
  
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
-
-  // const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const teacherId = parseInt(event.target.value);
-  //   if (event.target.checked) {
-  //     // Add the teacher ID to the selected list
-  //     setSelectedTeachers((prev) => [...prev, teacherId]);
-  //   } else {
-  //     // Remove the teacher ID from the selected list
-  //     setSelectedTeachers((prev) => prev.filter((id) => id !== teacherId));
-  //   }
-  // };
+  useEffect(() => {
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
 
   const handleInputChange2 = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -252,9 +253,7 @@ const AssignClassTeacher = () => {
     
   };
 
-  useEffect(() => {
-    fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
+  
 
   const fetchClassesAndSections = async () => {
     try {
