@@ -70,9 +70,10 @@ const MultiClassStudent = () => {
     const sectionsResult = value
       ? await fetchsectionByClassData(value)
       : { data: [] };
+
     setStudentRows((prevState) => ({
       ...prevState,
-      [admissionNo]: prevState[admissionNo].map((row) =>
+      [admissionNo]: prevState[admissionNo].map((row: any) =>
         row.id === rowId
           ? {
               ...row,
@@ -92,7 +93,7 @@ const MultiClassStudent = () => {
   ) => {
     setStudentRows((prevState) => ({
       ...prevState,
-      [admissionNo]: prevState[admissionNo].map((row) =>
+      [admissionNo]: prevState[admissionNo].map((row: any) =>
         row.id === rowId ? { ...row, selectedSection2: value } : row,
       ),
     }));
@@ -116,7 +117,12 @@ const MultiClassStudent = () => {
     if (studentsData.length > 0) {
       const initialRows = studentsData.reduce((acc: any, student: any) => {
         acc[student.admission_no] = [
-          { id: 1, selectedClass2: "", selectedSection2: "" },
+          {
+            id: 1,
+            selectedClass2: selectedClass,
+            selectedSection2: selectedSection,
+            sections: sections,
+          },
         ];
         return acc;
       }, {});
@@ -250,7 +256,7 @@ const MultiClassStudent = () => {
   };
 
   const handleUpdate = (admissionNo: string) => {
-    const studentData = studentRows[admissionNo]?.map((row) => ({
+    const studentData = studentRows[admissionNo]?.map((row: any) => ({
       id: row.id,
       selectedClass: row.selectedClass2,
       selectedSection: row.selectedSection2,
