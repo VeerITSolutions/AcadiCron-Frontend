@@ -125,7 +125,7 @@ const StudentDetails = () => {
       setSelectedSessionId(localStorage.getItem("selectedSessionId"));
     }
   }, []);
-  const updateStudent = (id: string, field: string, value: string) => {
+  const updateStudent = (id: any, field: any, value: any) => {
     setData((prevStudents: any) =>
       prevStudents.map((student: any) =>
         student.id === id ? { ...student, [field]: value } : student,
@@ -134,67 +134,45 @@ const StudentDetails = () => {
   };
   const formatStudentData = (
     students?: any[],
-    updateStudent?: (id: string, field: string, value: string) => void,
+    updateStudent?: (id: any, field: any, value: any) => void,
     status?: any,
   ) => {
-    return students?.map((student: any) => [
+    return students?.map((student: any, rowIndex: number) => [
       student.id,
       `${student.name} ${student.surname}`,
       student.user_type || "N/A",
-      /* {
-        value: student.attendance_status || "Present", // Default value for attendance
-        customBodyRender: (
-          value: any,
-          tableMeta: any,
-          updateData: (value: string) => void,
-        ) => {
-          const { rowIndex } = tableMeta;
-          return (
-            <div className="flex gap-2">
-              {["Present", "Late", "Absent", "Halfday"].map((status) => (
-                <label key={status} className="flex items-center gap-1">
-                  <input
-                    className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
-                    type="radio"
-                    name={`attendance-${rowIndex}`}
-                    value={status}
-                    checked={value === status}
-                    onChange={() => {
-                      if (updateStudent) {
-                        updateStudent(student.id, "attendance", status);
-                      }
-                      updateData(status);
-                    }}
-                  />
-                  {status}
-                </label>
-              ))}
-            </div>
-          );
-        },
-      },
-      {
-        value: student.attendance_note || "", // Default value for note
-        customBodyRender: (
-          value: any,
-          tableMeta: any,
-          updateData: (value: string) => void,
-        ) => {
-          return (
+
+      <div className="flex gap-2">
+        {["Present", "Late", "Absent", "Halfday"].map((statusOption) => (
+          <label key={statusOption} className="flex items-center gap-1">
             <input
-              type="text"
-              value={value}
-              onChange={(e) => {
+              className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+              type="radio"
+              name={`attendance-${rowIndex}`} // Grouping by rowIndex to ensure only one can be selected per student
+              value={statusOption}
+              checked={student.attendance_status === statusOption} // Only select if the status matches
+              onChange={() => {
                 if (updateStudent) {
-                  updateStudent(student.id, "note", e.target.value);
+                  updateStudent(student.id, "attendance_status", statusOption); // Update the student's status
                 }
-                updateData(e.target.value);
               }}
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
             />
-          );
-        },
-      }, */
+            {statusOption}
+          </label>
+        ))}
+      </div>,
+
+      <input
+        type="text"
+        value={student.attendance_note || ""} // Display existing note or empty string
+        onChange={(e) => {
+          if (updateStudent) {
+            updateStudent(student.id, "attendance_note", e.target.value); // Update the note for the student
+          }
+        }}
+        className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
+        
+      />,
     ]);
   };
 
