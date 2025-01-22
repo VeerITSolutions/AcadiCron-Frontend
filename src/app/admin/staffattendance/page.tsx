@@ -32,7 +32,6 @@ import { Span } from "next/dist/trace";
 import { fetchRoleData } from "@/services/roleService";
 import { fetchStaffData } from "@/services/staffService";
 
-
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
@@ -49,10 +48,7 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [selectedRole, setSelectedRole] = useState<string | undefined>(
-    undefined,
-  );
-
+  const [selectedRole, setSelectedRole] = useState<string>("");
 
   const columns = [
     "Staff ID",
@@ -109,7 +105,7 @@ const StudentDetails = () => {
       },
     },
   ];
-  
+
   const options = {
     filter: false,
     search: false,
@@ -120,7 +116,7 @@ const StudentDetails = () => {
     print: false,
     viewColumns: false,
     responsive: "standard",
-  
+
     customToolbar: () => (
       <div className="flex justify-end gap-2">
         <button
@@ -138,7 +134,6 @@ const StudentDetails = () => {
       </div>
     ),
   };
-
 
   const getDefaultDate = () => {
     const today = new Date();
@@ -166,7 +161,7 @@ const StudentDetails = () => {
       setSelectedSessionId(localStorage.getItem("selectedSessionId"));
     }
   }, []);
-  
+
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
@@ -182,31 +177,29 @@ const StudentDetails = () => {
     selectedAttendacne?: string,
     keyword?: string,
   ) => {
- 
     try {
-    
-      const result = await fetchStaffData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedRole,
-        selectedSection,
-        keyword,
-        selectedSessionId,
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-
-      setData(formattedData);
-
       const roleresult = await fetchRoleData();
       setRoleData(roleresult.data);
 
       setLoading(false);
-   
-  }catch (error: any) {
+      if (selectedRole) {
+        const result = await fetchStaffData(
+          currentPage + 1,
+          rowsPerPage,
+          selectedRole,
+          selectedSection,
+          keyword,
+          selectedSessionId,
+        );
+        setTotalCount(result.totalCount);
+        const formattedData = formatStudentData(result.data);
+
+        setData(formattedData);
+      }
+    } catch (error: any) {
       setError(error.message);
       setLoading(false);
-    } 
+    }
   };
   const handleDelete = async (id: number) => {
     // Assuming id is the student_id
@@ -222,7 +215,14 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+  }, [
+    page,
+    rowsPerPage,
+    selectedRole,
+    selectedClass,
+    selectedSection,
+    keyword,
+  ]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -256,6 +256,7 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedRole("");
     setAttendance("");
+    setData([]);
     setattendancedate(getDefaultDate());
   };
   /* if (loading) return <Loader />; */
@@ -270,7 +271,8 @@ const StudentDetails = () => {
             <select
               value={selectedRole || ""}
               onChange={handleRoleChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`} >
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
               <option value="">Select</option>
 
               {roledata.map((cls: any) => (
