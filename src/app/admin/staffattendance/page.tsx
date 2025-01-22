@@ -145,7 +145,7 @@ const StudentDetails = () => {
         </label>
         <button
           className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
-          onClick={() => console.log("Save Attendance clicked")}
+          onClick={updateStudent}
         >
           Save Attendance
         </button>
@@ -179,12 +179,76 @@ const StudentDetails = () => {
       setSelectedSessionId(localStorage.getItem("selectedSessionId"));
     }
   }, []);
-
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
+  const updateStudent = (id: string, field: string, value: string) => {
+    setData((prevStudents: any) =>
+      prevStudents.map((student: any) =>
+        student.id === id ? { ...student, [field]: value } : student,
+      ),
+    );
+  };
+  const formatStudentData = (
+    students?: any[],
+    updateStudent?: (id: string, field: string, value: string) => void,
+    status?: any,
+  ) => {
+    return students?.map((student: any) => [
       student.id,
       `${student.name} ${student.surname}`,
       student.user_type || "N/A",
+      {
+        value: student.attendance || "Present", // Default value for attendance
+        customBodyRender: (
+          value: string,
+          tableMeta: any,
+          updateData: (value: string) => void,
+        ) => {
+          const { rowIndex } = tableMeta;
+          return (
+            <div className="flex gap-2">
+              {["Present", "Late", "Absent", "Halfday"].map((status) => (
+                <label key={status} className="flex items-center gap-1">
+                  <input
+                    className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+                    type="radio"
+                    name={`attendance-${rowIndex}`}
+                    value={status}
+                    checked={value === status}
+                    onChange={() => {
+                      if (updateStudent) {
+                        updateStudent(student.id, "attendance", status);
+                      }
+                      updateData(status);
+                    }}
+                  />
+                  {status}
+                </label>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
+        value: student.note || "", // Default value for note
+        customBodyRender: (
+          value: string,
+          tableMeta: any,
+          updateData: (value: string) => void,
+        ) => {
+          return (
+            <input
+              type="text"
+              value={value}
+              onChange={(e) => {
+                if (updateStudent) {
+                  updateStudent(student.id, "note", e.target.value);
+                }
+                updateData(e.target.value);
+              }}
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+            />
+          );
+        },
+      },
     ]);
   };
 
@@ -212,7 +276,7 @@ const StudentDetails = () => {
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
 
-        setData(formattedData);
+        setData(formattedData || []);
       }
     } catch (error: any) {
       setError(error.message);
@@ -255,7 +319,7 @@ const StudentDetails = () => {
     setSelectedRole(event.target.value);
   };
   const handleHolidayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setHoliday(event.target.value);
+    setHoliday(Number(event.target.value));
   };
   const handleAttendanceChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
