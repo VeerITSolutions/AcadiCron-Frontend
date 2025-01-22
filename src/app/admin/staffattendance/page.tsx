@@ -51,61 +51,7 @@ const StudentDetails = () => {
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [holiday, setHoliday] = useState<number>(0);
 
-  const columns = [
-    "Staff ID",
-    "Name",
-    "Role",
-    {
-      name: "Attendance",
-      options: {
-        customBodyRender: (
-          value: string,
-          tableMeta: any,
-          updateData: (value: string) => void,
-        ) => {
-          const { rowIndex } = tableMeta;
-          const attendance = value || "Present"; // Default value is "Present"
-          return (
-            <div className="flex gap-2">
-              {["Present", "Late", "Absent", "Halfday"].map((status) => (
-                <label key={status} className="flex items-center gap-1">
-                  <input
-                    className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
-                    type="radio"
-                    name={`attendance-${rowIndex}`}
-                    value={status}
-                    checked={attendance === status}
-                    onChange={() => updateData(status)} // Update the attendance when radio button is clicked
-                  />
-                  {status}
-                </label>
-              ))}
-            </div>
-          );
-        },
-      },
-    },
-    {
-      name: "Note",
-      options: {
-        customBodyRender: (
-          value: string,
-          tableMeta: any,
-          updateData: (value: string) => void,
-        ) => {
-          const { rowIndex } = tableMeta;
-          return (
-            <input
-              type="text"
-              value={value || ""} // Use the note if available or empty string
-              onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-              className="w-full rounded border-[1.5px] border-stroke bg-transparent bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-            />
-          );
-        },
-      },
-    },
-  ];
+  const columns = ["Staff ID", "Name", "Role", "Attendance", "Note"];
 
   const options = {
     filter: false,
@@ -145,7 +91,7 @@ const StudentDetails = () => {
         </label>
         <button
           className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
-          onClick={updateStudent}
+          /* onClick={updateStudent} */
         >
           Save Attendance
         </button>
@@ -195,7 +141,7 @@ const StudentDetails = () => {
       student.id,
       `${student.name} ${student.surname}`,
       student.user_type || "N/A",
-      {
+      /* {
         value: student.attendance || "Present", // Default value for attendance
         customBodyRender: (
           value: string,
@@ -248,7 +194,7 @@ const StudentDetails = () => {
             />
           );
         },
-      },
+      }, */
     ]);
   };
 
@@ -260,8 +206,10 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const roleresult = await fetchRoleData();
-      setRoleData(roleresult.data);
+      if (roledata.length === 0) {
+        const roleresult = await fetchRoleData();
+        setRoleData(roleresult.data);
+      }
 
       setLoading(false);
       if (selectedRole) {
@@ -272,6 +220,10 @@ const StudentDetails = () => {
           selectedSection,
           keyword,
           selectedSessionId,
+          "",
+          "",
+          1,
+          attendancedate,
         );
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
