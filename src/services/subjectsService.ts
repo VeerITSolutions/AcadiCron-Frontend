@@ -19,7 +19,7 @@ export const createSubject = async (name: string, code: string, type: string, is
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
-    throw new Error("Failed to create student house");
+    throw new Error("Failed to create subject");
   }
 };
 

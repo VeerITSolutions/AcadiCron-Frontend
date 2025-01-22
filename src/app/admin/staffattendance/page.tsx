@@ -31,90 +31,7 @@ import { toast } from "react-toastify";
 import { Span } from "next/dist/trace";
 import { fetchRoleData } from "@/services/roleService";
 import { fetchStaffData } from "@/services/staffService";
-const columns = [
-  "Staff ID",
-  "Name",
-  "Role",
-  {
-    name: "Attendance",
-    options: {
-      customBodyRender: (
-        value: string,
-        tableMeta: any,
-        updateData: (value: string) => void,
-      ) => {
-        const { rowIndex } = tableMeta;
-        const attendance = value || "Present"; // Default value is "Present"
-        return (
-          <div className="flex gap-2">
-            {["Present", "Late", "Absent", "Halfday"].map((status) => (
-              <label key={status} className="flex items-center gap-1">
-                <input
-                  className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
-                  type="radio"
-                  name={`attendance-${rowIndex}`}
-                  value={status}
-                  checked={attendance === status}
-                  onChange={() => updateData(status)} // Update the attendance when radio button is clicked
-                />
-                {status}
-              </label>
-            ))}
-          </div>
-        );
-      },
-    },
-  },
-  {
-    name: "Note",
-    options: {
-      customBodyRender: (
-        value: string,
-        tableMeta: any,
-        updateData: (value: string) => void,
-      ) => {
-        const { rowIndex } = tableMeta;
-        return (
-          <input
-            type="text"
-            value={value || ""} // Use the note if available or empty string
-            onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
-            className="w-full rounded border-[1.5px] border-stroke bg-transparent bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
-          />
-        );
-      },
-    },
-  },
-];
 
-const options = {
-  filter: false,
-  search: false,
-  pagination: false,
-  sort: false,
-  selectableRows: "none",
-  download: false,
-  print: false,
-  viewColumns: false,
-  responsive: "standard",
-
-  customToolbar: () => (
-    <div className="flex justify-end gap-2">
-      <button
-        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-        onClick={() => console.log("Mark As Holiday clicked")}
-      >
-        Mark As Holiday
-      </button>
-      <button
-        className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
-        onClick={() => console.log("Save Attendance clicked")}
-      >
-        Save Attendance
-      </button>
-    </div>
-  ),
-};
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -135,6 +52,94 @@ const StudentDetails = () => {
   const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
+
+
+  const columns = [
+    "Staff ID",
+    "Name",
+    "Role",
+    {
+      name: "Attendance",
+      options: {
+        customBodyRender: (
+          value: string,
+          tableMeta: any,
+          updateData: (value: string) => void,
+        ) => {
+          const { rowIndex } = tableMeta;
+          const attendance = value || "Present"; // Default value is "Present"
+          return (
+            <div className="flex gap-2">
+              {["Present", "Late", "Absent", "Halfday"].map((status) => (
+                <label key={status} className="flex items-center gap-1">
+                  <input
+                    className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+                    type="radio"
+                    name={`attendance-${rowIndex}`}
+                    value={status}
+                    checked={attendance === status}
+                    onChange={() => updateData(status)} // Update the attendance when radio button is clicked
+                  />
+                  {status}
+                </label>
+              ))}
+            </div>
+          );
+        },
+      },
+    },
+    {
+      name: "Note",
+      options: {
+        customBodyRender: (
+          value: string,
+          tableMeta: any,
+          updateData: (value: string) => void,
+        ) => {
+          const { rowIndex } = tableMeta;
+          return (
+            <input
+              type="text"
+              value={value || ""} // Use the note if available or empty string
+              onChange={(e) => updateData(e.target.value)} // Update the note when the input changes
+              className="w-full rounded border-[1.5px] border-stroke bg-transparent bg-transparent p-1.5 outline-none transition focus:border-primary active:border-primary dark:border-strokedark dark:text-white dark:drop-shadow-none dark:focus:border-primary"
+            />
+          );
+        },
+      },
+    },
+  ];
+  
+  const options = {
+    filter: false,
+    search: false,
+    pagination: false,
+    sort: false,
+    selectableRows: "none",
+    download: false,
+    print: false,
+    viewColumns: false,
+    responsive: "standard",
+  
+    customToolbar: () => (
+      <div className="flex justify-end gap-2">
+        <button
+          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+          onClick={() => console.log("Mark As Holiday clicked")}
+        >
+          Mark As Holiday
+        </button>
+        <button
+          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
+          onClick={() => console.log("Save Attendance clicked")}
+        >
+          Save Attendance
+        </button>
+      </div>
+    ),
+  };
+
+
   const getDefaultDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -161,6 +166,7 @@ const StudentDetails = () => {
       setSelectedSessionId(localStorage.getItem("selectedSessionId"));
     }
   }, []);
+  
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
@@ -168,6 +174,7 @@ const StudentDetails = () => {
       student.user_type || "N/A",
     ]);
   };
+
   const fetchData = async (
     currentPage: number,
     rowsPerPage: number,
@@ -175,7 +182,9 @@ const StudentDetails = () => {
     selectedAttendacne?: string,
     keyword?: string,
   ) => {
+ 
     try {
+    
       const result = await fetchStaffData(
         currentPage + 1,
         rowsPerPage,
@@ -193,10 +202,11 @@ const StudentDetails = () => {
       setRoleData(roleresult.data);
 
       setLoading(false);
-    } catch (error: any) {
+   
+  }catch (error: any) {
       setError(error.message);
       setLoading(false);
-    }
+    } 
   };
   const handleDelete = async (id: number) => {
     // Assuming id is the student_id
@@ -260,8 +270,7 @@ const StudentDetails = () => {
             <select
               value={selectedRole || ""}
               onChange={handleRoleChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`} >
               <option value="">Select</option>
 
               {roledata.map((cls: any) => (

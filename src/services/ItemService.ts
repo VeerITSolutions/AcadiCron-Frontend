@@ -33,7 +33,7 @@ export const createItemData = async (data: any): Promise<any> => {
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
-    throw new Error("Failed to create student house");
+    throw new Error("Failed to create item");
   }
 };
 

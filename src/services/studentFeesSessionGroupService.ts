@@ -19,7 +19,7 @@ export const createFeesSeesionGroup = async (house_name: string, description: st
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
-    throw new Error("Failed to create student house");
+    throw new Error("Failed to create fees session group");
   }
 };
 
