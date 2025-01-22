@@ -49,6 +49,7 @@ const StudentDetails = () => {
     undefined,
   );
   const [selectedRole, setSelectedRole] = useState<string>("");
+  const [holiday, setHoliday] = useState<number>(0);
 
   const columns = [
     "Staff ID",
@@ -119,12 +120,29 @@ const StudentDetails = () => {
 
     customToolbar: () => (
       <div className="flex justify-end gap-2">
-        <button
-          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-          onClick={() => console.log("Mark As Holiday clicked")}
-        >
-          Mark As Holiday
-        </button>
+        <label className="flex cursor-pointer items-center space-x-2">
+          <input
+            type="checkbox"
+            value={holiday}
+            className="peer hidden"
+            onChange={handleHolidayChange}
+          />
+          <div className="border-gray-400 flex h-6 w-6 items-center justify-center rounded border-2 peer-checked:border-[#1976D2] peer-checked:bg-[#1976D2]">
+            <svg
+              className="hidden h-4 w-4 text-white peer-checked:block"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <span className="text-gray-700">Mark As Holiday</span>
+        </label>
         <button
           className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
           onClick={() => console.log("Save Attendance clicked")}
@@ -236,6 +254,9 @@ const StudentDetails = () => {
   const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRole(event.target.value);
   };
+  const handleHolidayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHoliday(event.target.value);
+  };
   const handleAttendanceChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
@@ -304,24 +325,30 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-      {loading ? (
-        <Loader />
+      {selectedRole ? (
+        <>
+          {loading ? (
+            <Loader />
+          ) : (
+            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <MUIDataTable
+                title={"Staff List"}
+                data={data}
+                columns={columns}
+                options={{
+                  ...options,
+                  count: totalCount,
+                  page: page,
+                  rowsPerPage: rowsPerPage,
+                  onChangePage: handlePageChange,
+                  onChangeRowsPerPage: handleRowsPerPageChange,
+                }}
+              />
+            </ThemeProvider>
+          )}
+        </>
       ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Staff List"}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
-        </ThemeProvider>
+        ""
       )}
     </DefaultLayout>
   );
