@@ -15,13 +15,11 @@ export const fetchStudentMultiClassData = async (selectedClass? :any,
   return response.data;
 };
 
-export const fetchUpdatetMultiClass = async (selectedClass :any,
-  selectedSection :any) => {
+export const fetchUpdatetMultiClass = async (student_session_id :any) => {
   const response = await apiClient.post(`/update-multi-class`, {
     params: {
-      selectedClass,
-      selectedSection
-    },
+      student_session_id
+       },
   });
   return response.data;
 };

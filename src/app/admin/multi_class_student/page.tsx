@@ -100,7 +100,6 @@ const MultiClassStudent = () => {
   };
 
   const handleSearch = () => {
-    setPage(0);
     fetchData(selectedClass, selectedSection, keyword);
   };
 
@@ -167,17 +166,22 @@ const MultiClassStudent = () => {
       setLoading(false);
     }
   };
-
+  const handleEdit = async (student_session_id: any) => {
+    try {
+      const result = await fetchUpdatetMultiClass(student_session_id);
+      setUpdateData(result.data);
+    } catch (error: any) {
+      console.error("Fetch error:", error);
+      setError(error.message);
+      setLoading(false);
+    }
+  };
   const fetchData = async (
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
   ) => {
     try {
-      const resultUpdate = await fetchUpdatetMultiClass(
-        selectedClass2,
-        selectedSection2,
-      );
       if (selectedSection && selectedClass) {
         setLoading(true);
         const result = await fetchStudentMultiClassData(
@@ -191,7 +195,6 @@ const MultiClassStudent = () => {
         setStudentsData(result.data);
         setLoading(false);
       }
-      setUpdateData(resultUpdate.data);
     } catch (error: any) {
       console.error("Fetch error:", error);
       setError(error.message);
@@ -321,80 +324,85 @@ const MultiClassStudent = () => {
               {/* Dynamic Rows Section */}
               <div className="flex max-w-full flex-grow flex-col gap-4 overflow-y-auto p-4">
                 {(studentRows[student.admission_no] || []).map((row: any) => (
-                  <div key={row.id} className="flex w-full items-center gap-4">
-                    <div className="flex-1">
-                      <label
-                        htmlFor={`class_id_${student.admission_no}_${row.id}`}
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      >
-                        Class
-                      </label>
-                      <select
-                        value={row.selectedClass2 || ""}
-                        onChange={(e) =>
-                          handleClassChange2(
-                            student.admission_no,
-                            row.id,
-                            e.target.value,
-                          )
-                        }
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      >
-                        <option value="">Select</option>
-                        {classes2.map((cls) => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.class}
-                          </option>
-                        ))}
-                      </select>
+                  <>
+                    <div
+                      key={row.id}
+                      className="flex w-full items-center gap-4"
+                    >
+                      <div className="flex-1">
+                        <label
+                          htmlFor={`class_id_${student.admission_no}_${row.id}`}
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        >
+                          Class
+                        </label>
+                        <select
+                          value={row.selectedClass2 || ""}
+                          onChange={(e) =>
+                            handleClassChange2(
+                              student.admission_no,
+                              row.id,
+                              e.target.value,
+                            )
+                          }
+                          name="classStudent[]"
+                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        >
+                          <option value="">Select</option>
+                          {classes2.map((cls) => (
+                            <option key={cls.id} value={cls.id}>
+                              {cls.class}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="flex-1">
+                        <label
+                          htmlFor={`section_id_${student.admission_no}_${row.id}`}
+                          className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        >
+                          Section
+                        </label>
+                        <select
+                          value={row.selectedSection2 || ""}
+                          name="sectionStudent[]"
+                          onChange={(e) =>
+                            handleSectionChange2(
+                              student.admission_no,
+                              row.id,
+                              e.target.value,
+                            )
+                          }
+                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          disabled={!row.selectedClass2} // Disable if no class is selected
+                        >
+                          <option value="">Select</option>
+                          {(row.sections || []).map((sec: any) => (
+                            <option key={sec.section_id} value={sec.section_id}>
+                              {sec.section_name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="mt-8 flex w-[5%] items-center justify-center">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleRemoveRow(student.admission_no, row.id)
+                          }
+                          className="btn-error flex items-center rounded py-2"
+                        >
+                          <DeleteIcon />
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <label
-                        htmlFor={`section_id_${student.admission_no}_${row.id}`}
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      >
-                        Section
-                      </label>
-                      <select
-                        value={row.selectedSection2 || ""}
-                        onChange={(e) =>
-                          handleSectionChange2(
-                            student.admission_no,
-                            row.id,
-                            e.target.value,
-                          )
-                        }
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        disabled={!row.selectedClass2} // Disable if no class is selected
-                      >
-                        <option value="">Select</option>
-                        {(row.sections || []).map((sec: any) => (
-                          <option key={sec.section_id} value={sec.section_id}>
-                            {sec.section_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="mt-8 flex w-[5%] items-center justify-center">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleRemoveRow(student.admission_no, row.id)
-                        }
-                        className="btn-error flex items-center rounded py-2"
-                      >
-                        <DeleteIcon />
-                      </button>
-                    </div>
-                  </div>
+                  </>
                 ))}
               </div>
-
-              {/* Footer Section */}
               <div className="bottom-0 mt-auto w-full bg-[#C1C1C1] p-4 text-left dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
                 <button
-                  type="submit"
-                  onClick={() => fetchData(selectedClass2, selectedSection2)}
+                  type="button"
+                  onClick={() => handleEdit(student.student_session_id)}
                   className="btn-primary flex items-center gap-1 rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
                 >
                   Update
