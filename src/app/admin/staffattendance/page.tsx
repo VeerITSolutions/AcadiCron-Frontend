@@ -142,9 +142,9 @@ const StudentDetails = () => {
       `${student.name} ${student.surname}`,
       student.user_type || "N/A",
       /* {
-        value: student.attendance || "Present", // Default value for attendance
+        value: student.attendance_status || "Present", // Default value for attendance
         customBodyRender: (
-          value: string,
+          value: any,
           tableMeta: any,
           updateData: (value: string) => void,
         ) => {
@@ -174,9 +174,9 @@ const StudentDetails = () => {
         },
       },
       {
-        value: student.note || "", // Default value for note
+        value: student.attendance_note || "", // Default value for note
         customBodyRender: (
-          value: string,
+          value: any,
           tableMeta: any,
           updateData: (value: string) => void,
         ) => {
