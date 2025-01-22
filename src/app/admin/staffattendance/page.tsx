@@ -164,14 +164,14 @@ const StudentDetails = () => {
 
       <input
         type="text"
+        name={`attendance-note-${rowIndex}`}
         value={student.attendance_note || ""} // Display existing note or empty string
-        onChange={(e) => {
+        /* onChange={(e) => {
           if (updateStudent) {
             updateStudent(student.id, "attendance_note", e.target.value); // Update the note for the student
           }
-        }}
+        }} */
         className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
-        
       />,
     ]);
   };
