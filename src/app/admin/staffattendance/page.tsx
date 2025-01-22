@@ -143,21 +143,26 @@ const StudentDetails = () => {
       student.user_type || "N/A",
 
       <div className="flex gap-2">
-        {["Present", "Late", "Absent", "Halfday"].map((statusOption) => (
-          <label key={statusOption} className="flex items-center gap-1">
+        {[
+          { label: "Present", key: 1 },
+          { label: "Late", key: 2 },
+          { label: "Absent", key: 3 },
+          { label: "Halfday", key: 4 },
+        ].map(({ label, key }) => (
+          <label key={key} className="flex items-center gap-1">
             <input
               className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
               type="radio"
               name={`attendance-${rowIndex}`} // Grouping by rowIndex to ensure only one can be selected per student
-              value={statusOption}
-              checked={student.attendance_status === statusOption} // Only select if the status matches
+              value={key} // Use key as value
+              checked={1 == key} // Only select if the status matches the key
               onChange={() => {
                 if (updateStudent) {
-                  updateStudent(student.id, "attendance_status", statusOption); // Update the student's status
+                  updateStudent(student.id, "attendance_status", key); // Update the student's status with key
                 }
               }}
             />
-            {statusOption}
+            {label} {/* Display the label text */}
           </label>
         ))}
       </div>,
