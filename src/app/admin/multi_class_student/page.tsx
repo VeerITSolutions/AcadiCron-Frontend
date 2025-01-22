@@ -69,7 +69,7 @@ const MultiClassStudent = () => {
   ) => {
     const sectionsResult = value
       ? await fetchsectionByClassData(value)
-      : { data: [] }; // Fetch sections or reset if class is empty
+      : { data: [] };
 
     setStudentRows((prevState) => ({
       ...prevState,
@@ -117,7 +117,12 @@ const MultiClassStudent = () => {
     if (studentsData.length > 0) {
       const initialRows = studentsData.reduce((acc: any, student: any) => {
         acc[student.admission_no] = [
-          { id: 1, selectedClass2: "", selectedSection2: "" },
+          {
+            id: 1,
+            selectedClass2: selectedClass,
+            selectedSection2: selectedSection,
+            sections: sections,
+          },
         ];
         return acc;
       }, {});
@@ -250,6 +255,14 @@ const MultiClassStudent = () => {
     );
   };
 
+  const handleUpdate = (admissionNo: string) => {
+    const studentData = studentRows[admissionNo]?.map((row: any) => ({
+      id: row.id,
+      selectedClass: row.selectedClass2,
+      selectedSection: row.selectedSection2,
+    }));
+    console.log(`Updated data for student ${admissionNo}:`, studentData);
+  };
   return (
     <DefaultLayout>
       <div className={styles.filters}>
@@ -323,8 +336,8 @@ const MultiClassStudent = () => {
 
               {/* Dynamic Rows Section */}
               <div className="flex max-w-full flex-grow flex-col gap-4 overflow-y-auto p-4">
-                {(studentRows[student.admission_no] || []).map((row: any) => (
-                  <>
+                <>
+                  {(studentRows[student.admission_no] || []).map((row: any) => (
                     <div
                       key={row.id}
                       className="flex w-full items-center gap-4"
@@ -365,7 +378,6 @@ const MultiClassStudent = () => {
                         </label>
                         <select
                           value={row.selectedSection2 || ""}
-                          name="sectionStudent[]"
                           onChange={(e) =>
                             handleSectionChange2(
                               student.admission_no,
@@ -373,8 +385,9 @@ const MultiClassStudent = () => {
                               e.target.value,
                             )
                           }
+                          name="sectionStudent[]"
                           className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          disabled={!row.selectedClass2} // Disable if no class is selected
+                          disabled={!row.selectedClass2}
                         >
                           <option value="">Select</option>
                           {(row.sections || []).map((sec: any) => (
@@ -396,17 +409,17 @@ const MultiClassStudent = () => {
                         </button>
                       </div>
                     </div>
-                  </>
-                ))}
-              </div>
-              <div className="bottom-0 mt-auto w-full bg-[#C1C1C1] p-4 text-left dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-                <button
-                  type="button"
-                  onClick={() => handleEdit(student.student_session_id)}
-                  className="btn-primary flex items-center gap-1 rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
-                >
-                  Update
-                </button>
+                  ))}
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      onClick={() => handleUpdate(student.admission_no)}
+                      className="btn-primary rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </>
               </div>
             </div>
           ))}
