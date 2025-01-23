@@ -170,7 +170,7 @@ const StudentDetails = () => {
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
-
+  const [selectedRows, setSelectedRows] = useState([]);
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
@@ -218,16 +218,39 @@ const StudentDetails = () => {
       }
     }
   };
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
 
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
+  const handleRowSelectionChange = (
+    curRowSelected: { dataIndex: number; index: number }[],
+    allRowsSelected: { dataIndex: number; index: number }[],
+    rowsSelected: [],
+  ) => {
+    setSelectedRows(rowsSelected); // Update selected rows
   };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
+  const handleDelete = async () => {
+    try {
+      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
+
+      const idsToDelete = selectedData.map((row) => row[0]);
+
+      console.log(idsToDelete); // Handle response
+
+      const formData = {
+        promote_student_data: JSON.stringify(studentData),
+      };
+      console.log("formData", formData);
+      /* const result = await createStafftAttendencData(formData);
+
+          if (result.success) {
+            toast.success("Added successfully");
+            setStudentData([]); // Clear the student data after saving
+            fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
+          } else {
+            toast.error("Failed to Add");
+          } */
+    } catch (error) {
+      console.error("Error deleting data:", error);
+      alert("Failed to delete selected data.");
+    }
   };
 
   useEffect(() => {
@@ -468,6 +491,8 @@ const StudentDetails = () => {
                   rowsPerPage: rowsPerPage,
                   onChangePage: handlePageChange,
                   onChangeRowsPerPage: handleRowsPerPageChange,
+                  onRowSelectionChange: handleRowSelectionChange, // Handle row selection
+                  onRowsDelete: handleDelete,
                 }}
               />
             </ThemeProvider>
