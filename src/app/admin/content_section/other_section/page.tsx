@@ -23,19 +23,11 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { fetchContentData } from "@/services/ContentService";
-const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
+import {
+  fetchContentData,
+  deleteContentData,
+} from "@/services/ContentService";
 
-const options = {
-  filterType: false,
-  serverSide: true,
- responsive: "standard",
-search: false,
-
-  selectableRows: "none", // Disable row selection
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
-};
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -54,6 +46,18 @@ const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+
+  const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
+
+  const options = {
+  filterType: false,
+  serverSide: true,
+  responsive: "standard",
+  search: false,
+  selectableRows: "none", // Disable row selection
+  filter: false, // Disable filter,
+  viewColumns: false, // Disable view columns button
+  };
 
   const formatStudentCategoryData = (students: any[]) => {
     if (!Array.isArray(students)) return []; // Fallback to an empty array if not an array
@@ -117,17 +121,15 @@ const StudentDetails = () => {
   };
 
   const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
+    try {
+      await deleteContentData(id);
+      toast.success("Delete successful");
+      fetchData(page, rowsPerPage);
+    } catch (error) {
+      console.error("Delete failed", error);
+    }
   };
-
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
-
+  
   useEffect(() => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
