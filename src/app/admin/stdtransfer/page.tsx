@@ -85,13 +85,85 @@ const StudentDetails = () => {
   const router = useRouter();
   const [colorMode, setColorMode] = useColorMode();
 
+  const [studentData, setStudentData] = useState<Array<Array<string>>>([]);
+  const updateStudent = (id: any, field: any, value: any) => {
+    console.log(id, field, value);
+
+    setStudentData((prevData: any) => {
+      // Create a copy of the previous data
+      const updatedData = [...prevData];
+
+      // Find the student with the given id
+      const studentIndex = updatedData.findIndex(
+        (student) => student.id === id,
+      );
+
+      if (studentIndex !== -1) {
+        // Update the student's field (attendance_note or attendance_type)
+        updatedData[studentIndex] = {
+          ...updatedData[studentIndex],
+          [field]: value,
+        };
+      } else {
+        // If the student is not found, add a new object with their id and field-value pair
+        updatedData.push({ id, [field]: value });
+      }
+
+      // Remove duplicate entries for the same id and keep only unique ones
+      const uniqueData = updatedData.filter(
+        (student, index, self) =>
+          index === self.findIndex((s) => s.id === student.id),
+      );
+
+      return uniqueData;
+    });
+  };
   const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
+    return students.map((student: any, rowIndex: number) => [
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class || "N/A",
-      student.category_id,
-      student.mobileno,
+      student.father_name || "N/A",
+      student.dob || "N/A",
+      <div className="flex gap-2">
+        {[
+          { label: "Pass", key: 1 },
+          { label: "Fail", key: 2 },
+        ].map(({ label, key }) => (
+          <label key={key} className="flex items-center gap-1">
+            <input
+              className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+              type="radio"
+              name={`current-result-${rowIndex}`} // Grouping ensures only one is selected in this group
+              defaultChecked={student.attendance_status == key} // Set default checked status
+              value={key} // Assign the key as the value
+              onChange={(e) =>
+                updateStudent(student.id, "current_result", e.target.value)
+              }
+            />
+            {label} {/* Display the label text */}
+          </label>
+        ))}
+      </div>,
+      <div className="flex gap-2">
+        {[
+          { label: "Continue", key: 1 },
+          { label: "Leave", key: 2 },
+        ].map(({ label, key }) => (
+          <label key={key} className="flex items-center gap-1">
+            <input
+              className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+              type="radio"
+              name={`next-session-status-${rowIndex}`} // Grouping ensures only one is selected in this group
+              defaultChecked={student.attendance_status == key} // Set default checked status
+              value={key} // Assign the key as the value
+              onChange={(e) =>
+                updateStudent(student.id, "next_session_status", e.target.value)
+              }
+            />
+            {label} {/* Display the label text */}
+          </label>
+        ))}
+      </div>,
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
