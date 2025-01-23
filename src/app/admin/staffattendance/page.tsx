@@ -50,7 +50,7 @@ const StudentDetails = () => {
   );
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [holiday, setHoliday] = useState<number>(0);
-
+  const [studentData, setStudentData] = useState<Array<Array<string>>>([]);
   const columns = ["Staff ID", "Name", "Role", "Attendance", "Note"];
 
   const options = {
@@ -91,7 +91,7 @@ const StudentDetails = () => {
         </label>
         <button
           className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
-          /* onClick={updateStudent} */
+          onClick={handleSaveAttendance}
         >
           Save Attendance
         </button>
@@ -125,14 +125,42 @@ const StudentDetails = () => {
       setSelectedSessionId(localStorage.getItem("selectedSessionId"));
     }
   }, []);
+
   const updateStudent = (id: any, field: any, value: any) => {
     console.log(id, field, value);
 
-    setData((prevStudents: any) =>
-      prevStudents.map((student: any) =>
-        student.id === id ? { ...student, [field]: value } : student,
-      ),
-    );
+    setStudentData((prevData: any) => {
+      // Create a copy of the previous data
+      const updatedData = [...prevData];
+
+      // Find the student with the given id
+      const studentIndex = updatedData.findIndex(
+        (student) => student.id === id,
+      );
+
+      if (studentIndex !== -1) {
+        // Update the student's field (attendance_note or attendance_type)
+        updatedData[studentIndex] = {
+          ...updatedData[studentIndex],
+          [field]: value,
+        };
+      } else {
+        // If the student is not found, add a new object with their id and field-value pair
+        updatedData.push({ id, [field]: value });
+      }
+
+      // Remove duplicate entries for the same id and keep only unique ones
+      const uniqueData = updatedData.filter(
+        (student, index, self) =>
+          index === self.findIndex((s) => s.id === student.id),
+      );
+
+      return uniqueData;
+    });
+  };
+  const handleSaveAttendance = () => {
+    // Log the entire data (with any changes made by the user)
+    console.log("Updated Attendance Data:", studentData);
   };
   const formatStudentData = (students?: any[]) => {
     return students?.map((student: any, rowIndex: number) => [
@@ -154,6 +182,9 @@ const StudentDetails = () => {
               name={`attendance-${rowIndex}`} // Grouping ensures only one is selected in this group
               defaultChecked={student.attendance_status ?? 1 === key} // Set default checked status
               value={key} // Assign the key as the value
+              onChange={(e) =>
+                updateStudent(student.id, "attendance_type", e.target.value)
+              }
             />
             {label} {/* Display the label text */}
           </label>
@@ -165,6 +196,9 @@ const StudentDetails = () => {
         name={`attendance-note-${rowIndex}`} // Unique name for each student's note
         defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
         className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
+        onChange={(e) =>
+          updateStudent(student.id, "attendance_note", e.target.value)
+        }
       />,
     ]);
   };
