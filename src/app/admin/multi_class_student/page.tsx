@@ -14,6 +14,7 @@ import {
 } from "@/services/studentMultiClassService";
 import { useLoginDetails } from "@/store/logoStore";
 import LoaderSpiner from "@/components/common/LoaderSpiner";
+import { toast } from "react-toastify";
 
 const MultiClassStudent = () => {
   const [activeStudent, setActiveStudent] = useState<string | null>(null);
@@ -255,13 +256,25 @@ const MultiClassStudent = () => {
     );
   };
 
-  const handleUpdate = (admissionNo: string) => {
+  const handleUpdate = async (admissionNo: string) => {
     const studentData = studentRows[admissionNo]?.map((row: any) => ({
       id: row.id,
       selectedClass: row.selectedClass2,
       selectedSection: row.selectedSection2,
     }));
-    console.log(`Updated data for student ${admissionNo}:`, studentData);
+
+    const formData = {
+      student_data: JSON.stringify(studentData),
+      student_id: admissionNo,
+      session_id: getselectedSessionId,
+    };
+    const result = await fetchUpdatetMultiClass(formData);
+
+    if (result.success) {
+      toast.success("Added successfully");
+    } else {
+      toast.error("Failed to Add");
+    }
   };
   return (
     <DefaultLayout>
