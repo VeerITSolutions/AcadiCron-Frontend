@@ -36,6 +36,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
+import { useLoginDetails } from "@/store/logoStore";
 
 const columns = [
   "Class",
@@ -184,7 +185,9 @@ const StudentDetails = () => {
       toast.error("Delete failed");
     }
   };
-
+ const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   const handleDateChange = (selectedDates: Date[], name: string) => {
     if (selectedDates.length > 0) {
       const formattedDate = selectedDates[0].toLocaleDateString("en-CA"); // Format to YYYY-MM-DD
@@ -286,6 +289,7 @@ const StudentDetails = () => {
           "",
           selectedClass,
           selectedSection,
+          getselectedSessionId
         );
 
         setSubjectGroup(subjectgroupresult.data);
@@ -295,6 +299,7 @@ const StudentDetails = () => {
           "",
           "",
           selectedSubjectGroup,
+          getselectedSessionId
         );
         setSubject(subjectresult.data);
       }
