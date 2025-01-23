@@ -247,6 +247,8 @@ const StudentDetails = () => {
           } else {
             toast.error("Failed to Add");
           } */
+
+      fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
     } catch (error) {
       console.error("Error deleting data:", error);
       alert("Failed to delete selected data.");
