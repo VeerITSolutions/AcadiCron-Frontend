@@ -246,6 +246,7 @@ const StudentDetails = () => {
           1,
           attendancedate,
         );
+        setStudentData([]);
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
 
