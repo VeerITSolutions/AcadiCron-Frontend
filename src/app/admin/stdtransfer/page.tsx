@@ -204,6 +204,7 @@ const StudentDetails = () => {
       selectedSection2
     ) {
       try {
+        setStudentData([]);
         const result = await fetchStudentData(
           currentPage + 1,
           rowsPerPage,
