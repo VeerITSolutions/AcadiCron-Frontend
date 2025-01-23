@@ -151,14 +151,9 @@ const StudentDetails = () => {
             <input
               className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
               type="radio"
-              name={`attendance-${rowIndex}`} // Grouping by rowIndex to ensure only one can be selected per student
-              // Use key as value
-              checked={student.attendance_status ?? 1 == key} // Only select if the status matches the key
-              onChange={() => {
-                if (updateStudent) {
-                  updateStudent(student.id, "attendance_status", key); // Update the student's status with key
-                }
-              }}
+              name={`attendance-${rowIndex}`} // Grouping ensures only one is selected in this group
+              defaultChecked={student.attendance_status ?? 1 === key} // Set default checked status
+              value={key} // Assign the key as the value
             />
             {label} {/* Display the label text */}
           </label>
@@ -167,13 +162,8 @@ const StudentDetails = () => {
 
       <input
         type="text"
-        name={`attendance-note-${rowIndex}`}
-        value={student.attendance_note || ""} // Display existing note or empty string
-        onChange={(e) => {
-          if (updateStudent) {
-            updateStudent(student.id, "attendance_note", e.target.value); // Update the note for the student
-          }
-        }}
+        name={`attendance-note-${rowIndex}`} // Unique name for each student's note
+        defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
         className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
       />,
     ]);
