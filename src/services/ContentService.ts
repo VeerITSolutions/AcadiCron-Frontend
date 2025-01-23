@@ -22,7 +22,15 @@ export const createContentForUpload = async (data: any): Promise<any> => {
   }
 };
 
-
+export const createContentData = async (data: any): Promise<any> => {
+  try {
+    const response = await apiClient.post(`/content`, data);
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create content");
+  }
+};
 
 // Delete a student category by ID
 export const deleteContentForUpload = async (id: number) => {
