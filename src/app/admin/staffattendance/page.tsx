@@ -126,17 +126,15 @@ const StudentDetails = () => {
     }
   }, []);
   const updateStudent = (id: any, field: any, value: any) => {
+    console.log(id, field, value);
+
     setData((prevStudents: any) =>
       prevStudents.map((student: any) =>
         student.id === id ? { ...student, [field]: value } : student,
       ),
     );
   };
-  const formatStudentData = (
-    students?: any[],
-    updateStudent?: (id: any, field: any, value: any) => void,
-    status?: any,
-  ) => {
+  const formatStudentData = (students?: any[]) => {
     return students?.map((student: any, rowIndex: number) => [
       student.id,
       `${student.name} ${student.surname}`,
@@ -154,8 +152,8 @@ const StudentDetails = () => {
               className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
               type="radio"
               name={`attendance-${rowIndex}`} // Grouping by rowIndex to ensure only one can be selected per student
-              value={key} // Use key as value
-              checked={1 == key} // Only select if the status matches the key
+              // Use key as value
+              checked={student.attendance_status ?? 1 == key} // Only select if the status matches the key
               onChange={() => {
                 if (updateStudent) {
                   updateStudent(student.id, "attendance_status", key); // Update the student's status with key
@@ -171,11 +169,11 @@ const StudentDetails = () => {
         type="text"
         name={`attendance-note-${rowIndex}`}
         value={student.attendance_note || ""} // Display existing note or empty string
-        /* onChange={(e) => {
+        onChange={(e) => {
           if (updateStudent) {
             updateStudent(student.id, "attendance_note", e.target.value); // Update the note for the student
           }
-        }} */
+        }}
         className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
       />,
     ]);
