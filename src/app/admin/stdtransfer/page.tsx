@@ -189,53 +189,57 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
+      <div className="bg-white dark:bg-form-dark dark:text-white p-4 mb-5 dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark">
       <div className={styles.filters}>
         <div>
-          <h6 className="font-satoshi text-[1.25rem] font-semibold leading-[1.75rem]">
+          <h6 className="font-satoshi text-[1.25rem] font-semibold leading-[1.75rem] dark:text-white">
             {" "}
             Select Criteria{" "}
           </h6>
         </div>
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              {classes.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.class}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
-            >
-              <option value="">Select</option>
-              {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
-                  {sec.section_name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+        <div className="flex w-full gap-4">
+        <label className={`${styles.label} w-1/2`}>
+    Class:
+    <select
+      value={selectedClass || ""}
+      onChange={handleClassChange}
+      className={`${styles.select} w-full rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+    >
+      <option value="">Select</option>
+      {classes.map((cls) => (
+        <option key={cls.id} value={cls.id}>
+          {cls.class}
+        </option>
+      ))}
+    </select>
+  </label>
+  <label className={`${styles.label} w-1/2`}>
+    Section:
+    <select
+      value={selectedSection || ""}
+      onChange={handleSectionChange}
+      className={`${styles.select} w-full rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+      disabled={!selectedClass} // Disable section dropdown if no class is selected
+    >
+      <option value="">Select</option>
+      {section.map((sec) => (
+        <option key={sec.section_id} value={sec.section_id}>
+          {sec.section_name}
+        </option>
+      ))}
+    </select>
+  </label>
+</div>
+
         {/*  <div className={styles.searchGroup}>
 
         </div> */}
       </div>
+
+
       <div className={styles.filters}>
         <div>
-          <h6 className="font-satoshi text-[1.25rem] font-semibold leading-[1.75rem]">
+          <h6 className="font-satoshi text-[1.25rem] font-semibold leading-[1.75rem] dark:text-white">
             Promote Students In Next Session
           </h6>
         </div>
@@ -300,6 +304,8 @@ const StudentDetails = () => {
 
         </div> */}
       </div>
+      </div>
+
       {loading ? (
         <Loader />
       ) : (
