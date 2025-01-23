@@ -32,6 +32,7 @@ import {
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import { fetchSession } from "@/services/session";
+import { set } from "date-fns";
 const columns = [
   "Admission No",
   "Student Name",
@@ -191,7 +192,13 @@ const StudentDetails = () => {
         console.error("Error fetching sessions:", error);
       }
     }
-    if (selectedClass) {
+    if (
+      selectedClass &&
+      selectedSection &&
+      promotedsession &&
+      selectedClass2 &&
+      selectedSection2
+    ) {
       try {
         const result = await fetchStudentData(
           currentPage + 1,
@@ -225,7 +232,16 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword]);
+  }, [
+    page,
+    rowsPerPage,
+    selectedClass,
+    selectedSection,
+    keyword,
+    promotedsession,
+    selectedClass2,
+    selectedSection2,
+  ]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -271,6 +287,8 @@ const StudentDetails = () => {
     setSelectedSection("");
     setKeyword("");
     setPromotedSession("");
+    setSelectedClass2("");
+    setSelectedSection2("");
     setData([]);
   };
 
