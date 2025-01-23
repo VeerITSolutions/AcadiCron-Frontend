@@ -32,6 +32,8 @@ import { Span } from "next/dist/trace";
 import { fetchRoleData } from "@/services/roleService";
 import { fetchStaffData } from "@/services/staffService";
 import { createStafftAttendencData } from "@/services/staffAttendence";
+import { json } from "stream/consumers";
+import { set } from "date-fns";
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -163,11 +165,18 @@ const StudentDetails = () => {
   const handleSaveAttendance = async () => {
     // Log the entire data (with any changes made by the user)
     const formData = {
-      attendance_data: studentData,
+      attendance_data: JSON.stringify(studentData),
       date: attendancedate,
     };
     const result = await createStafftAttendencData(formData);
-    console.log("Updated Attendance Data:", result);
+
+    if (result.success) {
+      toast.success("Added successfully");
+      setStudentData([]); // Clear the student data after saving
+      fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
+    } else {
+      toast.error("Failed to Add");
+    }
   };
   const formatStudentData = (students?: any[]) => {
     return students?.map((student: any, rowIndex: number) => [
@@ -187,7 +196,7 @@ const StudentDetails = () => {
               className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
               type="radio"
               name={`attendance-${rowIndex}`} // Grouping ensures only one is selected in this group
-              defaultChecked={student.attendance_status ?? 1 === key} // Set default checked status
+              defaultChecked={student.attendance_status == key} // Set default checked status
               value={key} // Assign the key as the value
               onChange={(e) =>
                 updateStudent(student.id, "attendance_type", e.target.value)
@@ -225,6 +234,10 @@ const StudentDetails = () => {
 
       setLoading(false);
       if (selectedRole) {
+        setAttendance("");
+        setData([]);
+        setStudentData([]); // Clear the student data after saving
+
         const result = await fetchStaffData(
           currentPage + 1,
           rowsPerPage,
@@ -237,6 +250,7 @@ const StudentDetails = () => {
           1,
           attendancedate,
         );
+
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
 
@@ -247,26 +261,23 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
-  const handleDelete = async (id: number) => {
-    // Assuming id is the student_id
-    router.push(`/admin/student/${id}`);
-  };
-
-  const handleEdit = (id: number) => {
-    router.push(`/admin/student/edit/${id}`);
-  };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
 
   useEffect(() => {
-    fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
+    fetchData(
+      page,
+      rowsPerPage,
+      selectedRole,
+
+      selectedAttendacne,
+      keyword,
+    );
   }, [
     page,
     rowsPerPage,
     selectedRole,
     selectedClass,
     selectedSection,
+    attendancedate,
     keyword,
   ]);
 
@@ -306,6 +317,7 @@ const StudentDetails = () => {
     setSelectedRole("");
     setAttendance("");
     setData([]);
+    setStudentData([]); // Clear the student data after saving
     setattendancedate(getDefaultDate());
   };
   /* if (loading) return <Loader />; */
