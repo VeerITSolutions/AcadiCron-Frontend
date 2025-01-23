@@ -6,8 +6,8 @@ import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import {
   fetchContentData,
-  createContentForUpload,
-  deleteContentForUpload,
+  createContentData,
+  deleteContentData,
   editContentForUpload,
 } from "@/services/ContentService";
 import { Edit, Delete, FileDownload } from "@mui/icons-material";
@@ -116,7 +116,7 @@ const StudentCategories = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteContentForUpload(id);
+      await deleteContentData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -237,7 +237,7 @@ const StudentCategories = () => {
         allclasses: allclasses,
       };
 
-      const response = await createContentForUpload(data);
+      const response = await createContentData(data);
 
       if (response.status == 200) {
         toast.success("Added successful");
