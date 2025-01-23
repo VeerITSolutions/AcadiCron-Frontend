@@ -212,98 +212,103 @@ const StudentDetails = () => {
         </option>
       ))}
     </select>
-  </label>
-  <label className={`${styles.label} w-1/2`}>
-    Section:
-    <select
-      value={selectedSection || ""}
-      onChange={handleSectionChange}
-      className={`${styles.select} w-full rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-      disabled={!selectedClass} // Disable section dropdown if no class is selected
-    >
-      <option value="">Select</option>
-      {section.map((sec) => (
-        <option key={sec.section_id} value={sec.section_id}>
-          {sec.section_name}
-        </option>
-      ))}
-    </select>
-  </label>
+        </label>
+        <label className={`${styles.label} w-1/2`}>
+          Section:
+          <select
+            value={selectedSection || ""}
+            onChange={handleSectionChange}
+            className={`${styles.select} w-full rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            disabled={!selectedClass} // Disable section dropdown if no class is selected
+          >
+            <option value="">Select</option>
+            {section.map((sec) => (
+              <option key={sec.section_id} value={sec.section_id}>
+                {sec.section_name}
+              </option>
+            ))}
+          </select>
+        </label>
+     </div>
+
+        {/*  <div className={styles.searchGroup}>
+
+        </div> */}
+      </div>
+
+      <div className={`${styles.filters} mt-6`}>
+      <div>
+        <h6 className="font-satoshi text-[1.25rem] font-semibold leading-[1.75rem] dark:text-white">
+          Promote Students In Next Session
+        </h6>
+      </div>
+      <div className="flex gap-4 items-center flex-wrap lg:flex-nowrap">
+        <label className={`${styles.label} flex flex-col lg:w-1/5`}>
+          Promote In Session:
+          <select
+            value={selectedClass || ""}
+            onChange={handleClassChange}
+            className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+          >
+            <option value="">Select</option>
+            <option value="Class1">2017-18</option>
+            <option value="Class2">2018-19</option>
+            {/* Add more class options here */}
+          </select>
+        </label>
+
+        <label className={`${styles.label} flex flex-col lg:w-1/5`}>
+          Class:
+          <select
+            value={selectedClass || ""}
+            onChange={handleClassChange}
+            className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+          >
+            <option value="">Select</option>
+            {classes.map((cls) => (
+              <option key={cls.id} value={cls.id}>
+                {cls.class}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className={`${styles.label} flex flex-col lg:w-1/5`}>
+          Section:
+          <select
+            value={selectedSection || ""}
+            onChange={handleSectionChange}
+            className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            disabled={!selectedClass} // Disable section dropdown if no class is selected
+          >
+            <option value="">Select</option>
+            {section.map((sec) => (
+              <option key={sec.section_id} value={sec.section_id}>
+                {sec.section_name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        {/* Adjusting the Search and Reset buttons */}
+        <div className={`${styles.searchGroup} flex gap-2 pt-0 lg:pt-7`}>
+          <button
+            onClick={handleSearch}
+            className={`${styles.searchButton} px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition`}
+          >
+            Search
+          </button>
+          <button
+            onClick={handleRefresh}
+            className={`${styles.searchButton} px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary-dark transition`}
+          >
+            Reset
+          </button>
+        </div>
+  </div>
 </div>
 
-        {/*  <div className={styles.searchGroup}>
 
-        </div> */}
-      </div>
-
-
-      <div className={styles.filters}>
-        <div>
-          <h6 className="font-satoshi text-[1.25rem] font-semibold leading-[1.75rem] dark:text-white">
-            Promote Students In Next Session
-          </h6>
-        </div>
-
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Promote In Session:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="Class1">2017-18</option>
-              <option value="Class2">2018-19</option>
-              {/* Add more class options here */}
-            </select>
-          </label>
-
-          <label className={styles.label}>
-            Class:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              {classes.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.class}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={styles.label}>
-            Section:
-            <select
-              value={selectedSection || ""}
-              onChange={handleSectionChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
-            >
-              <option value="">Select</option>
-              {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
-                  {sec.section_name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <div className={styles.searchGroup}>
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
-          </div>
-        </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
-      </div>
       </div>
 
       {loading ? (
