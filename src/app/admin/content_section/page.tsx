@@ -27,7 +27,7 @@ const StudentCategories = () => {
   const { themType, setThemType } = useGlobalState();
 
   const [allsuperadmin, setAllsuperadmin] = useState(false);
-  const [allstudents, setAllstudents] = useState(false);
+
   const [allclasses, setAllclasses] = useState(false);
 
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,7 @@ const StudentCategories = () => {
 
   // State for modal visibility
   const [open, setOpen] = useState<boolean>(false);
-
+  const [allstudents, setAllstudents] = useState(true);
   const handleSuperAdminChange = (e: any) => {
     setIsSuperAdminChecked(e.target.checked);
     if (e.target.checked) {
@@ -198,7 +198,7 @@ const StudentCategories = () => {
   const handleAllStudentChangeforcheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setAllstudents(e.target.checked);
+    setAllstudents((prevState) => !prevState); //
   };
 
   const handleClassessChangeforcheckbox = (
@@ -219,10 +219,10 @@ const StudentCategories = () => {
     }
     fetchData(page, rowsPerPage);
     setAllsuperadmin(false);
-    setAllstudents(false);
+    setAllstudents(true);
     setAllclasses(false);
   }, [page, rowsPerPage]);
-
+console.log("allstudents", allstudents)
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -260,7 +260,7 @@ const StudentCategories = () => {
         setSelectedSection("0");
         setSelectedClass("");
         setAllsuperadmin(false);
-        setAllstudents(false);
+        setAllstudents(true);
         setAllclasses(false);
       } else {
         toast.error("Error Edit data");
@@ -403,7 +403,7 @@ const StudentCategories = () => {
                 </label>
               </div>
               <div
-                className={`mt-2 px-2 ${isSuperAdminChecked ? "bg-gray" : ""}`}
+                className={`mt-2 px-2 ${allstudents ? "bg-gray" : ""}`}
               >
                 <div className="field">
                   <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
@@ -423,11 +423,11 @@ const StudentCategories = () => {
                     value={selectedClass || ""}
                     onChange={handleClassChange}
                     className={`mb w-full rounded-lg border-[1.5px] border-stroke px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
-                      isSuperAdminChecked
+                      allstudents
                         ? "bg-gray disabled:cursor-default"
                         : ""
                     }`}
-                    disabled={isSuperAdminChecked}
+                    disabled={allstudents}
                   >
                     <option value="">Select</option>
                     {classes.map((cls) => (
@@ -444,12 +444,12 @@ const StudentCategories = () => {
                   <select
                     value={selectedSection || ""}
                     onChange={handleSectionChange}
-                    className={`w-full rounded-lg border-[1.5px] border-stroke px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
-                      isSuperAdminChecked
+                    className={`mb w-full rounded-lg border-[1.5px] border-stroke px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                      allstudents
                         ? "bg-gray disabled:cursor-default"
                         : ""
                     }`}
-                    disabled={isSuperAdminChecked}
+                    disabled={allstudents}
                   >
                     <option value="">Select</option>
                     {section.map((sec) => (
