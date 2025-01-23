@@ -83,6 +83,13 @@ export const createStudent = async ( data : any) => {
   const response = await apiClient.post(`/student`, data);
   return response.data;
 };
+export const createPromotedStudent = async ( data : any) => {
+
+  const response = await apiClient.post(`/student-promoted`, data);
+  return response.data;
+};
+
+
 
 
 // Delete a student deleteStudentDocuemnt

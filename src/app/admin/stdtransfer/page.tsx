@@ -5,7 +5,10 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { fetchStudentData } from "@/services/studentService";
+import {
+  createPromotedStudent,
+  fetchStudentData,
+} from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import { getClasses } from "@/services/classesService";
@@ -238,17 +241,15 @@ const StudentDetails = () => {
         promote_student_data: JSON.stringify(studentData),
       };
       console.log("formData", formData);
-      /* const result = await createStafftAttendencData(formData);
+      const result = await createPromotedStudent(formData);
 
-          if (result.success) {
-            toast.success("Added successfully");
-            setStudentData([]); // Clear the student data after saving
-            fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
-          } else {
-            toast.error("Failed to Add");
-          } */
-
-      fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+      if (result.success) {
+        toast.success("Promoted successfully");
+        setStudentData([]); // Clear the student data after saving
+        fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
+      } else {
+        toast.error("Failed to Add");
+      }
     } catch (error) {
       console.error("Error deleting data:", error);
       alert("Failed to delete selected data.");
