@@ -234,6 +234,10 @@ const StudentDetails = () => {
 
       setLoading(false);
       if (selectedRole) {
+        setAttendance("");
+        setData([]);
+        setStudentData([]); // Clear the student data after saving
+
         const result = await fetchStaffData(
           currentPage + 1,
           rowsPerPage,
@@ -246,7 +250,7 @@ const StudentDetails = () => {
           1,
           attendancedate,
         );
-        setStudentData([]);
+
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
 
