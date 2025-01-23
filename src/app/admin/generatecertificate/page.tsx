@@ -242,6 +242,7 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setAllCertificateData([]);
     setKeyword("");
   };
 
