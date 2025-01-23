@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 import { Span } from "next/dist/trace";
 import { fetchRoleData } from "@/services/roleService";
 import { fetchStaffData } from "@/services/staffService";
+import { createStafftAttendencData } from "@/services/staffAttendence";
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -158,9 +159,15 @@ const StudentDetails = () => {
       return uniqueData;
     });
   };
-  const handleSaveAttendance = () => {
+
+  const handleSaveAttendance = async () => {
     // Log the entire data (with any changes made by the user)
-    console.log("Updated Attendance Data:", studentData);
+    const formData = {
+      attendance_data: studentData,
+      date: attendancedate,
+    };
+    const result = await createStafftAttendencData(formData);
+    console.log("Updated Attendance Data:", result);
   };
   const formatStudentData = (students?: any[]) => {
     return students?.map((student: any, rowIndex: number) => [

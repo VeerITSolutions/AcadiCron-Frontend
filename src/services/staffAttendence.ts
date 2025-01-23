@@ -16,7 +16,20 @@ export const fetchStudentAttendencData = async (
   return response.data;
 };
 
+// Edit a student category by ID
+export const createStafftAttendencData = async ( data : any) => {
 
+  const response = await apiClient.post(`/staff-attendance`, data);
+  return response.data;
+};
+
+
+// Edit a Stafft category by ID
+export const editStafftAttendencData = async (id: number, data: any) => {
+
+  const response = await apiClient.post(`/staff-attendance/${id}`, data);
+  return response.data;
+};
 // Edit a student category by ID
 export const createStudentAttendencData = async ( data : any) => {
 
