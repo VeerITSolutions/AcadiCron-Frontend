@@ -104,8 +104,6 @@ const StudentDetails = () => {
   const [selectedSubject2, setSelectedSubject2] = useState<string | undefined>(
     undefined,
   );
-
-  const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
   
   const [formData, setFormData] = useState({
@@ -154,7 +152,6 @@ const StudentDetails = () => {
       selectedSection,
       selectedSubjectGroup,
       selectedSubject,
-      keyword,
     );
   }, [
     page,
@@ -165,7 +162,6 @@ const StudentDetails = () => {
     selectedSubjectGroup,
     selectedSubjectGroup2,
     selectedSubject,
-    keyword,
   ]);
 
   useEffect(() => {
@@ -455,9 +451,7 @@ const StudentDetails = () => {
     setSelectedSubject2(event.target.value);
   };
 
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
+
 
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
@@ -467,8 +461,7 @@ const StudentDetails = () => {
       selectedClass,
       selectedSection,
       selectedSubjectGroup,
-      selectedSubject,
-      keyword,
+      selectedSubject
     );
   };
 
@@ -512,7 +505,7 @@ const StudentDetails = () => {
     setSelectedClass("");
     setSelectedSection("");
     setSelectedSubjectGroup("");
-    setKeyword("");
+  
   };
 
   const fetchClassesAndSections = async () => {
@@ -655,13 +648,6 @@ const StudentDetails = () => {
             </select>
           </label>
           <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
