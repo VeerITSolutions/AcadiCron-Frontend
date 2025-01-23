@@ -36,6 +36,7 @@ import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import { fetchSession } from "@/services/session";
 import { set } from "date-fns";
+import { get } from "http";
 const columns = [
   "Admission No",
   "Student Name",
@@ -239,6 +240,11 @@ const StudentDetails = () => {
 
       const formData = {
         promote_student_data: JSON.stringify(studentData),
+        class_id: selectedClass,
+        section_id: selectedSection,
+        session_id: getselectedSessionId,
+        promoted_class_id: selectedClass2,
+        promoted_section_id: selectedSection2,
       };
       console.log("formData", formData);
       const result = await createPromotedStudent(formData);
