@@ -180,10 +180,16 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students?: any[]) => {
     students?.forEach((student) => {
+      const today = new Date(); // Current date
+      const attendanceDate = new Date(attendancedate); // Parse the attendance date
+
+      // Check if attendance status is null and the attendance date is today or in the future
       if (
         student.attendance_status == null &&
-        new Date(attendancedate).toDateString() === new Date().toDateString()
+        (attendanceDate.toDateString() === today.toDateString() ||
+          attendanceDate > today)
       ) {
+        // Update student attendance type and note
         updateStudent(student.id, "attendance_type", 1);
         updateStudent(student.id, "attendance_note", "");
       }
@@ -225,6 +231,15 @@ const StudentDetails = () => {
             </label>
           ))}
         </div>,
+        <input
+          type="text"
+          name={`attendance-note-${rowIndex}`} // Unique name for each student's note
+          defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
+          className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
+          onChange={(e) =>
+            updateStudent(student.id, "attendance_note", e.target.value)
+          }
+        />,
       ];
     });
   };
