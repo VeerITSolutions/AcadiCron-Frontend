@@ -167,6 +167,7 @@ const StudentDetails = () => {
     const formData = {
       attendance_data: JSON.stringify(studentData),
       date: attendancedate,
+      holiday: holiday,
     };
     const result = await createStafftAttendencData(formData);
 
