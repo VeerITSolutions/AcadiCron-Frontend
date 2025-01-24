@@ -52,7 +52,8 @@ const StudentDetails = () => {
     undefined,
   );
   const [selectedRole, setSelectedRole] = useState<string>("");
-  const [holiday, setHoliday] = useState<number>(0);
+  const [holiday, setHoliday] = useState<boolean>(false);
+
   const [studentData, setStudentData] = useState<Array<Array<string>>>([]);
   const columns = ["Staff ID", "Name", "Role", "Attendance", "Note"];
 
@@ -72,8 +73,8 @@ const StudentDetails = () => {
         <label className="flex cursor-pointer items-center space-x-2">
           <input
             type="checkbox"
-            value={holiday}
             className="peer hidden"
+            checked={holiday} // Handles both 0/1 or true/false
             onChange={handleHolidayChange}
           />
           <div className="border-gray-400 flex h-6 w-6 items-center justify-center rounded border-2 peer-checked:border-[#1976D2] peer-checked:bg-[#1976D2]">
@@ -213,9 +214,11 @@ const StudentDetails = () => {
         <div className="flex gap-2">
           {[
             { label: "Present", key: 1 },
-            { label: "Late", key: 2 },
-            { label: "Absent", key: 3 },
-            { label: "Halfday", key: 4 },
+            { label: "Late With Excuse", key: 2 },
+            { label: "Late", key: 3 },
+            { label: "Absent", key: 4 },
+            { label: "Holiday", key: 5 },
+            { label: "Half Day", key: 6 },
           ].map(({ label, key }) => (
             <label key={key} className="flex items-center gap-1">
               <input
@@ -320,7 +323,7 @@ const StudentDetails = () => {
     setSelectedRole(event.target.value);
   };
   const handleHolidayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setHoliday(Number(event.target.value));
+    setHoliday((prevValue) => !prevValue);
   };
   const handleAttendanceChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
