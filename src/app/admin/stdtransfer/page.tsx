@@ -127,8 +127,8 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students: any[]) => {
     students.forEach((student) => {
-      updateStudent(student.id, "attendance_note", 1);
-      updateStudent(student.id, "attendance_type", 1);
+      updateStudent(student.id, "current_result", 1);
+      updateStudent(student.id, "next_session_status", 1);
     });
 
     return students.map((student: any, rowIndex: number) => [

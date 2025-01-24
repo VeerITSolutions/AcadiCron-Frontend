@@ -4,7 +4,7 @@ import apiClient from "./apiClient";
 export const fetchApproveLeaveData = async (page: any, perPage: number,
   selectedClass?: string,
   selectedSection?: string,
-  keyword?: string , 
+  keyword?: string ,
   id?: any) => {
   const response = await apiClient.get(`/approve-leave`, {
     params: {
@@ -37,10 +37,10 @@ export const createApproveLeave = async (
   staff_name?: string,
   staff_surname?: string,): Promise<any> => {
   try {
-    const response = await apiClient.post("/approve-leave", { 
+    const response = await apiClient.post("/approve-leave", {
       selectedClass,
       selectedSection,
-      selectedStudent, 
+      selectedStudent,
       student_session_id,
       from_date,
       to_date,
@@ -52,7 +52,8 @@ export const createApproveLeave = async (
       approve_by,
       request_type,
       staff_name,
-      staff_surname });
+      staff_surname
+    });
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
