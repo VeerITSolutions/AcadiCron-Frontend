@@ -266,6 +266,7 @@ const StudentDetails = () => {
           const result = await createPromotedStudent(formData);
 
           if (result.success) {
+            handleRefresh();
             toast.success("Promoted successfully");
             setStudentData([]); // Clear the student data after saving
             fetchData(
