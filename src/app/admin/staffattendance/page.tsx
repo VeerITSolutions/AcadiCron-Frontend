@@ -179,44 +179,54 @@ const StudentDetails = () => {
     }
   };
   const formatStudentData = (students?: any[]) => {
-    return students?.map((student: any, rowIndex: number) => [
-      student.id,
-      `${student.name} ${student.surname}`,
-      student.user_type || "N/A",
+    students?.forEach((student) => {
+      if (
+        student.attendance_status == null &&
+        new Date(attendancedate).toDateString() === new Date().toDateString()
+      ) {
+        updateStudent(student.id, "attendance_type", 1);
+        updateStudent(student.id, "attendance_note", "");
+      }
+    });
+    return students?.map((student: any, rowIndex: number) => {
+      // Determine the attendance status
+      const today = new Date(); // Current date
+      const attendanceDate = new Date(attendancedate); // Parsed attendance date
 
-      <div className="flex gap-2">
-        {[
-          { label: "Present", key: 1 },
-          { label: "Late", key: 2 },
-          { label: "Absent", key: 3 },
-          { label: "Halfday", key: 4 },
-        ].map(({ label, key }) => (
-          <label key={key} className="flex items-center gap-1">
-            <input
-              className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
-              type="radio"
-              name={`attendance-${rowIndex}`} // Grouping ensures only one is selected in this group
-              defaultChecked={student.attendance_status == key} // Set default checked status
-              value={key} // Assign the key as the value
-              onChange={(e) =>
-                updateStudent(student.id, "attendance_type", e.target.value)
-              }
-            />
-            {label} {/* Display the label text */}
-          </label>
-        ))}
-      </div>,
+      // Determine the attendance status
+      const student_attendance_status =
+        student.attendance_status === null && attendanceDate > today
+          ? 1
+          : student.attendance_status;
 
-      <input
-        type="text"
-        name={`attendance-note-${rowIndex}`} // Unique name for each student's note
-        defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
-        className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
-        onChange={(e) =>
-          updateStudent(student.id, "attendance_note", e.target.value)
-        }
-      />,
-    ]);
+      return [
+        student.id,
+        `${student.name} ${student.surname}`,
+        student.user_type || "N/A",
+        <div className="flex gap-2">
+          {[
+            { label: "Present", key: 1 },
+            { label: "Late", key: 2 },
+            { label: "Absent", key: 3 },
+            { label: "Halfday", key: 4 },
+          ].map(({ label, key }) => (
+            <label key={key} className="flex items-center gap-1">
+              <input
+                className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
+                type="radio"
+                name={`attendance-${rowIndex}`} // Grouping ensures only one is selected in this group
+                defaultChecked={student_attendance_status == key} // Set default checked status
+                value={key} // Assign the key as the value
+                onChange={(e) =>
+                  updateStudent(student.id, "attendance_type", e.target.value)
+                }
+              />
+              {label} {/* Display the label text */}
+            </label>
+          ))}
+        </div>,
+      ];
+    });
   };
 
   const fetchData = async (
