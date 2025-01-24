@@ -51,7 +51,7 @@ const options = {
   serverSide: true,
   responsive: "standard",
   search: false,
-
+  selectableRows: "none", // Disable row selection
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
@@ -206,8 +206,8 @@ const StudentDetails = () => {
       try {
         setStudentData([]);
         const result = await fetchStudentData(
-          currentPage + 1,
-          rowsPerPage,
+          "",
+          "",
           selectedClass,
           selectedSection,
           keyword,
@@ -238,24 +238,38 @@ const StudentDetails = () => {
       const idsToDelete = selectedData.map((row) => row[0]);
 
       console.log(idsToDelete); // Handle response
+      if (
+        window.confirm("Are you sure you want to promote the selected items?")
+      ) {
+        try {
+          const formData = {
+            promote_student_data: JSON.stringify(studentData),
+            class_id: selectedClass,
+            section_id: selectedSection,
+            session_id: getselectedSessionId,
+            promoted_class_id: selectedClass2,
+            promoted_section_id: selectedSection2,
+          };
+          console.log("formData", formData);
+          const result = await createPromotedStudent(formData);
 
-      const formData = {
-        promote_student_data: JSON.stringify(studentData),
-        class_id: selectedClass,
-        section_id: selectedSection,
-        session_id: getselectedSessionId,
-        promoted_class_id: selectedClass2,
-        promoted_section_id: selectedSection2,
-      };
-      console.log("formData", formData);
-      const result = await createPromotedStudent(formData);
-
-      if (result.success) {
-        toast.success("Promoted successfully");
-        setStudentData([]); // Clear the student data after saving
-        fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-      } else {
-        toast.error("Failed to Add");
+          if (result.success) {
+            toast.success("Promoted successfully");
+            setStudentData([]); // Clear the student data after saving
+            fetchData(
+              page,
+              rowsPerPage,
+              selectedClass,
+              selectedSection,
+              keyword,
+            );
+          } else {
+            toast.error("Failed to Add");
+          }
+        } catch (error) {
+          console.error("Error deleting data:", error);
+          alert("Failed to delete selected data.");
+        }
       }
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -490,15 +504,20 @@ const StudentDetails = () => {
             <Loader />
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+              <button
+                className=" m-2 rounded bg-[#1976D2] p-2 px-4 py-2 text-white hover:bg-[#155ba0] focus:ring-opacity-50"
+                onClick={handleDelete}
+              >
+                Promote
+              </button>
+              <br />
               <MUIDataTable
                 title={"Student List"}
                 data={data}
                 columns={columns}
                 options={{
                   ...options,
-                  count: totalCount,
-                  page: page,
-                  rowsPerPage: rowsPerPage,
+
                   onChangePage: handlePageChange,
                   onChangeRowsPerPage: handleRowsPerPageChange,
                   onRowSelectionChange: handleRowSelectionChange, // Handle row selection
