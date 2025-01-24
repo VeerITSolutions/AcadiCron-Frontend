@@ -38,6 +38,7 @@ import { fetchSession } from "@/services/session";
 import { set } from "date-fns";
 import { get } from "http";
 const columns = [
+  "Student Id",
   "Admission No",
   "Student Name",
   "Father Name",
@@ -51,7 +52,8 @@ const options = {
   serverSide: true,
   responsive: "standard",
   search: false,
-  selectableRows: "none", // Disable row selection
+
+  pagination: false,
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 };
@@ -124,7 +126,13 @@ const StudentDetails = () => {
     });
   };
   const formatStudentData = (students: any[]) => {
+    students.forEach((student) => {
+      updateStudent(student.id, "attendance_note", 1);
+      updateStudent(student.id, "attendance_type", 1);
+    });
+
     return students.map((student: any, rowIndex: number) => [
+      student.id,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.father_name || "N/A",
@@ -139,7 +147,7 @@ const StudentDetails = () => {
               className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
               type="radio"
               name={`current-result-${rowIndex}`} // Grouping ensures only one is selected in this group
-              defaultChecked={student.attendance_status == key} // Set default checked status
+              defaultChecked={1 == key} // Set default checked status
               value={key} // Assign the key as the value
               onChange={(e) =>
                 updateStudent(student.id, "current_result", e.target.value)
@@ -159,7 +167,7 @@ const StudentDetails = () => {
               className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
               type="radio"
               name={`next-session-status-${rowIndex}`} // Grouping ensures only one is selected in this group
-              defaultChecked={student.attendance_status == key} // Set default checked status
+              defaultChecked={1 == key} // Set default checked status
               value={key} // Assign the key as the value
               onChange={(e) =>
                 updateStudent(student.id, "next_session_status", e.target.value)
@@ -237,13 +245,17 @@ const StudentDetails = () => {
 
       const idsToDelete = selectedData.map((row) => row[0]);
 
-      console.log(idsToDelete); // Handle response
+      const filteredData = studentData.filter((student: any) =>
+        idsToDelete.includes(student.id),
+      );
+
+      console.log(filteredData); // Handle response
       if (
         window.confirm("Are you sure you want to promote the selected items?")
       ) {
         try {
           const formData = {
-            promote_student_data: JSON.stringify(studentData),
+            promote_student_data: JSON.stringify(filteredData),
             class_id: selectedClass,
             section_id: selectedSection,
             session_id: getselectedSessionId,
