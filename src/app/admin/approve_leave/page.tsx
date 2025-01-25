@@ -154,7 +154,7 @@ const StudentDetails = () => {
       SetGetRoleId(getroleId);
     }
   }, []);
-const handleSectionChange2 = (
+  const handleSectionChange2 = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setSelectedSection2(event.target.value);
@@ -166,15 +166,13 @@ const handleSectionChange2 = (
     setSelectedSubjectGroup2(event.target.value);
   };
 
-  
-
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
-  
+
   const fetchClassesAndSections2 = async () => {
     try {
       // Fetch sections if a class is selected
@@ -184,7 +182,6 @@ const handleSectionChange2 = (
       } else {
         setSections2([]); // Clear sections if no class is selected
       }
-     
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -194,7 +191,6 @@ const handleSectionChange2 = (
   useEffect(() => {
     fetchClassesAndSections2(); // Fetch classes and sections on initial render
   }, [selectedClass2, selectedSection2, selectedSubjectGroup2]);
-
 
   const fetchData = async (
     currentPage: number,
@@ -212,14 +208,14 @@ const handleSectionChange2 = (
         keyword,
         selectedSessionId,
       );
-        const studentresult = await fetchStudentData(
-                currentPage + 1,
-                rowsPerPage,
-                selectedClass2,
-                selectedSection2,
-                keyword,
-                selectedSessionId,
-              );
+      const studentresult = await fetchStudentData(
+        "",
+        "",
+        selectedClass2,
+        selectedSection2,
+        keyword,
+        selectedSessionId,
+      );
 
       setStudentName(studentresult.data);
       setTotalCount(result.totalCount);
@@ -309,7 +305,7 @@ const handleSectionChange2 = (
         setEditing(false); // Reset editing state
 
         setSelectedClass2("");
-    setSelectedSection2("");
+        setSelectedSection2("");
         fetchData(page, rowsPerPage); // Refresh data after submit
       } else {
         toast.error("Failed to save leave");
@@ -369,7 +365,15 @@ const handleSectionChange2 = (
 
   useEffect(() => {
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
-  }, [page, rowsPerPage, selectedClass, selectedSection, keyword , selectedClass2, selectedSection2]);
+  }, [
+    page,
+    rowsPerPage,
+    selectedClass,
+    selectedSection,
+    keyword,
+    selectedClass2,
+    selectedSection2,
+  ]);
 
   const handleClickOpen = (isEditing: any) => {
     setEditing(isEditing); // Set editing state based on action
@@ -502,7 +506,7 @@ const handleSectionChange2 = (
 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass, ]);
+  }, [selectedClass]);
 
   const fetchClassesAndSections = async () => {
     try {
@@ -675,7 +679,7 @@ const handleSectionChange2 = (
                     Student <span className="required">*</span>
                   </label>
                   <select
-                  name=""
+                    name=""
                     value={selectedStudent || ""}
                     onChange={handleStudentChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -734,7 +738,7 @@ const handleSectionChange2 = (
                       onChange={(selectedDates) =>
                         handleDateChange(selectedDates, "from_date")
                       }
-                       options={{
+                      options={{
                         dateFormat: "Y-m-d",
                       }}
                       name="from_date"
