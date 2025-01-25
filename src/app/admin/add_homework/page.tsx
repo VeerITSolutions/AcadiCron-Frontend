@@ -87,6 +87,7 @@ const StudentDetails = () => {
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
   const [formhomeworkdate, setformhomeworkdate] = useState<string | null>(null);
+  const [formhomeworkid, setformhomeworkid] = useState<string | null>(null);
   const [formsubmissiondate, setformsubmissiondate] = useState<string | null>(
     null,
   );
@@ -227,6 +228,7 @@ const StudentDetails = () => {
 
   useEffect(() => {
     if (currentData) {
+      setformhomeworkid(currentData.id);
       setformhomeworkdate(formatDate(currentData.homework_date));
       setformsubmissiondate(formatDate(currentData.submit_date));
       setformCreatedBy(currentData.created_by);
@@ -395,7 +397,7 @@ const StudentDetails = () => {
           formData.submit_date,
           formData.document,
           formData.description,
-          getselectedSessionId
+          getselectedSessionId,
         );
         fetchData(page, rowsPerPage); // Refresh data after submit
       }
@@ -632,20 +634,31 @@ const StudentDetails = () => {
     }
   };
 
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState<
+    { id: any; name: string; selected: boolean }[]
+  >([]);
   const [evaluationDate, setEvaluationDate] = useState("");
 
-  const handleCheckboxChange = (id: any) => {
-    setStudents((prev: any) =>
-      prev.map((student: any) =>
-        student.id === id
-          ? { ...student, selected: !student.selected }
-          : student,
-      ),
-    );
+  const [selectedIds, setSelectedIds] = useState<number[]>([]); // Store selected IDs in an array
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedIds((prevSelectedIds) => {
+      // Check if the ID is already in the array
+      if (prevSelectedIds.includes(id)) {
+        // If it is, remove it (uncheck)
+        return prevSelectedIds.filter((selectedId) => selectedId !== id);
+      } else {
+        // If not, add it (check)
+        return [...prevSelectedIds, id];
+      }
+    });
   };
 
-  const handleSave2 = () => {};
+  const handleSave2 = () => {
+    console.log("selectedIds", selectedIds);
+
+    console.log("formhomeworkid", formhomeworkid);
+  };
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -1024,7 +1037,7 @@ const StudentDetails = () => {
                     >
                       <input
                         type="checkbox"
-                        checked={student.selected}
+                        /* checked={student.selected} */
                         onChange={() => handleCheckboxChange(student.id)}
                         className="h-3 w-3"
                       />
