@@ -225,7 +225,9 @@ const StudentDetails = () => {
                 className="dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none"
                 type="radio"
                 name={`attendance-${rowIndex}`} // Grouping ensures only one is selected in this group
-                defaultChecked={student_attendance_status == key} // Set default checked status
+                defaultChecked={
+                  Number(student_attendance_status) == Number(key)
+                } // Set default checked status
                 value={key} // Assign the key as the value
                 onChange={(e) =>
                   updateStudent(student.id, "attendance_type", e.target.value)
