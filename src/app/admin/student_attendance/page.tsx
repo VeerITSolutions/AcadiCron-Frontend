@@ -31,7 +31,7 @@ import { toast } from "react-toastify";
 import { Span } from "next/dist/trace";
 import { fetchRoleData } from "@/services/roleService";
 import { fetchStaffData } from "@/services/staffService";
-import { createStafftAttendencData } from "@/services/staffAttendence";
+import { createStafftAttendencData, createStudentAttendencData } from "@/services/staffAttendence";
 import { json } from "stream/consumers";
 import { set } from "date-fns";
 import { getClasses } from "@/services/classesService";
@@ -221,7 +221,7 @@ const StudentDetails = () => {
       date: attendancedate,
       holiday: holiday,
     };
-    const result = await createStafftAttendencData(formData);
+    const result = await createStudentAttendencData(formData);
 
     if (result.success) {
       toast.success("Added successfully");
@@ -261,8 +261,10 @@ const StudentDetails = () => {
 
       return [
         student.id,
-        `${student.name} ${student.surname}`,
-        student.user_type || "N/A",
+        student.admission_no,
+        student.roll_no || "N/A",
+        `  ${student?.firstname ?? ""} ${student?.middlename ?? ""} ${student?.lastname ?? ""}`,
+
         <div key={student.id} className="flex gap-2">
           {[
             { label: "Present", key: 1 },
@@ -315,25 +317,19 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      if (roledata.length === 0) {
-        const roleresult = await fetchRoleData();
-        setRoleData(roleresult.data);
-      }
-
       setLoading(false);
-      if (selectedRole) {
+      if (selectedClass && selectedSection) {
         setAttendance("");
         setData([]);
         setStudentData([]); // Clear the student data after saving
 
-        const result = await fetchStaffData(
-          currentPage + 1,
-          rowsPerPage,
-          selectedRole,
+        const result = await fetchStudentData(
+          "",
+          "",
+          selectedClass,
           selectedSection,
           keyword,
           selectedSessionId,
-          "",
           "",
           1,
           attendancedate,
@@ -379,9 +375,6 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedRole(event.target.value);
-  };
   const handleHolidayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setHoliday((prevValue) => !prevValue);
   };
@@ -391,27 +384,12 @@ const StudentDetails = () => {
     setAttendance(event.target.value);
   };
 
-  /*   const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(page, rowsPerPage, selectedRole, selectedAttendacne, keyword);
-  }; */
-
   const handleAttendancedateChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setattendancedate(event.target.value);
   };
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-  /*   const handleRefresh = () => {
-    setSelectedRole("");
-    setAttendance("");
-    setData([]);
-    setStudentData([]); // Clear the student data after saving
-    setattendancedate(getDefaultDate());
-  }; */
-  /* if (loading) return <Loader />; */
+
   if (error) return <p>{error}</p>;
 
   return (
@@ -448,6 +426,16 @@ const StudentDetails = () => {
                 </option>
               ))}
             </select>
+          </label>
+
+          <label className={styles.label}>
+            Attendance Date:
+            <input
+              type="date"
+              value={attendancedate}
+              onChange={handleAttendancedateChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            />
           </label>
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>

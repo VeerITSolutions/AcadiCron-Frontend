@@ -2,7 +2,7 @@ import apiClient from "./apiClient";
 
 export const fetchStudentData = async (page?: any, perPage?: any,selectedClass? :any,
   selectedSection? :any,
-  keyword?:any, selectedSessionId?:any ,bulkDelete?:any) => {
+  keyword?:any, selectedSessionId?:any ,bulkDelete?:any, attendance?: any , attendance_date? : any) => {
   const response = await apiClient.get(`/admin/dtstudentlist`, {
     params: {
       page,
@@ -11,7 +11,9 @@ export const fetchStudentData = async (page?: any, perPage?: any,selectedClass? 
       selectedSection,
       keyword,
       selectedSessionId,
-      bulkDelete
+      bulkDelete,
+      attendance,
+      attendance_date
     },
   });
   return response.data;
