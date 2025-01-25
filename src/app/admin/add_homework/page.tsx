@@ -35,12 +35,19 @@ import {
   IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
+import {
+  Delete,
+  Edit,
+  PanoramaFishEye,
+  SellSharp,
+  Visibility,
+} from "@mui/icons-material";
 import { useLoginDetails } from "@/store/logoStore";
 import {
   fetchStudentData,
   fetchStudentHomeworkData,
 } from "@/services/studentService";
+import { set } from "date-fns";
 
 const columns = [
   "Class",
@@ -552,7 +559,12 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setSelectedClass2("");
+    setSelectedSection2("");
+    setSelectedSubjectGroup2("");
     setSelectedSubjectGroup("");
+    setSubject2([]);
+    setSubject([]);
     setKeyword("");
   };
 
