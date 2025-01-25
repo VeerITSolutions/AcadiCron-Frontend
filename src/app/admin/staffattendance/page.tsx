@@ -229,6 +229,7 @@ const StudentDetails = () => {
                 defaultChecked={
                   Number(student_attendance_status) == Number(key)
                 } // Set default checked status
+                disabled={holiday === true} // Disable if holiday is true
                 value={key} // Assign the key as the value
                 onChange={(e) =>
                   updateStudent(student.id, "attendance_type", e.target.value)
@@ -241,6 +242,7 @@ const StudentDetails = () => {
         <div key={student.id}>
           <input
             type="text"
+            disabled={holiday === true} // Disable if holiday is true
             name={`attendance-note-${rowIndex}`} // Unique name for each student's note
             defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
             className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
