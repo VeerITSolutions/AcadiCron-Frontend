@@ -29,17 +29,14 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import {
-  fetchContentData,
-  deleteContentData,
-} from "@/services/ContentService";
+import { fetchContentData, deleteContentData } from "@/services/ContentService";
 const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
 
 const options = {
   filterType: false,
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   filter: false, // Disable filter,
   viewColumns: false, // Disable view columns button
 
@@ -75,14 +72,20 @@ const StudentDetails = () => {
       student.class ? student.content_for_role : "All",
 
       <div key={student.id} className="flex items-center space-x-2">
-        <IconButton
-          onClick={() =>
-            handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
-          }
-          aria-label="download"
-        >
-          {student.file ? <FileDownload /> : ""}
-        </IconButton>
+        {student.file ? (
+          <IconButton
+            onClick={() =>
+              handleDownload(process.env.NEXT_PUBLIC_BASE_URL + student.file)
+            }
+            aria-label="download"
+          >
+            <FileDownload />
+          </IconButton>
+        ) : (
+          <IconButton disabled aria-label="no file available">
+            <FileDownload className="opacity-50" />
+          </IconButton>
+        )}
         <IconButton
           onClick={() => handleDelete(student.id)}
           aria-label="delete"
@@ -125,7 +128,6 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
-
 
   const handleDelete = async (id: number) => {
     try {
