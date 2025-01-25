@@ -181,7 +181,7 @@ const StudentDetails = () => {
     }
   };
   const formatStudentData = (students?: any[]) => {
-    students?.forEach((student) => {
+    students?.forEach((student: any) => {
       const today = new Date(); // Current date
       const attendanceDate = new Date(attendancedate); // Parse the attendance date
 

@@ -241,9 +241,9 @@ const StudentDetails = () => {
   };
   const handleDelete = async () => {
     try {
-      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
+      const selectedData = selectedRows.map((rowIndex: any) => data[rowIndex]); // Map indices to data
 
-      const idsToDelete = selectedData.map((row) => row[0]);
+      const idsToDelete = selectedData.map((row: any) => row[0]);
 
       const filteredData = studentData.filter((student: any) =>
         idsToDelete.includes(student.id),
@@ -406,7 +406,7 @@ const StudentDetails = () => {
                 className={`border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none dark:border-strokedark dark:bg-boxdark`}
               >
                 <option value="">Select</option>
-                {classes.map((cls) => (
+                {classes.map((cls: any) => (
                   <option key={cls.id} value={cls.id}>
                     {cls.class}
                   </option>
@@ -422,7 +422,7 @@ const StudentDetails = () => {
                 disabled={!selectedClass} // Disable section dropdown if no class is selected
               >
                 <option value="">Select</option>
-                {section.map((sec) => (
+                {section.map((sec: any) => (
                   <option key={sec.section_id} value={sec.section_id}>
                     {sec.section_name}
                   </option>
@@ -468,7 +468,7 @@ const StudentDetails = () => {
                 className={`border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none dark:border-strokedark dark:bg-boxdark`}
               >
                 <option value="">Select</option>
-                {classes2.map((cls) => (
+                {classes2.map((cls: any) => (
                   <option key={cls.id} value={cls.id}>
                     {cls.class}
                   </option>
@@ -485,7 +485,7 @@ const StudentDetails = () => {
                 disabled={!selectedClass2} // Disable section dropdown if no class is selected
               >
                 <option value="">Select</option>
-                {section2.map((sec) => (
+                {section2.map((sec: any) => (
                   <option key={sec.section_id} value={sec.section_id}>
                     {sec.section_name}
                   </option>
