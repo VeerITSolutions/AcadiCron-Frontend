@@ -31,7 +31,10 @@ import { toast } from "react-toastify";
 import { Span } from "next/dist/trace";
 import { fetchRoleData } from "@/services/roleService";
 import { fetchStaffData } from "@/services/staffService";
-import { createStafftAttendencData, createStudentAttendencData } from "@/services/staffAttendence";
+import {
+  createStafftAttendencData,
+  createStudentAttendencData,
+} from "@/services/staffAttendence";
 import { json } from "stream/consumers";
 import { set } from "date-fns";
 import { getClasses } from "@/services/classesService";
@@ -260,7 +263,7 @@ const StudentDetails = () => {
         student.attendance_status === null ? 1 : student.attendance_status;
 
       return [
-        student.id,
+        student.student_session_id,
         student.admission_no,
         student.roll_no || "N/A",
         `  ${student?.firstname ?? ""} ${student?.middlename ?? ""} ${student?.lastname ?? ""}`,
