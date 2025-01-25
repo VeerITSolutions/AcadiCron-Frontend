@@ -14,11 +14,11 @@ export const fetchHomeWorkData = async (
     params: {
       page,
       perPage,
-      selectedClass, 
-      selectedSection, 
-      selectedSubjectGroup, 
-      selectedSubject, 
-      keyword, 
+      selectedClass,
+      selectedSection,
+      selectedSubjectGroup,
+      selectedSubject,
+      keyword,
       id,
     },
   });
@@ -40,11 +40,11 @@ export const fetchSearchHomeWorkData = async (
     params: {
       page,
       perPage,
-      selectedClass, 
-      selectedSection, 
-      selectedSubjectGroup, 
-      selectedSubject, 
-      keyword, 
+      selectedClass,
+      selectedSection,
+      selectedSubjectGroup,
+      selectedSubject,
+      keyword,
       id,
     },
   });
@@ -53,17 +53,17 @@ export const fetchSearchHomeWorkData = async (
 
 
 export const createHomeWork = async (
-  selectedClass2 ?: any, 
-  selectedSection2 ?: any, 
-  selectedSubjectGroup2 ?: any, 
-  selectedSubject2 ?: any, 
-  homework_date ?: any, 
-  submit_date ?: any, 
-  document?: any, 
-  description?: string): Promise<any> => {
+  selectedClass2 ?: any,
+  selectedSection2 ?: any,
+  selectedSubjectGroup2 ?: any,
+  selectedSubject2 ?: any,
+  homework_date ?: any,
+  submit_date ?: any,
+  document?: any,
+  description?: string,getselectedSessionId?: any): Promise<any> => {
   try {
-    const response = await apiClient.post("/homework", { 
-      selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, homework_date, submit_date, document,  description});
+    const response = await apiClient.post("/homework", {
+      selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, homework_date, submit_date, document,  description ,session_id: getselectedSessionId});
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);
@@ -82,13 +82,13 @@ export const deleteHomeWorkData = async (id: number) => {
 // Edit a student category by ID
 export const editHomeWorkData = async (
   id?: any,
-  selectedClass2 ?: any, 
-  selectedSection2 ?: any, 
-  selectedSubjectGroup2 ?: any, 
-  selectedSubject2 ?: any, 
-  homework_date?: any, 
-  submit_date?: any, 
-  document?: any, 
+  selectedClass2 ?: any,
+  selectedSection2 ?: any,
+  selectedSubjectGroup2 ?: any,
+  selectedSubject2 ?: any,
+  homework_date?: any,
+  submit_date?: any,
+  document?: any,
   description?: string) => {
   const data = { id, selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, homework_date, submit_date, document,  description }; // Create an object with the name field
   const response = await apiClient.post(`/homework/${id}`, data);

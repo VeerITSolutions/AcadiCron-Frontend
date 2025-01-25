@@ -48,6 +48,7 @@ import {
   fetchStudentHomeworkData,
 } from "@/services/studentService";
 import { set } from "date-fns";
+import { get } from "http";
 
 const columns = [
   "Class",
@@ -394,6 +395,7 @@ const StudentDetails = () => {
           formData.submit_date,
           formData.document,
           formData.description,
+          getselectedSessionId
         );
         fetchData(page, rowsPerPage); // Refresh data after submit
       }
