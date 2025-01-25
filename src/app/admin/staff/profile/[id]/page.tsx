@@ -158,7 +158,8 @@ const StudentDetails = () => {
   ) {
     defaultImage = "/images/user/default_male.jpg";
   } else {
-    defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/staff_documents/${id}/${formData?.image}`;
+     defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/staff_documents/${id}/${formData?.image}`;
+
   }
 
   // Dynamically construct the image URL
@@ -196,14 +197,6 @@ const StudentDetails = () => {
                 src={imageUrl || defaultImage}
                 alt="Staff Profile"
                 className="mx-auto h-24 w-24 rounded-full"
-                onError={(e) =>
-                  ((e.target as HTMLImageElement).outerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" class="mx-auto h-24 w-24 rounded-full">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M2 20c0-4.42 3.58-8 8-8h4c4.42 0 8 3.58 8 8v1H2v-1z" />
-    </svg>
-  `)
-                }
               />
               <h3 className="mt-2 text-[20px] font-bold">
                 {formData.firstname} {formData.lastname}
@@ -965,28 +958,14 @@ const StudentDetails = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {dataDocument?.map((item: any, index: number) => (
-                              <tr
-                                key={`discount-${index}`}
-                                className="dark-light"
+                            <tr>
+                              <td
+                                className="text-red-600 py-4 text-center"
+                                colSpan={3}
                               >
-                                <td>{item?.title}</td>
-                                <td>{item?.doc}</td>
-
-                                <td>
-                                  {" "}
-                                  <td className="text-left">
-                                    <IconButton
-                                      onClick={() => handleDelete2(item.id)}
-                                      aria-label="Delete"
-                                      color="error" // Optional: Adds a red color to indicate delete action
-                                    >
-                                      <Delete />
-                                    </IconButton>
-                                  </td>
-                                </td>
-                              </tr>
-                            ))}
+                                No Record Found
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -1017,38 +996,26 @@ const StudentDetails = () => {
                         <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
                           <thead className="bg-gray-100">
                             <tr>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
                                 Title
                               </th>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
                                 Name
                               </th>
-                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium dark:border-strokedark">
+                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium">
                                 Action
                               </th>
                             </tr>
                           </thead>
                           <tbody>
-                            {/*  */}
-
-                            {dataTimeline?.map((item: any, index: number) => (
-                              <tr
-                                key={`discount-${index}`}
-                                className="dark-light"
+                            <tr>
+                              <td
+                                className="text-red-600 py-4 text-center"
+                                colSpan={3}
                               >
-                                <td>{item?.title}</td>
-                                <td>{item?.description}</td>
-                                <td className="text-left">
-                                  <IconButton
-                                    onClick={() => handleDelete(item.id)}
-                                    aria-label="Delete"
-                                    color="error" // Optional: Adds a red color to indicate delete action
-                                  >
-                                    <Delete />
-                                  </IconButton>
-                                </td>
-                              </tr>
-                            ))}
+                                No Record Found
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
