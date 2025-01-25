@@ -965,14 +965,28 @@ const StudentDetails = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td
-                                className="text-red-600 py-4 text-center"
-                                colSpan={3}
+                            {dataDocument?.map((item: any, index: number) => (
+                              <tr
+                                key={`discount-${index}`}
+                                className="dark-light"
                               >
-                                No Record Found
-                              </td>
-                            </tr>
+                                <td>{item?.title}</td>
+                                <td>{item?.doc}</td>
+
+                                <td>
+                                  {" "}
+                                  <td className="text-left">
+                                    <IconButton
+                                      onClick={() => handleDelete2(item.id)}
+                                      aria-label="Delete"
+                                      color="error" // Optional: Adds a red color to indicate delete action
+                                    >
+                                      <Delete />
+                                    </IconButton>
+                                  </td>
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
@@ -1003,26 +1017,38 @@ const StudentDetails = () => {
                         <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
                           <thead className="bg-gray-100">
                             <tr>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
                                 Title
                               </th>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium dark:border-strokedark">
                                 Name
                               </th>
-                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium">
+                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium dark:border-strokedark">
                                 Action
                               </th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td
-                                className="text-red-600 py-4 text-center"
-                                colSpan={3}
+                            {/*  */}
+
+                            {dataTimeline?.map((item: any, index: number) => (
+                              <tr
+                                key={`discount-${index}`}
+                                className="dark-light"
                               >
-                                No Record Found
-                              </td>
-                            </tr>
+                                <td>{item?.title}</td>
+                                <td>{item?.description}</td>
+                                <td className="text-left">
+                                  <IconButton
+                                    onClick={() => handleDelete(item.id)}
+                                    aria-label="Delete"
+                                    color="error" // Optional: Adds a red color to indicate delete action
+                                  >
+                                    <Delete />
+                                  </IconButton>
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
