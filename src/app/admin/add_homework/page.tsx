@@ -563,6 +563,7 @@ const StudentDetails = () => {
     setSelectedSubject2("");
     setOpen(false);
     setEvaluateOpen(false);
+    setEvaluationDate("");
     setEditing(false); // Reset editing state
   };
 
@@ -670,10 +671,10 @@ const StudentDetails = () => {
   };
 
   const handleSave2 = async () => {
-    console.log("selectedIds", selectedIds);
-
-    console.log("formhomeworkid", formhomeworkid);
-
+    if (evaluationDate == "") {
+      toast.error("Please select evaluation date");
+      return;
+    }
     const result = await createHomeWorkEvaluvation(
       JSON.stringify(selectedIds),
       formhomeworkid,
@@ -700,6 +701,7 @@ const StudentDetails = () => {
       setformCreatedBy(null);
 
       setSelectedSubject2("");
+      handleClose();
     } else {
       toast.error("Failed to save ");
     }
