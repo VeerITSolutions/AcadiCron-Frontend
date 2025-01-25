@@ -185,15 +185,22 @@ const StudentDetails = () => {
       const today = new Date(); // Current date
       const attendanceDate = new Date(attendancedate); // Parse the attendance date
 
-      // Check if attendance status is null and the attendance date is today or in the future
-      if (
-        student.attendance_status == null &&
-        (attendanceDate.toDateString() === today.toDateString() ||
-          attendanceDate > today)
-      ) {
-        // Update student attendance type and note
-        updateStudent(student.id, "attendance_type", 1);
+      // Check if today is a holiday
+      if (holiday === true) {
+        // Update student attendance type and note for a holiday
+        updateStudent(student.id, "attendance_type", 5);
         updateStudent(student.id, "attendance_note", "");
+      } else {
+        // Check if attendance status is null and the attendance date is today or in the future
+        if (
+          student.attendance_status === null &&
+          (attendanceDate.toDateString() === today.toDateString() ||
+            attendanceDate > today)
+        ) {
+          // Update student attendance type and note
+          updateStudent(student.id, "attendance_type", 1);
+          updateStudent(student.id, "attendance_note", "");
+        }
       }
     });
     return students?.map((student: any, rowIndex: number) => {
@@ -313,6 +320,7 @@ const StudentDetails = () => {
     selectedSection,
     attendancedate,
     keyword,
+    holiday,
   ]);
 
   const handlePageChange = (newPage: number) => {
