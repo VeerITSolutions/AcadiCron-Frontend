@@ -417,6 +417,20 @@ const StudentDetails = () => {
         setSelectedClass2("");
         setSelectedSection2("");
         setSelectedSubjectGroup2("");
+
+        setSelectedIds([]);
+
+        setformhomeworkid(null);
+        setformsubmissiondate(null);
+        setformhomeworkdate(null);
+        setformCreatedBy(null);
+        setformClassName(null);
+        setformSectionName(null);
+        setformSubjectName(null);
+        setformDesc(null);
+
+        setformCreatedBy(null);
+
         setSelectedSubject2("");
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
@@ -658,6 +672,25 @@ const StudentDetails = () => {
     console.log("selectedIds", selectedIds);
 
     console.log("formhomeworkid", formhomeworkid);
+
+    /* setSelectedClass2("");
+    setSelectedSection2("");
+    setSelectedSubjectGroup2("");
+
+    setSelectedIds([]);
+
+    setformhomeworkid(null);
+    setformsubmissiondate(null);
+    setformhomeworkdate(null);
+    setformCreatedBy(null);
+    setformClassName(null);
+    setformSectionName(null);
+    setformSubjectName(null);
+    setformDesc(null);
+
+    setformCreatedBy(null);
+
+    setSelectedSubject2(""); */
   };
 
   /* if (loading) return <Loader />; */
