@@ -17,6 +17,8 @@ export const fetchStudentAttendencData = async (
 };
 
 
+
+
 // Edit a student category by ID
 export const createStudentAttendencData = async ( data : any) => {
 
