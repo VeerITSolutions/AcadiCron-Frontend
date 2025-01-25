@@ -79,11 +79,12 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.admission_no,
+      student.admission_no || "N/A",
+
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class_name || "N/A",
       student.category_name || "N/A",
-      student.mobileno,
+      student.mobileno || "N/A",
       <div key={student.id} className="flex text-left">
         <IconButton onClick={() => handleView(student.id)} aria-label="Show">
           <Visibility />
