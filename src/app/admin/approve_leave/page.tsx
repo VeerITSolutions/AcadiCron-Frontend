@@ -208,17 +208,20 @@ const StudentDetails = () => {
         keyword,
         selectedSessionId,
       );
-      const studentresult = await fetchStudentData(
-        "",
-        "",
-        selectedClass2,
-        selectedSection2,
-        keyword,
-        selectedSessionId,
-      );
+      if (selectedClass2 && selectedSection2) {
+        const studentresult = await fetchStudentData(
+          "",
+          "",
+          selectedClass2,
+          selectedSection2,
+          keyword,
+          selectedSessionId,
+        );
 
-      setStudentName(studentresult.data);
-      setTotalCount(result.totalCount);
+        setStudentName(studentresult.data);
+      }
+
+      setTotalCount(result.total);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
       setLoading(false);
