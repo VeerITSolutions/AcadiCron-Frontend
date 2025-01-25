@@ -180,6 +180,11 @@ const StudentDetails = () => {
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
+
+    setAttendance("");
+    setData([]);
+    setStudentData([]); // Clear the student data after saving
+    setattendancedate(getDefaultDate());
   };
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
@@ -242,14 +247,14 @@ const StudentDetails = () => {
       // Check if today is a holiday
       if (holiday === true) {
         // Update student attendance type and note for a holiday
-        updateStudent(student.id, "attendance_type", 5);
-        updateStudent(student.id, "attendance_note", "");
+        updateStudent(student.student_session_id, "attendance_type", 5);
+        updateStudent(student.student_session_id, "attendance_note", "");
       } else {
         // Check if attendance status is null and the attendance date is today or in the future
         if (student.attendance_status === null) {
           // Update student attendance type and note
-          updateStudent(student.id, "attendance_type", 1);
-          updateStudent(student.id, "attendance_note", "");
+          updateStudent(student.student_session_id, "attendance_type", 1);
+          updateStudent(student.student_session_id, "attendance_note", "");
         }
       }
     });
@@ -288,7 +293,11 @@ const StudentDetails = () => {
                 disabled={holiday === true} // Disable if holiday is true
                 value={key} // Assign the key as the value
                 onChange={(e) =>
-                  updateStudent(student.id, "attendance_type", e.target.value)
+                  updateStudent(
+                    student.student_session_id,
+                    "attendance_type",
+                    e.target.value,
+                  )
                 }
               />
               {label} {/* Display the label text */}
@@ -303,7 +312,11 @@ const StudentDetails = () => {
             defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
             className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
             onChange={(e) =>
-              updateStudent(student.id, "attendance_note", e.target.value)
+              updateStudent(
+                student.student_session_id,
+                "attendance_note",
+                e.target.value,
+              )
             }
           />
         </div>,
