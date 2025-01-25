@@ -22,7 +22,7 @@ import {
 } from "@/services/homeworkServices";
 import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 import { fetchSubjectData } from "@/services/subjectsService";
-
+import DOMPurify from "dompurify";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -37,7 +37,10 @@ import {
 import { toast } from "react-toastify";
 import { Delete, Edit, PanoramaFishEye, Visibility } from "@mui/icons-material";
 import { useLoginDetails } from "@/store/logoStore";
-import { get } from "http";
+import {
+  fetchStudentData,
+  fetchStudentHomeworkData,
+} from "@/services/studentService";
 
 const columns = [
   "Class",
@@ -75,7 +78,15 @@ const StudentDetails = () => {
   const [section, setSections] = useState<Array<any>>([]);
   const [subjectGroup, setSubjectGroup] = useState<Array<any>>([]);
   const [subject, setSubject] = useState<Array<any>>([]);
-
+  const [formhomeworkdate, setformhomeworkdate] = useState<string | null>(null);
+  const [formsubmissiondate, setformsubmissiondate] = useState<string | null>(
+    null,
+  );
+  const [formCreatedBy, setformCreatedBy] = useState<string | null>(null);
+  const [formClassName, setformClassName] = useState<string | null>(null);
+  const [formSectionName, setformSectionName] = useState<string | null>(null);
+  const [formSubjectName, setformSubjectName] = useState<string | null>(null);
+  const [formDesc, setformDesc] = useState<string | null>(null);
   const [classes2, setClassessData2] = useState<Array<any>>([]);
   const [section2, setSections2] = useState<Array<any>>([]);
   const [subjectGroup2, setSubjectGroup2] = useState<Array<any>>([]);
@@ -106,6 +117,8 @@ const StudentDetails = () => {
   const [selectedSubject2, setSelectedSubject2] = useState<string | undefined>(
     undefined,
   );
+
+  const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
@@ -132,7 +145,7 @@ const StudentDetails = () => {
     "Created By",
     "Action",
   ];
-
+  const sanitizeHtml = (html: any) => DOMPurify.sanitize(html);
   const options = {
     filterType: false,
     serverSide: true,
@@ -153,6 +166,7 @@ const StudentDetails = () => {
       selectedSection,
       selectedSubjectGroup,
       selectedSubject,
+      keyword,
     );
   }, [
     page,
@@ -163,15 +177,19 @@ const StudentDetails = () => {
     selectedSubjectGroup,
     selectedSubjectGroup2,
     selectedSubject,
+    keyword,
   ]);
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
 
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
-  }, [selectedClass]);
+  }, [selectedClass, selectedSection, selectedSubjectGroup]);
 
   useEffect(() => {
     fetchClassesAndSections2(); // Fetch classes and sections on initial render
-  }, [selectedClass2, selectedSection2]);
+  }, [selectedClass2, selectedSection2, selectedSubjectGroup2]);
 
   /* use effect End  */
 
@@ -185,9 +203,7 @@ const StudentDetails = () => {
       toast.error("Delete failed");
     }
   };
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
+
   const handleDateChange = (selectedDates: Date[], name: string) => {
     if (selectedDates.length > 0) {
       const formattedDate = selectedDates[0].toLocaleDateString("en-CA"); // Format to YYYY-MM-DD
@@ -198,6 +214,20 @@ const StudentDetails = () => {
       }));
     }
   };
+
+  const [currentData, setCurrentData] = useState<any>(null);
+
+  useEffect(() => {
+    if (currentData) {
+      setformhomeworkdate(formatDate(currentData.homework_date));
+      setformsubmissiondate(formatDate(currentData.submit_date));
+      setformCreatedBy(currentData.created_by);
+      setformClassName(currentData.class_name);
+      setformSectionName(currentData.section_name);
+      setformSubjectName(currentData.subject_name);
+      setformDesc(currentData.description);
+    }
+  }, [currentData]); // Run this effect when `currentData` changes
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
@@ -252,6 +282,14 @@ const StudentDetails = () => {
         </IconButton>
       </div>,
     ]);
+  };
+
+  const formatStudentDataInForm = (students: any[]) => {
+    return students.map((student: any) => ({
+      id: student.id,
+      name: `${student.firstname || ""}  ${student.lastname || ""} (${student.id})`,
+      selected: false,
+    }));
   };
 
   const fetchData = async (
@@ -309,7 +347,6 @@ const StudentDetails = () => {
           "",
           "",
           selectedSubjectGroup2,
-          getselectedSessionId,
         );
         setSubject2(subjectresult2.data);
       }
@@ -387,7 +424,6 @@ const StudentDetails = () => {
     setCurrentLeaveId(id);
 
     try {
-      console.log(data);
       setFormData(data);
       setSelectedClass2(data.class_id);
       setSelectedSection2(data.section_id);
@@ -457,6 +493,10 @@ const StudentDetails = () => {
     setSelectedSubject2(event.target.value);
   };
 
+  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.target.value);
+  };
+
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
     fetchData(
@@ -466,6 +506,7 @@ const StudentDetails = () => {
       selectedSection,
       selectedSubjectGroup,
       selectedSubject,
+      keyword,
     );
   };
 
@@ -475,7 +516,10 @@ const StudentDetails = () => {
 
   const handleClickOpenEvaluate = (data: any) => {
     setEvaluateOpen(true);
-    console.log(data);
+    setCurrentData(data);
+    if (data.id) {
+      fetchStudentOnly(data.id);
+    }
   };
 
   const handleClose = () => {
@@ -509,6 +553,7 @@ const StudentDetails = () => {
     setSelectedClass("");
     setSelectedSection("");
     setSelectedSubjectGroup("");
+    setKeyword("");
   };
 
   const fetchClassesAndSections = async () => {
@@ -525,7 +570,19 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
+  const fetchStudentOnly = async (data: any) => {
+    try {
+      // Fetch se ctions if a class is selected
+      if (data) {
+        const getresult = await fetchStudentHomeworkData(data);
 
+        setStudents(formatStudentDataInForm(getresult.data));
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
   const fetchClassesAndSections2 = async () => {
     try {
       // Fetch sections if a class is selected
@@ -546,22 +603,27 @@ const StudentDetails = () => {
 
         setSubjectGroup2(subjectgroupresult.data);
       }
+      if (selectedSubjectGroup2) {
+        const subjectresult = await fetchSubjectData(
+          "",
+          "",
+          selectedSubjectGroup2,
+          getselectedSessionId,
+        );
+        setSubject2(subjectresult.data);
+      }
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
 
-  const [students, setStudents] = useState([
-    { id: 1, name: "Angel Vishwakarma (347)", selected: false },
-    { id: 2, name: "Bhakti Idole (346)", selected: false },
-    { id: 3, name: "Anaya Dhote (345)", selected: false },
-  ]);
+  const [students, setStudents] = useState([]);
   const [evaluationDate, setEvaluationDate] = useState("");
 
   const handleCheckboxChange = (id: any) => {
-    setStudents((prev) =>
-      prev.map((student) =>
+    setStudents((prev: any) =>
+      prev.map((student: any) =>
         student.id === id
           ? { ...student, selected: !student.selected }
           : student,
@@ -569,14 +631,7 @@ const StudentDetails = () => {
     );
   };
 
-  const handleSave2 = () => {
-    console.log(
-      "Selected Students:",
-      students.filter((s) => s.selected),
-    );
-    console.log("Evaluation Date:", evaluationDate);
-    // Add your save logic here
-  };
+  const handleSave2 = () => {};
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -652,6 +707,13 @@ const StudentDetails = () => {
             </select>
           </label>
           <div className={styles.searchGroup}>
+            <input
+              type="text"
+              placeholder="Search By Keyword"
+              value={keyword}
+              onChange={handleKeywordChange}
+              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            />
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
@@ -941,7 +1003,7 @@ const StudentDetails = () => {
                   <h2 className="mb-3 font-medium text-black dark:text-white">
                     Students List
                   </h2>
-                  {students.map((student) => (
+                  {students?.map((student: any) => (
                     <label
                       key={student.id}
                       className="mb-2 block flex cursor-pointer items-center space-x-2 text-sm font-medium text-black dark:text-white"
@@ -964,29 +1026,40 @@ const StudentDetails = () => {
                   </h2>
                   <div className="mb-4">
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Homework Date:</strong> 01/11/2025
+                      <strong>Homework Date:</strong>{" "}
+                      {formhomeworkdate ? formhomeworkdate : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Submission Date:</strong> 01/12/2025
+                      <strong>Submission Date:</strong>{" "}
+                      {formsubmissiondate ? formsubmissiondate : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
                       <strong>Evaluation Date:</strong>{" "}
                       {evaluationDate || "Not Set"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Created By:</strong> Priya Tendulkar
+                      <strong>Created By:</strong>{" "}
+                      {formCreatedBy ? formCreatedBy : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Class:</strong> B.Sc.
+                      <strong>Class:</strong>{" "}
+                      {formClassName ? formClassName : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Section:</strong> A
+                      <strong>Section:</strong>{" "}
+                      {formSectionName ? formSectionName : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Subject:</strong> English
+                      <strong>Subject:</strong>{" "}
+                      {formSubjectName ? formSectionName : "N/A"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Description:</strong> addd
+                      <strong>Description:</strong>{" "}
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: sanitizeHtml(formDesc),
+                        }}
+                      ></span>
                     </p>
                   </div>
                   <label className="mb-4 block text-sm font-medium text-black dark:text-white">
