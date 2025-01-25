@@ -19,6 +19,7 @@ import {
   createHomeWork,
   deleteHomeWorkData,
   editHomeWorkData,
+  createHomeWorkEvaluvation,
 } from "@/services/homeworkServices";
 import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 import { fetchSubjectData } from "@/services/subjectsService";
@@ -668,29 +669,40 @@ const StudentDetails = () => {
     });
   };
 
-  const handleSave2 = () => {
+  const handleSave2 = async () => {
     console.log("selectedIds", selectedIds);
 
     console.log("formhomeworkid", formhomeworkid);
 
-    /* setSelectedClass2("");
-    setSelectedSection2("");
-    setSelectedSubjectGroup2("");
+    const result = await createHomeWorkEvaluvation(
+      JSON.stringify(selectedIds),
+      formhomeworkid,
+    );
 
-    setSelectedIds([]);
+    if (result.success) {
+      toast.success("saved successfully");
+      fetchData(page, rowsPerPage); // Refresh data after submit
+      setSelectedClass2("");
+      setSelectedSection2("");
+      setSelectedSubjectGroup2("");
 
-    setformhomeworkid(null);
-    setformsubmissiondate(null);
-    setformhomeworkdate(null);
-    setformCreatedBy(null);
-    setformClassName(null);
-    setformSectionName(null);
-    setformSubjectName(null);
-    setformDesc(null);
+      setSelectedIds([]);
 
-    setformCreatedBy(null);
+      setformhomeworkid(null);
+      setformsubmissiondate(null);
+      setformhomeworkdate(null);
+      setformCreatedBy(null);
+      setformClassName(null);
+      setformSectionName(null);
+      setformSubjectName(null);
+      setformDesc(null);
 
-    setSelectedSubject2(""); */
+      setformCreatedBy(null);
+
+      setSelectedSubject2("");
+    } else {
+      toast.error("Failed to save ");
+    }
   };
 
   /* if (loading) return <Loader />; */

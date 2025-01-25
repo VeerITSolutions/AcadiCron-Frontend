@@ -72,6 +72,20 @@ export const createHomeWork = async (
 };
 
 
+export const createHomeWorkEvaluvation = async (
+  selectedIds ?: any,
+  formhomeworkid ?: any): Promise<any> => {
+  try {
+    const response = await apiClient.post("/homework-evaluvation", {
+      selectedIds, formhomeworkid});
+    return response.data;
+  } catch (error) {
+    console.error("An error occurred", error);
+    throw new Error("Failed to create Home work");
+  }
+};
+
+
 
 // Delete a student category by ID
 export const deleteHomeWorkData = async (id: number) => {
