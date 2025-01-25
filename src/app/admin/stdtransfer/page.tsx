@@ -137,7 +137,7 @@ const StudentDetails = () => {
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.father_name || "N/A",
       student.dob || "N/A",
-      <div className="flex gap-2">
+      <div key={student.id} className="flex gap-2">
         {[
           { label: "Pass", key: 1 },
           { label: "Fail", key: 2 },
@@ -157,7 +157,7 @@ const StudentDetails = () => {
           </label>
         ))}
       </div>,
-      <div className="flex gap-2">
+      <div key={student.id} className="flex gap-2">
         {[
           { label: "Continue", key: 1 },
           { label: "Leave", key: 2 },

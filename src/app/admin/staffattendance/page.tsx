@@ -211,7 +211,7 @@ const StudentDetails = () => {
         student.id,
         `${student.name} ${student.surname}`,
         student.user_type || "N/A",
-        <div className="flex gap-2">
+        <div key={student.id} className="flex gap-2">
           {[
             { label: "Present", key: 1 },
             { label: "Late With Excuse", key: 2 },
@@ -235,15 +235,18 @@ const StudentDetails = () => {
             </label>
           ))}
         </div>,
-        <input
-          type="text"
-          name={`attendance-note-${rowIndex}`} // Unique name for each student's note
-          defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
-          className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
-          onChange={(e) =>
-            updateStudent(student.id, "attendance_note", e.target.value)
-          }
-        />,
+        <div key={student.id}>
+          <input
+            type="text"
+            name={`attendance-note-${rowIndex}`} // Unique name for each student's note
+            defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
+            className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
+            onChange={(e) =>
+              updateStudent(student.id, "attendance_note", e.target.value)
+            }
+          />
+        </div>,
+        ,
       ];
     });
   };
