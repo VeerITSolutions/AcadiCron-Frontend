@@ -277,7 +277,7 @@ const StudentDetails = () => {
           formData.staff_name,
           formData.staff_surname,
         );
-
+        setStudentName([]);
         setSelectedClass("");
         setSelectedSection("");
         setSelectedStudent("");
@@ -384,6 +384,7 @@ const StudentDetails = () => {
     setEditing(false); // Reset editing state
     setSelectedClass2("");
     setSelectedSection2("");
+    setStudentName([]);
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -412,6 +413,7 @@ const StudentDetails = () => {
     setSelectedClass2("");
     setSelectedSection2("");
     setKeyword("");
+    setStudentName([]);
   };
 
   const getRoleId2 = useLoginDetails((state) => state.roleId);
@@ -453,6 +455,8 @@ const StudentDetails = () => {
       staff_name: "",
       staff_surname: "",
     });
+
+    setStudentName([]);
 
     setSelectedClass("");
     setSelectedSection("");
@@ -679,14 +683,14 @@ const StudentDetails = () => {
                     Student <span className="required">*</span>
                   </label>
                   <select
-                    name=""
+                    name="student_session_id"
                     value={selectedStudent || ""}
                     onChange={handleStudentChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     disabled={!selectedClass2 || !selectedSection2}
                   >
                     <option value="">Select</option>
-                    {studentName.map((sec) => (
+                    {studentName.map((sec: any) => (
                       <option key={sec.id} value={sec.id}>
                         {sec.firstname} {sec.lastname}
                       </option>
