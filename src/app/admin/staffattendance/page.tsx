@@ -192,11 +192,7 @@ const StudentDetails = () => {
         updateStudent(student.id, "attendance_note", "");
       } else {
         // Check if attendance status is null and the attendance date is today or in the future
-        if (
-          student.attendance_status === null &&
-          (attendanceDate.toDateString() === today.toDateString() ||
-            attendanceDate > today)
-        ) {
+        if (student.attendance_status === null) {
           // Update student attendance type and note
           updateStudent(student.id, "attendance_type", 1);
           updateStudent(student.id, "attendance_note", "");
@@ -210,9 +206,7 @@ const StudentDetails = () => {
 
       // Determine the attendance status
       const student_attendance_status =
-        student.attendance_status === null && attendanceDate > today
-          ? 1
-          : student.attendance_status;
+        student.attendance_status === null ? 1 : student.attendance_status;
 
       return [
         student.id,
