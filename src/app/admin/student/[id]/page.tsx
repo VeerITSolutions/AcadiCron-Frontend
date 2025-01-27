@@ -188,7 +188,7 @@ const StudentDetails = () => {
           note: "",
         });
 
-        /*    if (typeof window !== "undefined") {
+        if (typeof window !== "undefined") {
           const id = window.location.pathname.split("/").pop();
           if (id) {
             const getData = async () => {
@@ -288,9 +288,10 @@ const StudentDetails = () => {
             };
             getData();
           }
-        } */
-        handleSaveDisableStudent();
-        toast.success("Added successful");
+        }
+        handleDisableStudentModel();
+
+        toast.success("Student Disabled successful");
       } else {
         toast.error("Error Add data");
       }
