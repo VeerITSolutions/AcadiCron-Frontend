@@ -35,7 +35,8 @@ const LoginPage = () => {
       const role = data.users.roles[0];
 
       if (role) {
-        localStorage.setItem("user_id", data.users.user_id)
+        localStorage.setItem("user_id", data.users.user_id);
+        localStorage.setItem("user_data", JSON.stringify(data.users.user_data));
         localStorage.setItem("role_id", role.id);
 
         localStorage.setItem("role_name", role.name);

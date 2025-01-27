@@ -40,6 +40,7 @@ import { fetchStudentexamData } from "@/services/studentExamService";
 import LoaderSpiner from "@/components/common/LoaderSpiner";
 import { set } from "date-fns";
 import Loader from "@/components/common/Loader";
+import { useLoginDetails } from "@/store/logoStore";
 
 interface FeeData {
   fees_group: string;
@@ -133,6 +134,7 @@ const StudentDetails = () => {
     });
     setIsDisableStudentModel(!setisdisablestudentmodel);
   };
+  const getselectedUserData = useLoginDetails((state) => state.userData);
 
   /* const handleEnableStudentModel = () => {
 
@@ -342,7 +344,7 @@ const StudentDetails = () => {
 
       if (response2.success) {
         if (typeof window !== "undefined") {
-          const id = window.location.pathname.split("/").pop();
+          let id = getselectedUserData.id;
           if (id) {
             const getData = async () => {
               try {

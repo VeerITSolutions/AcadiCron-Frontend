@@ -10,6 +10,7 @@ interface LogoState {
 interface UserDetails {
   roleId: string;
   userId: string;
+  userData: any;
   username: string | null;
   surname: string | null;
   roleName: string | null;
@@ -30,6 +31,7 @@ export const useLogoStore = create<LogoState>((set) => ({
 export const useLoginDetails = create<UserDetails>((set) => ({
   roleId: '', // Initial empty value for roleId
   userId: '',
+  userData: {},
   username: null,
   surname: null,
   roleName: null,
@@ -46,6 +48,7 @@ export const useLoginDetails = create<UserDetails>((set) => ({
     set({
       roleId: userDetails.roleId,
       userId: userDetails.userId,
+      userData: userDetails.userData,
       username: userDetails.username,
       surname: userDetails.surname,
       roleName: userDetails.roleName,
@@ -70,11 +73,13 @@ export function useInitializeLoginDetails() {
       const isSuperAdminFromStorage = localStorage.getItem('is_superadmin') || '';
       const selectedSessionIdFromStorage = localStorage.getItem('selectedSessionId') || '';
       const selectedSessionYearFromStorage = localStorage.getItem('selectedSessionYear') || '';
+      const selectedUserDataFromStorage = localStorage.getItem('user_data') || '';
 
       // Set all values into the Zustand store using setUserDetails
       setUserDetails({
         roleId: roleIdFromStorage,
         userId: userIdFromStorage,
+        userData: selectedUserDataFromStorage,
         username: usernameFromStorage,
         surname: surnameFromStorage,
         roleName: roleNameFromStorage,
