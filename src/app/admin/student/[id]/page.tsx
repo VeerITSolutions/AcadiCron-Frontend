@@ -1965,9 +1965,9 @@ const StudentDetails = () => {
                   <div className="grid grid-cols-1 gap-4 ">
                     <div className="field">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Reason:
+                        Reason: <span className="required">*</span>
                       </label>
-                      <span className="required">*</span>
+
                       <input
                         aria-invalid="false"
                         id="reason"
@@ -1982,16 +1982,19 @@ const StudentDetails = () => {
                   <div className="grid grid-cols-1 gap-4 ">
                     <div className="field">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Date:
+                        Date: <span className="required">*</span>
                       </label>
-                      <span className="required">*</span>
+
                       <input
                         aria-invalid="false"
                         id="date"
                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                         type="date"
                         name="date"
-                        value={formDataDisable.date}
+                        value={
+                          formDataDisable.date ||
+                          new Date().toISOString().split("T")[0]
+                        } // Default to today's date
                         onChange={handleDisableInputChange}
                       />
                     </div>
@@ -2000,9 +2003,9 @@ const StudentDetails = () => {
                   <div className="grid grid-cols-1 gap-4 ">
                     <div className="field">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Note:
+                        Note: <span className="required">*</span>
                       </label>
-                      <span className="required">*</span>
+
                       <input
                         aria-invalid="false"
                         id="note"
