@@ -82,7 +82,7 @@ const StudentDetails = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
   const [passwordModel, setIsPasswordModel] = useState(false);
-  /*   const [passwordModel, setIsPasswordModel] = useState(false); */
+  const [setisdisablestudentmodel, setIsDisableStudentModel] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dataTimeline, setDataTimeline] = useState<any>(null);
@@ -98,6 +98,10 @@ const StudentDetails = () => {
   };
   const handlePasswordModel = () => {
     setIsPasswordModel(!passwordModel);
+  };
+
+  const handleDisableStudentModel = () => {
+    setIsDisableStudentModel(!setisdisablestudentmodel);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -636,7 +640,10 @@ const StudentDetails = () => {
                     />
                   </li>
                   <li className="cursor-pointer px-4 py-2">
-                    <ThumbDown className="text-red-500 cursor-pointer" />
+                    <ThumbDown
+                      onClick={handleDisableStudentModel}
+                      className="text-red-500 cursor-pointer"
+                    />
                   </li>
                   <li className="cursor-pointer px-4 py-2">
                     <ArrowDropUpTwoTone
@@ -1556,7 +1563,8 @@ const StudentDetails = () => {
           ></div>
 
           <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+            <div className="relative w-full max-w-3xl rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              {/* Close Button */}
               <button
                 onClick={handlePasswordModel}
                 className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
@@ -1564,7 +1572,123 @@ const StudentDetails = () => {
                 &times;
               </button>
 
-              <h2 className="mb-4 text-lg font-semibold">Add Timeline</h2>
+              {/* Modal Header */}
+              <h2 className="mb-4 text-center text-lg font-semibold">
+                Login Details
+              </h2>
+
+              {/* Table Content */}
+              <div className="table-responsive overflow-x-auto">
+                <p className="lead mb-4 text-center text-xl font-medium">
+                  {formData.firstname} {formData.middlename} {formData.lastname}
+                </p>
+                <table className="border-gray-200 w-full table-auto border text-sm">
+                  <thead>
+                    <tr className="bg-gray-100 text-gray-700 text-left">
+                      <th className="px-4 py-2">User Type</th>
+                      <th className="px-4 py-2 text-center">Username</th>
+                      <th className="px-4 py-2 text-center">Password</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-t">
+                      <td className="px-4 py-2 font-bold">Parent</td>
+                      <input
+                        type="hidden"
+                        name="userid"
+                        id="userid"
+                        value="2044"
+                      />
+                      <td className="px-4 py-2 text-center">parent1019</td>
+                      <td className="px-4 py-2 text-center">6p98j6</td>
+                    </tr>
+                    <tr className="border-t">
+                      <td className="px-4 py-2 font-bold">Student</td>
+                      <input
+                        type="hidden"
+                        name="userid"
+                        id="userid"
+                        value="2043"
+                      />
+                      <td className="px-4 py-2 text-center">std1019</td>
+                      <td className="px-4 py-2 text-center">6rsg2q</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p className="lead text-red-500 mt-4 text-center text-sm">
+                  Login URL:{" "}
+                  <a
+                    href={process.env.NEXT_PUBLIC_BASE_URL_FRONTEND}
+                    className="text-blue-500 underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {process.env.NEXT_PUBLIC_BASE_URL_FRONTEND}
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {setisdisablestudentmodel && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black bg-opacity-50"
+            onClick={handleDisableStudentModel}
+          ></div>
+
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              <button
+                onClick={handleDisableStudentModel}
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+              >
+                &times;
+              </button>
+
+              <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+                  {/* Close Button */}
+                  <button
+                    onClick={handleDisableStudentModel}
+                    className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+                  >
+                    &times;
+                  </button>
+                  <h2 className="mb-4 text-lg font-semibold">
+                    Disable Student
+                  </h2>
+
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Title:
+                      </label>
+                      <input
+                        aria-invalid="false"
+                        id="title"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="title"
+                        value={formDataTimeline.title}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={handleSave}
+                      className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </>
