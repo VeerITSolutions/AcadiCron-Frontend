@@ -102,6 +102,12 @@ const StudentDetails = () => {
   };
 
   const handleDisableStudentModel = () => {
+    setFormDataDisable({
+      id: getId,
+      reason: "",
+      date: "",
+      note: "",
+    });
     setIsDisableStudentModel(!setisdisablestudentmodel);
   };
 
@@ -174,7 +180,116 @@ const StudentDetails = () => {
 
       const response2 = await createStudentDisable(data);
 
-      if (response2.status == 200) {
+      if (response2.success) {
+        setFormDataDisable({
+          id: getId,
+          reason: "",
+          date: "",
+          note: "",
+        });
+
+        /*    if (typeof window !== "undefined") {
+          const id = window.location.pathname.split("/").pop();
+          if (id) {
+            const getData = async () => {
+              try {
+                setLoading(true);
+                const data = await fetchStudentSingleData(id);
+                const data2 = await fetchStudentFeesData(id);
+                const datatimeline = await fetchStudentTimelineData(id);
+                const datadocument = await fetchStudentdocData(id);
+
+                const getdataexamresult = await fetchStudentexamData(id);
+
+                setDataTimeline(datatimeline.data);
+                setgetId(data.data.id);
+                setDataDocument(datadocument.data);
+                setDataExamResult(getdataexamresult.data);
+                console.log("dataexamresult", dataexamresult);
+
+                console.log("datadocument.data", datadocument.data);
+                setFeeData(data2);
+
+                setFormData({
+                  class_name: data.data.class_name,
+                  section_name: data.data.section_name,
+                  parent_id: data.data.parent_id,
+                  admission_no: data.data.admission_no,
+                  roll_no: data.data.roll_no,
+                  admission_date: data.data.admission_date,
+                  firstname: data.data.firstname,
+                  middlename: data.data.middlename,
+                  lastname: data.data.lastname,
+                  rte: data.data.rte,
+                  image: data.data.image,
+                  mobileno: data.data.mobileno,
+                  email: data.data.email,
+                  state: data.data.state,
+                  city: data.data.city,
+                  pincode: data.data.pincode,
+                  religion: data.data.religion,
+                  cast: data.data.cast,
+                  dob: data.data.dob,
+                  gender: data.data.gender,
+                  current_address: data.data.current_address,
+                  permanent_address: data.data.permanent_address,
+                  category_id: data.data.category_id,
+                  route_id: data.data.route_id,
+                  school_house_id: data.data.school_house_id,
+                  blood_group: data.data.blood_group,
+                  vehroute_id: data.data.vehroute_id,
+                  hostel_room_id: data.data.hostel_room_id,
+                  adhar_no: data.data.adhar_no,
+                  samagra_id: data.data.samagra_id,
+                  bank_account_no: data.data.bank_account_no,
+                  bank_name: data.data.bank_name,
+                  ifsc_code: data.data.ifsc_code,
+                  guardian_is: data.data.guardian_is,
+                  father_name: data.data.father_name,
+                  father_phone: data.data.father_phone,
+                  father_occupation: data.data.father_occupation,
+                  mother_name: data.data.mother_name,
+                  mother_phone: data.data.mother_phone,
+                  mother_occupation: data.data.mother_occupation,
+                  guardian_name: data.data.guardian_name,
+                  guardian_relation: data.data.guardian_relation,
+                  guardian_phone: data.data.guardian_phone,
+                  guardian_occupation: data.data.guardian_occupation,
+                  guardian_address: data.data.guardian_address,
+                  guardian_email: data.data.guardian_email,
+                  father_pic: data.data.father_pic,
+                  mother_pic: data.data.mother_pic,
+                  guardian_pic: data.data.guardian_pic,
+                  is_active: data.data.is_active,
+                  previous_school: data.data.previous_school,
+                  height: data.data.height,
+                  weight: data.data.weight,
+                  measurement_date: data.data.measurement_date,
+                  dis_reason: data.data.dis_reason,
+                  note: data.data.note,
+                  dis_note: data.data.dis_note,
+                  app_key: data.data.app_key,
+                  parent_app_key: data.data.parent_app_key,
+                  disable_at: data.data.disable_at,
+                  section_id: data.data.section_id,
+                  notes: "", // Add other fields as needed
+                  first_title: "",
+                  first_doc: "",
+                  second_title: "",
+                  third_title: "",
+                  fourth_title: "",
+                  category_name: data.data.category_name,
+                });
+
+                setLoading(false);
+              } catch (error) {
+                console.error("Error fetching student data:", error);
+              }
+            };
+            getData();
+          }
+        } */
+        handleSaveDisableStudent();
         toast.success("Added successful");
       } else {
         toast.error("Error Add data");
