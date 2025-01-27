@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentAttendencData = async (
+export const fetchStaffAttendencData = async (
   selectedClass?: any,
   selectedSection?: any,
   selectedSubjectGroup?: any,
@@ -16,6 +16,22 @@ export const fetchStudentAttendencData = async (
   return response.data;
 };
 
+
+export const fetchStaffAttendencDataNotByClass = async (
+  selectedClass?: any,
+  selectedSection?: any,
+  selectedSubjectGroup?: any,
+  selectedSessionId?: any,) => {
+  const response = await apiClient.get(`/student-attendance`, {
+    params: {
+      selectedClass,
+      selectedSection,
+      selectedSubjectGroup,
+      selectedSessionId
+    },
+  });
+  return response.data;
+};
 // Edit a student category by ID
 export const createStafftAttendencData = async ( data : any) => {
 

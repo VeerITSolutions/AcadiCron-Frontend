@@ -1901,24 +1901,27 @@ const StudentDetails = () => {
               </h2>
 
               {/* Table Content */}
-              <div className="table-responsive overflow-x-auto">
+              <>
                 <p className="lead mb-4 text-center text-xl font-medium">
                   {formData.firstname} {formData.middlename} {formData.lastname}
                 </p>
                 {loadingstudentdetails ? (
                   <>
                     {[...Array(2)].map((_, index) => (
-                      <tr key={index} className="animate-pulse border-t">
-                        <td className="px-4 py-2 font-bold">
-                          <div className="bg-gray-200 h-4 w-20 rounded"></div>
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          <div className="bg-gray-200 mx-auto h-4 w-32 rounded"></div>
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          <div className="bg-gray-200 mx-auto h-4 w-32 rounded"></div>
-                        </td>
-                      </tr>
+                      <table className="border-gray-200 w-full table-auto border text-sm">
+                        <thead></thead>
+                        <tr key={index} className="animate-pulse border-t">
+                          <td className="px-4 py-2 font-bold">
+                            <div className="bg-gray-200 h-4 w-20 rounded"></div>
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            <div className="bg-gray-200 mx-auto h-4 w-32 rounded"></div>
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            <div className="bg-gray-200 mx-auto h-4 w-32 rounded"></div>
+                          </td>
+                        </tr>
+                      </table>
                     ))}
                   </>
                 ) : (
@@ -1935,12 +1938,6 @@ const StudentDetails = () => {
                       {partentdata && (
                         <tr className="border-t">
                           <td className="px-4 py-2 font-bold">Parent</td>
-                          <input
-                            type="hidden"
-                            name="userid"
-                            id="userid"
-                            value={partentdata.id} // Dynamic ID for parent
-                          />
                           <td className="px-4 py-2 text-center">
                             {partentdata.username}
                           </td>
@@ -1954,12 +1951,6 @@ const StudentDetails = () => {
                       {studentdata && (
                         <tr className="border-t">
                           <td className="px-4 py-2 font-bold">Student</td>
-                          <input
-                            type="hidden"
-                            name="userid"
-                            id="userid"
-                            value={studentdata.id} // Dynamic ID for student
-                          />
                           <td className="px-4 py-2 text-center">
                             {studentdata.username}
                           </td>
@@ -1975,14 +1966,14 @@ const StudentDetails = () => {
                 <p className="lead text-red-500 mt-4 text-center text-sm">
                   Login URL:{" "}
                   <a
-                    href={process.env.NEXT_PUBLIC_BASE_URL_FRONTEND}
+                    href={`${window.location.origin}/login`}
                     className="text-blue-500 underline"
                     target="_blank"
                   >
-                    {process.env.NEXT_PUBLIC_BASE_URL_FRONTEND}
+                    {`${window.location.origin}/login`}
                   </a>
                 </p>
-              </div>
+              </>
             </div>
           </div>
         </>
