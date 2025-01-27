@@ -26,3 +26,10 @@ export const createStudentdoc = async ( data : any) => {
   const response = await apiClient.post(`/student-doc`, data);
   return response.data;
 };
+
+
+export const createStudentDisable = async ( data : any) => {
+
+  const response = await apiClient.post(`/student-disabled`, data);
+  return response.data;
+};

@@ -15,6 +15,7 @@ import {
 import { fetchStudentFeesData } from "@/services/studentFeesService";
 import { toast } from "react-toastify";
 import {
+  createStudentDisable,
   createStudentdoc,
   fetchStudentdocData,
 } from "@/services/studentdocService";
@@ -163,6 +164,27 @@ const StudentDetails = () => {
     }
   };
 
+  const handleSaveDisableStudent = async () => {
+    try {
+      setLoading(true);
+      const data = {
+        id: getId,
+        ...formDataDisable,
+      };
+
+      const response2 = await createStudentDisable(data);
+
+      if (response2.status == 200) {
+        toast.success("Added successful");
+      } else {
+        toast.error("Error Add data");
+      }
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleSave2 = async () => {
     try {
       setLoading(true);
@@ -196,6 +218,18 @@ const StudentDetails = () => {
     }
   };
   const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormDataTimeline((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
+  const handleDisableInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
@@ -378,6 +412,13 @@ const StudentDetails = () => {
       date: "",
     },
   );
+
+  const [formDataDisable, setFormDataDisable] = useState<Record<string, any>>({
+    id: getId,
+    reason: "",
+    date: "",
+    note: "",
+  });
 
   const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
     id: getId,
@@ -1661,19 +1702,55 @@ const StudentDetails = () => {
                     Disable Student
                   </h2>
 
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 ">
                     <div className="field">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Title:
+                        Reason:
                       </label>
+                      <span className="required">*</span>
                       <input
                         aria-invalid="false"
-                        id="title"
+                        id="reason"
                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="title"
-                        value={formDataTimeline.title}
-                        onChange={handleInputChange}
+                        name="reason"
+                        value={formDataDisable.reason}
+                        onChange={handleDisableInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 ">
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Date:
+                      </label>
+                      <span className="required">*</span>
+                      <input
+                        aria-invalid="false"
+                        id="date"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                        type="date"
+                        name="date"
+                        value={formDataDisable.date}
+                        onChange={handleDisableInputChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4 ">
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Note:
+                      </label>
+                      <span className="required">*</span>
+                      <input
+                        aria-invalid="false"
+                        id="note"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="note"
+                        value={formDataDisable.note}
+                        onChange={handleDisableInputChange}
                       />
                     </div>
                   </div>
@@ -1681,7 +1758,7 @@ const StudentDetails = () => {
                   <div className="mt-4 flex justify-end">
                     <button
                       type="button"
-                      onClick={handleSave}
+                      onClick={handleSaveDisableStudent}
                       className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
                     >
                       Submit
