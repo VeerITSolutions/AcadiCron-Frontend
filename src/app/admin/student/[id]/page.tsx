@@ -18,6 +18,7 @@ import {
   createStudentDisable,
   createStudentdoc,
   fetchStudentdocData,
+  fetchStudentLoginDetails,
 } from "@/services/studentdocService";
 import {
   createStudentTimeline,
@@ -92,14 +93,25 @@ const StudentDetails = () => {
   const [dataexamresult, setDataExamResult] = useState<any>(null);
   const [getId, setgetId] = useState<any>(null);
 
+  const [partentdata, setParentData] = useState<any>(null);
+  const [studentdata, setStudentData] = useState<any>(null);
+
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
   };
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
   };
-  const handlePasswordModel = () => {
+  const handlePasswordModel = async () => {
     setIsPasswordModel(!passwordModel);
+    const studentLoginDetails = await fetchStudentLoginDetails({ id: getId });
+    studentLoginDetails.data.forEach((user: any) => {
+      if (user.role === "parent") {
+        setParentData(user); // Set the parent data
+      } else if (user.role === "student") {
+        setStudentData(user); // Set the student data
+      }
+    });
   };
 
   const handleDisableStudentModel = () => {
@@ -1892,28 +1904,43 @@ const StudentDetails = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-t">
-                      <td className="px-4 py-2 font-bold">Parent</td>
-                      <input
-                        type="hidden"
-                        name="userid"
-                        id="userid"
-                        value="2044"
-                      />
-                      <td className="px-4 py-2 text-center">parent1019</td>
-                      <td className="px-4 py-2 text-center">6p98j6</td>
-                    </tr>
-                    <tr className="border-t">
-                      <td className="px-4 py-2 font-bold">Student</td>
-                      <input
-                        type="hidden"
-                        name="userid"
-                        id="userid"
-                        value="2043"
-                      />
-                      <td className="px-4 py-2 text-center">std1019</td>
-                      <td className="px-4 py-2 text-center">6rsg2q</td>
-                    </tr>
+                    {/* Parent Row */}
+                    {partentdata && (
+                      <tr className="border-t">
+                        <td className="px-4 py-2 font-bold">Parent</td>
+                        <input
+                          type="hidden"
+                          name="userid"
+                          id="userid"
+                          value={partentdata.id} // Dynamic ID for parent
+                        />
+                        <td className="px-4 py-2 text-center">
+                          {partentdata.username}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {partentdata.password}
+                        </td>
+                      </tr>
+                    )}
+
+                    {/* Student Row */}
+                    {studentdata && (
+                      <tr className="border-t">
+                        <td className="px-4 py-2 font-bold">Student</td>
+                        <input
+                          type="hidden"
+                          name="userid"
+                          id="userid"
+                          value={studentdata.id} // Dynamic ID for student
+                        />
+                        <td className="px-4 py-2 text-center">
+                          {studentdata.username}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {studentdata.password}
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
                 <p className="lead text-red-500 mt-4 text-center text-sm">

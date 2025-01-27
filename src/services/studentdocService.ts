@@ -33,3 +33,9 @@ export const createStudentDisable = async ( data : any) => {
   const response = await apiClient.post(`/student-disabled`, data);
   return response.data;
 };
+
+export const fetchStudentLoginDetails = async ( data : any) => {
+
+  const response = await apiClient.post(`/student-get-login-details`, data);
+  return response.data;
+};
