@@ -38,6 +38,8 @@ import {
 } from "@mui/icons-material";
 import { fetchStudentexamData } from "@/services/studentExamService";
 import LoaderSpiner from "@/components/common/LoaderSpiner";
+import { set } from "date-fns";
+import Loader from "@/components/common/Loader";
 
 interface FeeData {
   fees_group: string;
@@ -87,6 +89,7 @@ const StudentDetails = () => {
   const [passwordModel, setIsPasswordModel] = useState(false);
   const [setisdisablestudentmodel, setIsDisableStudentModel] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingstudentdetails, setloadingstudentdetails] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dataTimeline, setDataTimeline] = useState<any>(null);
   const [dataDocument, setDataDocument] = useState<any>(null);
@@ -104,7 +107,14 @@ const StudentDetails = () => {
   };
   const handlePasswordModel = async () => {
     setIsPasswordModel(!passwordModel);
+    setloadingstudentdetails(true);
     const studentLoginDetails = await fetchStudentLoginDetails({ id: getId });
+    if (studentLoginDetails.data.length > 0) {
+      setloadingstudentdetails(false);
+    } else {
+      setloadingstudentdetails(false);
+    }
+
     studentLoginDetails.data.forEach((user: any) => {
       if (user.role === "parent") {
         setParentData(user); // Set the parent data
@@ -1895,54 +1905,73 @@ const StudentDetails = () => {
                 <p className="lead mb-4 text-center text-xl font-medium">
                   {formData.firstname} {formData.middlename} {formData.lastname}
                 </p>
-                <table className="border-gray-200 w-full table-auto border text-sm">
-                  <thead>
-                    <tr className="bg-gray-100 text-gray-700 text-left">
-                      <th className="px-4 py-2">User Type</th>
-                      <th className="px-4 py-2 text-center">Username</th>
-                      <th className="px-4 py-2 text-center">Password</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* Parent Row */}
-                    {partentdata && (
-                      <tr className="border-t">
-                        <td className="px-4 py-2 font-bold">Parent</td>
-                        <input
-                          type="hidden"
-                          name="userid"
-                          id="userid"
-                          value={partentdata.id} // Dynamic ID for parent
-                        />
-                        <td className="px-4 py-2 text-center">
-                          {partentdata.username}
+                {loadingstudentdetails ? (
+                  <>
+                    {[...Array(2)].map((_, index) => (
+                      <tr key={index} className="animate-pulse border-t">
+                        <td className="px-4 py-2 font-bold">
+                          <div className="bg-gray-200 h-4 w-20 rounded"></div>
                         </td>
                         <td className="px-4 py-2 text-center">
-                          {partentdata.password}
+                          <div className="bg-gray-200 mx-auto h-4 w-32 rounded"></div>
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          <div className="bg-gray-200 mx-auto h-4 w-32 rounded"></div>
                         </td>
                       </tr>
-                    )}
+                    ))}
+                  </>
+                ) : (
+                  <table className="border-gray-200 w-full table-auto border text-sm">
+                    <thead>
+                      <tr className="bg-gray-100 text-gray-700 text-left">
+                        <th className="px-4 py-2">User Type</th>
+                        <th className="px-4 py-2 text-center">Username</th>
+                        <th className="px-4 py-2 text-center">Password</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Parent Row */}
+                      {partentdata && (
+                        <tr className="border-t">
+                          <td className="px-4 py-2 font-bold">Parent</td>
+                          <input
+                            type="hidden"
+                            name="userid"
+                            id="userid"
+                            value={partentdata.id} // Dynamic ID for parent
+                          />
+                          <td className="px-4 py-2 text-center">
+                            {partentdata.username}
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            {partentdata.password}
+                          </td>
+                        </tr>
+                      )}
 
-                    {/* Student Row */}
-                    {studentdata && (
-                      <tr className="border-t">
-                        <td className="px-4 py-2 font-bold">Student</td>
-                        <input
-                          type="hidden"
-                          name="userid"
-                          id="userid"
-                          value={studentdata.id} // Dynamic ID for student
-                        />
-                        <td className="px-4 py-2 text-center">
-                          {studentdata.username}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {studentdata.password}
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      {/* Student Row */}
+                      {studentdata && (
+                        <tr className="border-t">
+                          <td className="px-4 py-2 font-bold">Student</td>
+                          <input
+                            type="hidden"
+                            name="userid"
+                            id="userid"
+                            value={studentdata.id} // Dynamic ID for student
+                          />
+                          <td className="px-4 py-2 text-center">
+                            {studentdata.username}
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            {studentdata.password}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                )}
+
                 <p className="lead text-red-500 mt-4 text-center text-sm">
                   Login URL:{" "}
                   <a
