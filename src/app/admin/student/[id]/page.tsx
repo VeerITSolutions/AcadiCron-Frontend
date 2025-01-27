@@ -630,13 +630,19 @@ const StudentDetails = () => {
                     <AttachMoney onClick={() => handleAddFees(getId)} />
                   </li>
                   <li className="cursor-pointer px-4 py-2">
-                    <Key onClick={() => handlePasswordModel()} />
+                    <Key
+                      onClick={() => handlePasswordModel()}
+                      className="cursor-pointer text-green-500"
+                    />
                   </li>
                   <li className="cursor-pointer px-4 py-2">
-                    <ThumbDown />
+                    <ThumbDown className="text-red-500 cursor-pointer" />
                   </li>
                   <li className="cursor-pointer px-4 py-2">
-                    <ArrowDropUpTwoTone onClick={toggleDropdown} />
+                    <ArrowDropUpTwoTone
+                      onClick={toggleDropdown}
+                      className="text-red-500 hover:text-red-600 cursor-pointer"
+                    />
                   </li>
 
                   {/*   <li className="px-4 cursor-pointer py-2">key</li> */}
@@ -645,17 +651,33 @@ const StudentDetails = () => {
 
               <div className="relative">
                 {isOpen && (
-                  <ul className="border-gray-200 absolute right-0 z-10 mt-2 w-48 rounded-md border bg-white shadow-lg">
+                  <ul className="border-gray-300 animate-fade-in absolute right-0 z-10 mt-2 w-56 rounded-lg border bg-white shadow-md">
                     <li
                       onClick={sendStudentPassword}
-                      className="text-gray-700 hover:bg-gray-100 cursor-pointer px-4 py-2 text-sm"
+                      className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-4 py-2 text-sm transition-all duration-200"
                     >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-green-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11V6a1 1 0 10-2 0v1a1 1 0 002 0zm0 6a1 1 0 10-2 0v2a1 1 0 102 0v-2z" />
+                      </svg>
                       Send Student Password
                     </li>
                     <li
                       onClick={sendParentPassword}
-                      className="text-gray-700 hover:bg-gray-100 cursor-pointer px-4 py-2 text-sm"
+                      className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-4 py-2 text-sm transition-all duration-200"
                     >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-green-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11V6a1 1 0 10-2 0v1a1 1 0 002 0zm0 6a1 1 0 10-2 0v2a1 1 0 102 0v-2z" />
+                      </svg>
                       Send Parent Password
                     </li>
                   </ul>
