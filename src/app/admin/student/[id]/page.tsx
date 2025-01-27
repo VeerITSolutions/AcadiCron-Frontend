@@ -23,7 +23,15 @@ import {
   fetchStudentTimelineData,
 } from "@/services/studentTimelineService";
 import { IconButton } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import {
+  AttachMoney,
+  Delete,
+  Edit,
+  EditAttributes,
+  Key,
+  Money,
+  ThumbDown,
+} from "@mui/icons-material";
 import { fetchStudentexamData } from "@/services/studentExamService";
 import LoaderSpiner from "@/components/common/LoaderSpiner";
 
@@ -548,38 +556,57 @@ const StudentDetails = () => {
           {/* Profile Content */}
           <div className="w-full p-2 md:w-3/4">
             <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-              <ul className="mb-4 flex border-b border-stroke dark:border-strokedark">
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("activity")}
-                >
-                  Profile
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "fee" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("fee")}
-                >
-                  Fees
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "exam" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("exam")}
-                >
-                  Exam
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("documents")}
-                >
-                  Documents
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("timelineh")}
-                >
-                  Timeline
-                </li>
-              </ul>
+              <div className="mb-4 flex justify-between border-b border-stroke dark:border-strokedark">
+                <ul className="flex">
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("activity")}
+                  >
+                    Profile
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "fee" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("fee")}
+                  >
+                    Fees
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "exam" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("exam")}
+                  >
+                    Exam
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("documents")}
+                  >
+                    Documents
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("timelineh")}
+                  >
+                    Timeline
+                  </li>
+                </ul>
+                <ul className="flex">
+                  <li className="px-4 py-2">
+                    <Edit />
+                  </li>
+                  <li className="px-4 py-2">
+                    <AttachMoney />
+                  </li>
+                  <li className="px-4 py-2">
+                    <Key />
+                  </li>
+                  <li className="px-4 py-2">
+                    <ThumbDown />
+                  </li>
+                  <li className="px-4 py-2">key</li>
+
+                  {/*   <li className="px-4 py-2">key</li> */}
+                </ul>
+              </div>
 
               {/* Tab Content */}
               {activeTab === "activity" && (
