@@ -24,6 +24,7 @@ import {
 } from "@/services/studentTimelineService";
 import { IconButton } from "@mui/material";
 import {
+  ArrowDropUpTwoTone,
   AttachMoney,
   Delete,
   Edit,
@@ -80,6 +81,8 @@ const StudentDetails = () => {
 
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
+  const [passwordModel, setIsPasswordModel] = useState(false);
+  /*   const [passwordModel, setIsPasswordModel] = useState(false); */
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dataTimeline, setDataTimeline] = useState<any>(null);
@@ -92,6 +95,9 @@ const StudentDetails = () => {
   };
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
+  };
+  const handlePasswordModel = () => {
+    setIsPasswordModel(!passwordModel);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -487,7 +493,34 @@ const StudentDetails = () => {
   } */
   const { student_due_fees, student_discount_fees, totals, currency_symbol } =
     feeData || {};
+  const handleView = async (id: number) => {
+    // Assuming id is the student_id
+    router.push(`/admin/student/${id}`);
+  };
 
+  const handleEdit = (id: number) => {
+    router.push(`/admin/student/edit/${id}`);
+  };
+
+  const handleAddFees = (id: number) => {
+    router.push(`/admin/student/fees/${id}`);
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const sendStudentPassword = () => {
+    alert("Student password has been sent!");
+    // Add your logic here
+  };
+
+  const sendParentPassword = () => {
+    alert("Parent password has been sent!");
+    // Add your logic here
+  };
   return (
     <DefaultLayout>
       {loading ? (
@@ -590,22 +623,43 @@ const StudentDetails = () => {
                   </li>
                 </ul>
                 <ul className="flex">
-                  <li className="px-4 py-2">
-                    <Edit />
+                  <li className="cursor-pointer px-4 py-2">
+                    <Edit onClick={() => handleEdit(getId)} />
                   </li>
-                  <li className="px-4 py-2">
-                    <AttachMoney />
+                  <li className="cursor-pointer px-4 py-2">
+                    <AttachMoney onClick={() => handleAddFees(getId)} />
                   </li>
-                  <li className="px-4 py-2">
-                    <Key />
+                  <li className="cursor-pointer px-4 py-2">
+                    <Key onClick={() => handlePasswordModel()} />
                   </li>
-                  <li className="px-4 py-2">
+                  <li className="cursor-pointer px-4 py-2">
                     <ThumbDown />
                   </li>
-                  <li className="px-4 py-2">key</li>
+                  <li className="cursor-pointer px-4 py-2">
+                    <ArrowDropUpTwoTone onClick={toggleDropdown} />
+                  </li>
 
-                  {/*   <li className="px-4 py-2">key</li> */}
+                  {/*   <li className="px-4 cursor-pointer py-2">key</li> */}
                 </ul>
+              </div>
+
+              <div className="relative">
+                {isOpen && (
+                  <ul className="border-gray-200 absolute right-0 z-10 mt-2 w-48 rounded-md border bg-white shadow-lg">
+                    <li
+                      onClick={sendStudentPassword}
+                      className="text-gray-700 hover:bg-gray-100 cursor-pointer px-4 py-2 text-sm"
+                    >
+                      Send Student Password
+                    </li>
+                    <li
+                      onClick={sendParentPassword}
+                      className="text-gray-700 hover:bg-gray-100 cursor-pointer px-4 py-2 text-sm"
+                    >
+                      Send Parent Password
+                    </li>
+                  </ul>
+                )}
               </div>
 
               {/* Tab Content */}
@@ -1466,6 +1520,29 @@ const StudentDetails = () => {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Modal Popup */}
+      {passwordModel && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black bg-opacity-50"
+            onClick={handlePasswordModel}
+          ></div>
+
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              <button
+                onClick={handlePasswordModel}
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+              >
+                &times;
+              </button>
+
+              <h2 className="mb-4 text-lg font-semibold">Add Timeline</h2>
             </div>
           </div>
         </>
