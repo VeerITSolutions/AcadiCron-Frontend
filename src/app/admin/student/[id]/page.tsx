@@ -235,7 +235,7 @@ const StudentDetails = () => {
     >,
   ) => {
     const { name, value } = e.target;
-    setFormDataTimeline((prevData) => ({
+    setFormDataDisable((prevData) => ({
       ...prevData,
       [name]: value, // For regular inputs like text or selects
     }));
