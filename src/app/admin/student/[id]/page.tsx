@@ -1978,7 +1978,6 @@ const StudentDetails = () => {
                     href={process.env.NEXT_PUBLIC_BASE_URL_FRONTEND}
                     className="text-blue-500 underline"
                     target="_blank"
-                    rel="noopener noreferrer"
                   >
                     {process.env.NEXT_PUBLIC_BASE_URL_FRONTEND}
                   </a>
