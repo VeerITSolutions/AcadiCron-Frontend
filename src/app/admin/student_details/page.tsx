@@ -82,7 +82,7 @@ const StudentDetails = () => {
       student.admission_no || "N/A",
 
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.class_name || "N/A",
+      `${student.class_name} (${student?.section_name})` || "N/A",
       student.category_name || "N/A",
       student.mobileno || "N/A",
       <div key={student.id} className="flex text-left">
@@ -120,17 +120,21 @@ const StudentDetails = () => {
   ) => {
     try {
       // Pass selectedClass and selectedSection as parameters to filter data
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        selectedSessionId,
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
+
+      if (selectedClass) {
+        const result = await fetchStudentData(
+          currentPage + 1,
+          rowsPerPage,
+          selectedClass,
+          selectedSection,
+          keyword,
+          selectedSessionId,
+        );
+        setTotalCount(result.totalCount);
+        const formattedData = formatStudentData(result.data);
+        setData(formattedData);
+        setLoading(false);
+      }
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -207,6 +211,7 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setData([]);
     setKeyword("");
   };
 
