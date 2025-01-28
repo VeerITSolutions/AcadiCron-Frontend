@@ -1910,7 +1910,10 @@ const StudentDetails = () => {
                 {loadingstudentdetails ? (
                   <>
                     {[...Array(2)].map((_, index) => (
-                      <table className="border-gray-200 w-full table-auto border text-sm">
+                      <table
+                        key={index}
+                        className="border-gray-200 w-full table-auto border text-sm"
+                      >
                         <thead></thead>
                         <tr key={index} className="animate-pulse border-t">
                           <td className="px-4 py-2 font-bold">

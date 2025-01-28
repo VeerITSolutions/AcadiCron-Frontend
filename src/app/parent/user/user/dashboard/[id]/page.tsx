@@ -1534,7 +1534,7 @@ const StudentDetails = () => {
                 <div className="mt-4 flex justify-end">
                   <button
                     type="button"
-                    onClick={handleSave}
+                    onClick={handleSave2}
                     className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
                   >
                     Submit
