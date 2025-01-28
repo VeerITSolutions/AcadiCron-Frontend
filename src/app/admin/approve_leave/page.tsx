@@ -261,6 +261,7 @@ const StudentDetails = () => {
           formData.request_type,
           formData.staff_name,
           formData.staff_surname,
+          getselectedSessionId,
         );
       } else {
         result = await createApproveLeave(
@@ -279,6 +280,7 @@ const StudentDetails = () => {
           formData.request_type,
           formData.staff_name,
           formData.staff_surname,
+          getselectedSessionId,
         );
         setStudentName([]);
         setSelectedClass("");
@@ -470,7 +472,7 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.student_name || "N/A",
+      student.student_firstname + " " + student.student_lastname || "N/A",
       student.class_name || "N/A",
       student.section_name || "N/A",
       student.from_date || "N/A",

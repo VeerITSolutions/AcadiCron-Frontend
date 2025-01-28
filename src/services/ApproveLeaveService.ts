@@ -35,7 +35,9 @@ export const createApproveLeave = async (
   approve_by?: string,
   request_type?: string,
   staff_name?: string,
-  staff_surname?: string,): Promise<any> => {
+  staff_surname?: string,
+  getselectedSessionId?: any,
+): Promise<any> => {
   try {
     const response = await apiClient.post("/approve-leave", {
       selectedClass,
@@ -52,7 +54,8 @@ export const createApproveLeave = async (
       approve_by,
       request_type,
       staff_name,
-      staff_surname
+      staff_surname,
+      getselectedSessionId
     });
     return response.data;
   } catch (error) {
@@ -96,6 +99,7 @@ export const editApproveLeaveData = async (
   request_type?: string,
   staff_name?: string,
   staff_surname?: string,
+  getselectedSessionId?: any,
 
  ) => {
   const data = { currentLeaveId,
@@ -113,7 +117,7 @@ export const editApproveLeaveData = async (
     approve_by,
     request_type,
     staff_name,
-    staff_surname };
+    staff_surname , getselectedSessionId};
   const response = await apiClient.post(`/approve-leave/${currentLeaveId}`, data);
   return response.data;
 };
