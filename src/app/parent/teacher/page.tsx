@@ -53,7 +53,10 @@ import {
 } from "@/services/studentService";
 import { set } from "date-fns";
 import { get } from "http";
-import { editTeacherReviewData } from "@/services/teacherReviewService";
+import {
+  editTeacherReviewData,
+  fetchTeacherReviewData,
+} from "@/services/teacherReviewService";
 
 const columns = [
   "Class",
@@ -297,56 +300,10 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchHomeWorkData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        selectedSubjectGroup,
-        selectedSubject,
-        keyword,
-      );
+      const result = await fetchTeacherReviewData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
       setData(formattedData);
-
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      setClassessData2(classesResult.data);
-
-      /* call condtion wise  */
-      if (selectedClass && selectedSection) {
-        const subjectgroupresult = await fetchSubjectGroupData(
-          "",
-          "",
-          selectedClass,
-          selectedSection,
-          getselectedSessionId,
-        );
-
-        setSubjectGroup(subjectgroupresult.data);
-      }
-      if (selectedSubjectGroup) {
-        const subjectresult = await fetchSubjectData(
-          "",
-          "",
-          selectedSubjectGroup,
-          getselectedSessionId,
-        );
-        setSubject(subjectresult.data);
-      }
-
-      if (selectedSubjectGroup2) {
-        const subjectresult2 = await fetchSubjectData(
-          "",
-          "",
-          selectedSubjectGroup2,
-        );
-        setSubject2(subjectresult2.data);
-      }
-
-      /* call condtin wise end  */
 
       setLoading(false);
     } catch (error: any) {
