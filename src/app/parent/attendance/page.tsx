@@ -15,15 +15,14 @@ import { useGlobalState } from "@/context/GlobalContext";
 import { fetchStudentAttendencData } from "@/services/studentAttendence";
 import { useLoginDetails } from "@/store/logoStore";
 
-const staffidcard = () => {
-  const { themType, setThemType } = useGlobalState(); //
+const AttendaceDetails = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<
     Array<{ title: string; start: string; color: string }>
   >([]);
   const [userDataIds, setUserDataIds] = useState<Array<Array<string>>>([]);
   const [events, setEvents] = useState<Array<Array<string>>>([]);
-
+  const [error, setError] = useState<string | null>(null);
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
@@ -48,7 +47,7 @@ const staffidcard = () => {
       };
     });
   };
-  const [error, setError] = useState<string | null>(null);
+
   const fetchData = async () => {
     try {
       const getformData = {
@@ -72,17 +71,17 @@ const staffidcard = () => {
 
   return (
     <>
-      <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-        <DefaultLayout>
-          <div className="calendar-container">
-            <FullCalendar
-              plugins={[dayGridPlugin, interactionPlugin]}
-              initialView="dayGridMonth"
-              events={data}
-              height="auto"
-              aspectRatio={1.5}
-            />
-            {/*  <div className="legend">
+      {/*  <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}> */}
+      <DefaultLayout>
+        <div className="calendar-container">
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            events={data}
+            height="auto"
+            aspectRatio={1.5}
+          />
+          {/*  <div className="legend">
               <span
                 className="legend-item"
                 style={{ backgroundColor: "green" }}
@@ -102,40 +101,40 @@ const staffidcard = () => {
                 Representative
               </span>
             </div> */}
-          </div>
-          <style jsx>{`
-            .calendar-container {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              height: 80vh;
-              width: 100%;
-              padding: 20px;
-            }
-            .legend {
-              display: flex;
-              gap: 10px;
-              margin-top: 10px;
-            }
-            .legend-item {
-              padding: 5px 10px;
-              border-radius: 5px;
-              color: white;
-              font-weight: bold;
-            }
-            :global(.fc) {
-              max-width: 800px;
-              width: 100%;
-              background: white;
-              border-radius: 10px;
-              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-              padding: 10px;
-            }
-          `}</style>
-        </DefaultLayout>
-      </ThemeProvider>
+        </div>
+        <style jsx>{`
+          .calendar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 80vh;
+            width: 100%;
+            padding: 20px;
+          }
+          .legend {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+          }
+          .legend-item {
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+          }
+          :global(.fc) {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+          }
+        `}</style>
+      </DefaultLayout>
+      {/* </ThemeProvider> */}
     </>
   );
 };
 
-export default staffidcard;
+export default AttendaceDetails;
