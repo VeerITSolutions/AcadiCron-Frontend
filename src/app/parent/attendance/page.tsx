@@ -1,5 +1,5 @@
 "use client"; // Add this at the top of the file
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, use } from "react";
 import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
 import LogoutButton from "@/components/LogoutButton";
 import React from "react";
@@ -19,6 +19,7 @@ const staffidcard = () => {
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<Array<Array<string>>>([]);
+  const [userDataIds, setUserDataIds] = useState<Array<Array<string>>>([]);
   const events = [
     { title: "Present", start: "2025-02-01", color: "green" },
     { title: "Absent", start: "2025-02-02", color: "red" },
@@ -28,14 +29,14 @@ const staffidcard = () => {
     (state) => state.selectedSessionId,
   );
 
-  const getuserId = useLoginDetails((state) => state.userId);
+  const userId = useLoginDetails((state) => state.userId);
 
   const [error, setError] = useState<string | null>(null);
   const fetchData = async () => {
     try {
       const getformData = {
         session_id: getselectedSessionId,
-        student_id: getuserId,
+        student_id: userId,
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear(),
       };

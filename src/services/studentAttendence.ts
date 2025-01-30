@@ -18,7 +18,7 @@ export const fetchStudentAttendencByClassSectionData = async (
 
 export const fetchStudentAttendencData = async (
   data: any) => {
-  const response = await apiClient.get(`/get-student-attendance`, data);
+  const response = await apiClient.post(`/get-student-attendance`, data);
   return response.data;
 };
 
