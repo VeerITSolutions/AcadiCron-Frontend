@@ -33,9 +33,12 @@ const staffidcard = () => {
     return students.map((student: any) => {
       // Define the status-color mapping
       const statusColorMap: Record<string, string> = {
-        Present: "green",
-        Absent: "red",
-        Late: "yellow",
+        Present: "#28a745", // Green
+        Absent: "#dc3545", // Red
+        Late: "#007bff", // Blue
+        "Late With Excuse": "#ffc107", // Yellow
+        Holiday: "#17a2b8", // Teal
+        "Half Day": "#fd7e14", // Orange
       };
 
       return {
