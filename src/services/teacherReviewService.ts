@@ -10,6 +10,17 @@ export const fetchTeacherReviewData = async (page?: any, perPage?: any) => {
   return response.data;
 };
 
+export const fetchTeacherReviewGetData = async (page?: any, perPage?: any, role?: any, userId?: any) => {
+  const response = await apiClient.get(`/teacher-review-get-rated-staff`, {
+    params: {
+      page,
+      perPage,
+      role,
+      userId,
+    },
+  });
+  return response.data;
+};
 
 // Delete a student category by ID
 export const deleteTeacherReviewData = async (id: any) => {

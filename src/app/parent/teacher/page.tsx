@@ -56,6 +56,7 @@ import { get } from "http";
 import {
   editTeacherReviewData,
   fetchTeacherReviewData,
+  fetchTeacherReviewGetData,
 } from "@/services/teacherReviewService";
 
 const columns = [
@@ -193,6 +194,10 @@ const StudentDetails = () => {
     (state) => state.selectedSessionId,
   );
 
+  const roleName = useLoginDetails((state) => state.roleName);
+
+  const userId = useLoginDetails((state) => state.userId);
+
   useEffect(() => {
     fetchClassesAndSections(); // Fetch classes and sections on initial render
   }, [selectedClass, selectedSection, selectedSubjectGroup]);
@@ -300,9 +305,14 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchTeacherReviewData(currentPage + 1, rowsPerPage);
+      const result = await fetchTeacherReviewGetData(
+        currentPage + 1,
+        rowsPerPage,
+        roleName,
+        userId,
+      );
       setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
+      const formattedData = formatStudentData(result.data.user_ratedstafflist);
       setData(formattedData);
 
       setLoading(false);
