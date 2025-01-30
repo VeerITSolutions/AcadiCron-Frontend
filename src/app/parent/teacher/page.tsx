@@ -274,7 +274,15 @@ const StudentDetails = () => {
       student.staff.name || "N/A",
       student.staff.email || "N/A",
       student.staff.contact_no || "N/A",
-      student.rate || "N/A",
+
+      [1, 2, 3, 4, 5].map((star) => (
+        <span
+          key={star}
+          className={`cursor-pointer text-2xl ${Number(student.rate) >= star ? "text-yellow-500" : "text-gray-300"}`}
+        >
+          ★
+        </span>
+      )),
 
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
@@ -325,10 +333,10 @@ const StudentDetails = () => {
   const handleSave = async () => {
     try {
       let result;
-      const updateData = [formData.rating, formData.desc];
+      const updateData = { rating: formData.rating, desc: formData.desc };
       if (editing) {
         result = await editTeacherReviewData(currentLeaveId, updateData);
-
+        console.log("currentLeaveId", currentLeaveId);
         fetchData(page, rowsPerPage);
       }
       if (result.success) {
@@ -369,11 +377,7 @@ const StudentDetails = () => {
     setCurrentLeaveId(id);
 
     try {
-      setFormData(data);
-      setSelectedClass2(data.class_id);
-      setSelectedSection2(data.section_id);
-      setSelectedSubjectGroup2(data.subject_groups_id);
-      setSelectedSubject2(data.subject_id);
+      setFormData({ rating: data.rate, desc: data.comment });
 
       setLoading(false);
     } catch (error: any) {
@@ -687,7 +691,7 @@ const StudentDetails = () => {
                       <span
                         key={star}
                         onClick={() => handleRatingChange(star)}
-                        className={`cursor-pointer text-2xl ${formData.rating >= star ? "text-yellow-500" : "text-gray-300"}`}
+                        className={`cursor-pointer text-2xl ${Number(formData.rating) >= star ? "text-yellow-500" : "text-gray-300"}`}
                       >
                         ★
                       </span>
@@ -701,9 +705,9 @@ const StudentDetails = () => {
                     Description <span className="required">*</span>
                   </label>
                   <textarea
-                    name="description"
+                    name="desc"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    value={formData.description}
+                    value={formData.desc}
                     onChange={handleInputChange}
                   />
                 </div>
