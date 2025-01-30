@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchStudentAttendencData = async (
+export const fetchStudentAttendencByClassSectionData = async (
   selectedClass?: any,
   selectedSection?: any,
   selectedSubjectGroup?: any,
@@ -16,6 +16,11 @@ export const fetchStudentAttendencData = async (
   return response.data;
 };
 
+export const fetchStudentAttendencData = async (
+  data: any) => {
+  const response = await apiClient.get(`/get-student-attendance`, data);
+  return response.data;
+};
 
 
 

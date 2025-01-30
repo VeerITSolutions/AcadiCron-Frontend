@@ -1,5 +1,5 @@
 "use client"; // Add this at the top of the file
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/navigation"; // This replaces `useRouter` from 'next/router' in the app directory
 import LogoutButton from "@/components/LogoutButton";
 import React from "react";
@@ -12,13 +12,45 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { useGlobalState } from "@/context/GlobalContext";
+import { fetchStudentAttendencData } from "@/services/studentAttendence";
+import { useLoginDetails } from "@/store/logoStore";
 
 const staffidcard = () => {
   const { themType, setThemType } = useGlobalState(); //
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<Array<Array<string>>>([]);
   const events = [
     { title: "Present", start: "2025-02-01", color: "green" },
     { title: "Absent", start: "2025-02-02", color: "red" },
   ];
+
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
+
+  const getuserId = useLoginDetails((state) => state.userId);
+
+  const [error, setError] = useState<string | null>(null);
+  const fetchData = async () => {
+    try {
+      const getformData = {
+        session_id: getselectedSessionId,
+        student_id: getuserId,
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+      };
+      const result = await fetchStudentAttendencData(getformData);
+
+      setData(result.data);
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
