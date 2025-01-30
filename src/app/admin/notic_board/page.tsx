@@ -99,7 +99,7 @@ const StudentDetails = () => {
       <section className="content py-6">
         <div className="mx-auto max-w-7xl">
           <div className="rounded-lg bg-white shadow-lg">
-            <div className="flex items-center justify-between bg-blue-500 p-4 text-white">
+            <div className="flex items-center justify-between bg-[#4a5f87] p-4 text-white">
               <h3 className="flex items-center text-lg font-bold">
                 <i className="fa fa-commenting-o mr-2" />
                 Notice Board
