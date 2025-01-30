@@ -18,19 +18,33 @@ import { useLoginDetails } from "@/store/logoStore";
 const staffidcard = () => {
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<Array<Array<string>>>([]);
+  const [data, setData] = useState<
+    Array<{ title: string; start: string; color: string }>
+  >([]);
   const [userDataIds, setUserDataIds] = useState<Array<Array<string>>>([]);
-  const events = [
-    { title: "Present", start: "2025-02-01", color: "green" },
-    { title: "Absent", start: "2025-02-02", color: "red" },
-  ];
+  const [events, setEvents] = useState<Array<Array<string>>>([]);
 
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
 
   const userId = useLoginDetails((state) => state.userId);
+  const formatStudentData = (students: any[]) => {
+    return students.map((student: any) => {
+      // Define the status-color mapping
+      const statusColorMap: Record<string, string> = {
+        Present: "green",
+        Absent: "red",
+        Late: "yellow",
+      };
 
+      return {
+        title: student?.attendance_type.type || "N/A", // Event title based on the status
+        start: student.date || "N/A", // Corresponding date for the status
+        color: statusColorMap[student?.attendance_type.type] || "grey", // Color based on status
+      };
+    });
+  };
   const [error, setError] = useState<string | null>(null);
   const fetchData = async () => {
     try {
@@ -42,7 +56,7 @@ const staffidcard = () => {
       };
       const result = await fetchStudentAttendencData(getformData);
 
-      setData(result.data);
+      setData(formatStudentData(result.data));
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -61,7 +75,7 @@ const staffidcard = () => {
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
-              events={events}
+              events={data}
               height="auto"
               aspectRatio={1.5}
             />
