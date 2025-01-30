@@ -268,13 +268,13 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.class_name || "N/A",
-      student.class_name || "N/A",
-      student.class_name || "N/A",
-      student.class_name || "N/A",
-      student.class_name || "N/A",
-      student.class_name || "N/A",
-      student.class_name || "N/A",
+      `${student.staff.name} ${student.staff.surname}`,
+      student.staff.name || "N/A",
+      student.staff.name || "N/A",
+      student.staff.name || "N/A",
+      student.staff.email || "N/A",
+      student.staff.contact_no || "N/A",
+      student.rate || "N/A",
 
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
