@@ -285,35 +285,12 @@ const StudentDetails = () => {
           formData.staff_surname,
           getselectedSessionId,
         );
-        setStudentName([]);
-        setSelectedClass("");
-        setSelectedSection("");
-        setSelectedStudent("");
       }
 
       if (result.status == 200) {
-        setFormData({
-          student_session_id: "",
-          from_date: null as Date | null,
-          to_date: null as Date | null,
-          apply_date: null as Date | null,
-          status: "",
-          created_at: "",
-          docs: "",
-          reason: "",
-          approve_by: getRoleId,
-          request_type: "",
-          class_name: "",
-          section_name: "",
-          staff_name: "",
-          staff_surname: "",
-        });
-
         setOpen(false); // Close the modal
         setEditing(false); // Reset editing state
 
-        setSelectedClass2("");
-        setSelectedSection2("");
         fetchData(page, rowsPerPage); // Refresh data after submit
       } else {
         toast.error("Failed to save leave");
@@ -390,9 +367,6 @@ const StudentDetails = () => {
   const handleClose = () => {
     setOpen(false);
     setEditing(false); // Reset editing state
-    setSelectedClass2("");
-    setSelectedSection2("");
-    setStudentName([]);
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -412,16 +386,6 @@ const StudentDetails = () => {
     } catch (error) {
       console.error("Delete failed", error);
     }
-  };
-
-  const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
-    setSelectedStudent("");
-    setSelectedClass2("");
-    setSelectedSection2("");
-    setKeyword("");
-    setStudentName([]);
   };
 
   const getRoleId2 = useLoginDetails((state) => state.roleId);
@@ -444,10 +408,6 @@ const StudentDetails = () => {
 
   const handleEdit = async (id: number, data: any) => {
     setEditing(true);
-
-    console.log("data", data);
-    setClassessData2([]);
-    setSections2([]);
 
     setFormData({
       student_session_id: data.id,
