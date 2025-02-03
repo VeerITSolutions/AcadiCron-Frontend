@@ -256,14 +256,14 @@ const StudentDetails = () => {
           formData.from_date,
           formData.to_date,
           formData.apply_date,
-          formData.status,
           formData.created_at,
           formData.docs,
-          formData.status,
-          formData.created_at,
-          formData.request_type,
-          formData.staff_name,
-          formData.staff_surname,
+          formData.reason,
+          "",
+          "",
+          "",
+          "",
+          "",
           getselectedSessionId,
         );
       } else {
@@ -410,7 +410,7 @@ const StudentDetails = () => {
     setEditing(true);
 
     setFormData({
-      student_session_id: data.id,
+      student_session_id: data.student_session_id,
       from_date: data.from_date,
       to_date: data.to_date,
       apply_date: data.apply_date,
