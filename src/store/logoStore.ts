@@ -74,12 +74,13 @@ export function useInitializeLoginDetails() {
       const selectedSessionIdFromStorage = localStorage.getItem('selectedSessionId') || '';
       const selectedSessionYearFromStorage = localStorage.getItem('selectedSessionYear') || '';
       const selectedUserDataFromStorage = localStorage.getItem('user_data') || '';
+      const parsedUserData = selectedUserDataFromStorage ? JSON.parse(selectedUserDataFromStorage) : null;
 
       // Set all values into the Zustand store using setUserDetails
       setUserDetails({
         roleId: roleIdFromStorage,
         userId: userIdFromStorage,
-        userData: selectedUserDataFromStorage,
+        userData: parsedUserData,
         username: usernameFromStorage,
         surname: surnameFromStorage,
         roleName: roleNameFromStorage,

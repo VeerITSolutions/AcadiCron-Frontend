@@ -83,26 +83,26 @@ export const deleteApproveLeaveData = async (id: number) => {
 
 
 export const editApproveLeaveData = async (
-  currentLeaveId ?: any,
-  selectedClass ?: any,
-  selectedSection ?: any,
-  selectedStudent ?: any,
-  student_session_id ?: any,
-  from_date ?: any,
-  to_date ?: any,
-  apply_date?: any,
-  created_at?: string,
-  docs?: any,
-  reason?: any,
-  status?: any,
-  approve_by?: string,
-  request_type?: string,
-  staff_name?: string,
-  staff_surname?: string,
-  getselectedSessionId?: any,
-
- ) => {
-  const data = { currentLeaveId,
+  currentLeaveId: any,
+  selectedClass: any,
+  selectedSection: any,
+  selectedStudent: any,
+  student_session_id: any,
+  from_date: any,
+  to_date: any,
+  apply_date: any,
+  created_at: string,
+  docs: any,
+  reason: any,
+  status: any,
+  approve_by: string,
+  request_type: string,
+  staff_name: string,
+  staff_surname: string,
+  getselectedSessionId: any
+) => {
+  const data = {
+    currentLeaveId,
     selectedClass,
     selectedSection,
     selectedStudent,
@@ -117,7 +117,10 @@ export const editApproveLeaveData = async (
     approve_by,
     request_type,
     staff_name,
-    staff_surname , getselectedSessionId};
+    staff_surname,
+    getselectedSessionId,
+  };
+
   const response = await apiClient.post(`/approve-leave/${currentLeaveId}`, data);
   return response.data;
 };

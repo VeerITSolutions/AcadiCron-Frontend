@@ -83,7 +83,7 @@ const StudentDetails = () => {
   const [studentName, setStudentName] = useState<Array<any>>([]);
   const getselectedUserData = useLoginDetails((state) => state.userData);
 
-  console.log("getselectedUserData", getselectedUserData);
+  console.log("getselectedUserData", getselectedUserData.class_id);
   const [selectedClass, setSelectedClass] = useState<string | undefined>(
     getselectedUserData.class_id,
   );
@@ -91,14 +91,14 @@ const StudentDetails = () => {
     getselectedUserData.section_id,
   );
   const [selectedStudent, setSelectedStudent] = useState<string | undefined>(
-    undefined,
+    getselectedUserData.id,
   );
 
   const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
-    undefined,
+    getselectedUserData.class_id,
   );
   const [selectedSection2, setSelectedSection2] = useState<string | undefined>(
-    undefined,
+    getselectedUserData.section_id,
   );
   const [selectedSubjectGroup2, setSelectedSubjectGroup2] = useState<
     string | undefined
@@ -446,6 +446,8 @@ const StudentDetails = () => {
     setEditing(true);
 
     console.log("data", data);
+    setClassessData2([]);
+    setSections2([]);
 
     setFormData({
       student_session_id: data.id,
@@ -464,11 +466,10 @@ const StudentDetails = () => {
       staff_surname: "",
     });
 
-    setStudentName([]);
-
-    setSelectedClass("");
-    setSelectedSection("");
-    setSelectedStudent("");
+    setCurrentLeaveId(data.id);
+    setSelectedClass2(selectedClass2);
+    setSelectedSection2(selectedSection2);
+    setSelectedStudent(selectedStudent);
 
     setOpen(true); // Open the modal
   };
@@ -593,6 +594,7 @@ const StudentDetails = () => {
                     value={selectedClass2 || ""}
                     onChange={handleClassChange2}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    disabled={true}
                   >
                     <option value="">Select</option>
                     {classes2.map((cls) => (
@@ -612,7 +614,7 @@ const StudentDetails = () => {
                     value={selectedSection2 || ""}
                     onChange={handleSectionChange2}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={!selectedClass2} // Disable section dropdown if no class is selected
+                    disabled={true} // Disable section dropdown if no class is selected
                   >
                     <option value="">Select</option>
                     {section2.map((sec) => (
@@ -633,7 +635,7 @@ const StudentDetails = () => {
                     value={selectedStudent || ""}
                     onChange={handleStudentChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={!selectedClass2 || !selectedSection2}
+                    disabled={true}
                   >
                     <option value="">Select</option>
                     {studentName.map((sec: any) => (
