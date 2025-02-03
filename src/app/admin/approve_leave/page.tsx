@@ -206,7 +206,6 @@ const StudentDetails = () => {
         selectedClass,
         selectedSection,
         keyword,
-        selectedSessionId,
       );
       if (selectedClass2 && selectedSection2) {
         const studentresult = await fetchStudentData(
