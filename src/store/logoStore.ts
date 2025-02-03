@@ -73,8 +73,14 @@ export function useInitializeLoginDetails() {
       const isSuperAdminFromStorage = localStorage.getItem('is_superadmin') || '';
       const selectedSessionIdFromStorage = localStorage.getItem('selectedSessionId') || '';
       const selectedSessionYearFromStorage = localStorage.getItem('selectedSessionYear') || '';
-      const selectedUserDataFromStorage = localStorage.getItem('user_data') || '';
-      const parsedUserData = selectedUserDataFromStorage ? JSON.parse(selectedUserDataFromStorage) : null;
+      const selectedUserDataFromStorage = localStorage.getItem('user_data') || null;
+      let parsedUserData = '';
+      if(selectedUserDataFromStorage == 'undefined'){
+         parsedUserData = '';
+      }else{
+         parsedUserData = selectedUserDataFromStorage ? JSON.parse(selectedUserDataFromStorage) : '';
+      }
+
 
       // Set all values into the Zustand store using setUserDetails
       setUserDetails({
