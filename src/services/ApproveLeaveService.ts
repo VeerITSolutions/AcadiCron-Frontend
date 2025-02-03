@@ -4,6 +4,7 @@ import apiClient from "./apiClient";
 export const fetchApproveLeaveData = async (page: any, perPage: number,
   selectedClass?: string,
   selectedSection?: string,
+  student_session_id?: any,
   keyword?: string ,
   id?: any) => {
   const response = await apiClient.get(`/approve-leave`, {
@@ -13,6 +14,7 @@ export const fetchApproveLeaveData = async (page: any, perPage: number,
       id,
       selectedClass,
       selectedSection,
+      student_session_id,
       keyword,
     },
   });

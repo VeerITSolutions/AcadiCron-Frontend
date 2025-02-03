@@ -94,6 +94,9 @@ const StudentDetails = () => {
     getselectedUserData.id,
   );
 
+  const [get_student_session_id, set_get_student_session_id] = useState<
+    string | undefined
+  >(getselectedUserData.student_session_id);
   const [selectedClass2, setSelectedClass2] = useState<string | undefined>(
     getselectedUserData.class_id,
   );
@@ -208,6 +211,7 @@ const StudentDetails = () => {
         rowsPerPage,
         selectedClass,
         selectedSection,
+        get_student_session_id,
         keyword,
         selectedSessionId,
       );
