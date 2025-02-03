@@ -1,11 +1,15 @@
 import apiClient from "./apiClient";
 
-export const fetchContentData = async (page?: number, perPage?: number, type?: any) => {
+export const fetchContentData = async (page?: number, perPage?: number, type?: any ,class_id?: any
+  , section_id?: any
+) => {
   const response = await apiClient.get(`/content`, {
     params: {
       page,
       perPage,
-      type
+      type,
+      class_id,
+      section_id
     },
   });
   return response.data;

@@ -24,8 +24,10 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { fetchContentData, deleteContentData } from "@/services/ContentService";
+import { useLoginDetails } from "@/store/logoStore";
 
 const StudentDetails = () => {
+  const getselectedUserData = useLoginDetails((state) => state.userData);
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
@@ -100,6 +102,8 @@ const StudentDetails = () => {
         currentPage + 1,
         rowsPerPage,
         "otherdownload",
+        getselectedUserData.class_id,
+        getselectedUserData.section_id,
       );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
