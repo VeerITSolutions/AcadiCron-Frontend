@@ -452,21 +452,31 @@ const StudentDetails = () => {
           ? "Pending"
           : "N/A",
       `${student.staff_name || ""} ${student.staff_surname || ""}` || "N/A",
-
-      <div key={student.id} className="flex">
-        <IconButton
-          onClick={() => handleEdit(student.id, student)}
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
+      parseInt(student.status) === 1 ? (
+        <div key={student.id} className="flex">
+          <IconButton
+            onClick={() => handleDelete(student.id)}
+            aria-label="delete"
+          >
+            <Delete />
+          </IconButton>
+        </div>
+      ) : (
+        <div key={student.id} className="flex">
+          <IconButton
+            onClick={() => handleEdit(student.id, student)}
+            aria-label="edit"
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => handleDelete(student.id)}
+            aria-label="delete"
+          >
+            <Delete />
+          </IconButton>
+        </div>
+      ),
     ]);
   };
 
