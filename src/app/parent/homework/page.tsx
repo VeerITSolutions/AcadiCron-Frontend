@@ -691,7 +691,13 @@ const StudentDetails = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="flex w-full">
                 {/* Sidebar */}
-                <div className="w-4/6 p-2">{formhomeworkdesc}</div>
+                <div className="w-4/6 p-2">
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeHtml(formhomeworkdesc),
+                    }}
+                  ></p>
+                </div>
 
                 {/* Homework Details */}
                 <div className="w-3/6 p-2">
