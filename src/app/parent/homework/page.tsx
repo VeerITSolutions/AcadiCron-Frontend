@@ -278,15 +278,23 @@ const StudentDetails = () => {
     return students.map((student: any) => [
       student.class || "N/A",
       student.section || "N/A",
-
       student.subject_name || "N/A",
-      // student.homework_date || "N/A",
       formatDate(student.homework_date) || "N/A",
       formatDate(student.submit_date) || "N/A",
       formatDate(student.evaluation_date) || "N/A",
-      student.subject_name || "N/A",
 
-      <div key={student.id} className="flex items-center space-x-2">
+      <span
+        key={`status-${student.id}`}
+        className={
+          student.homework_evaluation_id === 0
+            ? "text-red-500"
+            : "text-green-500"
+        }
+      >
+        {student.homework_evaluation_id === 0 ? "Incomplete" : "Completed"}
+      </span>,
+
+      <div key={`action-${student.id}`} className="flex items-center space-x-2">
         <IconButton
           onClick={() => handleClickOpenEvaluate(student)}
           aria-label="Show"
@@ -570,14 +578,14 @@ const StudentDetails = () => {
                       <strong>Subject:</strong>{" "}
                       {formSubjectName ? formSubjectName : "N/A"}
                     </p>
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    {/*  <p className="mb-3 block text-sm font-medium text-black dark:text-white">
                       <strong>Status:</strong>{" "}
                       <span
                         dangerouslySetInnerHTML={{
                           __html: sanitizeHtml(formDesc),
                         }}
                       ></span>
-                    </p>
+                    </p> */}
 
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
                       <strong>Homework Documents :</strong>{" "}
