@@ -560,7 +560,9 @@ const StudentDetails = () => {
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
                       <strong>Evaluation Date:</strong>{" "}
-                      {formevaluationdate || "Not Set"}
+                      {formevaluationdate || formevaluationdate != "0000-00-00"
+                        ? formevaluationdate
+                        : "Not Set"}
                     </p>
                     <p className="mb-3 block text-sm font-medium text-black dark:text-white">
                       <strong>Created By:</strong>{" "}
@@ -586,26 +588,33 @@ const StudentDetails = () => {
                         }}
                       ></span>
                     </p> */}
-
-                    <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      <strong>Homework Documents :</strong>{" "}
-                      <span
-                        onClick={() =>
-                          handleDownload(
-                            formdocument
-                              ? process.env.NEXT_PUBLIC_BASE_URL +
+                    {formdocument ? (
+                      <p className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <strong>Homework Documents :</strong>{" "}
+                        {formdocument ? (
+                          <span
+                            onClick={() =>
+                              handleDownload(
+                                process.env.NEXT_PUBLIC_BASE_URL +
                                   "uploads/homework/download/" +
                                   currentLeaveId +
                                   "/" +
-                                  formdocument
-                              : "#",
-                          )
-                        }
-                        style={{ cursor: "pointer" }}
-                      >
-                        <FileDownload />
-                      </span>
-                    </p>
+                                  formdocument,
+                              )
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            <FileDownload />
+                          </span>
+                        ) : (
+                          <FileDownload
+                            style={{ color: "gray", opacity: 0.5 }}
+                          /> // Disabled-looking icon
+                        )}
+                      </p>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
