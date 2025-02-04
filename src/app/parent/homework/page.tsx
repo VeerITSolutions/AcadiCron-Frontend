@@ -285,11 +285,11 @@ const StudentDetails = () => {
 
       <span
         key={`status-${student.id}`}
-        className={
+        className={`rounded-full px-2 py-1 text-sm font-semibold ${
           student.homework_evaluation_id === 0
-            ? "text-red-500"
-            : "text-green-500"
-        }
+            ? "bg-amber-100 text-amber-600"
+            : "bg-green-100 text-green-600"
+        }`}
       >
         {student.homework_evaluation_id === 0 ? "Incomplete" : "Completed"}
       </span>,
