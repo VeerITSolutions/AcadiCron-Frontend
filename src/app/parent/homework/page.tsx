@@ -240,7 +240,10 @@ const StudentDetails = () => {
       setformsubmissiondate(formatDate(currentData.submit_date));
       setformhomeworkdesc(currentData.description);
       setformevaluationdate(currentData.evaluation_date);
-      setformCreatedBy(currentData.created_by);
+      setformCreatedBy(
+        currentData.staff_name + " " + currentData.staff_surname,
+      );
+
       setformClassName(currentData.class_name);
       setformSectionName(currentData.section_name);
       setformSubjectName(currentData.subject_name);
@@ -290,14 +293,6 @@ const StudentDetails = () => {
         </IconButton>
       </div>,
     ]);
-  };
-
-  const formatStudentDataInForm = (students: any[]) => {
-    return students.map((student: any) => ({
-      id: student.id,
-      name: `${student.firstname || ""}  ${student.lastname || ""} (${student.id})`,
-      selected: false,
-    }));
   };
 
   const fetchData = async (
@@ -368,83 +363,6 @@ const StudentDetails = () => {
     }
   };
 
-  const handleSave = async () => {
-    try {
-      let result;
-      if (editing) {
-        result = await editHomeWorkData(
-          currentLeaveId,
-          selectedClass2,
-          selectedSection2,
-          selectedSubjectGroup2,
-          selectedSubject2,
-          formData.homework_date,
-          formData.submit_date,
-          formData.document,
-          formData.description,
-        );
-
-        fetchData(page, rowsPerPage);
-      } else {
-        result = await createHomeWork(
-          selectedClass2,
-          selectedSection2,
-          selectedSubjectGroup2,
-          selectedSubject2,
-          formData.homework_date,
-          formData.submit_date,
-          formData.document,
-          formData.description,
-          getselectedSessionId,
-        );
-        fetchData(page, rowsPerPage); // Refresh data after submit
-      }
-      if (result.success) {
-        toast.success(
-          editing
-            ? "Homework updated successfully"
-            : "Homework applied successfully",
-        );
-        setFormData({
-          homework_date: null as Date | null,
-          submit_date: null as Date | null,
-          description: "",
-          evaluation_date: "",
-          document: null,
-        });
-        setSelectedClass2("");
-        setSelectedSection2("");
-        setSelectedSubjectGroup2("");
-
-        setSelectedIds([]);
-
-        setformhomeworkid(null);
-        setformsubmissiondate(null);
-        setformhomeworkdate(null);
-        setformhomeworkdesc(null);
-        setformevaluationdate(null);
-        setformCreatedBy(null);
-        setformClassName(null);
-        setformSectionName(null);
-        setformSubjectName(null);
-        setformdocument(null);
-        setformDesc(null);
-
-        setformCreatedBy(null);
-
-        setSelectedSubject2("");
-        setOpen(false); // Close the modal
-        setEditing(false); // Reset editing state
-        fetchData(page, rowsPerPage); // Refresh data after submit
-      } else {
-        toast.error("Failed to save leave");
-      }
-    } catch (error) {
-      console.error("An error occurred", error);
-      toast.error("An error occurred while saving leave");
-    }
-  };
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -457,10 +375,8 @@ const StudentDetails = () => {
   const handleClickOpenEvaluate = (data: any) => {
     setEvaluateOpen(true);
     setCurrentData(data);
+
     setCurrentLeaveId(data.id);
-    if (data.id) {
-      fetchStudentOnly(data.id);
-    }
   };
   const handleDownload = (url: string) => {
     try {
@@ -495,7 +411,7 @@ const StudentDetails = () => {
     setSelectedSubject2("");
     setOpen(false);
     setEvaluateOpen(false);
-    setEvaluationDate("");
+
     setEditing(false); // Reset editing state
   };
 
@@ -506,18 +422,6 @@ const StudentDetails = () => {
 
   const handleClassChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass2(event.target.value);
-  };
-
-  const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
-    setSelectedClass2("");
-    setSelectedSection2("");
-    setSelectedSubjectGroup2("");
-    setSelectedSubjectGroup("");
-    setSubject2([]);
-    setSubject([]);
-    setKeyword("");
   };
 
   const fetchClassesAndSections = async () => {
@@ -534,19 +438,7 @@ const StudentDetails = () => {
       setLoading(false);
     }
   };
-  const fetchStudentOnly = async (data: any) => {
-    try {
-      // Fetch se ctions if a class is selected
-      if (data) {
-        const getresult = await fetchStudentHomeworkData(data);
 
-        setStudents(formatStudentDataInForm(getresult.data));
-      }
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
   const fetchClassesAndSections2 = async () => {
     try {
       // Fetch sections if a class is selected
@@ -579,66 +471,6 @@ const StudentDetails = () => {
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
-    }
-  };
-
-  const [students, setStudents] = useState<
-    { id: any; name: string; selected: boolean }[]
-  >([]);
-  const [evaluationDate, setEvaluationDate] = useState("");
-
-  const [selectedIds, setSelectedIds] = useState<number[]>([]); // Store selected IDs in an array
-
-  const handleCheckboxChange = (id: number) => {
-    setSelectedIds((prevSelectedIds) => {
-      // Check if the ID is already in the array
-      if (prevSelectedIds.includes(id)) {
-        // If it is, remove it (uncheck)
-        return prevSelectedIds.filter((selectedId) => selectedId !== id);
-      } else {
-        // If not, add it (check)
-        return [...prevSelectedIds, id];
-      }
-    });
-  };
-
-  const handleSave2 = async () => {
-    if (evaluationDate == "") {
-      toast.error("Please select evaluation date");
-      return;
-    }
-    const result = await createHomeWorkEvaluvation(
-      JSON.stringify(selectedIds),
-      formhomeworkid,
-    );
-
-    if (result.success) {
-      toast.success("saved successfully");
-      fetchData(page, rowsPerPage); // Refresh data after submit
-      setSelectedClass2("");
-      setSelectedSection2("");
-      setSelectedSubjectGroup2("");
-
-      setSelectedIds([]);
-
-      setformhomeworkid(null);
-      setformsubmissiondate(null);
-      setformhomeworkdate(null);
-      setformhomeworkdesc(null);
-      setformevaluationdate(null);
-      setformCreatedBy(null);
-      setformClassName(null);
-      setformSectionName(null);
-      setformSubjectName(null);
-      setformdocument(null);
-      setformDesc(null);
-
-      setformCreatedBy(null);
-
-      setSelectedSubject2("");
-      handleClose();
-    } else {
-      toast.error("Failed to save ");
     }
   };
 
