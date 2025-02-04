@@ -25,7 +25,34 @@ export const fetchHomeWorkData = async (
   return response.data;
 };
 
-
+export const fetchHomeWorkForStudentData = async (
+  page: number,
+  perPage: number,
+  selectedClass?: string,
+  selectedSection?: string,
+  selectedSubjectGroup?: string,
+  selectedSubject?: string,
+  keyword?: string,
+  id?: any,
+  student_session_id?: any,
+  current_session_id? : any,
+) => {
+  const response = await apiClient.get(`/homework-student`, {
+    params: {
+      page,
+      perPage,
+      selectedClass,
+      selectedSection,
+      selectedSubjectGroup,
+      selectedSubject,
+      keyword,
+      id,
+      student_session_id,
+     current_session_id,
+    },
+  });
+  return response.data;
+};
 export const fetchSearchHomeWorkData = async (
   page: number,
   perPage: number,

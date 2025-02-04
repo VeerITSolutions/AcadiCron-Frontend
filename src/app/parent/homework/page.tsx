@@ -20,6 +20,7 @@ import {
   deleteHomeWorkData,
   editHomeWorkData,
   createHomeWorkEvaluvation,
+  fetchHomeWorkForStudentData,
 } from "@/services/homeworkServices";
 import { fetchSubjectGroupData } from "@/services/subjectGroupService";
 import { fetchSubjectData } from "@/services/subjectsService";
@@ -153,12 +154,12 @@ const StudentDetails = () => {
   const columns = [
     "Class",
     "Section",
-    "Section Group",
+
     "Subject",
     "Homework Date",
     "Submission Date",
     "Evaluation Date",
-    "Created By",
+    "Status",
     "Action",
   ];
   const sanitizeHtml = (html: any) => DOMPurify.sanitize(html);
@@ -244,8 +245,8 @@ const StudentDetails = () => {
         currentData.staff_name + " " + currentData.staff_surname,
       );
 
-      setformClassName(currentData.class_name);
-      setformSectionName(currentData.section_name);
+      setformClassName(currentData.class);
+      setformSectionName(currentData.section);
       setformSubjectName(currentData.subject_name);
       setformdocument(currentData.document);
       setformDesc(currentData.description);
@@ -275,15 +276,16 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.class_name || "N/A",
-      student.section_name || "N/A",
-      student.subject_groups_name || "N/A",
+      student.class || "N/A",
+      student.section || "N/A",
+
       student.subject_name || "N/A",
       // student.homework_date || "N/A",
       formatDate(student.homework_date) || "N/A",
       formatDate(student.submit_date) || "N/A",
       formatDate(student.evaluation_date) || "N/A",
-      `${student.staff_name || ""} ${student.staff_surname || ""}` || "N/A",
+      student.subject_name || "N/A",
+
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
           onClick={() => handleClickOpenEvaluate(student)}
@@ -305,7 +307,7 @@ const StudentDetails = () => {
     keyword?: string,
   ) => {
     try {
-      const result = await fetchHomeWorkData(
+      const result = await fetchHomeWorkForStudentData(
         currentPage + 1,
         rowsPerPage,
         selectedClass,
@@ -313,6 +315,9 @@ const StudentDetails = () => {
         selectedSubjectGroup,
         selectedSubject,
         keyword,
+        "",
+        getselectedUserData.student_session_id,
+        getselectedSessionId,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
