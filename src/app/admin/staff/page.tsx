@@ -87,15 +87,19 @@ const StudentDetails = () => {
       student.designation || "N/A",
       student.contact_no,
       <div key={student.id} className="flex">
+        <IconButton onClick={() => handleAddFees(student.id)}
+           aria-label="Show">
+          <Visibility />
+        </IconButton>
         <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
           <Edit />
         </IconButton>
-        <IconButton
+        {/* <IconButton
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
         >
           <AttachMoney />
-        </IconButton>
+        </IconButton> */}
       </div>,
     ]);
   };
