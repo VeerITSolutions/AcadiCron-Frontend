@@ -474,9 +474,10 @@ const StudentDetails = () => {
       student.student_firstname + " " + student.student_lastname || "N/A",
       student.class_name || "N/A",
       student.section_name || "N/A",
+      student.apply_date || "N/A",
       student.from_date || "N/A",
       student.to_date || "N/A",
-      student.apply_date || "N/A",
+      
       parseInt(student.status) === 1
         ? "Approve"
         : parseInt(student.status) === 0
