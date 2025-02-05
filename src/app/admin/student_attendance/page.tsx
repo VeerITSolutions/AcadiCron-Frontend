@@ -82,14 +82,14 @@ const StudentDetails = () => {
 
     customToolbar: () => (
       <div className="flex justify-end gap-2">
-        <label className="flex cursor-pointer items-center space-x-2">
+        <label className="flex cursor-pointer items-center space-x-2 rounded bg-[#1976D2] px-4 text-white hover:bg-[#155ba0] focus:ring-opacity-50">
           <input
             type="checkbox"
             className="peer hidden"
             checked={holiday} // Handles both 0/1 or true/false
             onChange={handleHolidayChange}
           />
-          <div className="border-gray-400 flex h-6 w-6 items-center justify-center rounded border-2 peer-checked:border-[#1976D2] peer-checked:bg-[#1976D2]">
+          <div className="border-gray-400 flex h-4 w-4 items-center justify-center rounded border-2 peer-checked:border-[#1976D2] peer-checked:bg-[#1976D2] !m-0">
             <svg
               className="hidden h-4 w-4 text-white peer-checked:block"
               xmlns="http://www.w3.org/2000/svg"
@@ -310,7 +310,7 @@ const StudentDetails = () => {
             disabled={holiday === true} // Disable if holiday is true
             name={`attendance-note-${rowIndex}`} // Unique name for each student's note
             defaultValue={student.attendance_note || ""} // Set the initial value without controlling it
-            className="border p-1 dark:border-strokedark dark:bg-boxdark dark:text-white"
+            className="rounded-lg border-[1.5px] border-stroke bg-transparent px-2 py-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             onChange={(e) =>
               updateStudent(
                 student.student_session_id,
