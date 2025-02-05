@@ -76,3 +76,10 @@ export const getStaffbyrole = async (page?: any, perPage?: any) => {
   });
   return response.data;
 };
+
+
+export const fetchStaffLoginDetails = async ( data : any) => {
+
+  const response = await apiClient.post(`/staff-get-login-details`, data);
+  return response.data;
+};

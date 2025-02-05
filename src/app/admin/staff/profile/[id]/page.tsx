@@ -7,7 +7,8 @@ import { useParams } from "next/navigation";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
 import Image from "next/image";
-import { fetchStaffSingleData } from "@/services/staffService";
+import { fetchStaffLoginDetails, fetchStaffSingleData } from "@/services/staffService";
+import { ArrowDropUpTwoTone, AttachMoney, Edit, Key, ThumbDown, ThumbUp, Visibility } from "@mui/icons-material";
 /* import 'font-awesome/css/font-awesome.min.css'; */
 
 const StudentDetails = () => {
@@ -18,6 +19,14 @@ const StudentDetails = () => {
 
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
+  const [passwordModel, setIsPasswordModel] = useState(false);
+  const [loadingstaffdetails, setloadingstudentdetails] = useState(true);
+  const [setisdisablestudentmodel, setIsDisableStudentModel] = useState(false);
+  const [partentdata, setParentData] = useState<any>(null);
+  const [studentdata, setStudentData] = useState<any>(null);
+  const [getId, setgetId] = useState<any>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -25,6 +34,19 @@ const StudentDetails = () => {
   const handleButtonClick2 = () => {
     setIsFormVisible2(!isFormVisible2);
   };
+    const [formDataDisable, setFormDataDisable] = useState<Record<string, any>>({
+      id: getId,
+      reason: "",
+      date: "",
+      note: "",
+      status: "",
+    });
+  
+    const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
+      id: getId,
+      title: "",
+      doc: "",
+    });
   const [formData, setFormData] = useState<Record<string, any>>({
     employee_id: "",
     lang_id: "",
@@ -185,6 +207,46 @@ const StudentDetails = () => {
     defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image}`;
   } */
 
+    const handleEdit = (id: number) => {
+      router.push(`/admin/staff/edit/${id}`);
+    };
+
+    const handleAddFees = (id: number) => {
+      router.push(`/admin/staff/profile/${id}`);
+    };
+  
+    const handlePasswordModel = async () => {
+        setIsPasswordModel(!passwordModel);
+        setloadingstudentdetails(true);
+        const staffLoginDetails = await fetchStaffLoginDetails({ id: getId });
+        if (staffLoginDetails.data.length > 0) {
+          setloadingstudentdetails(false);
+        } else {
+          setloadingstudentdetails(false);
+        }
+    
+        staffLoginDetails.data.forEach((user: any) => {
+          if (user.role === "parent") {
+            setParentData(user); // Set the parent data
+          } else if (user.role === "student") {
+            setStudentData(user); // Set the student data
+          }
+        });
+      };
+
+
+      const sendStudentPassword = () => {
+        alert("Staff password has been sent!");
+        // Add your logic here
+      };
+    
+      const sendParentPassword = () => {
+        alert("Parent password has been sent!");
+        // Add your logic here
+      };
+
+      
+
   return (
     <DefaultLayout>
       <div className="flex flex-wrap">
@@ -262,46 +324,101 @@ const StudentDetails = () => {
 
         {/* Profile Content */}
         <div className="w-full p-2 md:w-3/4">
-          <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-            <ul className="mb-4 flex border-b border-stroke dark:border-strokedark">
+            <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              <div className="mb-4 flex border-b border-stroke dark:border-strokedark">
+                <ul className="flex">
               <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
+                className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
                 onClick={() => setActiveTab("activity")}
               >
                 Profile
               </li>
               <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "payroll" ? "border-b-2 border-blue-500" : ""}`}
+                className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "payroll" ? "border-b-2 border-blue-500" : ""}`}
                 onClick={() => setActiveTab("payroll")}
               >
                 Payroll
               </li>
               <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "leaves" ? "border-b-2 border-blue-500" : ""}`}
+                className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "leaves" ? "border-b-2 border-blue-500" : ""}`}
                 onClick={() => setActiveTab("leaves")}
               >
                 Leaves
               </li>
               <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "attendance" ? "border-b-2 border-blue-500" : ""}`}
+                className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "attendance" ? "border-b-2 border-blue-500" : ""}`}
                 onClick={() => setActiveTab("attendance")}
               >
                 Attendance
               </li>
               <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
+                className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
                 onClick={() => setActiveTab("documents")}
               >
                 Documents
               </li>
               <li
-                className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
+                className={`mr-6 cursor-pointer px-2 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
                 onClick={() => setActiveTab("timelineh")}
               >
                 Timeline
               </li>
             </ul>
+           
+           
+            <ul className="flex">
+              <li className="cursor-pointer px-3 py-2">
+                <Edit onClick={() => handleEdit(getId)} />
+              </li>
+              <li className="cursor-pointer px-3 py-2">
+                <Visibility onClick={() => handleAddFees(getId)} />
+              </li>
+              <li className="cursor-pointer px-3 py-2">
+                <Key
+                  onClick={() => handlePasswordModel()}
+                  className="cursor-pointer text-green-500"
+                />
+              </li>
+            
+            </ul>
+          
+        </div>
 
+        <div className="relative">
+          {isOpen && (
+            <ul className="border-gray-300 animate-fade-in absolute right-0 z-10 mt-2 w-56 rounded-lg border bg-white shadow-md">
+              <li
+                onClick={sendStudentPassword}
+                className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-3 py-2 text-sm transition-all duration-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-green-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11V6a1 1 0 10-2 0v1a1 1 0 002 0zm0 6a1 1 0 10-2 0v2a1 1 0 102 0v-2z" />
+                </svg>
+                Send Student Password
+              </li>
+              <li
+                onClick={sendParentPassword}
+                className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-3 py-2 text-sm transition-all duration-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-green-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11V6a1 1 0 10-2 0v1a1 1 0 002 0zm0 6a1 1 0 10-2 0v2a1 1 0 102 0v-2z" />
+                </svg>
+                Send Parent Password
+              </li>
+            </ul>
+          )}
+        </div>
+                
             {/* Tab Content */}
             {activeTab === "activity" && (
               <div>
@@ -1176,6 +1293,110 @@ const StudentDetails = () => {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        </>
+      )}
+
+
+
+      {/* Modal Popup */}
+      {passwordModel && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black bg-opacity-50"
+            onClick={handlePasswordModel}
+          ></div>
+
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="relative w-full max-w-3xl rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              {/* Close Button */}
+              <button
+                onClick={handlePasswordModel}
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+              >
+                &times;
+              </button>
+
+              {/* Modal Header */}
+              <h2 className="mb-4 text-center text-lg font-semibold">
+                Login Details
+              </h2>
+
+              {/* Table Content */}
+              <>
+                <p className="lead mb-4 text-center text-xl font-medium">
+                  {formData.firstname} {formData.middlename} {formData.lastname}
+                </p>
+                {loadingstaffdetails ? (
+                  <>
+                    {[...Array(2)].map((_, index) => (
+                      <table
+                        key={index}
+                        className="border-gray-200 w-full table-auto border text-sm"
+                      >
+                        <thead></thead>
+                        <tr key={index} className="animate-pulse border-t border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                          <td className="px-4 py-2 font-bold">
+                            <div className="bg-gray-200 h-4 w-20 rounded"></div>
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            <div className="bg-gray-200 mx-auto h-4 w-32 rounded"></div>
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            <div className="bg-gray-200 mx-auto h-4 w-32 rounded"></div>
+                          </td>
+                        </tr>
+                      </table>
+                    ))}
+                  </>
+                ) : (
+                  <table className="border-gray-200 w-full table-auto border text-sm ">
+                    <thead>
+                      <tr className="bg-gray-100 text-gray-700 text-left border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                        <th className="px-4 py-2">User Type</th>
+                        <th className="px-4 py-2 text-center">Username</th>
+                        <th className="px-4 py-2 text-center">Password</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Student Row */}
+                      {studentdata && (
+                        <tr className="border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                          <td className="px-4 py-2 font-bold">Staff</td>
+                          <td className="px-4 py-2 text-center">
+                            {studentdata.username}
+                          </td>
+                          <td className="px-4 py-2 text-center">
+                            {studentdata.password}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                )}
+
+<p className="lead text-red-500 mt-4 text-center text-sm">
+  Login URL:{" "}
+  <a
+    href={`${window.location.origin}/login`}
+    className="text-blue-500 underline"
+    target="_blank"
+  >
+    {`${window.location.origin}/login`}
+  </a>
+  <br />
+  
+  <a
+    href={`${window.location.origin}/change-password`}
+    className="text-blue-500 underline"
+    target="_blank"
+  >
+    Change Password
+  </a>
+</p>
+
+              </>
             </div>
           </div>
         </>
