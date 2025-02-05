@@ -276,7 +276,7 @@ const StudentDetails = () => {
         <div key={student.id} className="flex gap-2">
           {[
             { label: "Present", key: 1 },
-            { label: "Late With Excuse", key: 2 },
+
             { label: "Late", key: 3 },
             { label: "Absent", key: 4 },
             { label: "Holiday", key: 5 },

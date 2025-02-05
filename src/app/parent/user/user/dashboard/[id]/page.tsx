@@ -40,6 +40,7 @@ import { fetchStudentexamData } from "@/services/studentExamService";
 import LoaderSpiner from "@/components/common/LoaderSpiner";
 import { set } from "date-fns";
 import Loader from "@/components/common/Loader";
+import { useLoginDetails } from "@/store/logoStore";
 
 interface FeeData {
   fees_group: string;
@@ -98,7 +99,9 @@ const StudentDetails = () => {
 
   const [partentdata, setParentData] = useState<any>(null);
   const [studentdata, setStudentData] = useState<any>(null);
-
+ const user_id = useLoginDetails(
+    (state) => state.userId,
+  );
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
   };
@@ -172,7 +175,7 @@ const StudentDetails = () => {
 
       const response3 = await createStudentdoc(data);
 
-      const id = "884";
+      const id = user_id;
       if (id) {
         const datastudentdoc = await fetchStudentdocData(id);
         setDataDocument(datastudentdoc.data);
@@ -232,7 +235,7 @@ const StudentDetails = () => {
   const handleDelete = async (getId: number) => {
     try {
       await deleteStudentTimeline(getId);
-      const id = "884";
+      const id = user_id;
       if (id) {
         const datastudenttimeline = await fetchStudentTimelineData(id);
         setDataTimeline(datastudenttimeline.data);
@@ -248,7 +251,8 @@ const StudentDetails = () => {
   const handleDelete2 = async (getId: number) => {
     try {
       await deleteStudentDocuemnt(getId);
-      const id = "884";
+
+      const id = user_id;
       if (id) {
         const datastudentdoc = await fetchStudentdocData(id);
         setDataDocument(datastudentdoc.data);
@@ -263,7 +267,7 @@ const StudentDetails = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const id = "884";
+      const id = user_id;
       if (id) {
         const getData = async () => {
           try {
