@@ -8,10 +8,13 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
 import Image from "next/image";
 import styled from 'styled-components';
+import { toast } from "react-toastify";
 import {
+  createStaffDisable,
   fetchStaffLoginDetails,
   fetchStaffSingleData,
 } from "@/services/staffService";
+import { useLoginDetails } from "@/store/logoStore";
 import {
   ArrowDropUpTwoTone,
   AttachMoney,
@@ -23,7 +26,7 @@ import {
 } from "@mui/icons-material";
 /* import 'font-awesome/css/font-awesome.min.css'; */
 
-const StudentDetails = () => {
+const StaffDetails = () => {
   const router = useRouter();
   /* const { id } = useParams(); */
 
@@ -32,6 +35,8 @@ const StudentDetails = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
   const [passwordModel, setIsPasswordModel] = useState(false);
+   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [loadingstaffdetails, setloadingstaffdetails] = useState(true);
   const [setisdisablestudentmodel, setIsDisableStudentModel] = useState(false);
   const [partentdata, setParentData] = useState<any>(null);
@@ -307,6 +312,129 @@ const StudentDetails = () => {
     defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}${formData?.image}`;
   } */
 
+  const handleDisableStaffModel = () => {
+    setFormDataDisable({
+      id: getId,
+      reason: "",
+      date: "",
+      note: "",
+    });
+    setIsDisableStudentModel(!setisdisablestudentmodel);
+  };
+  const getselectedUserData = useLoginDetails((state) => state.userData);
+    
+  const handleDisableInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormDataDisable((prevData) => ({
+      ...prevData,
+      [name]: value, // For regular inputs like text or selects
+    }));
+  };
+
+
+  const handleSaveDisableStaff = async () => {
+    try {
+      setLoading(true);
+      const data = {
+        id: getId,
+        ...formDataDisable,
+      };
+
+      const response2 = await createStaffDisable(data);
+
+      if (response2.success) {
+        setFormDataDisable({
+          id: getId,
+          reason: "",
+          date: "",
+          note: "",
+        });
+
+        if (typeof window !== "undefined") {
+          const id = window.location.pathname.split("/").pop();
+          if (id) {
+            const getData = async () => {
+              try {
+                setLoading(true);
+                const data = await fetchStaffSingleData(id);
+                setgetId(data.data.id);
+                setFormData({
+                  employee_id: data.data.employee_id || "",
+                  lang_id: data.data.lang_id || "",
+                  department: data.data.department || "",
+                  designation: data.data.designation || "",
+                  qualification: data.data.qualification || "",
+                  work_exp: data.data.work_exp || "",
+                  name: data.data.name || "",
+                  surname: data.data.surname || "",
+                  father_name: data.data.father_name || "",
+                  mother_name: data.data.mother_name || "",
+                  contact_no: data.data.contact_no || "",
+                  emergency_contact_no: data.data.emergency_contact_no || "",
+                  email: data.data.email || "",
+                  dob: data.data.dob || "",
+                  marital_status: data.data.marital_status || "",
+                  date_of_joining: data.data.date_of_joining || "",
+                  date_of_leaving: data.data.date_of_leaving || "",
+                  local_address: data.data.local_address || "",
+                  permanent_address: data.data.permanent_address || "",
+                  note: data.data.note || "",
+                  image: data.data.image || "",
+                  password: data.data.password || "",
+                  gender: data.data.gender || "",
+                  account_title: data.data.account_title || "",
+                  bank_account_no: data.data.bank_account_no || "",
+                  bank_name: data.data.bank_name || "",
+                  ifsc_code: data.data.ifsc_code || "",
+                  bank_branch: data.data.bank_branch || "",
+                  payscale: data.data.payscale || "",
+                  basic_salary: data.data.basic_salary || "",
+                  epf_no: data.data.epf_no || "",
+                  contract_type: data.data.contract_type || "",
+                  shift: data.data.shift || "",
+                  location: data.data.location || "",
+                  facebook: data.data.facebook || "",
+                  twitter: data.data.twitter || "",
+                  linkedin: data.data.linkedin || "",
+                  instagram: data.data.instagram || "",
+                  resume: data.data.resume || "",
+                  joining_letter: data.data.joining_letter || "",
+                  resignation_letter: data.data.resignation_letter || "",
+                  other_document_name: data.data.other_document_name || "",
+                  other_document_file: data.data.other_document_file || "",
+                  user_id: data.data.user_id || "",
+                  is_active: data.data.is_active || "",
+                  verification_code: data.data.verification_code || "",
+                  disable_at: data.data.disable_at || "",
+                  role_id: data.data.role_id || "",
+                  user_type: data.data.user_type || "",
+                });
+
+                setLoading(false);
+              } catch (error) {
+                console.error("Error fetching student data:", error);
+              }
+            };
+            getData();
+          }
+        }
+        handleDisableStaffModel();
+
+        toast.success("Student Disabled successful");
+      } else {
+        toast.error("Error Add data");
+      }
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleEdit = (id: number) => {
     router.push(`/admin/staff/edit/${id}`);
   };
@@ -338,12 +466,7 @@ const StudentDetails = () => {
     
   };
 
-  const sendStaffPassword = () => {
-    alert("Staff password has been sent!");
-    // Add your logic here
-  };
 
- 
 
   return (
     <DefaultLayout>
@@ -479,30 +602,16 @@ const StudentDetails = () => {
               <li className="cursor-pointer px-4 py-2">
                 <Visibility onClick={handleAddFees} />
               </li>
+              <li className="cursor-pointer px-4 py-2">
+                <span
+                  className="fill-red-500 cursor-pointer"
+                  onClick={handleDisableStaffModel}
+                >
+                  <ThumbDown />
+                </span>
+              </li>
+        
               </ul>
-            </div>
-
-
-            <div className="relative">
-              {isOpen && (
-                <ul className="border-gray-300 animate-fade-in absolute right-0 z-10 mt-2 w-56 rounded-lg border bg-white shadow-md">
-                  <li
-                    onClick={sendStaffPassword}
-                    className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-4 py-2 text-sm transition-all duration-200"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-green-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11V6a1 1 0 10-2 0v1a1 1 0 002 0zm0 6a1 1 0 10-2 0v2a1 1 0 102 0v-2z" />
-                    </svg>
-                    Send Staff Password
-                  </li>
-                
-                </ul>
-              )}
             </div>
 </div>
 
@@ -1647,8 +1756,108 @@ const StudentDetails = () => {
          
         </>
       )}
+
+
+
+{setisdisablestudentmodel && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black bg-opacity-50"
+            onClick={handleDisableStaffModel}
+          ></div>
+
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+              <button
+                onClick={handleDisableStaffModel}
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+              >
+                &times;
+              </button>
+
+              <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
+                  {/* Close Button */}
+                  <button
+                    onClick={handleDisableStaffModel}
+                    className="text-gray-500 hover:text-gray-700 absolute right-2 top-2 text-2xl"
+                  >
+                    &times;
+                  </button>
+                  <h2 className="mb-4 text-lg font-semibold">
+                    Disable Staff
+                  </h2>
+
+                  <div className="grid grid-cols-1 gap-4 ">
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Reason: <span className="required">*</span>
+                      </label>
+
+                      <input
+                        aria-invalid="false"
+                        id="reason"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="reason"
+                        value={formDataDisable.reason}
+                        onChange={handleDisableInputChange}
+                      />
+                    </div>
+                 
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Date: <span className="required">*</span>
+                      </label>
+
+                      <input
+                        aria-invalid="false"
+                        id="date"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                        type="date"
+                        name="date"
+                        value={
+                          formDataDisable.date ||
+                          new Date().toISOString().split("T")[0]
+                        } // Default to today's date
+                        onChange={handleDisableInputChange}
+                      />
+                    </div>
+              
+                    <div className="field">
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Note: <span className="required">*</span>
+                      </label>
+
+                      <input
+                        aria-invalid="false"
+                        id="note"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="note"
+                        value={formDataDisable.note}
+                        onChange={handleDisableInputChange}
+                      />
+                    </div>
+                    </div>
+            
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={handleSaveDisableStaff}
+                      className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </DefaultLayout>
   );
 };
 
-export default StudentDetails;
+export default StaffDetails;

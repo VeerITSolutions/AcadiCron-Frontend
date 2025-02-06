@@ -78,6 +78,12 @@ export const getStaffbyrole = async (page?: any, perPage?: any) => {
 };
 
 
+export const createStaffDisable = async ( data : any) => {
+
+  const response = await apiClient.post(`/staff-disabled`, data);
+  return response.data;
+};
+
 export const fetchStaffLoginDetails = async ( data : any) => {
 
   const response = await apiClient.post(`/staff-get-login-details`, data);
