@@ -1,6 +1,7 @@
 // services/apiClient.ts
 
 import axios from "axios";
+import { destroyCookie } from "nookies";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://acadicronbackend.educron.com/api", // Set base URL
@@ -38,7 +39,7 @@ function logoutUser() {
   localStorage.removeItem('role_id');
   localStorage.removeItem('role_name');
   localStorage.removeItem('is_superadmin');
-
+  destroyCookie(null, "token", { path: "/" });
   // Redirect to login page or show a message
   window.location.href = '/login'; // Adjust the URL based on your routing
 }

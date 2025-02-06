@@ -10,7 +10,7 @@ import styled from "styled-components";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 /* import { Metadata } from "next"; */
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-
+import Cookies from "js-cookie";
 import { checkLogin } from "@/services/loginService";
 import styles from "./page.module.css";
 
@@ -255,6 +255,13 @@ const LoginPage = () => {
 
       // Access the first role in the roles array
       const role = data.users.roles[0];
+
+      Cookies.set("token", data.token, {
+        expires: 7,
+        secure: "production",
+        sameSite: "strict",
+        path: "/",
+      });
 
       if (role) {
         localStorage.setItem("user_id", data.users.user_id);
