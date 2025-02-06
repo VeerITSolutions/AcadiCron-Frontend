@@ -43,16 +43,18 @@ const StudentDetails = () => {
 
   const StyledWrapper = styled.div`
   
+
   .container {
     max-width: 680px;
     background: #F8F9FD;
-    background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
-    border-radius: 40px;
+    background: #fff;
+    /* border-radius: 40px; */
     padding: 25px 35px;
     border: 5px solid rgb(255, 255, 255);
-    box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
-    margin: 40px;
-  }
+    /* box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px; */
+    margin-top: 40px;
+    margin: 0 auto;
+}
 
   .heading {
     text-align: center;
@@ -469,6 +471,7 @@ const StudentDetails = () => {
                 <li className="cursor-pointer px-4 py-2">
                   <Edit onClick={() => handleEdit(getId)} />
                 </li>
+                
                 <li className="cursor-pointer px-4 py-2">
                   <Key
                     onClick={() => handlePasswordModel()}
@@ -1264,7 +1267,7 @@ const StudentDetails = () => {
         className={`fixed top-17 right-0 w-72 h-full bg-white shadow-lg transition-all duration-300 ease-in-out z-50 
           ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
-        <div className="p-4 bg-blue-600 text-white flex justify-between items-center">
+        <div className="p-4 bg-[#1c2434] text-white flex justify-between items-center">
           <div className="flex items-center">
             <p className="classtap text-lg">Staff</p>
             {/* Close Button */}
