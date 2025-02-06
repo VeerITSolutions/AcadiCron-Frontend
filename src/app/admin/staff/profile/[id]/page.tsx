@@ -1565,7 +1565,7 @@ const StudentDetails = () => {
               {/* Table Content */}
               <>
                 <p className="lead mb-4 text-center text-xl font-medium">
-                  {formData.firstname} {formData.middlename} {formData.lastname}
+                  {formData.name} {formData.surname}
                 </p>
                 {loadingstaffdetails ? (
                   <>
