@@ -2,14 +2,20 @@
 "use client"; // This marks the component as a Client Component
 
 import { useRouter } from "next/navigation";
+import { destroyCookie } from "nookies";
 import { useEffect } from "react";
 
 const LogoutButton = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Clear token or any other logout logic
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role_id");
+    localStorage.removeItem("role_name");
+    localStorage.removeItem("is_superadmin");
+    destroyCookie(null, "token", { path: "/" });
+    // Redirect to login page or show a message
     router.push("/login"); // Redirect to the login page
   };
 
