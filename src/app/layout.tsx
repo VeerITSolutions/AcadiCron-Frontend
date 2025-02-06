@@ -9,7 +9,8 @@ import Loader from "@/components/common/Loader";
 import ReactDOM from "react-dom";
 import { GlobalProvider } from "@/context/GlobalContext";
 import { useInitializeLoginDetails } from "@/store/logoStore";
-
+import { useRouter } from "next/navigation";
+import { parseCookies } from "nookies";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const router = useRouter();
   // const pathname = usePathname();
 
   if (typeof window !== "undefined") {
@@ -34,6 +35,16 @@ export default function RootLayout({
   useEffect(() => {
     setTimeout(() => setLoading(false), 1);
   }, []);
+
+  useEffect(() => {
+    const { token } = parseCookies();
+
+    if (!token) {
+      router.push("/login"); // Redirect to login if no token found
+    } else {
+      setLoading(false);
+    }
+  }, [router]);
   useInitializeLoginDetails();
 
   return (
