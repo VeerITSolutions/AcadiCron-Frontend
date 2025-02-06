@@ -28,7 +28,7 @@ const StudentDetails = () => {
   /* const { id } = useParams(); */
 
   const [activeTab, setActiveTab] = useState("activity");
-
+  const [activeTabOne, setActiveTabOne] = useState("activity");
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
   const [passwordModel, setIsPasswordModel] = useState(false);
@@ -38,6 +38,8 @@ const StudentDetails = () => {
   const [studentdata, setStudentData] = useState<any>(null);
   const [getId, setgetId] = useState<any>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
 
   const StyledWrapper = styled.div`
   
@@ -307,9 +309,13 @@ const StudentDetails = () => {
     router.push(`/admin/staff/edit/${id}`);
   };
 
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/staff/profile/${id}`);
+  const handleAddFees = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
+  const handleCloseSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+  
 
   const handlePasswordModel = async () => {
     setIsPasswordModel(!passwordModel);
@@ -464,16 +470,18 @@ const StudentDetails = () => {
                   <Edit onClick={() => handleEdit(getId)} />
                 </li>
                 <li className="cursor-pointer px-4 py-2">
-                  <Visibility onClick={() => handleAddFees(getId)} />
-                </li>
-                <li className="cursor-pointer px-4 py-2">
                   <Key
                     onClick={() => handlePasswordModel()}
                     className="cursor-pointer text-green-500"
                   />
                 </li>
+
+              <li className="cursor-pointer px-4 py-2">
+                <Visibility onClick={handleAddFees} />
+              </li>
               </ul>
             </div>
+
 
             <div className="relative">
               {isOpen && (
@@ -510,6 +518,10 @@ const StudentDetails = () => {
               )}
             </div>
 </div>
+
+
+
+   
             {/* Tab Content */}
             {activeTab === "activity" && (
               <div>
@@ -1242,6 +1254,130 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
+
+
+
+
+      <div>
+      {/* Sidebar */}
+      <aside
+        className={`fixed top-17 right-0 w-72 h-full bg-white shadow-lg transition-all duration-300 ease-in-out z-50 
+          ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
+        <div className="p-4 bg-blue-600 text-white flex justify-between items-center">
+          <div className="flex items-center">
+            <p className="classtap text-lg">Staff</p>
+            {/* Close Button */}
+            <button
+              onClick={handleCloseSidebar}
+              className="text-gray-500 hover:text-gray-700 absolute right-4 top-3 text-2xl"
+            >
+              &times; {/* Close icon */}
+            </button>
+          </div>
+        </div>
+     
+          <div>
+          <div className="w-full overflow-x-auto">
+          <div className="flex justify-between border-b border-stroke dark:border-strokedark">
+                <ul className="flex items-center h-12">
+                  <li
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "admin" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTabOne("admin")}
+                  >
+                    Admin
+                  </li>
+                  <li
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "teacher" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTabOne("teacher")}
+                  >
+                    Teacher
+                  </li>
+                  <li
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "receptionist" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTabOne("receptionist")}
+                  >
+                    Receptionist
+                  </li>
+                  <li
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "librarian" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTabOne("librarian")}
+                  >
+                    Librarian
+                  </li>
+                  <li
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "receptionist" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTabOne("receptionist")}
+                  >
+                    Receptionist
+                  </li>
+                  <li
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "superadmin" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTabOne("superadmin")}
+                  >
+                    SuperAdmin
+                  </li>
+                </ul>  
+          </div>
+
+          {activeTabOne === "admin" && (
+              <div>
+                <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                  <div
+                    className="tab-pane active flex flex-col gap-9"
+                    id="activity"
+                  >
+                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                      <div className="p-6">
+                        <div className="mb-4 flex justify-end">
+                          <button
+                            onClick={handleButtonClick2}
+                            className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
+                          >
+                            {isFormVisible ? "Close Form" : "Add"}
+                          </button>
+                        </div>
+
+                        {/* Table */}
+                        <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
+                          <thead className="bg-gray-100">
+                            <tr>
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
+                                Title
+                              </th>
+                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
+                                Name
+                              </th>
+                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium">
+                                Action
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td
+                                className="text-red-600 py-4 text-center"
+                                colSpan={3}
+                              >
+                                No Record Found
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+        </div>
+        </div>
+      </aside>
+    </div>
+
+
+
+    
       {/* Modal */}
       {isFormVisible && (
         <>
