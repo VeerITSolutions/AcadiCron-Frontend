@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
 import Image from "next/image";
+import styled from 'styled-components';
 import {
   fetchStaffLoginDetails,
   fetchStaffSingleData,
@@ -37,6 +38,91 @@ const StudentDetails = () => {
   const [studentdata, setStudentData] = useState<any>(null);
   const [getId, setgetId] = useState<any>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const StyledWrapper = styled.div`
+  
+  .container {
+    max-width: 680px;
+    background: #F8F9FD;
+    background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
+    border-radius: 40px;
+    padding: 25px 35px;
+    border: 5px solid rgb(255, 255, 255);
+    box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
+    margin: 40px;
+  }
+
+  .heading {
+    text-align: center;
+    font-weight: 900;
+    font-size: 18px;
+    color: rgb(16, 137, 211);
+  }
+
+  .form {
+    margin-top: 20px;
+  }
+
+  .form .input {
+    width: 100%;
+    background: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 20px;
+    margin-top: 15px;
+    box-shadow: #cff0ff 0px 10px 10px -5px;
+    border-inline: 2px solid transparent;
+  }
+
+  .form .input::-moz-placeholder {
+    color: rgb(170, 170, 170);
+  }
+
+  .form .input::placeholder {
+    color: rgb(170, 170, 170);
+  }
+
+  .form .input:focus {
+    outline: none;
+    border-inline: 2px solid #12B1D1;
+  }
+
+
+  .form .login-button {
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+    color: white;
+    padding-block: 15px;
+    margin: 20px auto;
+    border-radius: 20px;
+    box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 20px 10px -15px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .form .login-button:hover {
+    transform: scale(1.03);
+    box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
+  }
+
+  .form .login-button:active {
+    transform: scale(0.95);
+    box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
+  }
+
+  .agreement {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .agreement a {
+    text-decoration: none;
+    color: #0099ff;
+    font-size: 12px;
+  }`;
 
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
@@ -332,40 +418,41 @@ const StudentDetails = () => {
         {/* Profile Content */}
         <div className="w-full p-2 md:w-3/4">
           <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-            <div className="mb-4 flex border-b border-stroke dark:border-strokedark">
+          <div className="w-full overflow-x-auto">
+          <div className="mb-4 flex justify-between border-b border-stroke dark:border-strokedark">
               <ul className="flex">
                 <li
-                  className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
                   onClick={() => setActiveTab("activity")}
                 >
                   Profile
                 </li>
                 <li
-                  className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "payroll" ? "border-b-2 border-blue-500" : ""}`}
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "payroll" ? "border-b-2 border-blue-500" : ""}`}
                   onClick={() => setActiveTab("payroll")}
                 >
                   Payroll
                 </li>
                 <li
-                  className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "leaves" ? "border-b-2 border-blue-500" : ""}`}
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "leaves" ? "border-b-2 border-blue-500" : ""}`}
                   onClick={() => setActiveTab("leaves")}
                 >
                   Leaves
                 </li>
                 <li
-                  className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "attendance" ? "border-b-2 border-blue-500" : ""}`}
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "attendance" ? "border-b-2 border-blue-500" : ""}`}
                   onClick={() => setActiveTab("attendance")}
                 >
                   Attendance
                 </li>
                 <li
-                  className={`mr-6 cursor-pointer px-3 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
                   onClick={() => setActiveTab("documents")}
                 >
                   Documents
                 </li>
                 <li
-                  className={`mr-6 cursor-pointer px-2 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
+                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
                   onClick={() => setActiveTab("timelineh")}
                 >
                   Timeline
@@ -373,13 +460,13 @@ const StudentDetails = () => {
               </ul>
 
               <ul className="flex">
-                <li className="cursor-pointer px-3 py-2">
+                <li className="cursor-pointer px-4 py-2">
                   <Edit onClick={() => handleEdit(getId)} />
                 </li>
-                <li className="cursor-pointer px-3 py-2">
+                <li className="cursor-pointer px-4 py-2">
                   <Visibility onClick={() => handleAddFees(getId)} />
                 </li>
-                <li className="cursor-pointer px-3 py-2">
+                <li className="cursor-pointer px-4 py-2">
                   <Key
                     onClick={() => handlePasswordModel()}
                     className="cursor-pointer text-green-500"
@@ -393,7 +480,7 @@ const StudentDetails = () => {
                 <ul className="border-gray-300 animate-fade-in absolute right-0 z-10 mt-2 w-56 rounded-lg border bg-white shadow-md">
                   <li
                     onClick={sendStudentPassword}
-                    className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-3 py-2 text-sm transition-all duration-200"
+                    className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-4 py-2 text-sm transition-all duration-200"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -407,7 +494,7 @@ const StudentDetails = () => {
                   </li>
                   <li
                     onClick={sendParentPassword}
-                    className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-3 py-2 text-sm transition-all duration-200"
+                    className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-4 py-2 text-sm transition-all duration-200"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -422,7 +509,7 @@ const StudentDetails = () => {
                 </ul>
               )}
             </div>
-
+</div>
             {/* Tab Content */}
             {activeTab === "activity" && (
               <div>
@@ -1309,7 +1396,6 @@ const StudentDetails = () => {
             className="fixed inset-0 z-40 bg-black bg-opacity-50"
             onClick={handlePasswordModel}
           ></div>
-
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="relative w-full max-w-3xl rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
               {/* Close Button */}
@@ -1321,7 +1407,7 @@ const StudentDetails = () => {
               </button>
 
               {/* Modal Header */}
-              <h2 className="mb-4 text-center text-lg font-semibold">
+              <h2 className="mb-4 text-center font-black text-[18px] text-[rgb(16,137,211)]">
                 Login Details
               </h2>
 
@@ -1381,44 +1467,33 @@ const StudentDetails = () => {
                   </table>
                 )}
 
-                <p className="lead text-red-500 mt-4 text-center text-sm">
-                  <h2>Change Password</h2>
-                  <div className="field">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Password <span className="required">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="password"
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div className="field">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Confirm Password<span className="required">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="cnf_password"
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div className="field">
-                    <button className="btn btn-primary">Save</button>
-                  </div>
-                  Login URL:{" "}
-                  <a
+                <StyledWrapper>
+      <div className="container">
+        <div className="heading">Change Password</div>
+        <form className="form">
+          <input required className="input" type="text" name="password" id="password" placeholder="Password " />
+          <input required className="input" type="text" name="confirm_password" id="confirm_password" placeholder="Confirm Password" />
+         
+          <button type="submit" className="login-button"> Save </button>
+         
+        </form>
+      
+        <span className="agreement">  Login URL:{" "}  <a
                     href={`${window.location.origin}/login`}
                     className="text-blue-500 underline"
                     target="_blank"
                   >
                     {`${window.location.origin}/login`}
-                  </a>
-                  <br />
-                </p>
+                  </a></span>
+      </div>
+    </StyledWrapper>
+               
+
+                
               </>
             </div>
           </div>
+         
         </>
       )}
     </DefaultLayout>
