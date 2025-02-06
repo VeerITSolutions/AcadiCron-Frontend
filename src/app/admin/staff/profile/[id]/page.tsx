@@ -32,10 +32,10 @@ const StudentDetails = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
   const [passwordModel, setIsPasswordModel] = useState(false);
-  const [loadingstaffdetails, setloadingstudentdetails] = useState(true);
+  const [loadingstaffdetails, setloadingstaffdetails] = useState(true);
   const [setisdisablestudentmodel, setIsDisableStudentModel] = useState(false);
   const [partentdata, setParentData] = useState<any>(null);
-  const [studentdata, setStudentData] = useState<any>(null);
+  const [staffData, setStaffData] = useState<any>(null);
   const [getId, setgetId] = useState<any>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -321,32 +321,29 @@ const StudentDetails = () => {
 
   const handlePasswordModel = async () => {
     setIsPasswordModel(!passwordModel);
-    setloadingstudentdetails(true);
+    setloadingstaffdetails(true);
     const staffLoginDetails = await fetchStaffLoginDetails({ id: getId });
     if (staffLoginDetails.data.length > 0) {
-      setloadingstudentdetails(false);
+      setloadingstaffdetails(false);
     } else {
-      setloadingstudentdetails(false);
+      setloadingstaffdetails(false);
     }
 
+    
     staffLoginDetails.data.forEach((user: any) => {
-      if (user.role === "parent") {
-        setParentData(user); // Set the parent data
-      } else if (user.role === "student") {
-        setStudentData(user); // Set the student data
+      if (user.role === "staff") {
+        setStaffData(user); // Set the staff data
       }
     });
+    
   };
 
-  const sendStudentPassword = () => {
+  const sendStaffPassword = () => {
     alert("Staff password has been sent!");
     // Add your logic here
   };
 
-  const sendParentPassword = () => {
-    alert("Parent password has been sent!");
-    // Add your logic here
-  };
+ 
 
   return (
     <DefaultLayout>
@@ -490,7 +487,7 @@ const StudentDetails = () => {
               {isOpen && (
                 <ul className="border-gray-300 animate-fade-in absolute right-0 z-10 mt-2 w-56 rounded-lg border bg-white shadow-md">
                   <li
-                    onClick={sendStudentPassword}
+                    onClick={sendStaffPassword}
                     className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-4 py-2 text-sm transition-all duration-200"
                   >
                     <svg
@@ -501,22 +498,9 @@ const StudentDetails = () => {
                     >
                       <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11V6a1 1 0 10-2 0v1a1 1 0 002 0zm0 6a1 1 0 10-2 0v2a1 1 0 102 0v-2z" />
                     </svg>
-                    Send Student Password
+                    Send Staff Password
                   </li>
-                  <li
-                    onClick={sendParentPassword}
-                    className="text-gray-700 hover:bg-gray-50 flex cursor-pointer items-center gap-3 px-4 py-2 text-sm transition-all duration-200"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-green-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11V6a1 1 0 10-2 0v1a1 1 0 002 0zm0 6a1 1 0 10-2 0v2a1 1 0 102 0v-2z" />
-                    </svg>
-                    Send Parent Password
-                  </li>
+                
                 </ul>
               )}
             </div>
@@ -1259,8 +1243,6 @@ const StudentDetails = () => {
       </div>
 
 
-
-
       <div>
       {/* Sidebar */}
       <aside
@@ -1282,40 +1264,40 @@ const StudentDetails = () => {
      
           <div>
           <div className="w-full overflow-x-auto">
-          <div className="flex justify-between border-b border-stroke dark:border-strokedark">
+          <div className="flex justify-between border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none dark:text-white">
                 <ul className="flex items-center h-12">
                   <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "admin" ? "border-b-2 border-blue-500" : ""}`}
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "admin" ? "border-b-2 border-blue-500" : ""}`}
                     onClick={() => setActiveTabOne("admin")}
                   >
                     Admin
                   </li>
                   <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "teacher" ? "border-b-2 border-blue-500" : ""}`}
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "teacher" ? "border-b-2 border-blue-500" : ""}`}
                     onClick={() => setActiveTabOne("teacher")}
                   >
                     Teacher
                   </li>
                   <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "receptionist" ? "border-b-2 border-blue-500" : ""}`}
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "receptionist" ? "border-b-2 border-blue-500" : ""}`}
                     onClick={() => setActiveTabOne("receptionist")}
                   >
                     Receptionist
                   </li>
                   <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "librarian" ? "border-b-2 border-blue-500" : ""}`}
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "librarian" ? "border-b-2 border-blue-500" : ""}`}
                     onClick={() => setActiveTabOne("librarian")}
                   >
                     Librarian
                   </li>
                   <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "receptionist" ? "border-b-2 border-blue-500" : ""}`}
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "receptionist" ? "border-b-2 border-blue-500" : ""}`}
                     onClick={() => setActiveTabOne("receptionist")}
                   >
                     Receptionist
                   </li>
                   <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTab === "superadmin" ? "border-b-2 border-blue-500" : ""}`}
+                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "superadmin" ? "border-b-2 border-blue-500" : ""}`}
                     onClick={() => setActiveTabOne("superadmin")}
                   >
                     SuperAdmin
@@ -1369,6 +1351,36 @@ const StudentDetails = () => {
                         </table>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+           {activeTabOne === "teacher" && (
+              <div>
+                <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                  <div className="tab-pane active flex flex-col gap-9" id="activity">
+                    
+                  </div>
+                </div>
+              </div>
+            )}
+
+           {activeTabOne === "receptionist" && (
+              <div>
+                <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                  <div className="tab-pane active flex flex-col gap-9" id="activity">
+                    
+                  </div>
+                </div>
+              </div>
+            )}
+
+           {activeTabOne === "librarian" && (
+              <div>
+                <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                  <div className="tab-pane active flex flex-col gap-9" id="activity">
+                    
                   </div>
                 </div>
               </div>
@@ -1591,14 +1603,14 @@ const StudentDetails = () => {
                     </thead>
                     <tbody>
                       {/* Student Row */}
-                      {studentdata && (
+                      {staffData && (
                         <tr className="border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                           <td className="px-4 py-2 font-bold">Staff</td>
                           <td className="px-4 py-2 text-center">
-                            {studentdata.username}
+                            {staffData.username}
                           </td>
                           <td className="px-4 py-2 text-center">
-                            {studentdata.password}
+                            {staffData.password}
                           </td>
                         </tr>
                       )}
