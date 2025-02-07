@@ -146,10 +146,7 @@ const StaffDetails = () => {
   };
   const [formDataDisable, setFormDataDisable] = useState<Record<string, any>>({
     id: getId,
-    reason: "",
     date: "",
-    note: "",
-    status: "",
   });
 
   const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
@@ -344,19 +341,19 @@ const StaffDetails = () => {
   const handleSaveDisableStaff = async () => {
     try {
       setLoading(true);
+      let id = window.location.pathname.split("/").pop();
       const data = {
-        id: getId,
+        
         ...formDataDisable,
+        id,
       };
 
       const response2 = await createStaffDisable(data);
 
       if (response2.success) {
         setFormDataDisable({
-          id: getId,
-          reason: "",
+          id,
           date: "",
-          note: "",
         });
 
         if (typeof window !== "undefined") {
@@ -1872,21 +1869,7 @@ const StaffDetails = () => {
                   </h2>
 
                   <div className="grid grid-cols-1 gap-4 ">
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Reason: <span className="required">*</span>
-                      </label>
-
-                      <input
-                        aria-invalid="false"
-                        id="reason"
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="reason"
-                        value={formDataDisable.reason}
-                        onChange={handleDisableInputChange}
-                      />
-                    </div>
+                  
                  
                     <div className="field">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -1907,21 +1890,7 @@ const StaffDetails = () => {
                       />
                     </div>
               
-                    <div className="field">
-                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Note: <span className="required">*</span>
-                      </label>
-
-                      <input
-                        aria-invalid="false"
-                        id="note"
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="note"
-                        value={formDataDisable.note}
-                        onChange={handleDisableInputChange}
-                      />
-                    </div>
+                 
                     </div>
             
                   <div className="mt-4 flex justify-end">
