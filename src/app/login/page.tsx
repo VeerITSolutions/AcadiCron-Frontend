@@ -258,7 +258,7 @@ const LoginPage = () => {
 
       Cookies.set("token", data.token, {
         expires: 7,
-        secure: "production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         path: "/",
       });
