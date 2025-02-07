@@ -510,8 +510,12 @@ const StaffDetails = () => {
   const handleChangePasswordSubmit = async () => {
     try {
       setLoading(true);
-      const response = await createStaffPasswordChange({ password, confirm_password: confirmPassword });
+      let id = window.location.pathname.split("/").pop();
+            const response = await createStaffPasswordChange({id, password, confirm_password: confirmPassword });
       if (response.status === 200) {
+        handlePasswordModel();
+        setPassword("");
+        setConfirmPassword("");
         toast.success("Password changed successfully");
       } else {
         toast.error("Error updating password");
@@ -1797,7 +1801,7 @@ const StaffDetails = () => {
         <button
           type="button"
           className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-          disabled={loading || !!error || !password || !confirmPassword}
+          disabled={ !password || !confirmPassword}
           onClick={handleChangePasswordSubmit}
         >
           Save
