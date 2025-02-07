@@ -1727,7 +1727,56 @@ const StaffDetails = () => {
                   </table>
                 )}
 
-                <StyledWrapper>
+
+              <div className="grid grid-cols-1 gap-4 mt-10">
+              <h2 className="mb-2 font-black text-[18px] text-[rgb(16,137,211)]">
+              Change Password
+              </h2>
+              <div className="field">
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+              Password: <span className="required">*</span>
+              </label>
+              <input
+                id="password"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                type="text"
+                name="password"
+              />
+              </div>
+
+              <div className="field">
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+              Confirm password: <span className="required">*</span>
+              </label>
+              <input
+                aria-invalid="false"
+                id="confirm_password"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                type="text"
+                name="confirm_password"
+              />
+              </div>
+              <span className="agreement">  Login URL:{" "}  <a
+              href={`${window.location.origin}/login`}
+              className="text-blue-500 underline"
+              target="_blank"
+              >
+              {`${window.location.origin}/login`}
+              </a></span>
+
+              <div className="mt-4 flex justify-end">
+              <button
+              type="button"
+              className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+              >
+              Save
+              </button>
+              </div>
+              </div>
+                    
+
+
+                {/* <StyledWrapper>
       <div className="container">
         <div className="heading">Change Password</div>
         <form className="form">
@@ -1746,7 +1795,7 @@ const StaffDetails = () => {
                     {`${window.location.origin}/login`}
                   </a></span>
       </div>
-    </StyledWrapper>
+    </StyledWrapper> */}
                
 
                 
