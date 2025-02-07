@@ -89,3 +89,9 @@ export const fetchStaffLoginDetails = async ( data : any) => {
   const response = await apiClient.post(`/staff-get-login-details`, data);
   return response.data;
 };
+
+
+export const createStaffPasswordChange = async (data: { password: string; confirm_password: string }) => {
+  const response = await apiClient.post(`/change-password`, data);
+  return response.data;
+};

@@ -13,6 +13,7 @@ import {
   createStaffDisable,
   fetchStaffLoginDetails,
   fetchStaffSingleData,
+  createStaffPasswordChange,
 } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 import {
@@ -24,12 +25,15 @@ import {
   ThumbUp,
   Visibility,
 } from "@mui/icons-material";
+import { fetchRoleData } from "@/services/roleService";
 /* import 'font-awesome/css/font-awesome.min.css'; */
 
 const StaffDetails = () => {
   const router = useRouter();
   /* const { id } = useParams(); */
-
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [roleResult, setRoleResult] = useState(null);
   const [activeTab, setActiveTab] = useState("activity");
   const [activeTabOne, setActiveTabOne] = useState("activity");
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -44,6 +48,7 @@ const StaffDetails = () => {
   const [getId, setgetId] = useState<any>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [success, setSuccess] = useState("");
 
 
   const StyledWrapper = styled.div`
@@ -466,7 +471,58 @@ const StaffDetails = () => {
     
   };
 
+  useEffect(() => {
+    const roleData = async () => {
+      try {
+        const resultTab = await fetchRoleData(); // make sure this function is defined and imported
+        return resultTab;
+      } catch (error) {
+        console.error("Error fetching role data:", error);
+        return null;
+      }
+    };
 
+    if (activeTabOne === "admin") {
+      roleData();
+    }
+  }, [activeTabOne]);
+
+
+  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "password") {
+      setPassword(value);
+    } else if (name === "confirm_password") {
+      setConfirmPassword(value);
+    }
+
+    // Check if passwords match
+    if (name === "confirm_password" || name === "password") {
+      if (value && (name === "password" ? confirmPassword : password) && value !== (name === "password" ? confirmPassword : password)) {
+        setError("Passwords do not match");
+      } else {
+        setError("");
+      }
+    }
+  };
+
+  const handleChangePasswordSubmit = async () => {
+    try {
+      setLoading(true);
+      const response = await createStaffPasswordChange({ password, confirm_password: confirmPassword });
+      if (response.status === 200) {
+        toast.success("Password changed successfully");
+      } else {
+        toast.error("Error updating password");
+      }
+    } catch (error: any) {
+      setError(error.message);
+      toast.error("An error occurred: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <DefaultLayout>
@@ -1415,54 +1471,16 @@ const StaffDetails = () => {
           </div>
 
           {activeTabOne === "admin" && (
-              <div>
-                <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                  <div
-                    className="tab-pane active flex flex-col gap-9"
-                    id="activity"
-                  >
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                      <div className="p-6">
-                        <div className="mb-4 flex justify-end">
-                          <button
-                            onClick={handleButtonClick2}
-                            className="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-blue-600"
-                          >
-                            {isFormVisible ? "Close Form" : "Add"}
-                          </button>
-                        </div>
-
-                        {/* Table */}
-                        <table className="mt-6 min-w-full border-b border-stroke bg-white dark:bg-boxdark dark:drop-shadow-none">
-                          <thead className="bg-gray-100">
-                            <tr>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
-                                Title
-                              </th>
-                              <th className="border-b border-stroke px-4 py-2 text-left text-sm font-medium">
-                                Name
-                              </th>
-                              <th className="border-b border-stroke px-4 py-2 text-right text-sm font-medium">
-                                Action
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td
-                                className="text-red-600 py-4 text-center"
-                                colSpan={3}
-                              >
-                                No Record Found
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             <div>
+             <div className="tab-content mx-auto max-w-screen-2xl p-4">
+               <div className="tab-pane active flex flex-col gap-9" id="activity">
+                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                   {/* Use roleResult here */}
+                   {roleResult ? <p>{JSON.stringify(roleResult)}</p> : <p>Loading...</p>}
+                 </div>
+               </div>
+             </div>
+           </div>
             )}
 
            {activeTabOne === "teacher" && (
@@ -1667,9 +1685,9 @@ const StaffDetails = () => {
               </button>
 
               {/* Modal Header */}
-              <h2 className="mb-4 text-center font-black text-[18px] text-[rgb(16,137,211)]">
+              {/* <h2 className="mb-4 text-center font-black text-[18px] text-[rgb(16,137,211)]">
                 Login Details
-              </h2>
+              </h2> */}
 
               {/* Table Content */}
               <>
@@ -1678,7 +1696,7 @@ const StaffDetails = () => {
                 </p>
                 {loadingstaffdetails ? (
                   <>
-                    {[...Array(2)].map((_, index) => (
+                    {/* {[...Array(2)].map((_, index) => (
                       <table
                         key={index}
                         className="border-gray-200 w-full table-auto border text-sm"
@@ -1699,20 +1717,20 @@ const StaffDetails = () => {
                           </td>
                         </tr>
                       </table>
-                    ))}
+                    ))} */}
                   </>
                 ) : (
                   <table className="border-gray-200 w-full table-auto border text-sm ">
-                    <thead>
+                    {/* <thead>
                       <tr className="bg-gray-100 text-gray-700 border-[1.5px] border-stroke bg-transparent px-5 py-3 text-left text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                         <th className="px-4 py-2">User Type</th>
                         <th className="px-4 py-2 text-center">Username</th>
                         <th className="px-4 py-2 text-center">Password</th>
                       </tr>
-                    </thead>
+                    </thead> */}
                     <tbody>
                       {/* Student Row */}
-                      {staffData && (
+                      {/* {staffData && (
                         <tr className="border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                           <td className="px-4 py-2 font-bold">Staff</td>
                           <td className="px-4 py-2 text-center">
@@ -1722,59 +1740,71 @@ const StaffDetails = () => {
                             {staffData.password}
                           </td>
                         </tr>
-                      )}
+                      )} */}
                     </tbody>
                   </table>
                 )}
 
 
-              <div className="grid grid-cols-1 gap-4 mt-10">
-              <h2 className="mb-2 font-black text-[18px] text-[rgb(16,137,211)]">
-              Change Password
-              </h2>
-              <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Password: <span className="required">*</span>
-              </label>
-              <input
-                id="password"
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                type="text"
-                name="password"
-              />
-              </div>
+<div className="grid grid-cols-1 gap-4 mt-2">
+      <h2 className="mb-2 font-black text-[18px] text-[rgb(16,137,211)]">
+        Change password
+      </h2>
 
-              <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Confirm password: <span className="required">*</span>
-              </label>
-              <input
-                aria-invalid="false"
-                id="confirm_password"
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-                type="text"
-                name="confirm_password"
-              />
-              </div>
-              <span className="agreement">  Login URL:{" "}  <a
-              href={`${window.location.origin}/login`}
-              className="text-blue-500 underline"
-              target="_blank"
-              >
-              {`${window.location.origin}/login`}
-              </a></span>
+      <div className="field">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Password: <span className="required">*</span>
+        </label>
+        <input
+          id="password"
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+          type="password"
+          name="password"
+          value={password}
+          onChange={handleChangePassword}
+        />
+      </div>
 
-              <div className="mt-4 flex justify-end">
-              <button
-              type="button"
-              className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-              >
-              Save
-              </button>
-              </div>
-              </div>
-                    
+      <div className="field">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Confirm Password: <span className="required">*</span>
+        </label>
+        <input
+          id="confirm_password"
+          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+          type="password"
+          name="confirm_password"
+          value={confirmPassword}
+          onChange={handleChangePassword}
+        />
+      </div>
 
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <span className="agreement">
+        Login URL:{" "}
+        <a
+          href={`${window.location.origin}/login`}
+          className="text-blue-500 underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {`${window.location.origin}/login`}
+        </a>
+      </span>
+
+      <div className="mt-4 flex justify-end">
+        <button
+          type="button"
+          className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+          disabled={loading || !!error || !password || !confirmPassword}
+          onClick={handleChangePasswordSubmit}
+        >
+          Save
+        </button>
+      </div>
+    </div>
+        
 
                 {/* <StyledWrapper>
       <div className="container">
