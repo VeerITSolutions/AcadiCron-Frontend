@@ -1656,7 +1656,7 @@ const StaffDetails = () => {
             className="fixed inset-0 z-40 bg-black bg-opacity-50"
             onClick={handlePasswordModel}
           ></div>
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center mt-20">
             <div className="relative w-full max-w-3xl rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
               {/* Close Button */}
               <button
