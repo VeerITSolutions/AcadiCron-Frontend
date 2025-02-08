@@ -14,6 +14,7 @@ import {
   fetchStaffLoginDetails,
   fetchStaffSingleData,
   createStaffPasswordChange,
+  fetchStaffData,
 } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 import {
@@ -31,6 +32,9 @@ import { fetchRoleData } from "@/services/roleService";
 const StaffDetails = () => {
   const router = useRouter();
   /* const { id } = useParams(); */
+   const getselectedSessionId = useLoginDetails(
+      (state) => state.selectedSessionId,
+    );
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [roleResult, setRoleResult] = useState(null);
@@ -50,7 +54,7 @@ const StaffDetails = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [success, setSuccess] = useState("");
 
-
+ const [data2, setData2] = useState<Array<Array<string>>>([]);
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
   };
@@ -131,7 +135,20 @@ const StaffDetails = () => {
         const getData = async () => {
           try {
             const data = await fetchStaffSingleData(id);
-            console.log("data", data);
+            if(activeTabOne){
+              const responsedata2  = await fetchStaffData(
+               '',
+               '',
+              '',
+                '',
+                '',
+                getselectedSessionId,
+              );
+              setData2(responsedata2.data);
+            }
+          
+
+          
             setFormData({
               employee_id: data.data.employee_id || "",
               lang_id: data.data.lang_id || "",
@@ -190,7 +207,7 @@ const StaffDetails = () => {
         getData();
       }
     }
-  }, []);
+  }, [activeTabOne]);
   let defaultImage = "/images/user/default_male.jpg";
   let id = window.location.pathname.split("/").pop();
   // Check for gender and default image conditions
@@ -610,7 +627,7 @@ const StaffDetails = () => {
               </ul>
                )}
             </div>
-</div>
+          </div>
 
 
 
@@ -1368,8 +1385,8 @@ const StaffDetails = () => {
           </div>
         </div>
      
-        <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-          <div className="w-full overflow-x-auto">
+        <div className="">
+        <div className="w-full overflow-x-auto">
           <div className="flex justify-between border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none dark:text-white">
                 <ul className="flex items-center h-12">
                   <li
@@ -1410,7 +1427,7 @@ const StaffDetails = () => {
                   </li>
                 </ul>  
           </div>
-
+          </div>
           {activeTabOne === "admin" && (
          
                <div className="tab-content mx-auto max-w-screen-2xl p-4">
@@ -1420,7 +1437,11 @@ const StaffDetails = () => {
                  >
                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                      <div className="p-4">
-                     {roleResult ? <p>{JSON.stringify(roleResult)}</p> : <p>Loading...</p>}
+                     {data2.map((cls: any) => (
+                        <option key={cls.id} value={cls.id}>
+                          {cls.id}
+                        </option>
+                      ))}
                      
                      </div>
                    </div>
@@ -1428,9 +1449,6 @@ const StaffDetails = () => {
                </div>
              
             )}
-
-
-
 
            {activeTabOne === "receptionist" && (
               <div>
@@ -1451,8 +1469,9 @@ const StaffDetails = () => {
                 </div>
               </div>
             )}
+       
         </div>
-        </div>
+       
      
       </aside>
     </div>
