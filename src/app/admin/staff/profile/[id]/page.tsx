@@ -585,7 +585,7 @@ const StaffDetails = () => {
         <div className="w-full p-2 md:w-1/4">
           <div
             className={`rounded-lg p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none ${
-              getactivestatus == 0 ? "bg-[#f0dddd]" : "bg-white"
+              Number(getactivestatus) === 0 ? "bg-[#f0dddd]" : "bg-white"
             }`}
           >
             <div className="text-center">
@@ -661,8 +661,8 @@ const StaffDetails = () => {
         <div className="w-full p-2 md:w-3/4">
           <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
             <div className="w-full overflow-x-auto">
-              <div className="mb-4 flex justify-between border-b border-stroke dark:border-strokedark">
-                <ul className="flex">
+              <div className="mb-4 flex">
+                <ul className="flex border-b border-stroke dark:border-strokedark">
                   <li
                     className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
                     onClick={() => setActiveTab("activity")}
@@ -702,7 +702,7 @@ const StaffDetails = () => {
                 </ul>
 
                 {Number(getactivestatus) === 0 ? (
-                  <ul className="flex">
+                  <ul className="flex border-b border-stroke dark:border-strokedark">
                     <li className="cursor-pointer px-4 py-2">
                       <ThumbUp
                         onClick={handleSaveEnableStaff}
@@ -711,7 +711,7 @@ const StaffDetails = () => {
                     </li>
                   </ul>
                 ) : (
-                  <ul className="flex">
+                  <ul className="flex border-b border-stroke dark:border-strokedark">
                     <li className="cursor-pointer px-4 py-2">
                       <Edit onClick={() => handleEdit(getId)} />
                     </li>
@@ -1540,14 +1540,14 @@ const StaffDetails = () => {
                   className="tab-pane active flex flex-col gap-9"
                   id="activity"
                 >
-                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div className="p-4">
+                  <div className="rounded-sm bg-white shadow-default">
+                   
                       {data2.map((cls: any) => (
                         <option key={cls.id} value={cls.id}>
                           {cls.id}
                         </option>
                       ))}
-                    </div>
+                   
                   </div>
                 </div>
               </div>
