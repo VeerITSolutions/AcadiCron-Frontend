@@ -51,93 +51,6 @@ const StaffDetails = () => {
   const [success, setSuccess] = useState("");
 
 
-  const StyledWrapper = styled.div`
-  
-
-  .container {
-    max-width: 680px;
-    background: #F8F9FD;
-    background: #fff;
-    /* border-radius: 40px; */
-    padding: 25px 35px;
-    border: 5px solid rgb(255, 255, 255);
-    /* box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px; */
-    margin-top: 40px;
-    margin: 0 auto;
-}
-
-  .heading {
-    text-align: center;
-    font-weight: 900;
-    font-size: 18px;
-    color: rgb(16, 137, 211);
-  }
-
-  .form {
-    margin-top: 20px;
-  }
-
-  .form .input {
-    width: 100%;
-    background: white;
-    border: none;
-    padding: 15px 20px;
-    border-radius: 20px;
-    margin-top: 15px;
-    box-shadow: #cff0ff 0px 10px 10px -5px;
-    border-inline: 2px solid transparent;
-  }
-
-  .form .input::-moz-placeholder {
-    color: rgb(170, 170, 170);
-  }
-
-  .form .input::placeholder {
-    color: rgb(170, 170, 170);
-  }
-
-  .form .input:focus {
-    outline: none;
-    border-inline: 2px solid #12B1D1;
-  }
-
-
-  .form .login-button {
-    display: block;
-    width: 100%;
-    font-weight: bold;
-    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
-    color: white;
-    padding-block: 15px;
-    margin: 20px auto;
-    border-radius: 20px;
-    box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 20px 10px -15px;
-    border: none;
-    transition: all 0.2s ease-in-out;
-  }
-
-  .form .login-button:hover {
-    transform: scale(1.03);
-    box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
-  }
-
-  .form .login-button:active {
-    transform: scale(0.95);
-    box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
-  }
-
-  .agreement {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-  }
-
-  .agreement a {
-    text-decoration: none;
-    color: #0099ff;
-    font-size: 12px;
-  }`;
-
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
   };
@@ -146,7 +59,8 @@ const StaffDetails = () => {
   };
   const [formDataDisable, setFormDataDisable] = useState<Record<string, any>>({
     id: getId,
-    date: "",
+    date: new Date().toISOString().split('T')[0],
+    status: "",
   });
 
   const [formDataDoc, setFormDataDoc] = useState<Record<string, any>>({
@@ -205,6 +119,10 @@ const StaffDetails = () => {
     role_id: "",
     user_type: "",
   });
+
+
+
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -317,9 +235,7 @@ const StaffDetails = () => {
   const handleDisableStaffModel = () => {
     setFormDataDisable({
       id: getId,
-      reason: "",
-      date: "",
-      note: "",
+      date: new Date().toISOString().split('T')[0],
     });
     setIsDisableStudentModel(!setisdisablestudentmodel);
   };
@@ -353,7 +269,7 @@ const StaffDetails = () => {
       if (response2.success) {
         setFormDataDisable({
           id,
-          date: "",
+          date: new Date().toISOString().split('T')[0],
         });
 
         if (typeof window !== "undefined") {
@@ -418,15 +334,21 @@ const StaffDetails = () => {
 
                 setLoading(false);
               } catch (error) {
-                console.error("Error fetching student data:", error);
+                console.error("Error fetching staff data:", error);
               }
             };
             getData();
           }
         }
-        handleDisableStaffModel();
+      if(response2.message == "Staff disabled successfully.") {
+         handleDisableStaffModel();
+      } else {
+       
+      }
+       
+        
 
-        toast.success("Student Disabled successful");
+        toast.success(response2.message);
       } else {
         toast.error("Error Add data");
       }
@@ -526,104 +448,7 @@ const StaffDetails = () => {
   };
 
 
-  const handleSaveEnableStaff = async () => {
-    try {
-      setLoading(true);
-      let id = window.location.pathname.split("/").pop();
-      const data = {
-        id: getId,
-        status: "active",
-      };
-
-      const response2 = await createStaffDisable(data);
-
-      if (response2.success) {
-        setFormDataDisable({
-          id,
-          date: "",
-        });
-
-        if (typeof window !== "undefined") {
-          const id = window.location.pathname.split("/").pop();
-          if (id) {
-            const getData = async () => {
-              try {
-                setLoading(true);
-                const data = await fetchStaffSingleData(id);
-                setgetId(data.data.id);
-                setFormData({
-                  employee_id: data.data.employee_id || "",
-                  lang_id: data.data.lang_id || "",
-                  department: data.data.department || "",
-                  designation: data.data.designation || "",
-                  qualification: data.data.qualification || "",
-                  work_exp: data.data.work_exp || "",
-                  name: data.data.name || "",
-                  surname: data.data.surname || "",
-                  father_name: data.data.father_name || "",
-                  mother_name: data.data.mother_name || "",
-                  contact_no: data.data.contact_no || "",
-                  emergency_contact_no: data.data.emergency_contact_no || "",
-                  email: data.data.email || "",
-                  dob: data.data.dob || "",
-                  marital_status: data.data.marital_status || "",
-                  date_of_joining: data.data.date_of_joining || "",
-                  date_of_leaving: data.data.date_of_leaving || "",
-                  local_address: data.data.local_address || "",
-                  permanent_address: data.data.permanent_address || "",
-                  note: data.data.note || "",
-                  image: data.data.image || "",
-                  password: data.data.password || "",
-                  gender: data.data.gender || "",
-                  account_title: data.data.account_title || "",
-                  bank_account_no: data.data.bank_account_no || "",
-                  bank_name: data.data.bank_name || "",
-                  ifsc_code: data.data.ifsc_code || "",
-                  bank_branch: data.data.bank_branch || "",
-                  payscale: data.data.payscale || "",
-                  basic_salary: data.data.basic_salary || "",
-                  epf_no: data.data.epf_no || "",
-                  contract_type: data.data.contract_type || "",
-                  shift: data.data.shift || "",
-                  location: data.data.location || "",
-                  facebook: data.data.facebook || "",
-                  twitter: data.data.twitter || "",
-                  linkedin: data.data.linkedin || "",
-                  instagram: data.data.instagram || "",
-                  resume: data.data.resume || "",
-                  joining_letter: data.data.joining_letter || "",
-                  resignation_letter: data.data.resignation_letter || "",
-                  other_document_name: data.data.other_document_name || "",
-                  other_document_file: data.data.other_document_file || "",
-                  user_id: data.data.user_id || "",
-                  is_active: data.data.is_active || "",
-                  verification_code: data.data.verification_code || "",
-                  disable_at: data.data.disable_at || "",
-                  role_id: data.data.role_id || "",
-                  user_type: data.data.user_type || "",
-                });
-
-                setLoading(false);
-              } catch (error) {
-                console.error("Error fetching student data:", error);
-              }
-            };
-            getData();
-          }
-        }
-        handleDisableStaffModel();
-
-        toast.success("Student Disabled successful");
-      } else {
-        toast.error("Error Add data");
-      }
-    } catch (error: any) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+ 
   return (
     <DefaultLayout>
       <div className="flex flex-wrap">
@@ -631,7 +456,7 @@ const StaffDetails = () => {
         <div className="w-full p-2 md:w-1/4">
         <div
               className={`rounded-lg p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none ${
-                formData.is_active === "no" ? "bg-[#f0dddd]" : "bg-white"
+                formData.is_active == 0 ? "bg-[#f0dddd]" : "bg-white"
               }`}
             >
             <div className="text-center">
@@ -748,11 +573,11 @@ const StaffDetails = () => {
               </ul>
 
 
-              {formData.is_active === "no" ? (
+              {formData.is_active == 0 ? (
                   <ul className="flex">
                     <li className="cursor-pointer px-4 py-2">
                       <ThumbUp
-                        onClick={handleSaveEnableStaff}
+                        onClick={handleSaveDisableStaff}
                         className="cursor-pointer text-green-500"
                       />
                     </li>
@@ -1543,7 +1368,7 @@ const StaffDetails = () => {
           </div>
         </div>
      
-          <div>
+        <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
           <div className="w-full overflow-x-auto">
           <div className="flex justify-between border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none dark:text-white">
                 <ul className="flex items-center h-12">
@@ -1587,27 +1412,25 @@ const StaffDetails = () => {
           </div>
 
           {activeTabOne === "admin" && (
-             <div>
-             <div className="tab-content mx-auto max-w-screen-2xl p-4">
-               <div className="tab-pane active flex flex-col gap-9" id="activity">
-                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                   {/* Use roleResult here */}
-                   {roleResult ? <p>{JSON.stringify(roleResult)}</p> : <p>Loading...</p>}
+         
+               <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                 <div
+                   className="tab-pane active flex flex-col gap-9"
+                   id="activity"
+                 >
+                   <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                     <div className="p-4">
+                     {roleResult ? <p>{JSON.stringify(roleResult)}</p> : <p>Loading...</p>}
+                     
+                     </div>
+                   </div>
                  </div>
                </div>
-             </div>
-           </div>
+             
             )}
 
-           {activeTabOne === "teacher" && (
-              <div>
-                <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                  <div className="tab-pane active flex flex-col gap-9" id="activity">
-                    
-                  </div>
-                </div>
-              </div>
-            )}
+
+
 
            {activeTabOne === "receptionist" && (
               <div>
@@ -1630,6 +1453,7 @@ const StaffDetails = () => {
             )}
         </div>
         </div>
+     
       </aside>
     </div>
 
