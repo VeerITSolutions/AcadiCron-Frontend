@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import User from "@/components/User/User";
 import Image from "next/image";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { toast } from "react-toastify";
 import {
   createStaffDisable,
@@ -32,9 +32,9 @@ import { fetchRoleData } from "@/services/roleService";
 const StaffDetails = () => {
   const router = useRouter();
   /* const { id } = useParams(); */
-   const getselectedSessionId = useLoginDetails(
-      (state) => state.selectedSessionId,
-    );
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [roleResult, setRoleResult] = useState(null);
@@ -43,7 +43,8 @@ const StaffDetails = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
   const [passwordModel, setIsPasswordModel] = useState(false);
-   const [error, setError] = useState<string | null>(null);
+  const [getactivestatus, setIsgetactivestatus] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingstaffdetails, setloadingstaffdetails] = useState(true);
   const [setisdisablestudentmodel, setIsDisableStudentModel] = useState(false);
@@ -54,7 +55,7 @@ const StaffDetails = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [success, setSuccess] = useState("");
 
- const [data2, setData2] = useState<Array<Array<string>>>([]);
+  const [data2, setData2] = useState<Array<Array<string>>>([]);
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
   };
@@ -63,7 +64,7 @@ const StaffDetails = () => {
   };
   const [formDataDisable, setFormDataDisable] = useState<Record<string, any>>({
     id: getId,
-    date: new Date().toISOString().split('T')[0],
+    date: new Date().toISOString().split("T")[0],
     status: "",
   });
 
@@ -124,10 +125,6 @@ const StaffDetails = () => {
     user_type: "",
   });
 
-
-
-
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       const id = window.location.pathname.split("/").pop();
@@ -135,20 +132,18 @@ const StaffDetails = () => {
         const getData = async () => {
           try {
             const data = await fetchStaffSingleData(id);
-            if(activeTabOne){
-              const responsedata2  = await fetchStaffData(
-               '',
-               '',
-              '',
-                '',
-                '',
+            if (activeTabOne) {
+              const responsedata2 = await fetchStaffData(
+                "",
+                "",
+                "",
+                "",
+                "",
                 getselectedSessionId,
               );
               setData2(responsedata2.data);
             }
-          
 
-          
             setFormData({
               employee_id: data.data.employee_id || "",
               lang_id: data.data.lang_id || "",
@@ -200,6 +195,7 @@ const StaffDetails = () => {
               role_id: data.data.role_id || "",
               user_type: data.data.user_type || "",
             });
+            setIsgetactivestatus(data.data.is_active);
           } catch (error) {
             console.error("Error fetching student data:", error);
           }
@@ -252,12 +248,12 @@ const StaffDetails = () => {
   const handleDisableStaffModel = () => {
     setFormDataDisable({
       id: getId,
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
     });
     setIsDisableStudentModel(!setisdisablestudentmodel);
   };
   const getselectedUserData = useLoginDetails((state) => state.userData);
-    
+
   const handleDisableInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -270,13 +266,11 @@ const StaffDetails = () => {
     }));
   };
 
-
   const handleSaveDisableStaff = async () => {
     try {
       setLoading(true);
       let id = window.location.pathname.split("/").pop();
       const data = {
-        
         ...formDataDisable,
         id,
       };
@@ -286,7 +280,7 @@ const StaffDetails = () => {
       if (response2.success) {
         setFormDataDisable({
           id,
-          date: new Date().toISOString().split('T')[0],
+          date: new Date().toISOString().split("T")[0],
         });
 
         if (typeof window !== "undefined") {
@@ -349,6 +343,8 @@ const StaffDetails = () => {
                   user_type: data.data.user_type || "",
                 });
 
+                setIsgetactivestatus(data.data.is_active);
+
                 setLoading(false);
               } catch (error) {
                 console.error("Error fetching staff data:", error);
@@ -357,14 +353,10 @@ const StaffDetails = () => {
             getData();
           }
         }
-      if(response2.message == "Staff disabled successfully.") {
-         handleDisableStaffModel();
-      } else {
-       
-      }
-       
-        
-
+        if (response2.message == "Staff disabled successfully.") {
+          handleDisableStaffModel();
+        } else {
+        }
         toast.success(response2.message);
       } else {
         toast.error("Error Add data");
@@ -386,7 +378,6 @@ const StaffDetails = () => {
   const handleCloseSidebar = () => {
     setIsSidebarOpen(false);
   };
-  
 
   const handlePasswordModel = async () => {
     setIsPasswordModel(!passwordModel);
@@ -398,13 +389,11 @@ const StaffDetails = () => {
       setloadingstaffdetails(false);
     }
 
-    
     staffLoginDetails.data.forEach((user: any) => {
       if (user.role === "staff") {
         setStaffData(user); // Set the staff data
       }
     });
-    
   };
 
   useEffect(() => {
@@ -423,7 +412,6 @@ const StaffDetails = () => {
     }
   }, [activeTabOne]);
 
-
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -435,7 +423,11 @@ const StaffDetails = () => {
 
     // Check if passwords match
     if (name === "confirm_password" || name === "password") {
-      if (value && (name === "password" ? confirmPassword : password) && value !== (name === "password" ? confirmPassword : password)) {
+      if (
+        value &&
+        (name === "password" ? confirmPassword : password) &&
+        value !== (name === "password" ? confirmPassword : password)
+      ) {
         setError("Passwords do not match");
       } else {
         setError("");
@@ -447,7 +439,11 @@ const StaffDetails = () => {
     try {
       setLoading(true);
       let id = window.location.pathname.split("/").pop();
-            const response = await createStaffPasswordChange({id, password, confirm_password: confirmPassword });
+      const response = await createStaffPasswordChange({
+        id,
+        password,
+        confirm_password: confirmPassword,
+      });
       if (response.status === 200) {
         handlePasswordModel();
         setPassword("");
@@ -464,18 +460,16 @@ const StaffDetails = () => {
     }
   };
 
-
- 
   return (
     <DefaultLayout>
       <div className="flex flex-wrap">
         {/* Profile Sidebar */}
         <div className="w-full p-2 md:w-1/4">
-        <div
-              className={`rounded-lg p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none ${
-                formData.is_active == 0 ? "bg-[#f0dddd]" : "bg-white"
-              }`}
-            >
+          <div
+            className={`rounded-lg p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none ${
+              getactivestatus == 0 ? "bg-[#f0dddd]" : "bg-white"
+            }`}
+          >
             <div className="text-center">
               <img
                 src={imageUrl || defaultImage}
@@ -548,49 +542,48 @@ const StaffDetails = () => {
         {/* Profile Content */}
         <div className="w-full p-2 md:w-3/4">
           <div className="rounded-lg bg-white p-4 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
-          <div className="w-full overflow-x-auto">
-          <div className="mb-4 flex justify-between border-b border-stroke dark:border-strokedark">
-              <ul className="flex">
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("activity")}
-                >
-                  Profile
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "payroll" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("payroll")}
-                >
-                  Payroll
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "leaves" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("leaves")}
-                >
-                  Leaves
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "attendance" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("attendance")}
-                >
-                  Attendance
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("documents")}
-                >
-                  Documents
-                </li>
-                <li
-                  className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
-                  onClick={() => setActiveTab("timelineh")}
-                >
-                  Timeline
-                </li>
-              </ul>
+            <div className="w-full overflow-x-auto">
+              <div className="mb-4 flex justify-between border-b border-stroke dark:border-strokedark">
+                <ul className="flex">
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "activity" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("activity")}
+                  >
+                    Profile
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "payroll" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("payroll")}
+                  >
+                    Payroll
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "leaves" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("leaves")}
+                  >
+                    Leaves
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "attendance" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("attendance")}
+                  >
+                    Attendance
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "documents" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("documents")}
+                  >
+                    Documents
+                  </li>
+                  <li
+                    className={`mr-6 cursor-pointer px-4 py-2 ${activeTab === "timelineh" ? "border-b-2 border-blue-500" : ""}`}
+                    onClick={() => setActiveTab("timelineh")}
+                  >
+                    Timeline
+                  </li>
+                </ul>
 
-
-              {formData.is_active == 0 ? (
+                {getactivestatus == 0 ? (
                   <ul className="flex">
                     <li className="cursor-pointer px-4 py-2">
                       <ThumbUp
@@ -600,38 +593,34 @@ const StaffDetails = () => {
                     </li>
                   </ul>
                 ) : (
-              <ul className="flex">
-                <li className="cursor-pointer px-4 py-2">
-                  <Edit onClick={() => handleEdit(getId)} />
-                </li>
-                
-                <li className="cursor-pointer px-4 py-2">
-                  <Key
-                    onClick={() => handlePasswordModel()}
-                    className="cursor-pointer text-green-500"
-                  />
-                </li>
+                  <ul className="flex">
+                    <li className="cursor-pointer px-4 py-2">
+                      <Edit onClick={() => handleEdit(getId)} />
+                    </li>
 
-              <li className="cursor-pointer px-4 py-2">
-                <Visibility onClick={handleAddFees} />
-              </li>
-              <li className="cursor-pointer px-4 py-2">
-                <span
-                  className="fill-red-500 cursor-pointer"
-                  onClick={handleDisableStaffModel}
-                >
-                  <ThumbDown />
-                </span>
-              </li>
-        
-              </ul>
-               )}
+                    <li className="cursor-pointer px-4 py-2">
+                      <Key
+                        onClick={() => handlePasswordModel()}
+                        className="cursor-pointer text-green-500"
+                      />
+                    </li>
+
+                    <li className="cursor-pointer px-4 py-2">
+                      <Visibility onClick={handleAddFees} />
+                    </li>
+                    <li className="cursor-pointer px-4 py-2">
+                      <span
+                        className="fill-red-500 cursor-pointer"
+                        onClick={handleDisableStaffModel}
+                      >
+                        <ThumbDown />
+                      </span>
+                    </li>
+                  </ul>
+                )}
+              </div>
             </div>
-          </div>
 
-
-
-   
             {/* Tab Content */}
             {activeTab === "activity" && (
               <div>
@@ -1365,30 +1354,29 @@ const StaffDetails = () => {
         </div>
       </div>
 
-
       <div>
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-17 right-0 w-72 h-full bg-white shadow-lg transition-all duration-300 ease-in-out z-50 
-          ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
-      >
-        <div className="p-4 bg-[#1c2434] text-white flex justify-between items-center">
-          <div className="flex items-center">
-            <p className="classtap text-lg">Staff</p>
-            {/* Close Button */}
-            <button
-              onClick={handleCloseSidebar}
-              className="text-gray-500 hover:text-gray-700 absolute right-4 top-3 text-2xl"
-            >
-              &times; {/* Close icon */}
-            </button>
+        {/* Sidebar */}
+        <aside
+          className={`fixed right-0 top-17 z-50 h-full w-72 bg-white shadow-lg transition-all duration-300 ease-in-out
+          ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}`}
+        >
+          <div className="flex items-center justify-between bg-[#1c2434] p-4 text-white">
+            <div className="flex items-center">
+              <p className="classtap text-lg">Staff</p>
+              {/* Close Button */}
+              <button
+                onClick={handleCloseSidebar}
+                className="text-gray-500 hover:text-gray-700 absolute right-4 top-3 text-2xl"
+              >
+                &times; {/* Close icon */}
+              </button>
+            </div>
           </div>
-        </div>
-     
-        <div className="">
-        <div className="w-full overflow-x-auto">
-          <div className="flex justify-between border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none dark:text-white">
-                <ul className="flex items-center h-12">
+
+          <div className="">
+            <div className="w-full overflow-x-auto">
+              <div className="flex justify-between border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+                <ul className="flex h-12 items-center">
                   <li
                     className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "admin" ? "border-b-2 border-blue-500" : ""}`}
                     onClick={() => setActiveTabOne("admin")}
@@ -1425,60 +1413,53 @@ const StaffDetails = () => {
                   >
                     SuperAdmin
                   </li>
-                </ul>  
-          </div>
-          </div>
-          {activeTabOne === "admin" && (
-         
-               <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                 <div
-                   className="tab-pane active flex flex-col gap-9"
-                   id="activity"
-                 >
-                   <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                     <div className="p-4">
-                     {data2.map((cls: any) => (
+                </ul>
+              </div>
+            </div>
+            {activeTabOne === "admin" && (
+              <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                <div
+                  className="tab-pane active flex flex-col gap-9"
+                  id="activity"
+                >
+                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div className="p-4">
+                      {data2.map((cls: any) => (
                         <option key={cls.id} value={cls.id}>
                           {cls.id}
                         </option>
                       ))}
-                     
-                     </div>
-                   </div>
-                 </div>
-               </div>
-             
-            )}
-
-           {activeTabOne === "receptionist" && (
-              <div>
-                <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                  <div className="tab-pane active flex flex-col gap-9" id="activity">
-                    
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
-           {activeTabOne === "librarian" && (
+            {activeTabOne === "receptionist" && (
               <div>
                 <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                  <div className="tab-pane active flex flex-col gap-9" id="activity">
-                    
-                  </div>
+                  <div
+                    className="tab-pane active flex flex-col gap-9"
+                    id="activity"
+                  ></div>
                 </div>
               </div>
             )}
-       
-        </div>
-       
-     
-      </aside>
-    </div>
 
+            {activeTabOne === "librarian" && (
+              <div>
+                <div className="tab-content mx-auto max-w-screen-2xl p-4">
+                  <div
+                    className="tab-pane active flex flex-col gap-9"
+                    id="activity"
+                  ></div>
+                </div>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
 
-
-    
       {/* Modal */}
       {isFormVisible && (
         <>
@@ -1633,7 +1614,7 @@ const StaffDetails = () => {
             className="fixed inset-0 z-40 bg-black bg-opacity-50"
             onClick={handlePasswordModel}
           ></div>
-          <div className="fixed inset-0 z-50 flex items-center justify-center mt-20">
+          <div className="fixed inset-0 z-50 mt-20 flex items-center justify-center">
             <div className="relative w-full max-w-3xl rounded-lg bg-white p-6 shadow-lg dark:bg-boxdark dark:drop-shadow-none">
               {/* Close Button */}
               <button
@@ -1704,66 +1685,64 @@ const StaffDetails = () => {
                   </table>
                 )}
 
+                <div className="mt-2 grid grid-cols-1 gap-4">
+                  <h2 className="mb-2 text-[18px] font-black text-[rgb(16,137,211)]">
+                    Change password
+                  </h2>
 
-<div className="grid grid-cols-1 gap-4 mt-2">
-      <h2 className="mb-2 font-black text-[18px] text-[rgb(16,137,211)]">
-        Change password
-      </h2>
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Password: <span className="required">*</span>
+                    </label>
+                    <input
+                      id="password"
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                      type="password"
+                      name="password"
+                      value={password}
+                      onChange={handleChangePassword}
+                    />
+                  </div>
 
-      <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-          Password: <span className="required">*</span>
-        </label>
-        <input
-          id="password"
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-          type="password"
-          name="password"
-          value={password}
-          onChange={handleChangePassword}
-        />
-      </div>
+                  <div className="field">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Confirm Password: <span className="required">*</span>
+                    </label>
+                    <input
+                      id="confirm_password"
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                      type="password"
+                      name="confirm_password"
+                      value={confirmPassword}
+                      onChange={handleChangePassword}
+                    />
+                  </div>
 
-      <div className="field">
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-          Confirm Password: <span className="required">*</span>
-        </label>
-        <input
-          id="confirm_password"
-          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:text-white dark:focus:border-primary"
-          type="password"
-          name="confirm_password"
-          value={confirmPassword}
-          onChange={handleChangePassword}
-        />
-      </div>
+                  {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+                  <span className="agreement">
+                    Login URL:{" "}
+                    <a
+                      href={`${window.location.origin}/login`}
+                      className="text-blue-500 underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {`${window.location.origin}/login`}
+                    </a>
+                  </span>
 
-      <span className="agreement">
-        Login URL:{" "}
-        <a
-          href={`${window.location.origin}/login`}
-          className="text-blue-500 underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {`${window.location.origin}/login`}
-        </a>
-      </span>
-
-      <div className="mt-4 flex justify-end">
-        <button
-          type="button"
-          className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-          disabled={ !password || !confirmPassword}
-          onClick={handleChangePasswordSubmit}
-        >
-          Save
-        </button>
-      </div>
-    </div>
-        
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      type="button"
+                      className="rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      disabled={!password || !confirmPassword}
+                      onClick={handleChangePasswordSubmit}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
 
                 {/* <StyledWrapper>
       <div className="container">
@@ -1771,11 +1750,11 @@ const StaffDetails = () => {
         <form className="form">
           <input required className="input" type="text" name="password" id="password" placeholder="Password " />
           <input required className="input" type="text" name="confirm_password" id="confirm_password" placeholder="Confirm Password" />
-         
+
           <button type="submit" className="login-button"> Save </button>
-         
+
         </form>
-      
+
         <span className="agreement">  Login URL:{" "}  <a
                     href={`${window.location.origin}/login`}
                     className="text-blue-500 underline"
@@ -1785,19 +1764,13 @@ const StaffDetails = () => {
                   </a></span>
       </div>
     </StyledWrapper> */}
-               
-
-                
               </>
             </div>
           </div>
-         
         </>
       )}
 
-
-
-{setisdisablestudentmodel && (
+      {setisdisablestudentmodel && (
         <>
           <div
             className="fixed inset-0 z-40 bg-black bg-opacity-50"
@@ -1822,13 +1795,9 @@ const StaffDetails = () => {
                   >
                     &times;
                   </button>
-                  <h2 className="mb-4 text-lg font-semibold">
-                    Disable Staff
-                  </h2>
+                  <h2 className="mb-4 text-lg font-semibold">Disable Staff</h2>
 
                   <div className="grid grid-cols-1 gap-4 ">
-                  
-                 
                     <div className="field">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                         Date: <span className="required">*</span>
@@ -1847,10 +1816,8 @@ const StaffDetails = () => {
                         onChange={handleDisableInputChange}
                       />
                     </div>
-              
-                 
-                    </div>
-            
+                  </div>
+
                   <div className="mt-4 flex justify-end">
                     <button
                       type="button"
