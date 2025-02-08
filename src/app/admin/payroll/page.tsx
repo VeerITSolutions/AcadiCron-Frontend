@@ -49,8 +49,8 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
 
   selectableRows: "none", // Disable row selection
   filter: false, // Disable filter,
@@ -82,6 +82,8 @@ const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
+  const currentYear = new Date().getFullYear(); // Get the latest year
+  const years = Array.from({ length: 5 }, (_, i) => currentYear - 4 + i); // Generate last 5 years
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
@@ -213,12 +215,12 @@ const StudentDetails = () => {
               onChange={handleRoleChange}
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
+              <option value="">Select</option>
               {roledata.map((cls: any) => (
                 <option key={cls.id} value={cls.id}>
                   {cls.name}
                 </option>
               ))}
-              <option value="Class1">Admin</option>
             </select>
           </label>
           <label className={styles.label}>
@@ -257,8 +259,12 @@ const StudentDetails = () => {
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
+
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
               {/* Add more section options here */}
             </select>
           </label>
