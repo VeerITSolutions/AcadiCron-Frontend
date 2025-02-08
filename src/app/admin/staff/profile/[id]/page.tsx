@@ -128,82 +128,99 @@ const StaffDetails = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const id = window.location.pathname.split("/").pop();
+      console.log("id", id);
       if (id) {
+        console.log("here");
         const getData = async () => {
           try {
             const data = await fetchStaffSingleData(id);
-            if (activeTabOne) {
-              const responsedata2 = await fetchStaffData(
-                "",
-                "",
-                "",
-                "",
-                "",
-                getselectedSessionId,
-              );
-              setData2(responsedata2.data);
-            }
+            console.log("data", data);
 
-            setFormData({
-              employee_id: data.data.employee_id || "",
-              lang_id: data.data.lang_id || "",
-              department: data.data.department || "",
-              designation: data.data.designation || "",
-              qualification: data.data.qualification || "",
-              work_exp: data.data.work_exp || "",
-              name: data.data.name || "",
-              surname: data.data.surname || "",
-              father_name: data.data.father_name || "",
-              mother_name: data.data.mother_name || "",
-              contact_no: data.data.contact_no || "",
-              emergency_contact_no: data.data.emergency_contact_no || "",
-              email: data.data.email || "",
-              dob: data.data.dob || "",
-              marital_status: data.data.marital_status || "",
-              date_of_joining: data.data.date_of_joining || "",
-              date_of_leaving: data.data.date_of_leaving || "",
-              local_address: data.data.local_address || "",
-              permanent_address: data.data.permanent_address || "",
-              note: data.data.note || "",
-              image: data.data.image || "",
-              password: data.data.password || "",
-              gender: data.data.gender || "",
-              account_title: data.data.account_title || "",
-              bank_account_no: data.data.bank_account_no || "",
-              bank_name: data.data.bank_name || "",
-              ifsc_code: data.data.ifsc_code || "",
-              bank_branch: data.data.bank_branch || "",
-              payscale: data.data.payscale || "",
-              basic_salary: data.data.basic_salary || "",
-              epf_no: data.data.epf_no || "",
-              contract_type: data.data.contract_type || "",
-              shift: data.data.shift || "",
-              location: data.data.location || "",
-              facebook: data.data.facebook || "",
-              twitter: data.data.twitter || "",
-              linkedin: data.data.linkedin || "",
-              instagram: data.data.instagram || "",
-              resume: data.data.resume || "",
-              joining_letter: data.data.joining_letter || "",
-              resignation_letter: data.data.resignation_letter || "",
-              other_document_name: data.data.other_document_name || "",
-              other_document_file: data.data.other_document_file || "",
-              user_id: data.data.user_id || "",
-              is_active: data.data.is_active || "",
-              verification_code: data.data.verification_code || "",
-              disable_at: data.data.disable_at || "",
-              role_id: data.data.role_id || "",
-              user_type: data.data.user_type || "",
-            });
-            setIsgetactivestatus(data.data.is_active);
+            if (data && data.data) {
+              setFormData({
+                employee_id: data.data.employee_id || "",
+                lang_id: data.data.lang_id || "",
+                department: data.data.department || "",
+                designation: data.data.designation || "",
+                qualification: data.data.qualification || "",
+                work_exp: data.data.work_exp || "",
+                name: data.data.name || "",
+                surname: data.data.surname || "",
+                father_name: data.data.father_name || "",
+                mother_name: data.data.mother_name || "",
+                contact_no: data.data.contact_no || "",
+                emergency_contact_no: data.data.emergency_contact_no || "",
+                email: data.data.email || "",
+                dob: data.data.dob || "",
+                marital_status: data.data.marital_status || "",
+                date_of_joining: data.data.date_of_joining || "",
+                date_of_leaving: data.data.date_of_leaving || "",
+                local_address: data.data.local_address || "",
+                permanent_address: data.data.permanent_address || "",
+                note: data.data.note || "",
+                image: data.data.image || "",
+                password: data.data.password || "",
+                gender: data.data.gender || "",
+                account_title: data.data.account_title || "",
+                bank_account_no: data.data.bank_account_no || "",
+                bank_name: data.data.bank_name || "",
+                ifsc_code: data.data.ifsc_code || "",
+                bank_branch: data.data.bank_branch || "",
+                payscale: data.data.payscale || "",
+                basic_salary: data.data.basic_salary || "",
+                epf_no: data.data.epf_no || "",
+                contract_type: data.data.contract_type || "",
+                shift: data.data.shift || "",
+                location: data.data.location || "",
+                facebook: data.data.facebook || "",
+                twitter: data.data.twitter || "",
+                linkedin: data.data.linkedin || "",
+                instagram: data.data.instagram || "",
+                resume: data.data.resume || "",
+                joining_letter: data.data.joining_letter || "",
+                resignation_letter: data.data.resignation_letter || "",
+                other_document_name: data.data.other_document_name || "",
+                other_document_file: data.data.other_document_file || "",
+                user_id: data.data.user_id || "",
+                is_active: data.data.is_active || "",
+                verification_code: data.data.verification_code || "",
+                disable_at: data.data.disable_at || "",
+                role_id: data.data.role_id || "",
+                user_type: data.data.user_type || "",
+              });
+              setIsgetactivestatus(data.data.is_active);
+            }
           } catch (error) {
-            console.error("Error fetching student data:", error);
+            console.error("Error fetching staff data:", error);
           }
         };
         getData();
       }
     }
-  }, [activeTabOne]);
+  }, []); // No dependencies needed for initial fetch
+
+  useEffect(() => {
+    if (activeTabOne) {
+      const getSidebarData = async () => {
+        try {
+          const responsedata2 = await fetchStaffData(
+            "",
+            "",
+            "",
+            "",
+            "",
+            getselectedSessionId,
+          );
+          setData2(responsedata2.data);
+        } catch (error) {
+          console.error("Error fetching sidebar data:", error);
+        }
+      };
+      getSidebarData();
+    }
+  }, [activeTabOne, getselectedSessionId]); // Dependencies updated for sidebar data
+
+  console.log("formdata", formData);
   let defaultImage = "/images/user/default_male.jpg";
   let id = window.location.pathname.split("/").pop();
   // Check for gender and default image conditions
@@ -273,6 +290,7 @@ const StaffDetails = () => {
       const data = {
         ...formDataDisable,
         id,
+        status: 0,
       };
 
       const response2 = await createStaffDisable(data);
@@ -357,6 +375,106 @@ const StaffDetails = () => {
           handleDisableStaffModel();
         } else {
         }
+        toast.success(response2.message);
+      } else {
+        toast.error("Error Add data");
+      }
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveEnableStaff = async () => {
+    try {
+      setLoading(true);
+      let id = window.location.pathname.split("/").pop();
+      const data = {
+        ...formDataDisable,
+        id,
+        status: 1,
+      };
+
+      const response2 = await createStaffDisable(data);
+
+      if (response2.success) {
+        setFormDataDisable({
+          id,
+          date: new Date().toISOString().split("T")[0],
+        });
+
+        if (typeof window !== "undefined") {
+          const id = window.location.pathname.split("/").pop();
+          if (id) {
+            const getData = async () => {
+              try {
+                setLoading(true);
+                const data = await fetchStaffSingleData(id);
+                setgetId(data.data.id);
+                setFormData({
+                  employee_id: data.data.employee_id || "",
+                  lang_id: data.data.lang_id || "",
+                  department: data.data.department || "",
+                  designation: data.data.designation || "",
+                  qualification: data.data.qualification || "",
+                  work_exp: data.data.work_exp || "",
+                  name: data.data.name || "",
+                  surname: data.data.surname || "",
+                  father_name: data.data.father_name || "",
+                  mother_name: data.data.mother_name || "",
+                  contact_no: data.data.contact_no || "",
+                  emergency_contact_no: data.data.emergency_contact_no || "",
+                  email: data.data.email || "",
+                  dob: data.data.dob || "",
+                  marital_status: data.data.marital_status || "",
+                  date_of_joining: data.data.date_of_joining || "",
+                  date_of_leaving: data.data.date_of_leaving || "",
+                  local_address: data.data.local_address || "",
+                  permanent_address: data.data.permanent_address || "",
+                  note: data.data.note || "",
+                  image: data.data.image || "",
+                  password: data.data.password || "",
+                  gender: data.data.gender || "",
+                  account_title: data.data.account_title || "",
+                  bank_account_no: data.data.bank_account_no || "",
+                  bank_name: data.data.bank_name || "",
+                  ifsc_code: data.data.ifsc_code || "",
+                  bank_branch: data.data.bank_branch || "",
+                  payscale: data.data.payscale || "",
+                  basic_salary: data.data.basic_salary || "",
+                  epf_no: data.data.epf_no || "",
+                  contract_type: data.data.contract_type || "",
+                  shift: data.data.shift || "",
+                  location: data.data.location || "",
+                  facebook: data.data.facebook || "",
+                  twitter: data.data.twitter || "",
+                  linkedin: data.data.linkedin || "",
+                  instagram: data.data.instagram || "",
+                  resume: data.data.resume || "",
+                  joining_letter: data.data.joining_letter || "",
+                  resignation_letter: data.data.resignation_letter || "",
+                  other_document_name: data.data.other_document_name || "",
+                  other_document_file: data.data.other_document_file || "",
+                  user_id: data.data.user_id || "",
+                  is_active: data.data.is_active || "",
+                  verification_code: data.data.verification_code || "",
+                  disable_at: data.data.disable_at || "",
+                  role_id: data.data.role_id || "",
+                  user_type: data.data.user_type || "",
+                });
+
+                setIsgetactivestatus(data.data.is_active);
+
+                setLoading(false);
+              } catch (error) {
+                console.error("Error fetching staff data:", error);
+              }
+            };
+            getData();
+          }
+        }
+
         toast.success(response2.message);
       } else {
         toast.error("Error Add data");
@@ -583,11 +701,11 @@ const StaffDetails = () => {
                   </li>
                 </ul>
 
-                {getactivestatus == 0 ? (
+                {Number(getactivestatus) === 0 ? (
                   <ul className="flex">
                     <li className="cursor-pointer px-4 py-2">
                       <ThumbUp
-                        onClick={handleSaveDisableStaff}
+                        onClick={handleSaveEnableStaff}
                         className="cursor-pointer text-green-500"
                       />
                     </li>
