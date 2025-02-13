@@ -106,7 +106,7 @@ const StudentDetails = () => {
               </h3>
             </div>
 
-            <div className="p-4 dark:bg-boxdark dark:drop-shadow-none">
+            <div className="cursor-pointer p-4 dark:bg-boxdark dark:drop-shadow-none">
               {data.map((notice: any, index) => (
                 <div
                   key={notice.id}
