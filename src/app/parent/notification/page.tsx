@@ -105,18 +105,17 @@ const StudentDetails = () => {
                 Notice Board
               </h3>
             </div>
-
-            <div className="cursor-pointer p-4 dark:bg-boxdark dark:drop-shadow-none">
-              {data.map((notice: any, index) => (
+            {data.map((notice: any, index) => (
+              <div
+                className="cursor-pointer p-4 dark:bg-boxdark dark:drop-shadow-none"
+                onClick={() => toggleAccordion(index)}
+              >
                 <div
                   key={notice.id}
                   className="mb-4 rounded-lg border border-stroke bg-transparent text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark"
                 >
                   <div className="bg-gray-200 flex items-center justify-between p-3 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => toggleAccordion(index)}
-                    >
+                    <div className="cursor-pointer">
                       <h4 className="font-medium text-black dark:text-white ">
                         {notice.title}
                       </h4>
@@ -174,8 +173,8 @@ const StudentDetails = () => {
                     </div>
                   )}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
