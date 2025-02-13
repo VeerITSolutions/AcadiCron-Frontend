@@ -93,7 +93,6 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       const sessionId = localStorage.getItem("selectedSessionId");
       if (!sessionId) {
         localStorage.setItem("selectedSessionId", response.data.session_id);
-
       }
     } catch (error: any) {
       console.error("Error fetching school settings:", error);
@@ -124,7 +123,6 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         localStorage.setItem("selectedSessionYear", result.session);
 
         setSavedSession(result.session);
-
 
         setModalOpen(false);
         window.location.reload();
@@ -1080,7 +1078,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </svg>
             ),
             label: "My Profile",
-            route: "parent/user/user/dashboard/1",
+            route: "/parent/user/user/dashboard",
           },
           {
             icon: (
@@ -1428,7 +1426,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <select
                 id="session"
                 className="border-gray-300 w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none dark:border-strokedark dark:bg-boxdark"
-                value={getselectedSessionId ?? ''} // Bind the select value to savedSessionstate
+                value={getselectedSessionId ?? ""} // Bind the select value to savedSessionstate
                 onChange={(e) => handleSessionChange(e.target.value)} // Call function when session changes
               >
                 {allSession?.map((cls: any) => (

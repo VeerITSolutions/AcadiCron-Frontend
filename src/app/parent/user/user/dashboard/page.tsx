@@ -99,9 +99,7 @@ const StudentDetails = () => {
 
   const [partentdata, setParentData] = useState<any>(null);
   const [studentdata, setStudentData] = useState<any>(null);
- const user_id = useLoginDetails(
-    (state) => state.userId,
-  );
+  const user_id = useLoginDetails((state) => state.userId);
   const handleButtonClick = () => {
     setIsFormVisible(!isFormVisible);
   };
@@ -210,17 +208,6 @@ const StudentDetails = () => {
     }));
   };
 
-  const handleDisableInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-    setFormDataDisable((prevData) => ({
-      ...prevData,
-      [name]: value, // For regular inputs like text or selects
-    }));
-  };
   const handleInputChange2 = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -231,21 +218,6 @@ const StudentDetails = () => {
       ...prevData,
       [name]: value, // For regular inputs like text or selects
     }));
-  };
-  const handleDelete = async (getId: number) => {
-    try {
-      await deleteStudentTimeline(getId);
-      const id = user_id;
-      if (id) {
-        const datastudenttimeline = await fetchStudentTimelineData(id);
-        setDataTimeline(datastudenttimeline.data);
-      }
-
-      toast.success("Delete successful");
-    } catch (error) {
-      console.error("Delete failed", error);
-      toast.error("Delete failed");
-    }
   };
 
   const handleDelete2 = async (getId: number) => {
