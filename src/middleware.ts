@@ -3,8 +3,11 @@ import { NextResponse } from 'next/server';
 export function middleware(req : any) {
   const token = req.cookies.get('token'); // Fetch token from cookies
 
+    const erpTag = req.cookies.get("erp");
+
+
   // If token is not found, redirect to login page
-  if (!token) {
+  if (!token && !erpTag) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
