@@ -270,6 +270,13 @@ const LoginPage = () => {
         path: "/",
       });
 
+      Cookies.set("role_id", role.id, {
+        expires: 7,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+      });
+
       if (role) {
         localStorage.setItem("user_id", data.users.user_id);
         localStorage.setItem("user_data", JSON.stringify(data.users.user_data));
