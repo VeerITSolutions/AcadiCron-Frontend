@@ -19,6 +19,7 @@ import {
 } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { useGlobalState } from "@/context/GlobalContext";
+import Image from "next/image";
 const StudentDetails = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -153,7 +154,7 @@ const StudentDetails = () => {
                         <div>
                           <p>{notice.title}</p>
                           {notice.path ? (
-                            <img
+                            <Image
                               src={
                                 process.env.NEXT_PUBLIC_BASE_URL + notice.path
                               }

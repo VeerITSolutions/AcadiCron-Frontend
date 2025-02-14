@@ -15,6 +15,7 @@ import MultiSelect from "@/components/FormElements/MultiSelect";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 import styles from "./User.module.css";
 import { useState } from "react";
+import Image from "next/image";
 
 const StaffPayroll = () => {
   // State to manage form data
@@ -109,7 +110,7 @@ const StaffPayroll = () => {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="flex items-center">
-                  <img
+                  <Image
                     className="h-28 w-28 rounded-md"
                     src="https://erp.erabesa.co.in/uploads/staff_images/no_image.png"
                     alt="No Image"

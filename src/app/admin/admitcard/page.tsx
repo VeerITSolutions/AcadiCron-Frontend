@@ -9,65 +9,71 @@ import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { fetchSubjectData } from "@/services/subjectsService";
-import { Edit, Delete, Visibility, } from "@mui/icons-material";
+import { Edit, Delete, Visibility } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
-import { createAdmitCard, deleteAdmitCard, editAdmitCard, fetchAdmitCard, viewAdmitCard } from "@/services/TemplateAdmitcardService";
+import {
+  createAdmitCard,
+  deleteAdmitCard,
+  editAdmitCard,
+  fetchAdmitCard,
+  viewAdmitCard,
+} from "@/services/TemplateAdmitcardService";
 import { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
+import Image from "next/image";
 
 const AdmitCard = () => {
   const [customFileds, setCustomFileds] = useState<Array<Array<any>>>([]);
   const [error, setError] = useState<string | null>(null);
-   const [data, setData] = useState<Array<Array<any>>>([]);
-   const { themType, setThemType } = useGlobalState();
-   const [certificate_name, setCertificateName] = useState<string>("");
-   const [isFormVisible, setIsFormVisible] = useState(false);
-   const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<string>("");
-   const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
-   const fileInputRef = useRef<HTMLInputElement>(null);
-   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
-   const [createdata, setcreatedata] = useState<Array<any>>([]);
-   const [enabled, setEnabled] = useState(false);
-   const [loading, setLoading] = useState(true);
-   const [page, setPage] = useState(0);
-   const [rowsPerPage, setRowsPerPage] = useState(10);
-   const [totalCount, setTotalCount] = useState(0);
-   const [isEditing, setIsEditing] = useState<boolean>(false);
-   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
-   const [savedSessionstate, setSavedSession] = useState("");
-   const [isNameEnabled, setIsNameEnabled] = useState(false);
-   const [isFatherNameEnabled, setIsFatherNameEnabled] = useState(false);
-   const [isMotherNameEnabled, setIsMotherNameEnabled] = useState(false);
-   const [isExamSessionEnabled, setIsExamSessionEnabled] = useState(false);
-   const [isAdmissionNoEnabled, setIsAdmissionNoEnabled] = useState(false);
-   const [isDivisionEnabled, setIsDivisionEnabled] = useState(false);
-   const [isRollNoEnabled, setIsRollNoEnabled] = useState(false);
-   const [isPhotoEnabled, setIsPhotoEnabled] = useState(false);
-   const [isClassEnabled, setIsClassEnabled] = useState(false);
-   const [isSectionEnabled, setIsSectionEnabled] = useState(false);
-   const [selectedSection, setSelectedSection] = useState<string[]>([]);
-   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
-   const [isDOBEnabled, setIsDOBEnabled] = useState(false);
-   const [isAddressEnabled, setIsAddressEnabled] = useState(false);
-   const [isGenderEnabled, setIsGenderEnabled] = useState(false);
-
+  const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
+  const [certificate_name, setCertificateName] = useState<string>("");
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormVisibleHtml, setIsFormVisibleHtml] = useState<string>("");
+  const [isFormVisibleHtmlId, setIsFormVisibleHtmlId] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dataSubject, setDataSubject] = useState<Array<any>>([]);
+  const [createdata, setcreatedata] = useState<Array<any>>([]);
+  const [enabled, setEnabled] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+  const [savedSessionstate, setSavedSession] = useState("");
+  const [isNameEnabled, setIsNameEnabled] = useState(false);
+  const [isFatherNameEnabled, setIsFatherNameEnabled] = useState(false);
+  const [isMotherNameEnabled, setIsMotherNameEnabled] = useState(false);
+  const [isExamSessionEnabled, setIsExamSessionEnabled] = useState(false);
+  const [isAdmissionNoEnabled, setIsAdmissionNoEnabled] = useState(false);
+  const [isDivisionEnabled, setIsDivisionEnabled] = useState(false);
+  const [isRollNoEnabled, setIsRollNoEnabled] = useState(false);
+  const [isPhotoEnabled, setIsPhotoEnabled] = useState(false);
+  const [isClassEnabled, setIsClassEnabled] = useState(false);
+  const [isSectionEnabled, setIsSectionEnabled] = useState(false);
+  const [selectedSection, setSelectedSection] = useState<string[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const [isDOBEnabled, setIsDOBEnabled] = useState(false);
+  const [isAddressEnabled, setIsAddressEnabled] = useState(false);
+  const [isGenderEnabled, setIsGenderEnabled] = useState(false);
 
   const [formData, setFormData] = useState({
-    template: '',
-    heading: '',
-    title: '',
-    left_logo: '',
-    right_logo: '',
-    exam_name: '',
-    school_name: '',
-    exam_center: '',
-    sign: '',
-    background_img: '',
+    template: "",
+    heading: "",
+    title: "",
+    left_logo: "",
+    right_logo: "",
+    exam_name: "",
+    school_name: "",
+    exam_center: "",
+    sign: "",
+    background_img: "",
     is_name: false,
     is_father_name: false,
     is_mother_name: false,
@@ -79,10 +85,10 @@ const AdmitCard = () => {
     is_photo: false,
     is_class: false,
     is_section: false,
-    content_footer: ''
+    content_footer: "",
   });
-  
- const fetchData = async (currentPage: number, rowsPerPage: number) => {
+
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchAdmitCard(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
@@ -111,7 +117,6 @@ const AdmitCard = () => {
     }
   };
 
-
   const handleEdit = (id: number, data: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
@@ -138,56 +143,52 @@ const AdmitCard = () => {
       is_photo: data.is_photo || false,
       is_class: data.is_class || false,
       is_section: data.is_section || false,
-      content_footer: data.content_footer || ""
+      content_footer: data.content_footer || "",
     });
-    
   };
 
+  const fetchData2 = async () => {
+    try {
+      if (isFormVisible === true) {
+        const result = await viewAdmitCard(isFormVisibleHtmlId);
 
-   const fetchData2 = async () => {
-      try {
-        if (isFormVisible === true) {
-          const result = await viewAdmitCard(isFormVisibleHtmlId);
-  
-          if (result && result.success) {
-            setIsFormVisibleHtml(result.data); // Append returned HTML
-            setIsFormVisible(true); // Show the HTML
-          } else {
-            console.error("Failed to load certificate preview");
-          }
+        if (result && result.success) {
+          setIsFormVisibleHtml(result.data); // Append returned HTML
+          setIsFormVisible(true); // Show the HTML
+        } else {
+          console.error("Failed to load certificate preview");
         }
-      } catch (error: any) {}
-    };
-    useEffect(() => {
-      fetchData2();
-    }, [isFormVisible]);
-  
-    const handleButtonClick = (id: any) => {
-      setIsFormVisible((prev) => !prev); // Toggle modal state
-      setIsFormVisibleHtmlId(id); // Toggle modal state
-    };
-  
-    const handleButtonClick2 = async () => {
-      setIsFormVisible((prev) => !prev); // Toggle modal state
-    };
+      }
+    } catch (error: any) {}
+  };
+  useEffect(() => {
+    fetchData2();
+  }, [isFormVisible]);
 
+  const handleButtonClick = (id: any) => {
+    setIsFormVisible((prev) => !prev); // Toggle modal state
+    setIsFormVisibleHtmlId(id); // Toggle modal state
+  };
 
+  const handleButtonClick2 = async () => {
+    setIsFormVisible((prev) => !prev); // Toggle modal state
+  };
 
-    const formatAdmitCardData = (students: any[]) => {
-      return students.map((student: any) => [
-        student.template || "N/A",
-        student.background_img ? (
-          <img
-            src={
-              process.env.NEXT_PUBLIC_BASE_URL +
-              `/uploads/marksheet/${student.background_img}`
-            }
-            width="40"
-            alt={student.certificate_name || "Marksheet Image"}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src =
-                "data:image/svg+xml;charset=UTF-8," +
-                encodeURIComponent(`
+  const formatAdmitCardData = (students: any[]) => {
+    return students.map((student: any) => [
+      student.template || "N/A",
+      student.background_img ? (
+        <Image
+          src={
+            process.env.NEXT_PUBLIC_BASE_URL +
+            `/uploads/marksheet/${student.background_img}`
+          }
+          width="40"
+          alt={student.certificate_name || "Marksheet Image"}
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              "data:image/svg+xml;charset=UTF-8," +
+              encodeURIComponent(`
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="40" height="40" fill="currentColor">
                 <rect x="10" y="10" width="44" height="32" rx="4" ry="4" fill="#cbd5e0" />
                 <text x="32" y="30" text-anchor="middle" font-size="10" fill="#4a5568" font-weight="bold">
@@ -196,200 +197,194 @@ const AdmitCard = () => {
                 <circle cx="32" cy="45" r="5" fill="#4a5568" />
               </svg>
             `);
-            }}
-          />
-        ) : (
-          "N/A"
-        ),
-        <div key={student.id} className="flex">
-          <IconButton aria-label="Show">
-            <div className="" onClick={() => handleButtonClick(student.id)}>
-              {" "}
-              <Visibility />
-            </div>
-          </IconButton>
-  
-          <IconButton
-            onClick={() => handleEdit(student.id, student)}
-            aria-label="edit"
-          >
-            <Edit />
-          </IconButton>
-          <IconButton
-            onClick={() => handleDelete(student.id)}
-            aria-label="delete"
-          >
-            <Delete />
-          </IconButton>
-        </div>,
-      ]);
-    };
+          }}
+        />
+      ) : (
+        "N/A"
+      ),
+      <div key={student.id} className="flex">
+        <IconButton aria-label="Show">
+          <div className="" onClick={() => handleButtonClick(student.id)}>
+            {" "}
+            <Visibility />
+          </div>
+        </IconButton>
 
-    useEffect(() => {
-      fetchData(page, rowsPerPage);
-    }, [page, rowsPerPage]);
-  
-  
-    useEffect(() => {
-      const savedSession = localStorage.getItem("selectedSessionId");
-      if (savedSession) {
-        setSavedSession(savedSession);
-        // Use this value in your logic
-      }
-    }, []);
+        <IconButton
+          onClick={() => handleEdit(student.id, student)}
+          aria-label="edit"
+        >
+          <Edit />
+        </IconButton>
+        <IconButton
+          onClick={() => handleDelete(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+      </div>,
+    ]);
+  };
 
-   const handleInputChange = (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => {
-      const { name, value } = e.target;
+  useEffect(() => {
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    const savedSession = localStorage.getItem("selectedSessionId");
+    if (savedSession) {
+      setSavedSession(savedSession);
+      // Use this value in your logic
+    }
+  }, []);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
       }));
-    };
-  
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, files } = e.target;
-      const file = files ? files[0] : null;
-  
-      if (file && name) {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: file, // Dynamically set the file in formData using the input's name attribute
-        }));
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      let result;
+
+      const data = {
+        ...formData,
+        enable_student_image: enabled,
+      };
+
+      // Check if we are editing an existing category
+      if (isEditing && editCategoryId !== null) {
+        result = await editAdmitCard(editCategoryId, data);
+      } else {
+        result = await createAdmitCard(data);
       }
-    };
-  
-    const handleSubmit = async () => {
-      try {
-        let result;
-  
-        const data = {
-          ...formData,
-          enable_student_image: enabled,
-        };
-  
-        // Check if we are editing an existing category
-        if (isEditing && editCategoryId !== null) {
-          result = await editAdmitCard(editCategoryId, data);
-        } else {
-          result = await createAdmitCard(data);
+
+      // Handle the API response
+      if (result.success) {
+        toast.success(
+          isEditing ? "Updated successfully" : "Saved successfully",
+        );
+        // Reset form data
+        setFormData({
+          template: "",
+          heading: "",
+          title: "",
+          left_logo: "",
+          right_logo: "",
+          exam_name: "",
+          school_name: "",
+          exam_center: "",
+          sign: "",
+          background_img: "",
+          is_name: false,
+          is_father_name: false,
+          is_mother_name: false,
+          is_dob: false,
+          is_admission_no: false,
+          is_roll_no: false,
+          is_address: false,
+          is_gender: false,
+          is_photo: false,
+          is_class: false,
+          is_section: false,
+          content_footer: "",
+        });
+        setIsEditing(false);
+        setEditCategoryId(null);
+        fetchData(page, rowsPerPage); // Refresh data after submit
+        resetFileInput(); // Reset the file input
+      } else {
+        // Handle errors
+        const errorMessage = result.message || "An error occurred";
+        const errors = result.errors || {};
+
+        toast.error(errorMessage); // Show the main error message
+
+        // Optionally display individual field errors
+        if (errors.name) {
+          toast.error(`Name: ${errors.name.join(", ")}`);
         }
-  
-        // Handle the API response
-        if (result.success) {
-          toast.success(
-            isEditing ? "Updated successfully" : "Saved successfully",
-          );
-          // Reset form data
-          setFormData({
-            template: '',
-            heading: '',
-            title: '',
-            left_logo: '',
-            right_logo: '',
-            exam_name: '',
-            school_name: '',
-            exam_center: '',
-            sign: '',
-            background_img: '',
-            is_name: false,
-            is_father_name: false,
-            is_mother_name: false,
-            is_dob: false,
-            is_admission_no: false,
-            is_roll_no: false,
-            is_address: false,
-            is_gender: false,
-            is_photo: false,
-            is_class: false,
-            is_section: false,
-            content_footer: ''
-          });
-          setIsEditing(false);
-          setEditCategoryId(null);
-          fetchData(page, rowsPerPage); // Refresh data after submit
-          resetFileInput(); // Reset the file input
-        } else {
-          // Handle errors
-          const errorMessage = result.message || "An error occurred";
-          const errors = result.errors || {};
-  
-          toast.error(errorMessage); // Show the main error message
-  
-          // Optionally display individual field errors
-          if (errors.name) {
-            toast.error(`Name: ${errors.name.join(", ")}`);
-          }
-          if (errors.code) {
-            toast.error(`Code: ${errors.code.join(", ")}`);
-          }
-          if (errors.amount) {
-            toast.error(`Amount: ${errors.amount.join(", ")}`);
-          }
-          if (errors.description) {
-            toast.error(`Description: ${errors.description.join(", ")}`);
-          }
+        if (errors.code) {
+          toast.error(`Code: ${errors.code.join(", ")}`);
         }
-      } catch (error) {
-        console.error("An error occurred", error);
-        toast.error("An unexpected error occurred. Please try again.");
+        if (errors.amount) {
+          toast.error(`Amount: ${errors.amount.join(", ")}`);
+        }
+        if (errors.description) {
+          toast.error(`Description: ${errors.description.join(", ")}`);
+        }
       }
-    };
-  
-  
-    const handlePageChange = (newPage: number) => {
-      setPage(newPage);
-    };
-  
-    const handleRowsPerPageChange = (newRowsPerPage: number) => {
-      setRowsPerPage(newRowsPerPage);
-      setPage(0);
-    };
-  
-    const handleCancel = () => {
-      setFormData({
-        template: '',
-        heading: '',
-        title: '',
-        left_logo: '',
-        right_logo: '',
-        exam_name: '',
-        school_name: '',
-        exam_center: '',
-        sign: '',
-        background_img: '',
-        is_name: false,
-        is_father_name: false,
-        is_mother_name: false,
-        is_dob: false,
-        is_admission_no: false,
-        is_roll_no: false,
-        is_address: false,
-        is_gender: false,
-        is_photo: false,
-        is_class: false,
-        is_section: false,
-        content_footer: ''
-      });
-      setIsEditing(false);
-      setEditCategoryId(null);
-    };
-  
-    const resetFileInput = () => {
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ""; // Reset the value of the file input
-      }
-    };
-  
+    } catch (error) {
+      console.error("An error occurred", error);
+      toast.error("An unexpected error occurred. Please try again.");
+    }
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
+    setPage(0);
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      template: "",
+      heading: "",
+      title: "",
+      left_logo: "",
+      right_logo: "",
+      exam_name: "",
+      school_name: "",
+      exam_center: "",
+      sign: "",
+      background_img: "",
+      is_name: false,
+      is_father_name: false,
+      is_mother_name: false,
+      is_dob: false,
+      is_admission_no: false,
+      is_roll_no: false,
+      is_address: false,
+      is_gender: false,
+      is_photo: false,
+      is_class: false,
+      is_section: false,
+      content_footer: "",
+    });
+    setIsEditing(false);
+    setEditCategoryId(null);
+  };
+
+  const resetFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset the value of the file input
+    }
+  };
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-  const columns = [
-    "Certificate Name",
-    "Background Image",
-    "Action",
-  ];
+  const columns = ["Certificate Name", "Background Image", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -438,7 +433,6 @@ const AdmitCard = () => {
           </Dialog>
         </>
       )}
-
 
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
@@ -600,20 +594,66 @@ const AdmitCard = () => {
 
                 <div className="field grid grid-cols-3 gap-4">
                   {[
-                    { label: "Name", state: isNameEnabled, setState: setIsNameEnabled },
-                    { label: "Father Name", state: isFatherNameEnabled, setState: setIsFatherNameEnabled },
-                    { label: "Mother Name", state: isMotherNameEnabled, setState: setIsMotherNameEnabled },
-                    { label: "Date of Birth", state: isDOBEnabled, setState: setIsDOBEnabled },
-                    { label: "Admission No", state: isAdmissionNoEnabled, setState: setIsAdmissionNoEnabled },
-                    { label: "Roll No", state: isRollNoEnabled, setState: setIsRollNoEnabled },
-                    { label: "Address", state: isAddressEnabled, setState: setIsAddressEnabled },
-                    { label: "Gender", state: isGenderEnabled, setState: setIsGenderEnabled },
-                    { label: "Photo", state: isPhotoEnabled, setState: setIsPhotoEnabled },
-                    { label: "Class", state: isClassEnabled, setState: setIsClassEnabled },
-                    { label: "Section", state: isSectionEnabled, setState: setIsSectionEnabled },
+                    {
+                      label: "Name",
+                      state: isNameEnabled,
+                      setState: setIsNameEnabled,
+                    },
+                    {
+                      label: "Father Name",
+                      state: isFatherNameEnabled,
+                      setState: setIsFatherNameEnabled,
+                    },
+                    {
+                      label: "Mother Name",
+                      state: isMotherNameEnabled,
+                      setState: setIsMotherNameEnabled,
+                    },
+                    {
+                      label: "Date of Birth",
+                      state: isDOBEnabled,
+                      setState: setIsDOBEnabled,
+                    },
+                    {
+                      label: "Admission No",
+                      state: isAdmissionNoEnabled,
+                      setState: setIsAdmissionNoEnabled,
+                    },
+                    {
+                      label: "Roll No",
+                      state: isRollNoEnabled,
+                      setState: setIsRollNoEnabled,
+                    },
+                    {
+                      label: "Address",
+                      state: isAddressEnabled,
+                      setState: setIsAddressEnabled,
+                    },
+                    {
+                      label: "Gender",
+                      state: isGenderEnabled,
+                      setState: setIsGenderEnabled,
+                    },
+                    {
+                      label: "Photo",
+                      state: isPhotoEnabled,
+                      setState: setIsPhotoEnabled,
+                    },
+                    {
+                      label: "Class",
+                      state: isClassEnabled,
+                      setState: setIsClassEnabled,
+                    },
+                    {
+                      label: "Section",
+                      state: isSectionEnabled,
+                      setState: setIsSectionEnabled,
+                    },
                   ].map(({ label, state, setState }, index) => (
                     <div key={index} className="flex flex-col">
-                      <h2 className="mb-5 text-sm font-medium text-black dark:text-white">{label}</h2>
+                      <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
+                        {label}
+                      </h2>
                       <div className="flex items-center">
                         <label
                           htmlFor={`toggle-${label.toLowerCase().replace(/\s+/g, "-")}`}
@@ -629,12 +669,16 @@ const AdmitCard = () => {
                             />
                             <div
                               className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                                state ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
+                                state
+                                  ? "bg-green-500"
+                                  : "bg-meta-9 dark:bg-[#5A616B]"
                               }`}
                             ></div>
                             <div
                               className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                                state ? "translate-x-full bg-primary dark:bg-white" : ""
+                                state
+                                  ? "translate-x-full bg-primary dark:bg-white"
+                                  : ""
                               }`}
                             ></div>
                           </div>
@@ -643,8 +687,6 @@ const AdmitCard = () => {
                     </div>
                   ))}
                 </div>
-
-           
 
                 <div className="flex gap-2">
                   <button

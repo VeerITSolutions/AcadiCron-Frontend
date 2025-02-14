@@ -34,6 +34,7 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
 import LoaderSpiner from "@/components/common/LoaderSpiner";
+import Image from "next/image";
 
 const StudentFess = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -409,7 +410,7 @@ const StudentFess = () => {
           <div className="border-b border-stroke p-4 dark:bg-boxdark dark:drop-shadow-none">
             <div className="flex items-start">
               <div className="flex w-1/5 items-center justify-center">
-                <img
+                <Image
                   src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
                   alt="User Profile"
                   className="mx-auto h-24 w-24 rounded-full"

@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { IconButton } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
-import { Delete, Edit, Add, Remove, Calculate } from "@mui/icons-material";  // Import Calculate icon
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
+import { Delete, Edit, Add, Remove, Calculate } from "@mui/icons-material"; // Import Calculate icon
 import { fetchStaffSingleData } from "@/services/staffService";
+import Image from "next/image";
 
 const StudentDetails = () => {
   const router = useRouter();
@@ -91,8 +92,8 @@ const StudentDetails = () => {
               lang_id: data.data.lang_id || "",
               department: data.data.department || "",
               designation: data.data.designation || "",
-              department_name:data.data.department_name || "",
-    designation_name:data.data.designation_name || "",
+              department_name: data.data.department_name || "",
+              designation_name: data.data.designation_name || "",
               qualification: data.data.qualification || "",
               work_exp: data.data.work_exp || "",
               name: data.data.name || "",
@@ -139,9 +140,7 @@ const StudentDetails = () => {
               role_id: data.data.role_id || "",
               user_type: data.data.user_type || "",
 
-              staff_leave_details : data.data.staff_leave_details,
-
-
+              staff_leave_details: data.data.staff_leave_details,
             });
           } catch (error) {
             console.error("Error fetching student data:", error);
@@ -166,20 +165,25 @@ const StudentDetails = () => {
   ) {
     defaultImage = "/images/user/default_male.jpg";
   } else {
-     defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/staff_documents/${id}/${formData?.image}`;
-
+    defaultImage = `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/staff_documents/${id}/${formData?.image}`;
   }
 
- // Dynamically construct the image URL
- const imageUrl = `${defaultImage}`;
+  // Dynamically construct the image URL
+  const imageUrl = `${defaultImage}`;
   // Calculating total salary components
   const calculateTotal = () => {
-    const totalAllowance = allowances.reduce((acc, curr) => acc + Number(curr.amount), 0);
-    const totalDeduction = deductions.reduce((acc, curr) => acc + Number(curr.amount), 0);
+    const totalAllowance = allowances.reduce(
+      (acc, curr) => acc + Number(curr.amount),
+      0,
+    );
+    const totalDeduction = deductions.reduce(
+      (acc, curr) => acc + Number(curr.amount),
+      0,
+    );
     const grossSalary = Number(salary.basic) + totalAllowance;
 
     // Set both gross and net salary to the same value
-    const netSalary = grossSalary;  // Net Salary is same as Gross Salary
+    const netSalary = grossSalary; // Net Salary is same as Gross Salary
     setSalary((prev) => ({
       ...prev,
       totalAllowance,
@@ -192,17 +196,27 @@ const StudentDetails = () => {
   // Handling row addition and removal for allowances and deductions
   const handleAddRow = (type: any) => {
     if (type === "allowance") {
-      setAllowances((prevAllowances) => [...prevAllowances, { type: "", amount: 0 }]);
+      setAllowances((prevAllowances) => [
+        ...prevAllowances,
+        { type: "", amount: 0 },
+      ]);
     } else if (type === "deduction") {
-      setDeductions((prevDeductions) => [...prevDeductions, { type: "", amount: 0 }]);
+      setDeductions((prevDeductions) => [
+        ...prevDeductions,
+        { type: "", amount: 0 },
+      ]);
     }
   };
 
   const handleRemoveRow = (index: any, type: any) => {
     if (type === "allowance") {
-      setAllowances((prevAllowances) => prevAllowances.filter((_, i) => i !== index));
+      setAllowances((prevAllowances) =>
+        prevAllowances.filter((_, i) => i !== index),
+      );
     } else if (type === "deduction") {
-      setDeductions((prevDeductions) => prevDeductions.filter((_, i) => i !== index));
+      setDeductions((prevDeductions) =>
+        prevDeductions.filter((_, i) => i !== index),
+      );
     }
   };
 
@@ -212,13 +226,19 @@ const StudentDetails = () => {
     if (type === "allowance") {
       setAllowances((prevAllowances) => {
         const updatedAllowances = [...prevAllowances];
-        updatedAllowances[index] = { ...updatedAllowances[index], [name]: value };
+        updatedAllowances[index] = {
+          ...updatedAllowances[index],
+          [name]: value,
+        };
         return updatedAllowances;
       });
     } else if (type === "deduction") {
       setDeductions((prevDeductions) => {
         const updatedDeductions = [...prevDeductions];
-        updatedDeductions[index] = { ...updatedDeductions[index], [name]: value };
+        updatedDeductions[index] = {
+          ...updatedDeductions[index],
+          [name]: value,
+        };
         return updatedDeductions;
       });
     }
@@ -233,228 +253,261 @@ const StudentDetails = () => {
   return (
     <DefaultLayout>
       <div className="container mx-auto dark:bg-boxdark dark:drop-shadow-none">
-        <div className="bg-white flex flex-wrap lg:flex-nowrap justify-between items-center p-6 pb-0 dark:bg-boxdark dark:drop-shadow-none">
+        <div className="flex flex-wrap items-center justify-between bg-white p-6 pb-0 dark:bg-boxdark dark:drop-shadow-none lg:flex-nowrap">
           <h2 className="text-lg font-bold dark:text-white">Staff Details</h2>
-          <a href="/admin/payroll" className="btn-primary text-xs flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          <a
+            href="/admin/payroll"
+            className="btn-primary flex items-center text-xs"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 12H5m7-7l-7 7 7 7"
-            />
-          </svg>
-          Back
-        </a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="mr-2 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 12H5m7-7l-7 7 7 7"
+              />
+            </svg>
+            Back
+          </a>
         </div>
 
-        <div className="bg-white p-6 rounded dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
-  <div className="border border-stroke p-4 rounded dark:border-strokedark xl:col-span-2 md:col-span-2">
-    <div className="flex flex-wrap bg-gray-100 h-full dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-      <div className="w-full sm:w-1/4 flex items-center justify-center mb-4 sm:mb-0">
-        <img
-          src={imageUrl || defaultImage}
-          className="rounded-lg w-28 h-28 object-cover"
-          alt="No Image"
-        />
-      </div>
-      <div className="w-full sm:w-3/4 pl-0 sm:pl-4">
-        <table className="table-auto w-full text-sm text-gray-600">
-          <tbody>
-            <tr className="border-b border-stroke dark:border-strokedark">
-              <th className="text-left pr-4 py-2 font-bold dark:text-white">Name</th>
-              <td className="py-2 dark:text-white">{formData.name} {formData.surname}</td>
-              <th className="text-left pr-4 py-2 font-bold dark:text-white">Staff ID</th>
-              <td className="py-2 dark:text-white">{formData.employee_id}</td>
-            </tr>
-            <tr className="border-b border-stroke dark:border-strokedark">
-              <th className="text-left pr-4 py-2 font-bold dark:text-white">Phone</th>
-              <td className="py-2 dark:text-white">{formData.contact_no}</td>
-              <th className="text-left pr-4 py-2 font-bold dark:text-white">Email</th>
-              <td className="py-2 dark:text-white whitespace-nowrap overflow-hidden truncate sm:overflow-ellipsis">{formData.email}</td>
-            </tr>
-            <tr className="border-b border-stroke dark:border-strokedark">
-              <th className="text-left pr-4 py-2 font-bold dark:text-white">EPF No</th>
-              <td className="py-2 dark:text-white">{formData.epf_no}</td>
-              <th className="text-left pr-4 py-2 font-bold dark:text-white">Role</th>
-              <td className="py-2 dark:text-white">{formData.user_type}</td>
-            </tr>
-            <tr className="border-b border-stroke dark:border-strokedark">
-              <th className="text-left pr-4 py-2 font-bold dark:text-white">Department</th>
-              <td className="py-2 dark:text-white">{formData.department_name}</td>
-              <th className="text-left pr-4 py-2 font-bold dark:text-white">Designation</th>
-              <td className="py-2 dark:text-white">{formData.designation_name}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+        <div className="mb-6 grid grid-cols-1 gap-6 rounded bg-white p-6 dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none md:grid-cols-2 xl:grid-cols-3">
+          <div className="rounded border border-stroke p-4 dark:border-strokedark md:col-span-2 xl:col-span-2">
+            <div className="bg-gray-100 flex h-full flex-wrap dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+              <div className="mb-4 flex w-full items-center justify-center sm:mb-0 sm:w-1/4">
+                <Image
+                  src={imageUrl || defaultImage}
+                  className="h-28 w-28 rounded-lg object-cover"
+                  alt="No Image"
+                />
+              </div>
+              <div className="w-full pl-0 sm:w-3/4 sm:pl-4">
+                <table className="text-gray-600 w-full table-auto text-sm">
+                  <tbody>
+                    <tr className="border-b border-stroke dark:border-strokedark">
+                      <th className="py-2 pr-4 text-left font-bold dark:text-white">
+                        Name
+                      </th>
+                      <td className="py-2 dark:text-white">
+                        {formData.name} {formData.surname}
+                      </td>
+                      <th className="py-2 pr-4 text-left font-bold dark:text-white">
+                        Staff ID
+                      </th>
+                      <td className="py-2 dark:text-white">
+                        {formData.employee_id}
+                      </td>
+                    </tr>
+                    <tr className="border-b border-stroke dark:border-strokedark">
+                      <th className="py-2 pr-4 text-left font-bold dark:text-white">
+                        Phone
+                      </th>
+                      <td className="py-2 dark:text-white">
+                        {formData.contact_no}
+                      </td>
+                      <th className="py-2 pr-4 text-left font-bold dark:text-white">
+                        Email
+                      </th>
+                      <td className="overflow-hidden truncate whitespace-nowrap py-2 dark:text-white sm:overflow-ellipsis">
+                        {formData.email}
+                      </td>
+                    </tr>
+                    <tr className="border-b border-stroke dark:border-strokedark">
+                      <th className="py-2 pr-4 text-left font-bold dark:text-white">
+                        EPF No
+                      </th>
+                      <td className="py-2 dark:text-white">
+                        {formData.epf_no}
+                      </td>
+                      <th className="py-2 pr-4 text-left font-bold dark:text-white">
+                        Role
+                      </th>
+                      <td className="py-2 dark:text-white">
+                        {formData.user_type}
+                      </td>
+                    </tr>
+                    <tr className="border-b border-stroke dark:border-strokedark">
+                      <th className="py-2 pr-4 text-left font-bold dark:text-white">
+                        Department
+                      </th>
+                      <td className="py-2 dark:text-white">
+                        {formData.department_name}
+                      </td>
+                      <th className="py-2 pr-4 text-left font-bold dark:text-white">
+                        Designation
+                      </th>
+                      <td className="py-2 dark:text-white">
+                        {formData.designation_name}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
-  <div className="border border-stroke p-4 rounded dark:border-strokedark xl:col-span-1 md:col-span-1 w-full lg:w-full xl:w-full">
-    <div className="bg-gray-100 h-full dark:border-strokedark">
-      <table className="table-auto w-full text-sm text-gray-600 overflow-x-auto">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="text-left py-2 px-2 font-medium">Month</th>
-            <th className="text-left py-2 px-2 font-medium">P</th>
-            <th className="text-left py-2 px-2 font-medium">L</th>
-            <th className="text-left py-2 px-2 font-medium">A</th>
-            <th className="text-left py-2 px-2 font-medium">F</th>
-            <th className="text-left py-2 px-2 font-medium">H</th>
-            <th className="text-left py-2 px-2 font-medium">V</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="border-t border-stroke dark:border-strokedark">
-            <td className="py-2 px-2">January</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-          </tr>
-          <tr className="border-t border-stroke dark:border-strokedark">
-            <td className="py-2 px-2">December</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-          </tr>
-          <tr className="border-t border-stroke dark:border-strokedark">
-            <td className="py-2 px-2">November</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-          </tr>
-          <tr className="border-t border-stroke dark:border-strokedark">
-            <td className="py-2 px-2">October</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-            <td className="py-2 px-2">0</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+          <div className="w-full rounded border border-stroke p-4 dark:border-strokedark md:col-span-1 lg:w-full xl:col-span-1 xl:w-full">
+            <div className="bg-gray-100 h-full dark:border-strokedark">
+              <table className="text-gray-600 w-full table-auto overflow-x-auto text-sm">
+                <thead>
+                  <tr className="bg-gray-200">
+                    <th className="px-2 py-2 text-left font-medium">Month</th>
+                    <th className="px-2 py-2 text-left font-medium">P</th>
+                    <th className="px-2 py-2 text-left font-medium">L</th>
+                    <th className="px-2 py-2 text-left font-medium">A</th>
+                    <th className="px-2 py-2 text-left font-medium">F</th>
+                    <th className="px-2 py-2 text-left font-medium">H</th>
+                    <th className="px-2 py-2 text-left font-medium">V</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-t border-stroke dark:border-strokedark">
+                    <td className="px-2 py-2">January</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                  </tr>
+                  <tr className="border-t border-stroke dark:border-strokedark">
+                    <td className="px-2 py-2">December</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                  </tr>
+                  <tr className="border-t border-stroke dark:border-strokedark">
+                    <td className="px-2 py-2">November</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                  </tr>
+                  <tr className="border-t border-stroke dark:border-strokedark">
+                    <td className="px-2 py-2">October</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                    <td className="px-2 py-2">0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
+        <div className="rounded bg-white p-6 shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+          <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div className="rounded border border-stroke p-4 shadow-md dark:border-strokedark">
+              <div className="mb-5 flex items-center justify-between">
+                <h3 className="text-md font-bold">Earnings</h3>
+                <button
+                  className="btn-primary flex h-5 w-5 items-center justify-center rounded bg-blue-500 hover:bg-blue-600"
+                  onClick={() => handleAddRow("allowance")}
+                >
+                  <Add className="text-white" />
+                </button>
+              </div>
 
+              {allowances.map((item, index) => (
+                <div key={index} className="mb-3 flex items-center space-x-4">
+                  <input
+                    type="text"
+                    name="type"
+                    value={item.type}
+                    placeholder="Type"
+                    onChange={(e) => handleChange(e, index, "allowance")}
+                    className="w-40 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  <input
+                    type="number"
+                    name="amount"
+                    value={item.amount}
+                    onChange={(e) => handleChange(e, index, "allowance")}
+                    className="w-16 rounded-md border border-stroke px-3 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
 
+                  {index > 0 && (
+                    <button
+                      className="btn-error flex items-center rounded py-2"
+                      onClick={() => handleRemoveRow(index, "allowance")}
+                    >
+                      <DeleteIcon className="mr-2" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
 
+            <div className="rounded border border-stroke p-4 shadow-md dark:border-strokedark">
+              <div className="mb-5 flex items-center justify-between">
+                <h3 className="text-md font-bold">Deductions</h3>
+                <button
+                  className="btn-primary flex h-5 w-5 items-center justify-center rounded bg-blue-500 hover:bg-blue-600"
+                  onClick={() => handleAddRow("deduction")}
+                >
+                  <Add className="text-white" />
+                </button>
+              </div>
 
-        <div className="bg-white p-6 shadow-md rounded dark:bg-boxdark dark:drop-shadow-none dark:text-white dark:border-strokedark">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
-  <div className="border border-stroke p-4 rounded shadow-md dark:border-strokedark">
-    <div className="flex justify-between items-center mb-5">
-      <h3 className="text-md font-bold">Earnings</h3>
-      <button
-        className="btn-primary w-5 h-5 flex justify-center items-center rounded bg-blue-500 hover:bg-blue-600"
-        onClick={() => handleAddRow("allowance")}
-      >
-        <Add className="text-white" />
-      </button>
-    </div>
+              {deductions.map((item, index) => (
+                <div key={index} className="mb-3 flex items-center space-x-4">
+                  <input
+                    type="text"
+                    name="type"
+                    value={item.type}
+                    placeholder="Type"
+                    onChange={(e) => handleChange(e, index, "deduction")}
+                    className="w-40 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  <input
+                    type="number"
+                    name="amount"
+                    value={item.amount}
+                    onChange={(e) => handleChange(e, index, "deduction")}
+                    className="w-16 rounded-md border border-stroke px-3 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  {index > 0 && (
+                    <button
+                      className="btn-error flex items-center rounded py-2"
+                      onClick={() => handleRemoveRow(index, "deduction")}
+                    >
+                      <DeleteIcon className="mr-2" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
 
-    {allowances.map((item, index) => (
-      <div key={index} className="flex items-center mb-3 space-x-4">
-        <input
-          type="text"
-          name="type"
-          value={item.type}
-          placeholder="Type"
-          onChange={(e) => handleChange(e, index, "allowance")}
-          className="w-40 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
-        <input
-          type="number"
-          name="amount"
-          value={item.amount}
-          onChange={(e) => handleChange(e, index, "allowance")}
-          className="w-16 px-3 py-3 rounded-md border border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
+            <div className="rounded border border-stroke p-4 shadow-md dark:border-strokedark">
+              <div className="mb-5 flex items-center justify-between">
+                <h3 className="text-md font-bold">Payroll Summary</h3>
+                <button
+                  className="btn-primary flex transform items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-teal-500 px-4 py-2 shadow-lg transition-all duration-300 hover:scale-105 hover:from-teal-500 hover:to-blue-500"
+                  onClick={calculateTotal}
+                >
+                  <Calculate className="text-xl text-white" />
+                  <span className="font-medium text-white">Calculate</span>
+                </button>
+              </div>
 
-        {index > 0 && (
-          <button
-            className="btn-error py-2 rounded flex items-center"
-            onClick={() => handleRemoveRow(index, "allowance")}
-          >
-            <DeleteIcon className="mr-2" />
-          </button>
-        )}
-      </div>
-    ))}
-  </div>
-
-  <div className="border border-stroke p-4 rounded shadow-md dark:border-strokedark">
-    <div className="flex justify-between items-center mb-5">
-      <h3 className="text-md font-bold">Deductions</h3>
-      <button
-        className="btn-primary w-5 h-5 flex justify-center rounded items-center bg-blue-500 hover:bg-blue-600"
-        onClick={() => handleAddRow("deduction")}
-      >
-        <Add className="text-white" />
-      </button>
-    </div>
-
-    {deductions.map((item, index) => (
-      <div key={index} className="flex items-center mb-3 space-x-4">
-        <input
-          type="text"
-          name="type"
-          value={item.type}
-          placeholder="Type"
-          onChange={(e) => handleChange(e, index, "deduction")}
-          className="w-40 rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
-        <input
-          type="number"
-          name="amount"
-          value={item.amount}
-          onChange={(e) => handleChange(e, index, "deduction")}
-          className="w-16 px-3 py-3 rounded-md border border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-        />
-        {index > 0 && (
-          <button
-            className="btn-error py-2 rounded flex items-center"
-            onClick={() => handleRemoveRow(index, "deduction")}
-          >
-            <DeleteIcon className="mr-2" />
-          </button>
-        )}
-      </div>
-    ))}
-  </div>
-
-  <div className="border border-stroke p-4 rounded shadow-md dark:border-strokedark">
-    <div className="flex justify-between items-center mb-5">
-      <h3 className="text-md font-bold">Payroll Summary</h3>
-      <button
-        className="btn-primary flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-teal-500 hover:from-teal-500 hover:to-blue-500 shadow-lg transform hover:scale-105 transition-all duration-300 py-2 px-4"
-        onClick={calculateTotal}
-      >
-        <Calculate className="text-white text-xl" />
-        <span className="text-white font-medium">Calculate</span>
-      </button>
-    </div>
-
-    <div className="mb-5">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Basic Salary</label>
+              <div className="mb-5">
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Basic Salary
+                </label>
                 <input
                   type="number"
                   name="basic"
@@ -465,7 +518,9 @@ const StudentDetails = () => {
                 />
               </div>
               <div className="mb-5">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Total Allowances</label>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Total Allowances
+                </label>
                 <input
                   type="number"
                   name="totalAllowance"
@@ -475,7 +530,9 @@ const StudentDetails = () => {
                 />
               </div>
               <div className="mb-5">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Total Deductions</label>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Total Deductions
+                </label>
                 <input
                   type="number"
                   name="totalDeduction"
@@ -485,7 +542,9 @@ const StudentDetails = () => {
                 />
               </div>
               <div className="mb-5">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Gross Salary</label>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Gross Salary
+                </label>
                 <input
                   type="number"
                   name="gross"
@@ -496,7 +555,9 @@ const StudentDetails = () => {
               </div>
 
               <div className="mb-5">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Tax</label>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Tax
+                </label>
                 <input
                   type="number"
                   name="tax"
@@ -507,7 +568,9 @@ const StudentDetails = () => {
               </div>
 
               <div className="mb-5">
-                <label className="mb-3 block text-sm font-medium text-black dark:text-white">Net Salary</label>
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  Net Salary
+                </label>
                 <input
                   type="number"
                   name="net"
@@ -516,16 +579,15 @@ const StudentDetails = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-  </div>
-</div>
+            </div>
+          </div>
 
           <button
-          type="submit"
-          className="flex justify-end items-center gap-2 ml-auto rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-        >
-          Save
-        </button>
-
+            type="submit"
+            className="ml-auto flex items-center justify-end gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+          >
+            Save
+          </button>
         </div>
       </div>
     </DefaultLayout>

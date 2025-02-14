@@ -187,7 +187,7 @@ const StudentReport = () => {
   );
   useEffect(() => {
     setSelectedSessionId(getselectedSessionId);
-  }, []);
+  }, [getselectedSessionId]);
   const fetchData = async (
     selectedClass?: string,
     selectedSection?: string,

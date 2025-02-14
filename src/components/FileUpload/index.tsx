@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useState } from "react";
 
 interface FileUploadProps {
@@ -36,7 +37,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       {preview && (
         <div className="file-preview">
           {accept.includes("image") ? (
-            <img
+            <Image
               src={preview}
               alt="Preview"
               style={{ width: "100px", height: "100px" }}

@@ -26,6 +26,7 @@ import {
 import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
+import Image from "next/image";
 
 const columns = [
   "Fees Group",
@@ -46,8 +47,8 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "multiple",
   filter: false,
   viewColumns: false,
@@ -271,7 +272,7 @@ const StudentDetails = () => {
         <div className="border-b border-stroke p-4 dark:bg-boxdark dark:drop-shadow-none">
           <div className="flex items-start">
             <div className="flex w-1/5 items-center justify-center">
-              <img
+              <Image
                 width="115"
                 height="115"
                 className="rounded-full"

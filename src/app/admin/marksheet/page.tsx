@@ -25,9 +25,9 @@ import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import Image from "next/image";
 
 const ExaminationMarksheet = () => {
-
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
@@ -90,7 +90,10 @@ const ExaminationMarksheet = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchTemplateMarksheets(currentPage + 1, rowsPerPage);
+      const result = await fetchTemplateMarksheets(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -107,7 +110,6 @@ const ExaminationMarksheet = () => {
     }
   };
 
-
   const handleDelete = async (id: number) => {
     try {
       await deleteTemplateMarksheets(id);
@@ -118,13 +120,12 @@ const ExaminationMarksheet = () => {
     }
   };
 
-
   const handleEdit = (id: number, data: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      template: data.template || "", 
+      template: data.template || "",
       heading: data.heading || "",
       title: data.title || "",
       left_logo: data.left_logo || "",
@@ -182,13 +183,11 @@ const ExaminationMarksheet = () => {
     setIsFormVisible((prev) => !prev); // Toggle modal state
   };
 
-
-
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.template || "N/A",
       student.background_img ? (
-        <img
+        <Image
           src={
             process.env.NEXT_PUBLIC_BASE_URL +
             `/uploads/marksheet/${student.background_img}`
@@ -239,7 +238,6 @@ const ExaminationMarksheet = () => {
   useEffect(() => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);
-
 
   useEffect(() => {
     const savedSession = localStorage.getItem("selectedSessionId");
@@ -354,7 +352,6 @@ const ExaminationMarksheet = () => {
     }
   };
 
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -405,7 +402,6 @@ const ExaminationMarksheet = () => {
     }
   };
 
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -428,8 +424,7 @@ const ExaminationMarksheet = () => {
 
   return (
     <DefaultLayout>
-
-{isFormVisible && (
+      {isFormVisible && (
         <>
           <Dialog
             open={isFormVisible}
@@ -591,7 +586,7 @@ const ExaminationMarksheet = () => {
 
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Left Sign
+                      Left Sign
                     </label>
                     <input
                       type="file"
@@ -604,7 +599,7 @@ const ExaminationMarksheet = () => {
                   </div>
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Middle Sign
+                      Middle Sign
                     </label>
                     <input
                       type="file"
@@ -617,7 +612,7 @@ const ExaminationMarksheet = () => {
                   </div>
                   <div>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Right Sign
+                      Right Sign
                     </label>
                     <input
                       type="file"
@@ -644,21 +639,63 @@ const ExaminationMarksheet = () => {
                   </div>
                 </div>
 
-                <div className="mb-3 field grid grid-cols-3 gap-4">
+                <div className="field mb-3 grid grid-cols-3 gap-4">
                   {[
-                    { label: "Name", state: isNameEnabled, setState: setIsNameEnabled },
-                    { label: "Father Name", state: isFatherNameEnabled, setState: setIsFatherNameEnabled },
-                    { label: "Mother Name", state: isMotherNameEnabled, setState: setIsMotherNameEnabled },
-                    { label: "Exam Session", state: isExamSessionEnabled, setState: setIsExamSessionEnabled },
-                    { label: "Admission No", state: isAdmissionNoEnabled, setState: setIsAdmissionNoEnabled },
-                    { label: "Division", state: isDivisionEnabled, setState: setIsDivisionEnabled },
-                    { label: "Roll No", state: isRollNoEnabled, setState: setIsRollNoEnabled },
-                    { label: "Photo", state: isPhotoEnabled, setState: setIsPhotoEnabled },
-                    { label: "Class", state: isClassEnabled, setState: setIsClassEnabled },
-                    { label: "Section", state: isSectionEnabled, setState: setIsSectionEnabled },
+                    {
+                      label: "Name",
+                      state: isNameEnabled,
+                      setState: setIsNameEnabled,
+                    },
+                    {
+                      label: "Father Name",
+                      state: isFatherNameEnabled,
+                      setState: setIsFatherNameEnabled,
+                    },
+                    {
+                      label: "Mother Name",
+                      state: isMotherNameEnabled,
+                      setState: setIsMotherNameEnabled,
+                    },
+                    {
+                      label: "Exam Session",
+                      state: isExamSessionEnabled,
+                      setState: setIsExamSessionEnabled,
+                    },
+                    {
+                      label: "Admission No",
+                      state: isAdmissionNoEnabled,
+                      setState: setIsAdmissionNoEnabled,
+                    },
+                    {
+                      label: "Division",
+                      state: isDivisionEnabled,
+                      setState: setIsDivisionEnabled,
+                    },
+                    {
+                      label: "Roll No",
+                      state: isRollNoEnabled,
+                      setState: setIsRollNoEnabled,
+                    },
+                    {
+                      label: "Photo",
+                      state: isPhotoEnabled,
+                      setState: setIsPhotoEnabled,
+                    },
+                    {
+                      label: "Class",
+                      state: isClassEnabled,
+                      setState: setIsClassEnabled,
+                    },
+                    {
+                      label: "Section",
+                      state: isSectionEnabled,
+                      setState: setIsSectionEnabled,
+                    },
                   ].map(({ label, state, setState }, index) => (
                     <div key={index} className="flex flex-col">
-                      <h2 className="mb-5 text-sm font-medium text-black dark:text-white">{label}</h2>
+                      <h2 className="mb-5 text-sm font-medium text-black dark:text-white">
+                        {label}
+                      </h2>
                       <div className="flex items-center">
                         <label
                           htmlFor={`toggle-${label.toLowerCase().replace(/\s+/g, "-")}`}
@@ -674,12 +711,16 @@ const ExaminationMarksheet = () => {
                             />
                             <div
                               className={`h-5 w-14 cursor-pointer rounded-full shadow-inner transition ${
-                                state ? "bg-green-500" : "bg-meta-9 dark:bg-[#5A616B]"
+                                state
+                                  ? "bg-green-500"
+                                  : "bg-meta-9 dark:bg-[#5A616B]"
                               }`}
                             ></div>
                             <div
                               className={`absolute -top-1 left-0 h-7 w-7 transform cursor-pointer rounded-full bg-white shadow-switch-1 transition ${
-                                state ? "translate-x-full bg-primary dark:bg-white" : ""
+                                state
+                                  ? "translate-x-full bg-primary dark:bg-white"
+                                  : ""
                               }`}
                             ></div>
                           </div>
@@ -688,7 +729,6 @@ const ExaminationMarksheet = () => {
                     </div>
                   ))}
                 </div>
-
 
                 <div className="flex gap-2">
                   <button

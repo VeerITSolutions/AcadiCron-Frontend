@@ -22,6 +22,7 @@ import { Edit, Delete, Visibility } from "@mui/icons-material";
 import { fetchGetCustomFiledsData } from "@/services/customFiledsService";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import Image from "next/image";
 
 const StudentCertificate = () => {
   const [error, setError] = useState<string | null>(null);
@@ -147,7 +148,7 @@ const StudentCertificate = () => {
     return students.map((student: any) => [
       student.certificate_name || "N/A",
       student.background_image ? (
-        <img
+        <Image
           src={
             process.env.NEXT_PUBLIC_BASE_URL +
             `/uploads/certificate/${student.background_image}`

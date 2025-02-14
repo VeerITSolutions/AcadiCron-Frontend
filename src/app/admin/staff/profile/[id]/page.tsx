@@ -589,7 +589,7 @@ const StaffDetails = () => {
             }`}
           >
             <div className="text-center">
-              <img
+              <Image
                 src={imageUrl || defaultImage}
                 alt="Staff Profile"
                 className="mx-auto h-24 w-24 rounded-full"
@@ -1541,13 +1541,11 @@ const StaffDetails = () => {
                   id="activity"
                 >
                   <div className="rounded-sm bg-white shadow-default">
-                   
-                      {data2.map((cls: any) => (
-                        <option key={cls.id} value={cls.id}>
-                          {cls.id}
-                        </option>
-                      ))}
-                   
+                    {data2.map((cls: any) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.id}
+                      </option>
+                    ))}
                   </div>
                 </div>
               </div>
