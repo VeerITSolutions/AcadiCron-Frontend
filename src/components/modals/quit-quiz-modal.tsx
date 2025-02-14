@@ -29,7 +29,7 @@ const QuitQuizModal = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => router.push("/")}>
+          <AlertDialogAction onClick={() => router.push("/questions")}>
             Confirm
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -38,6 +38,6 @@ export const config = {
     '/admin/:path*',
     '/parent/:path*',
     '/teacher/:path*',
-    '/',
+
   ],
 };

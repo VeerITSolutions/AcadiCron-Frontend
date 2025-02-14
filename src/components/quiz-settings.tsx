@@ -20,12 +20,16 @@ const QuizSettings = () => {
 
   const handleQuizStart = () => {
     router.push(
-      `/questions?category=${category}&difficulty=${difficulty}&limit=${limit[0]}`
+      `/questions/start?category=${category}&difficulty=${difficulty}&limit=${limit[0]}`,
     );
   };
 
+  const handleHome = () => {
+    window.location.href = "/";
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center gap-4 md:gap-6">
+    <div className="flex flex-col items-center justify-center gap-4 md:gap-6">
       <Select value={category} onValueChange={(value) => setCategory(value)}>
         <SelectTrigger className="w-full md:max-w-xs xl:max-w-md">
           <SelectValue placeholder="Category" />
@@ -53,7 +57,7 @@ const QuizSettings = () => {
           ))}
         </SelectContent>
       </Select>
-      <p className="text-sm lg:text-sm font-semibold">
+      <p className="text-sm font-semibold lg:text-sm">
         Total Questions: {limit[0]}
       </p>
       <Slider
@@ -67,6 +71,8 @@ const QuizSettings = () => {
       <Button disabled={!difficulty || !category} onClick={handleQuizStart}>
         Start Quiz
       </Button>
+
+      <Button onClick={handleHome}>Home</Button>
     </div>
   );
 };
