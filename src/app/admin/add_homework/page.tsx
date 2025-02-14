@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -303,73 +303,72 @@ const StudentDetails = () => {
     }));
   };
 
-  const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    selectedSubjectGroup?: string,
-    selectedSubject?: string,
-    keyword?: string,
-  ) => {
-    try {
-      const result = await fetchHomeWorkData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        selectedSubjectGroup,
-        selectedSubject,
-        keyword,
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
-
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
-
-      setClassessData2(classesResult.data);
-
-      /* call condtion wise  */
-      if (selectedClass && selectedSection) {
-        const subjectgroupresult = await fetchSubjectGroupData(
-          "",
-          "",
+  const fetchData = useCallback(
+    async (
+      currentPage: number,
+      rowsPerPage: number,
+      selectedClass?: string,
+      selectedSection?: string,
+      selectedSubjectGroup?: string,
+      selectedSubject?: string,
+      keyword?: string,
+    ) => {
+      try {
+        const result = await fetchHomeWorkData(
+          currentPage + 1,
+          rowsPerPage,
           selectedClass,
           selectedSection,
-          getselectedSessionId,
-        );
-
-        setSubjectGroup(subjectgroupresult.data);
-      }
-      if (selectedSubjectGroup) {
-        const subjectresult = await fetchSubjectData(
-          "",
-          "",
           selectedSubjectGroup,
-          getselectedSessionId,
+          selectedSubject,
+          keyword,
         );
-        setSubject(subjectresult.data);
+        setTotalCount(result.totalCount);
+        const formattedData = formatStudentData(result.data);
+        setData(formattedData);
+
+        const classesResult = await getClasses();
+        setClassessData(classesResult.data);
+        setClassessData2(classesResult.data);
+
+        /* Call conditionally */
+        if (selectedClass && selectedSection) {
+          const subjectgroupresult = await fetchSubjectGroupData(
+            "",
+            "",
+            selectedClass,
+            selectedSection,
+            getselectedSessionId,
+          );
+          setSubjectGroup(subjectgroupresult.data);
+        }
+        if (selectedSubjectGroup) {
+          const subjectresult = await fetchSubjectData(
+            "",
+            "",
+            selectedSubjectGroup,
+            getselectedSessionId,
+          );
+          setSubject(subjectresult.data);
+        }
+        if (selectedSubjectGroup2) {
+          const subjectresult2 = await fetchSubjectData(
+            "",
+            "",
+            selectedSubjectGroup2,
+          );
+          setSubject2(subjectresult2.data);
+        }
+
+        /* End conditional calls */
+        setLoading(false);
+      } catch (error: any) {
+        setError(error.message);
+        setLoading(false);
       }
-
-      if (selectedSubjectGroup2) {
-        const subjectresult2 = await fetchSubjectData(
-          "",
-          "",
-          selectedSubjectGroup2,
-        );
-        setSubject2(subjectresult2.data);
-      }
-
-      /* call condtin wise end  */
-
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
+    },
+    [getselectedSessionId], // Dependency array to ensure stability
+  );
 
   const handleSave = async () => {
     try {
