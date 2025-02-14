@@ -13,6 +13,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Cookies from "js-cookie";
 import { checkLogin } from "@/services/loginService";
 import styles from "./page.module.css";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -245,8 +246,12 @@ const LoginPage = () => {
     setError(null);
 
     const data = await checkLogin(email, password);
+    if (data.success == false) {
+      setError(data.message);
+      return true;
+    }
 
-    if (data.token) {
+    if (data.success && data.token) {
       // Save token and redirect to dashboard
       localStorage.setItem("token", data.token);
 
@@ -287,8 +292,6 @@ const LoginPage = () => {
       }
 
       router.push("/");
-    } else {
-      setError(data.message || "Login failed");
     }
   };
 
