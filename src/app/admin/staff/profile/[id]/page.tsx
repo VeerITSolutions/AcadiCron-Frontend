@@ -38,8 +38,9 @@ const StaffDetails = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [roleResult, setRoleResult] = useState(null);
+  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
   const [activeTab, setActiveTab] = useState("activity");
-  const [activeTabOne, setActiveTabOne] = useState("activity");
+  const [activeTabOne, setActiveTabOne] = useState("admin");
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isFormVisible2, setIsFormVisible2] = useState(false);
   const [passwordModel, setIsPasswordModel] = useState(false);
@@ -198,6 +199,19 @@ const StaffDetails = () => {
       }
     }
   }, []); // No dependencies needed for initial fetch
+
+  const fetchData = async () => {
+    try {
+      const roleresult = await fetchRoleData();
+      setRoleData(roleresult.data);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+  
+ useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (activeTabOne) {
@@ -1494,72 +1508,42 @@ const StaffDetails = () => {
           <div className="">
             <div className="w-full overflow-x-auto">
               <div className="flex justify-between border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-                <ul className="flex h-12 items-center">
+              <ul className="flex h-12 items-center">
+                {roledata.map((role: any) => (
                   <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "admin" ? "border-b-2 border-blue-500" : ""}`}
-                    onClick={() => setActiveTabOne("admin")}
+                    key={role.id}
+                    className={`mr-4 cursor-pointer px-2 py-2 ${
+                      activeTabOne === role.name.toLowerCase() ? "border-b-2 border-blue-500" : ""
+                    }`}
+                    onClick={() => {
+                      console.log("Clicked Role:", role.name); // Debugging
+                      setActiveTabOne(role.name.toLowerCase());
+                    }}
                   >
-                    Admin
+                    {role.name}
                   </li>
-                  <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "teacher" ? "border-b-2 border-blue-500" : ""}`}
-                    onClick={() => setActiveTabOne("teacher")}
-                  >
-                    Teacher
-                  </li>
-                  <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "receptionist" ? "border-b-2 border-blue-500" : ""}`}
-                    onClick={() => setActiveTabOne("receptionist")}
-                  >
-                    Receptionist
-                  </li>
-                  <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "librarian" ? "border-b-2 border-blue-500" : ""}`}
-                    onClick={() => setActiveTabOne("librarian")}
-                  >
-                    Librarian
-                  </li>
-                  <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "receptionist" ? "border-b-2 border-blue-500" : ""}`}
-                    onClick={() => setActiveTabOne("receptionist")}
-                  >
-                    Receptionist
-                  </li>
-                  <li
-                    className={`mr-4 cursor-pointer px-2 py-2 ${activeTabOne === "superadmin" ? "border-b-2 border-blue-500" : ""}`}
-                    onClick={() => setActiveTabOne("superadmin")}
-                  >
-                    SuperAdmin
-                  </li>
-                </ul>
+                ))}
+              </ul>
+
               </div>
             </div>
             {activeTabOne === "admin" && (
-              <div className="tab-content mx-auto max-w-screen-2xl p-4">
-                <div
-                  className="tab-pane active flex flex-col gap-9"
-                  id="activity"
-                >
-                  <div className="rounded-sm bg-white shadow-default">
-                   
-                      {data2.map((cls: any) => (
-                        <option key={cls.id} value={cls.id}>
-                          {cls.id}
-                        </option>
-                      ))}
-                   
-                  </div>
-                </div>
-              </div>
-            )}
-
+            <div className="tab-content mx-auto max-w-screen-2xl p-4">
+              <h2>Admin List</h2>
+            </div>
+          )}
+          {activeTabOne === "teacher" && (
+            <div className="tab-content mx-auto max-w-screen-2xl p-4">
+              <h2>Teachers List</h2>
+            </div>
+          )}
             {activeTabOne === "receptionist" && (
               <div>
                 <div className="tab-content mx-auto max-w-screen-2xl p-4">
                   <div
                     className="tab-pane active flex flex-col gap-9"
                     id="activity"
-                  ></div>
+                  ><h2>Receptionist List</h2></div>
                 </div>
               </div>
             )}
@@ -1570,7 +1554,9 @@ const StaffDetails = () => {
                   <div
                     className="tab-pane active flex flex-col gap-9"
                     id="activity"
-                  ></div>
+                  >
+                    <h2>Librarian List</h2>
+                  </div>
                 </div>
               </div>
             )}
