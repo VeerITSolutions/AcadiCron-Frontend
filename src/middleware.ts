@@ -16,7 +16,7 @@ export function middleware(req: NextRequest) {
   // Role-based route restrictions
   const roleRestrictions: Record<number, string[]> = {
     7: ['/parent', '/teacher'], // Admin can't access /parent or /teacher
-    10: ['/admin', '/teacher'], // Student can't access /admin or /teacher
+    10: ['/admin', '/teacher', '/questions'], // Student can't access /admin or /teacher
     11: ['/admin', '/teacher'], // Parent can't access /admin or /teacher
     2: ['/admin', '/parent'],   // Teacher can't access /admin or /parent
   };

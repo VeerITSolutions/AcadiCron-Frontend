@@ -1,73 +1,27 @@
-import Questions from "@/components/questions";
-import { categoryOptions, difficultyOptions } from "@/constants";
-import { redirect } from "next/navigation";
-import "./questions.css";
+import QuizSettings from "@/components/quiz-settings";
+import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
-export const fetchCache = "force-no-store";
-
-type Props = {
-  searchParams: {
-    category: string;
-    difficulty: string;
-    limit: string;
-  };
-};
-
-async function getData(category: string, difficulty: string, limit: string) {
-  const res = await fetch(
-    `https://the-trivia-api.com/api/questions?categories=${category}&limit=${limit}&type=multiple&difficulty=${difficulty}`,
-    {
-      method: "GET",
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data!");
-  }
-
-  return res.json();
-}
-
-const QuestionsPage = async ({ searchParams }: Props) => {
-  const category = searchParams.category as string;
-  const difficulty = searchParams.difficulty;
-  const limit = searchParams.limit;
-
-  const validateCategory = (category: string) => {
-    const validCategories = categoryOptions.map((option) => option.value);
-    return validCategories.includes(category);
-  };
-
-  const validateDifficulty = (difficulty: string) => {
-    const validDifficulties = difficultyOptions.map((option) => option.value);
-    return validDifficulties.includes(difficulty);
-  };
-
-  const validateLimit = (limit: string) => {
-    const parsedLimit = parseInt(limit, 10);
-    return !isNaN(parsedLimit) && parsedLimit >= 5 && parsedLimit <= 50;
-  };
-
-  if (
-    !validateCategory(category) ||
-    !validateDifficulty(difficulty) ||
-    !validateLimit(limit)
-  ) {
-    return redirect("/");
-  }
-
-  const response = await getData(category, difficulty, limit);
-
+export default function Home() {
   return (
-    <Questions
-      questions={response}
-      limit={parseInt(limit, 10)}
-      category={category}
-    />
+    <div className="w-full max-w-4xl bg-white p-3 shadow-md md:w-[90%] md:rounded-lg lg:w-[70%]">
+      <h1 className="py-2 text-center text-2xl font-bold uppercase tracking-wider text-primary lg:text-4xl">
+        Welcome to Quizy
+      </h1>
+      <Separator />
+      <div className="grid grid-cols-1 gap-4 p-2 py-3 md:grid-cols-2 md:px-6">
+        <div className="relative h-full">
+          <Image
+            src={"/hero.webp"}
+            alt="hero-image"
+            priority
+            width={450}
+            height={450}
+            className="mx-auto object-cover object-center"
+          />
+        </div>
+        <QuizSettings />
+      </div>
+    </div>
   );
-};
-
-export default QuestionsPage;
+}
