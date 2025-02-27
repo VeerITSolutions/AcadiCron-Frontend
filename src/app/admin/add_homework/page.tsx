@@ -50,7 +50,7 @@ import {
 } from "@/services/studentService";
 import { set } from "date-fns";
 import { get } from "http";
-
+import Note from "@/components/helper_componets/page";
 const columns = [
   "Class",
   "Section",
@@ -896,48 +896,56 @@ const StudentDetails = () => {
                 </div>
 
                 {/* Subject Group */}
-                <div className="field mb-3">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Subject Group <span className="required">*</span>
-                  </label>
-                  <select
-                    value={selectedSubjectGroup2 || ""}
-                    onChange={handleSubjectGroupChange2}
-                    className="flatpickr-input w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={!selectedClass2 || !selectedSection2}
-                  >
-                    <option value="">Select</option>
-                    {subjectGroup2.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                {subjectGroup2.length > 0 ? (
+                  <div className="field mb-3">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Subject Group
+                    </label>
+                    <select
+                      value={selectedSubjectGroup2 || ""}
+                      onChange={handleSubjectGroupChange2}
+                      className="flatpickr-input w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      disabled={!selectedClass2 || !selectedSection2}
+                    >
+                      <option value="">Select</option>
+                      {subjectGroup2.map((cls) => (
+                        <option key={cls.id} value={cls.id}>
+                          {cls.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  ""
+                )}
 
                 {/* Subject */}
-                <div className="field mb-3">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Subject <span className="required">*</span>
-                  </label>
-                  <select
-                    value={selectedSubject2}
-                    onChange={handleSubjectChange2}
-                    className="flatpickr-input w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    disabled={
-                      !selectedClass2 ||
-                      !selectedSection2 ||
-                      !selectedSubjectGroup2
-                    }
-                  >
-                    <option value="">Select</option>
-                    {subject2.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                {subject2.length > 0 ? (
+                  <div className="field mb-3">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Subject
+                    </label>
+                    <select
+                      value={selectedSubject2}
+                      onChange={handleSubjectChange2}
+                      className="flatpickr-input w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      disabled={
+                        !selectedClass2 ||
+                        !selectedSection2 ||
+                        !selectedSubjectGroup2
+                      }
+                    >
+                      <option value="">Select</option>
+                      {subject2.map((cls) => (
+                        <option key={cls.id} value={cls.id}>
+                          {cls.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  ""
+                )}
 
                 {/* Homework Date */}
                 <div className="field">
@@ -1043,7 +1051,9 @@ const StudentDetails = () => {
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                   >
                     Save
-                  </button>
+                  </button>{" "}
+                  <br />
+                  <Note message="If the Subject Group and Subject for a specific section are not selected, the homework will be assigned to all sections of the selected class automatically." />
                 </div>
               </div>
             </div>
