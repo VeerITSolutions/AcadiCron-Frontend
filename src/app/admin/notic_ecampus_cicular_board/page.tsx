@@ -103,7 +103,7 @@ const StudentDetails = () => {
             <div className="flex items-center justify-between bg-[#4a5f87] p-4 text-white">
               <h3 className="flex items-center text-lg font-bold">
                 <i className="fa fa-commenting-o mr-2" />
-                Notice Board
+                Ecampus Circular Board
               </h3>
               <Link href="/admin/notic_board/add">
                 <button className="btn btn-primary rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600">

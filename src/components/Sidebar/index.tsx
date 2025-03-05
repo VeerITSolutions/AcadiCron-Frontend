@@ -520,7 +520,17 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             ),
             label: "Communicate",
             route: "#",
-            children: [{ label: " Notice Board", route: "/admin/notic_board" }],
+            children: [
+              { label: " Notice Board", route: "/admin/notic_board" },
+              {
+                label: "Ecampus Circular Board",
+                route: "/admin/notic_ecampus_cicular_board",
+              },
+              {
+                label: "Ecampus Message Board",
+                route: "/admin/notic_ecampus_message_board",
+              },
+            ],
           },
           {
             icon: (
