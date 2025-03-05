@@ -132,7 +132,7 @@ const NoticeForm = () => {
 
       if (response.status == 200) {
         toast.success("Added successful");
-        router.push(`/admin/notic_board`);
+        router.push(`/admin/notic_ecampus_cicular_board`);
       } else {
         toast.error("Error Edit data");
       }

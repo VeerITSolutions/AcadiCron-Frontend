@@ -82,7 +82,7 @@ const StudentDetails = () => {
   };
 
   const handleEdit = (id: number) => {
-    router.push(`/admin/notic_board/edit/${id}`);
+    router.push(`/admin/notic_ecampus_cicular_board/edit/${id}`);
   };
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
