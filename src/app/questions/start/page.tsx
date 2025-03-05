@@ -1,37 +1,41 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Questions from "@/components/questions";
 import { categoryOptions, difficultyOptions } from "@/constants";
-import { redirect, notFound } from "next/navigation";
-import PageProps from "next"; // Import PageProps
-import "./questions.css";
 
-export const fetchCache = "force-no-store";
-
-async function getData(category: string, difficulty: string, limit: string) {
-  const res = await fetch(
-    `https://the-trivia-api.com/api/questions?categories=${category}&limit=${limit}&type=multiple&difficulty=${difficulty}`,
-    {
-      method: "GET",
-      headers: {
-        "Cache-Control": "no-cache",
+const fetchData = async (
+  category: string,
+  difficulty: string,
+  limit: string,
+) => {
+  try {
+    const res = await fetch(
+      `https://the-trivia-api.com/api/questions?categories=${category}&limit=${limit}&type=multiple&difficulty=${difficulty}`,
+      {
+        method: "GET",
+        headers: { "Cache-Control": "no-cache" },
       },
-    },
-  );
+    );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data!");
+    if (!res.ok) throw new Error("Failed to fetch data!");
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
   }
+};
 
-  return res.json();
-}
+const QuestionsPage = () => {
+  const searchParams = useSearchParams();
+  const [questions, setQuestions] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-const QuestionsPage = async ({ searchParams }: any) => {
-  // Ensure values are valid strings
-  const category =
-    typeof searchParams?.category === "string" ? searchParams.category : "";
-  const difficulty =
-    typeof searchParams?.difficulty === "string" ? searchParams.difficulty : "";
-  const limit =
-    typeof searchParams?.limit === "string" ? searchParams.limit : "";
+  const category = searchParams?.get("category") || "";
+  const difficulty = searchParams?.get("difficulty") || "";
+  const limit = searchParams?.get("limit") || "10";
 
   // Validation Functions
   const validateCategory = (category: string) =>
@@ -45,21 +49,30 @@ const QuestionsPage = async ({ searchParams }: any) => {
     return !isNaN(parsedLimit) && parsedLimit >= 5 && parsedLimit <= 50;
   };
 
-  // Redirect if invalid
-  if (
-    !validateCategory(category) ||
-    !validateDifficulty(difficulty) ||
-    !validateLimit(limit)
-  ) {
-    return notFound(); // Alternative: return redirect("/");
-  }
+  useEffect(() => {
+    if (
+      !validateCategory(category) ||
+      !validateDifficulty(difficulty) ||
+      !validateLimit(limit)
+    ) {
+      setQuestions(null);
+      setLoading(false);
+      return;
+    }
 
-  // Fetch Data
-  const response = await getData(category, difficulty, limit);
+    setLoading(true);
+    fetchData(category, difficulty, limit)
+      .then((data) => setQuestions(data))
+      .catch(() => setQuestions(null))
+      .finally(() => setLoading(false));
+  }, [category, difficulty, limit]);
+
+  if (loading) return <p>Loading...</p>;
+  if (!questions) return <p>No questions found!</p>;
 
   return (
     <Questions
-      questions={response}
+      questions={questions}
       limit={parseInt(limit, 10)}
       category={category}
     />
