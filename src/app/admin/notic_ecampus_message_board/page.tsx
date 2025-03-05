@@ -109,7 +109,7 @@ const StudentDetails = () => {
                 <i className="fa fa-commenting-o mr-2" />
                 Ecampus Message Board
               </h3>
-              <Link href="/admin/notic_board/add">
+              <Link href="/admin/notic_ecampus_message_board/add">
                 <button className="btn btn-primary rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600">
                   <i className="fa fa-plus mr-2" />
                   Post New Message
