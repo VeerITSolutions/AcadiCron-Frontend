@@ -4,9 +4,9 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="w-full max-w-4xl bg-white p-3 shadow-md md:w-[90%] md:rounded-lg lg:w-[70%]">
+    <div className="">
       <h1 className="py-2 text-center text-2xl font-bold uppercase tracking-wider text-primary lg:text-4xl">
-        Welcome to Quizy
+        Welcome to Educron Quize
       </h1>
       <Separator />
       <div className="grid grid-cols-1 gap-4 p-2 py-3 md:grid-cols-2 md:px-6">
