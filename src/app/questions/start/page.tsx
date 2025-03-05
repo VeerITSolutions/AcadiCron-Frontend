@@ -1,17 +1,10 @@
 import Questions from "@/components/questions";
 import { categoryOptions, difficultyOptions } from "@/constants";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
+import PageProps from "next"; // Import PageProps
 import "./questions.css";
 
 export const fetchCache = "force-no-store";
-
-type Props = {
-  searchParams: {
-    category: string;
-    difficulty: string;
-    limit: string;
-  };
-};
 
 async function getData(category: string, difficulty: string, limit: string) {
   const res = await fetch(
@@ -31,34 +24,37 @@ async function getData(category: string, difficulty: string, limit: string) {
   return res.json();
 }
 
-const QuestionsPage = async ({ searchParams }: Props) => {
-  const category = searchParams.category as string;
-  const difficulty = searchParams.difficulty;
-  const limit = searchParams.limit;
+const QuestionsPage = async ({ searchParams }: any) => {
+  // Ensure values are valid strings
+  const category =
+    typeof searchParams?.category === "string" ? searchParams.category : "";
+  const difficulty =
+    typeof searchParams?.difficulty === "string" ? searchParams.difficulty : "";
+  const limit =
+    typeof searchParams?.limit === "string" ? searchParams.limit : "";
 
-  const validateCategory = (category: string) => {
-    const validCategories = categoryOptions.map((option) => option.value);
-    return validCategories.includes(category);
-  };
+  // Validation Functions
+  const validateCategory = (category: string) =>
+    categoryOptions.some((option) => option.value === category);
 
-  const validateDifficulty = (difficulty: string) => {
-    const validDifficulties = difficultyOptions.map((option) => option.value);
-    return validDifficulties.includes(difficulty);
-  };
+  const validateDifficulty = (difficulty: string) =>
+    difficultyOptions.some((option) => option.value === difficulty);
 
   const validateLimit = (limit: string) => {
     const parsedLimit = parseInt(limit, 10);
     return !isNaN(parsedLimit) && parsedLimit >= 5 && parsedLimit <= 50;
   };
 
+  // Redirect if invalid
   if (
     !validateCategory(category) ||
     !validateDifficulty(difficulty) ||
     !validateLimit(limit)
   ) {
-    return redirect("/");
+    return notFound(); // Alternative: return redirect("/");
   }
 
+  // Fetch Data
   const response = await getData(category, difficulty, limit);
 
   return (
