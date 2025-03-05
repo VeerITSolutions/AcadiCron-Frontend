@@ -2,10 +2,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LogoutButton from "@/components/LogoutButton";
+
 import {
-  fetchNotificationData,
-  deleteNotificationData,
-} from "@/services/notificationService";
+  fetchNotificationEcampusCircularData,
+  deleteNotificationEcampusCircularData,
+} from "@/services/notificationEcampusCircularService";
 import React from "react";
 import toast from "react-hot-toast";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -67,7 +68,7 @@ const StudentDetails = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await deleteNotificationData(id);
+      const response = await deleteNotificationEcampusCircularData(id);
 
       if (response.status == 200) {
         toast.success("Delete successful");
@@ -86,7 +87,10 @@ const StudentDetails = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchNotificationData(currentPage + 1, rowsPerPage);
+      const result = await fetchNotificationEcampusCircularData(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setData(result.data);
       setLoading(false);
