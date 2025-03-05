@@ -3,11 +3,12 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "./User.module.css"; // Assuming this has your styles
+
 import {
-  editNotificationData,
-  deleteNotificationData,
-  fetchNotificationData,
-} from "@/services/notificationService";
+  editNotificationEcampusCircularData,
+  deleteNotificationEcampusCircularData,
+  fetchNotificationEcampusCircularData,
+} from "@/services/notificationEcampusCircularService";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useRouter } from "next/navigation";
@@ -70,7 +71,10 @@ const NoticeForm = () => {
       const data = {
         ...formData,
       };
-      const response = await editNotificationData(formData.id, data);
+      const response = await editNotificationEcampusCircularData(
+        formData.id,
+        data,
+      );
 
       if (response.status == 200) {
         toast.success("Edit successful");
@@ -93,7 +97,11 @@ const NoticeForm = () => {
       if (id) {
         const getData = async () => {
           try {
-            const result = await fetchNotificationData("", "", id);
+            const result = await fetchNotificationEcampusCircularData(
+              "",
+              "",
+              id,
+            );
 
             setFormData(result.data);
             setLoading(false);
@@ -110,7 +118,7 @@ const NoticeForm = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteNotificationData(id);
+      await deleteNotificationEcampusCircularData(id);
       toast.success("Delete successful");
     } catch (error) {
       console.error("Delete failed", error);

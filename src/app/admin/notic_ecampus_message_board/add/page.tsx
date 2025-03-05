@@ -3,12 +3,13 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "./User.module.css"; // Assuming this has your styles
+
 import {
-  createNotification,
-  editNotificationData,
-  fetchNotificationData,
-  deleteNotificationData,
-} from "@/services/notificationService";
+  createNotificationEcampusMessage,
+  editNotificationEcampusMessageData,
+  fetchNotificationEcampusMessageData,
+  deleteNotificationEcampusMessageData,
+} from "@/services/notificationEcampusMessageService";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
@@ -90,7 +91,10 @@ const NoticeForm = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchNotificationData(currentPage + 1, rowsPerPage);
+      const result = await fetchNotificationEcampusMessageData(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setLoading(false);
     } catch (error: any) {
@@ -124,7 +128,7 @@ const NoticeForm = () => {
         created_id: roleId,
       };
 
-      const response = await createNotification(data);
+      const response = await createNotificationEcampusMessage(data);
 
       if (response.status == 200) {
         toast.success("Added successful");
