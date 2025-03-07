@@ -84,13 +84,13 @@ export const createClassWork = async (
   selectedSection2 ?: any,
   selectedSubjectGroup2 ?: any,
   selectedSubject2 ?: any,
-  homework_date ?: any,
+  classwork_date ?: any,
   submit_date ?: any,
   document?: any,
   description?: string,getselectedSessionId?: any): Promise<any> => {
   try {
     const response = await apiClient.post("/classwork", {
-      selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, homework_date, submit_date, document,  description ,session_id: getselectedSessionId});
+      selectedClass2, selectedSection2, selectedSubjectGroup2, selectedSubject2, classwork_date, submit_date, document,  description ,session_id: getselectedSessionId});
     return response.data;
   } catch (error) {
     console.error("An error occurred", error);

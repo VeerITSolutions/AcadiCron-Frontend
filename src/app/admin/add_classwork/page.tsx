@@ -133,7 +133,7 @@ const StudentDetails = () => {
   const [colorMode, setColorMode] = useColorMode();
 
   const [formData, setFormData] = useState({
-    homework_date: null as Date | null,
+    classwork_date: null as Date | null,
     submit_date: null as Date | null,
     description: "",
     evaluation_date: "",
@@ -231,7 +231,7 @@ const StudentDetails = () => {
   useEffect(() => {
     if (currentData) {
       setformhomeworkid(currentData.id);
-      setformhomeworkdate(formatDate(currentData.homework_date));
+      setformhomeworkdate(formatDate(currentData.classwork_date));
       setformsubmissiondate(formatDate(currentData.submit_date));
       setformCreatedBy(currentData.created_by);
       setformClassName(currentData.class_name);
@@ -268,8 +268,8 @@ const StudentDetails = () => {
       student.section_name || "N/A",
       student.subject_groups_name || "N/A",
       student.subject_name || "N/A",
-      // student.homework_date || "N/A",
-      formatDate(student.homework_date) || "N/A",
+      // student.classwork_date || "N/A",
+      formatDate(student.classwork_date) || "N/A",
       formatDate(student.submit_date) || "N/A",
       formatDate(student.evaluation_date) || "N/A",
       `${student.staff_name || ""} ${student.staff_surname || ""}` || "N/A",
@@ -381,7 +381,7 @@ const StudentDetails = () => {
           selectedSection2,
           selectedSubjectGroup2,
           selectedSubject2,
-          formData.homework_date,
+          formData.classwork_date,
           formData.submit_date,
           formData.document,
           formData.description,
@@ -394,7 +394,7 @@ const StudentDetails = () => {
           selectedSection2,
           selectedSubjectGroup2,
           selectedSubject2,
-          formData.homework_date,
+          formData.classwork_date,
           formData.submit_date,
           formData.document,
           formData.description,
@@ -409,7 +409,7 @@ const StudentDetails = () => {
             : "Homework applied successfully",
         );
         setFormData({
-          homework_date: null as Date | null,
+          classwork_date: null as Date | null,
           submit_date: null as Date | null,
           description: "",
           evaluation_date: "",
@@ -550,7 +550,7 @@ const StudentDetails = () => {
 
   const handleClose = () => {
     setFormData({
-      homework_date: null as Date | null,
+      classwork_date: null as Date | null,
       submit_date: null as Date | null,
       description: "",
       evaluation_date: "",
@@ -955,14 +955,14 @@ const StudentDetails = () => {
                   </label>
                   <div className="relative">
                     <Flatpickr
-                      value={formData.homework_date}
+                      value={formData.classwork_date}
                       onChange={(selectedDates) =>
-                        handleDateChange(selectedDates, "homework_date")
+                        handleDateChange(selectedDates, "classwork_date")
                       }
                       options={{
                         dateFormat: "Y-m-d",
                       }}
-                      name="homework_date"
+                      name="classwork_date"
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       placeholder="Y-m-d"
                     />
