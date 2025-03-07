@@ -590,6 +590,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             route: "#",
             children: [
               { label: " Add Homework", route: "/admin/add_homework" },
+              { label: " Add Class Work", route: "/admin/add_classwork" },
             ],
           },
           {
