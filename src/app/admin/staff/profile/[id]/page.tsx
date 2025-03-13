@@ -209,7 +209,7 @@ const StaffDetails = () => {
     }
   };
 
- useEffect(() => {
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -606,6 +606,8 @@ const StaffDetails = () => {
               <Image
                 src={imageUrl || defaultImage}
                 alt="Staff Profile"
+                width={200}
+                height={200}
                 className="mx-auto h-24 w-24 rounded-full"
                 onError={(e) =>
                   ((e.target as HTMLImageElement).outerHTML = `
@@ -1508,23 +1510,24 @@ const StaffDetails = () => {
           <div className="">
             <div className="w-full overflow-x-auto">
               <div className="flex justify-between border-b border-stroke dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
-              <ul className="flex h-12 items-center">
-                {roledata.map((role: any) => (
-                  <li
-                    key={role.id}
-                    className={`mr-4 cursor-pointer px-2 py-2 ${
-                      activeTabOne === role.name.toLowerCase() ? "border-b-2 border-blue-500" : ""
-                    }`}
-                    onClick={() => {
-                      console.log("Clicked Role:", role.name); // Debugging
-                      setActiveTabOne(role.name.toLowerCase());
-                    }}
-                  >
-                    {role.name}
-                  </li>
-                ))}
-              </ul>
-
+                <ul className="flex h-12 items-center">
+                  {roledata.map((role: any) => (
+                    <li
+                      key={role.id}
+                      className={`mr-4 cursor-pointer px-2 py-2 ${
+                        activeTabOne === role.name.toLowerCase()
+                          ? "border-b-2 border-blue-500"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        console.log("Clicked Role:", role.name); // Debugging
+                        setActiveTabOne(role.name.toLowerCase());
+                      }}
+                    >
+                      {role.name}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
             {activeTabOne === "admin" && (
@@ -1534,13 +1537,11 @@ const StaffDetails = () => {
                   id="activity"
                 >
                   <div className="rounded-sm bg-white shadow-default">
-
-                      {data2.map((cls: any) => (
-                        <option key={cls.id} value={cls.id}>
-                          {cls.id}
-                        </option>
-                      ))}
-
+                    {data2.map((cls: any) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.id}
+                      </option>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -1552,7 +1553,9 @@ const StaffDetails = () => {
                   <div
                     className="tab-pane active flex flex-col gap-9"
                     id="activity"
-                  ><h2>Receptionist List</h2></div>
+                  >
+                    <h2>Receptionist List</h2>
+                  </div>
                 </div>
               </div>
             )}
