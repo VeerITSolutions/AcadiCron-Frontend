@@ -977,68 +977,6 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               },
             ],
           },
-          {
-            icon: (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
-                <path d="M6 18c0-3 2-4 6-4s6 1 6 4" />
-                <path d="M8 18h8" />
-                <path d="M12 12v6" />
-              </svg>
-            ),
-            label: "Human Resource",
-            route: "/student/homework",
-          },
-          {
-            icon: (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 15.5V20c0 .55-.45 1-1 1h-3.5c-1.38 0-2.67-.56-3.64-1.5H7c-1.1 0-2-.9-2-2v-3.5c-1.38-1.35-1.95-3.35-1.95-5.5 0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.15-.57 4.15-1.95 5.5H21z" />
-                <path d="M9 8h6M9 12h4" />
-              </svg>
-            ),
-            label: "Communicate",
-            route: "/student/apply_leave",
-          },
-          {
-            icon: (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 3v18M9 15l3 3 3-3M21 12H3" />
-                <path d="M5 18h14a2 2 0 0 1 2 2v1H3v-1a2 2 0 0 1 2-2z" />
-              </svg>
-            ),
-            label: "Download Center",
-            route: "/student/download_center",
-          },
 
           {
             icon: (
@@ -1053,14 +991,83 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <path d="M16 6h-4V2L5 7l7 5v-5h4z" />
-                <path d="M3 8h18" />
-                <path d="M8 12h8" />
+                <path d="M21 15a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4zM3 6h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
+              </svg>
+            ),
+            label: "Communicate",
+            route: "#",
+            children: [
+              { label: " Notice Board", route: "/teacher/notic_board" },
+              {
+                label: "Ecampus Circular Board",
+                route: "/teacher/notic_ecampus_cicular_board",
+              },
+              {
+                label: "Ecampus Message Board",
+                route: "/teacher/notic_ecampus_message_board",
+              },
+            ],
+          },
+          {
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 21H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2z" />
+                <path d="M12 16v-4M12 8l-4 4M12 8l4 4" />
+              </svg>
+            ),
+            label: "Download Center",
+            route: "#",
+            children: [
+              { label: "Upload Content", route: "/teacher/content_section" },
+              {
+                label: "Assignments",
+                route: "/teacher/content_section/assignment",
+              },
+              {
+                label: "Study Material",
+                route: "/teacher/content_section/studymaterial",
+              },
+              { label: "Syllabus", route: "/teacher/content_section/syllabus" },
+              {
+                label: "Other Downloads",
+                route: "/teacher/content_section/other_section",
+              },
+            ],
+          },
+          {
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z" />
+                <path d="M12 5v14M5 12h14" />
+                <path d="M9 18l3-3 3 3" />
               </svg>
             ),
             label: "Homework",
-            route: "/student/download_center",
+            route: "#",
+            children: [
+              { label: " Add Homework", route: "/teacher/add_homework" },
+              { label: " Add Class Work", route: "/teacher/add_classwork" },
+            ],
           },
         ],
       },
