@@ -895,10 +895,10 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 label: "Student Attendance",
                 route: "/teacher/admin/stuattendence",
               },
-              {
+              /* {
                 label: "Attendance By Date",
                 route: "/teacher/admin/stuattendence/attendencereport",
-              },
+              }, */
               {
                 label: "Approve Leave",
                 route: "/teacher/admin/approve_leave",
