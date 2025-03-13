@@ -930,18 +930,18 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             label: "Lesson Plan",
             route: "#",
             children: [
-              { label: "Manage Lesson Plan", route: "/admin/syllabus" },
+              { label: "Manage Lesson Plan", route: "/teacher/syllabus" },
               {
                 label: "Manage Syllabus Status",
-                route: "/admin/syllabus/status",
+                route: "/teacher/syllabus/status",
               },
               {
                 label: " Lesson",
-                route: "/admin/lessonplan/lesson",
+                route: "/teacher/lessonplan/lesson",
               },
               {
                 label: "  Topic",
-                route: "/admin/lessonplan/topic",
+                route: "/teacher/lessonplan/topic",
               },
             ],
           },
@@ -969,11 +969,11 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             children: [
               {
                 label: "Class Timetable",
-                route: "/admin/timetable/classreport",
+                route: "/teacher/timetable/classreport",
               },
               {
                 label: "Teachers Timetable",
-                route: "/admin/timetable/mytimetable",
+                route: "/teacher/timetable/mytimetable",
               },
             ],
           },
