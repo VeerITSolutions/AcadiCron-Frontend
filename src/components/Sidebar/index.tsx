@@ -844,7 +844,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       },
     ];
   }
-
+  /* teacher */
   if (getRoleId === "2") {
     menuGroups = [
       {
@@ -866,7 +866,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 3.68 5 7 7 7s7-3.32 7-7c0-3.87-3.13-7-7-7zM12 14c-5 0-9 3.58-9 7v1h18v-1c0-3.42-4-7-9-7z" />
               </svg>
             ),
-            label: "Student Information",
+            label: "Teacher Information",
             route: "/teacher/student/search",
           },
           {
