@@ -297,6 +297,56 @@ const LoginPage = () => {
 
   return (
     <div className={styles.loginContainer}>
+      <div>
+        <a href="intent://settings/wifi#Intent;scheme=android.settings;end">
+          Wi-Fi Settings
+        </a>
+        <a href="intent://settings/bluetooth#Intent;scheme=android.settings;end">
+          Bluetooth Settings
+        </a>
+        <a href="intent://settings/display#Intent;scheme=android.settings;end">
+          Display Settings
+        </a>
+        <a href="intent://settings/battery#Intent;scheme=android.settings;end">
+          Battery Settings
+        </a>
+        <a href="intent://settings/location#Intent;scheme=android.settings;end">
+          Location Settings
+        </a>
+        <a href="intent://settings/security#Intent;scheme=android.settings;end">
+          Security Settings
+        </a>
+        <a href="intent://settings/sound#Intent;scheme=android.settings;end">
+          Sound Settings
+        </a>
+        <a href="intent://settings/storage#Intent;scheme=android.settings;end">
+          Storage Settings
+        </a>
+        <a href="intent://settings/apps#Intent;scheme=android.settings;end">
+          Apps Settings
+        </a>
+        <a href="intent://settings/accounts#Intent;scheme=android.settings;end">
+          Accounts Settings
+        </a>
+        <a href="intent://settings/privacy#Intent;scheme=android.settings;end">
+          Privacy Settings
+        </a>
+        <a href="intent://settings/notifications#Intent;scheme=android.settings;end">
+          Notifications Settings
+        </a>
+        <a href="intent://settings/locale#Intent;scheme=android.settings;end">
+          Language & Input Settings
+        </a>
+        <a href="intent://settings/datetime#Intent;scheme=android.settings;end">
+          Date & Time Settings
+        </a>
+        <a href="intent://settings/backup#Intent;scheme=android.settings;end">
+          Backup & Reset Settings
+        </a>
+        <a href="intent://settings/aboutphone#Intent;scheme=android.settings;end">
+          About Phone Settings
+        </a>
+      </div>
       <div className="login-box flex flex-wrap items-center dark:bg-boxdark">
         <div className=" w-full ">
           <div className="text-center">
