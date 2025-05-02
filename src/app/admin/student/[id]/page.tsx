@@ -852,7 +852,7 @@ const StudentDetails = () => {
               }`}
             >
               <div className="text-center">
-                <Image
+                <img
                   src={imageUrl || defaultImage}
                   alt="User Profile"
                   className="mx-auto h-24 w-24 rounded-full"
@@ -1167,7 +1167,7 @@ const StudentDetails = () => {
                                     {formData.father_name}
                                   </td>
                                   <td className="px-6 py-4">
-                                    <Image
+                                    <img
                                       className="h-[100px] w-[100px] rounded-full border border-stroke"
                                       src={
                                         formData?.father_pic
@@ -1214,7 +1214,7 @@ const StudentDetails = () => {
                                     {formData.mother_name}
                                   </td>
                                   <td className="px-6 py-4">
-                                    <Image
+                                    <img
                                       className="h-[100px] w-[100px] rounded-full border border-stroke"
                                       src={
                                         formData?.father_pic
@@ -1261,7 +1261,7 @@ const StudentDetails = () => {
                                     {formData.guardian_name}
                                   </td>
                                   <td className="px-6 py-4">
-                                    <Image
+                                    <img
                                       className="h-[100px] w-[100px] rounded-full border border-stroke"
                                       src={
                                         formData?.father_pic
