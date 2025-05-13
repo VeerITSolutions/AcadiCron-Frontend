@@ -158,7 +158,7 @@ const StudentDetails = () => {
                         <div>
                           <p>{notice.title}</p>
                           {notice.path ? (
-                            <Image
+                            <img
                               src={
                                 process.env.NEXT_PUBLIC_BASE_URL + notice.path
                               }

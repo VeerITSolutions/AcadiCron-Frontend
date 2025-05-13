@@ -285,6 +285,7 @@ const StudentDetails = () => {
                   src={imageUrl || defaultImage}
                   className="h-28 w-28 rounded-lg object-cover"
                   alt="No Image"
+                  
                 />
               </div>
               <div className="w-full pl-0 sm:w-3/4 sm:pl-4">

@@ -414,6 +414,8 @@ const StudentFess = () => {
                   src={`${process.env.NEXT_PUBLIC_BASE_URL}${formData.image}`}
                   alt="User Profile"
                   className="mx-auto h-24 w-24 rounded-full"
+                  width="100"
+                  height="100"
                   onError={(e) =>
                     ((e.target as HTMLImageElement).outerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray" class="mx-auto h-24 w-24 rounded-full">

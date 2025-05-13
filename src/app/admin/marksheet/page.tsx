@@ -193,6 +193,7 @@ const ExaminationMarksheet = () => {
             `/uploads/marksheet/${student.background_img}`
           }
           width="40"
+          height="40"
           alt={student.certificate_name || "Marksheet Image"}
           onError={(e) => {
             (e.target as HTMLImageElement).src =

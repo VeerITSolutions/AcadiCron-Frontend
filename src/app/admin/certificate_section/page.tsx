@@ -156,20 +156,6 @@ const StudentCertificate = () => {
           width="40"
           height="40"
           alt={student.certificate_name || "Certificate Image"}
-          /* onError={(e) => {
-            (e.target as HTMLImageElement).onerror = null; // Prevent infinite loop
-            (e.target as HTMLImageElement).src =
-              "data:image/svg+xml;charset=UTF-8," +
-              encodeURIComponent(`
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="40" height="40" fill="currentColor">
-                  <rect x="10" y="10" width="44" height="32" rx="4" ry="4" fill="#cbd5e0" />
-                  <text x="32" y="30" text-anchor="middle" font-size="10" fill="#4a5568" font-weight="bold">
-                    CERTIFICATE
-                  </text>
-                  <circle cx="32" cy="45" r="5" fill="#4a5568" />
-                </svg>
-              `);
-          }} */
         />
       ) : (
         "N/A"
