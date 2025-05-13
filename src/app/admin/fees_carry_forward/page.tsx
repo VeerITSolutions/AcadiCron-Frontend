@@ -293,7 +293,10 @@ const StudentDetails = () => {
         <Loader />
       ) : (
         <>
-          <div> {dataSetting ? `Due Date: ${dataSetting}` : ""}</div>
+          <div className="text-right color-red-500">
+            {" "}
+            {dataSetting ? `Due Date: ${dataSetting}` : ""}
+          </div>
 
           <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
