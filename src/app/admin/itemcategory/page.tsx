@@ -39,9 +39,7 @@ const ItemCategory = () => {
 
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
@@ -79,19 +77,17 @@ const ItemCategory = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-  
+
     setFormData({
       item_category: subject?.item_category || "",
       description: subject?.description || "",
     });
   };
-  
 
   const handleCancel = () => {
     setFormData({
       item_category: "",
       description: "",
-     
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -144,7 +140,6 @@ const ItemCategory = () => {
         setFormData({
           item_category: "",
           description: "",
-       
         });
 
         setSelectedClass("");
@@ -161,7 +156,6 @@ const ItemCategory = () => {
       setFormData({
         item_category: "",
         description: "",
-      
       });
 
       setIsEditing(false);
@@ -196,20 +190,16 @@ const ItemCategory = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-
-  const columns = [
-    "Item Category",
-    "Action",
-];
+  const columns = ["Item Category", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
+    responsive: "standard",
     search: false,
     count: totalCount,
     page,
     rowsPerPage,
-    selectableRows: "none", 
+    selectableRows: "none",
     onChangePage: handlePageChange,
     onChangeRowsPerPage: handleRowsPerPageChange,
     filter: false,
@@ -248,7 +238,7 @@ const ItemCategory = () => {
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Item Category <span className="required">*</span>
+                    Item Category <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -257,20 +247,19 @@ const ItemCategory = () => {
                     onChange={handleInputChange}
                     value={formData.item_category}
                   />
-                  </div>
-        
-              <div>
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Description
-            </label>
-            <textarea
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              name="description"
-              onChange={handleInputChange}
-              value={formData.description}
-            ></textarea>
-          </div>
+                </div>
 
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Description
+                  </label>
+                  <textarea
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    name="description"
+                    onChange={handleInputChange}
+                    value={formData.description}
+                  ></textarea>
+                </div>
 
                 <div className="flex gap-2">
                   <button

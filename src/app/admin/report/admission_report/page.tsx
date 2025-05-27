@@ -46,10 +46,9 @@ import {
   AssignmentTurnedIn as AssignmentTurnedInIcon,
   Wc as WcIcon,
   Scale as ScaleIcon,
-} from '@mui/icons-material';
-import { usePathname } from "next/navigation"; 
+} from "@mui/icons-material";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-
 
 const AdmissionReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -63,9 +62,7 @@ const AdmissionReport = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -81,9 +78,9 @@ const AdmissionReport = () => {
     "Admission Date",
     "Gender",
     "Category",
-    "Mobile Number"
+    "Mobile Number",
   ];
-  
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -95,7 +92,6 @@ const AdmissionReport = () => {
     tableBodyMaxHeight: "500px",
     selectableRows: "none",
   };
-  
 
   const handleDelete = async () => {
     try {
@@ -142,8 +138,6 @@ const AdmissionReport = () => {
       student.localno || "N/A",
       student.NationalNo || "N/A",
       student.RTE || "N/A",
-
-
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -256,14 +250,26 @@ const AdmissionReport = () => {
     { href: "/admin/student/studentreport", label: "Student Report" },
     { href: "/admin/student/guardianreport", label: "Guardian Report" },
     { href: "/admin/users/admissionreport", label: "Student History" },
-    { href: "/admin/users/logindetailreport", label: "Student Login Credential" },
+    {
+      href: "/admin/users/logindetailreport",
+      label: "Student Login Credential",
+    },
     { href: "/admin/report/class_subject", label: "Class Subject Report" },
     { href: "/admin/report/admission_report", label: "Admission Report" },
     { href: "/admin/report/sibling_report", label: "Sibling Report" },
     { href: "/admin/report/student_profile", label: "Student Profile" },
-    { href: "/admin/homework/evaluation_report", label: "Homework Evaluation Report" },
-    { href: "/admin/report/boys_girls_ratio", label: "Student Gender Ratio Report" },
-    { href: "/admin/report/student_teacher_ratio", label: "Student Teacher Ratio Report" },
+    {
+      href: "/admin/homework/evaluation_report",
+      label: "Homework Evaluation Report",
+    },
+    {
+      href: "/admin/report/boys_girls_ratio",
+      label: "Student Gender Ratio Report",
+    },
+    {
+      href: "/admin/report/student_teacher_ratio",
+      label: "Student Teacher Ratio Report",
+    },
   ];
 
   /* if (loading) return <Loader />; */
@@ -271,11 +277,12 @@ const AdmissionReport = () => {
 
   return (
     <DefaultLayout>
-  <div className="col-md-12">
-        <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+      <div className="col-md-12">
+        <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
           <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-            <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-              <i className="fa fa-search mr-2 text-blue-600"></i> Student Information Report
+            <h3 className="box-title text-gray-800 flex items-center !font-[Satoshi] !text-[1.25rem] text-2xl !font-semibold font-semibold !leading-[1.75rem]">
+              <i className="fa fa-search mr-2 text-blue-600"></i> Student
+              Information Report
             </h3>
           </div>
           <div className="p-5">
@@ -286,11 +293,11 @@ const AdmissionReport = () => {
                     href={link.href}
                     className={`flex items-center hover:text-[#0070f3] ${
                       activePath === link.href
-                        ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
+                        ? "rounded-md bg-blue-100 p-2 dark:bg-blue-800"
                         : "p-2"
                     }`}
                   >
-                    <DescriptionIcon className="h-2 w-2 mr-2" />
+                    <DescriptionIcon className="mr-2 h-2 w-2" />
                     {link.label}
                   </Link>
                 </li>
@@ -300,54 +307,50 @@ const AdmissionReport = () => {
         </div>
       </div>
 
+      <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className={`${styles.filters} p-5`}>
+          <div className={styles.filterGroup}>
+            <label className={styles.label}>
+              Search Type:
+              <select
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+              </select>
+            </label>
 
-<div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-      <div className={`${styles.filters} p-5`} >
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-          Search Type:
-            <select
-           
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-            
-            </select>
-          </label>
-         
-         
-          <div className={styles.searchGroup}>
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
+            <div className={styles.searchGroup}>
+              <button onClick={handleSearch} className={styles.searchButton}>
+                Search
+              </button>
+              <button onClick={handleRefresh} className={styles.searchButton}>
+                Reset
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Admission report"}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              onRowsDelete: handleDelete,
-            }}
-          />
-        </ThemeProvider>
-      )}
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={"Admission report"}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+                onRowSelectionChange: handleRowSelectionChange, // Handle row selection
+                onRowsDelete: handleDelete,
+              }}
+            />
+          </ThemeProvider>
+        )}
       </div>
     </DefaultLayout>
   );

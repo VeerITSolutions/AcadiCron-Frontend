@@ -36,7 +36,6 @@ import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import { fetchIncomeData } from "@/services/IncomeService";
 
-
 const IncomeSearch = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
@@ -49,20 +48,20 @@ const IncomeSearch = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-   const [selectedStartDate, setSelectedStartDate] = useState<string>(
-      new Date().toISOString().slice(0, 10)
-    );
-  
-    const [selectedEndDate, setSelectedEndDate] = useState<string>(new Date().toISOString().slice(0, 10));
-    const [selectedSearchType, setSelectedSearchType] = useState<
-      string | undefined
-    >(undefined);
+  const [selectedStartDate, setSelectedStartDate] = useState<string>(
+    new Date().toISOString().slice(0, 10),
+  );
+
+  const [selectedEndDate, setSelectedEndDate] = useState<string>(
+    new Date().toISOString().slice(0, 10),
+  );
+  const [selectedSearchType, setSelectedSearchType] = useState<
+    string | undefined
+  >(undefined);
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
 
@@ -73,7 +72,7 @@ const IncomeSearch = () => {
     "Date",
     "Amount (₹)",
   ];
-  
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -83,7 +82,6 @@ const IncomeSearch = () => {
     filter: false,
     viewColumns: false,
   };
-  
 
   const handleDelete = async () => {
     try {
@@ -136,22 +134,26 @@ const IncomeSearch = () => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
-  
     keyword?: string,
     setSelectedSearchType?: string,
   ) => {
     try {
-
       if (selectedSearchType == "period") {
-        const result = await fetchIncomeData(0, 0, selectedSearchType, selectedStartDate, selectedEndDate);
-        
+        const result = await fetchIncomeData(
+          0,
+          0,
+          selectedSearchType,
+          selectedStartDate,
+          selectedEndDate,
+        );
+
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
         setLoading(false);
         console.log("selectedStartDate", selectedStartDate);
         console.log("selectedEndDate", selectedEndDate);
-      }else{
+      } else {
         if (selectedSearchType) {
           const result = await fetchIncomeData(0, 0, selectedSearchType);
           setTotalCount(result.totalCount);
@@ -163,14 +165,11 @@ const IncomeSearch = () => {
           setLoading(false);
         }
       }
-  
-     
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
-
 
   const fetchClassesAndSections = async () => {
     try {
@@ -215,24 +214,27 @@ const IncomeSearch = () => {
     setPage(0);
     fetchData(keyword, selectedSearchType);
   };
-  
+
   const handleRefresh = () => {
     setKeyword("");
     setSelectedSearchType("");
   };
 
-    const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedSearchType(event.target.value);
-    };
-  
-  
-    const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSelectedStartDate(event.target.value);
-    };
-    
-    const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSelectedEndDate(event.target.value);
-    }
+  const handleSearchTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedSearchType(event.target.value);
+  };
+
+  const handleStartDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setSelectedStartDate(event.target.value);
+  };
+
+  const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedEndDate(event.target.value);
+  };
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -242,13 +244,13 @@ const IncomeSearch = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-          Search Type:
+            Search Type:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
               onChange={handleSearchTypeChange}
               value={selectedSearchType}
-           >
-             <option value="">Select</option>
+            >
+              <option value="">Select</option>
               <option value="1">Today</option>
               <option value="7">This Week</option>
               <option value="14">Last Week</option>
@@ -260,39 +262,33 @@ const IncomeSearch = () => {
               <option value="365">This Year</option>
               <option value="730">Last Year</option>
               <option value="period">Period</option>
-
-              
             </select>
           </label>
           {selectedSearchType === "period" && (
+            <div className={styles.searchGroup}>
+              <div>
+                <label className={styles.label}>Start date:</label>
+                <input
+                  type="date"
+                  value={selectedStartDate}
+                  onChange={handleStartDateChange}
+                  className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                />
+              </div>
+              <div>
+                <label className={styles.label}>End date:</label>
+                <input
+                  type="date"
+                  value={selectedEndDate}
+                  onChange={handleEndDateChange}
+                  className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                />
+              </div>
+            </div>
+          )}
+
           <div className={styles.searchGroup}>
-          <div>
-          <label className={styles.label}>
-          Start date:
-          </label>
-          <input
-              type="date"
-              value={selectedStartDate}
-              onChange={handleStartDateChange}
-               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            />
-            </div>
-            <div>
-          <label className={styles.label}>
-          End date:
-          </label>  
-           <input
-              type="date"
-              value={selectedEndDate}
-              onChange={handleEndDateChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            />
-            </div>
-            </div>
-            )}
-         
-          <div className={styles.searchGroup}>
-          <input
+            <input
               type="text"
               placeholder="Search By Keyword"
               value={keyword}
@@ -324,7 +320,7 @@ const IncomeSearch = () => {
               rowsPerPage: rowsPerPage,
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, 
+              onRowSelectionChange: handleRowSelectionChange,
               onRowsDelete: handleDelete,
             }}
           />

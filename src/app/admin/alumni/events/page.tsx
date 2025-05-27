@@ -51,9 +51,7 @@ const Events = () => {
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSession, setSelectedSession] = useState<string | undefined>(
     undefined,
   );

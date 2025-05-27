@@ -61,9 +61,7 @@ const ExaminationsReport = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );

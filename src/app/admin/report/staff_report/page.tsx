@@ -25,10 +25,9 @@ import {
   AssignmentTurnedIn as AssignmentTurnedInIcon,
   Wc as WcIcon,
   Scale as ScaleIcon,
-} from '@mui/icons-material';
-import { usePathname } from "next/navigation"; 
+} from "@mui/icons-material";
+import { usePathname } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
-
 
 const HumanResourceReport = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -38,9 +37,7 @@ const HumanResourceReport = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -84,8 +81,7 @@ const HumanResourceReport = () => {
     "Bank Branch Name",
     "Social Media Link",
   ];
-  
-  
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -133,7 +129,7 @@ const HumanResourceReport = () => {
       student.social_media_link || "N/A",
     ]);
   };
-  
+
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
@@ -241,7 +237,7 @@ const HumanResourceReport = () => {
     }
   };
 
-  const pathname = usePathname(); 
+  const pathname = usePathname();
   const [activePath, setActivePath] = useState("");
 
   useEffect(() => {
@@ -259,120 +255,120 @@ const HumanResourceReport = () => {
 
   return (
     <DefaultLayout>
-        <div className="col-md-12">
-              <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-                <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                  <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-                    <i className="fa fa-search mr-2 text-blue-600"></i> Human Resource Report
-                  </h3>
-                </div>
-                <div className="p-5">
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                    {reportLinks.map((link) => (
-                      <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                        <a
-                          href={link.href}
-                          className={`flex items-center hover:text-[#0070f3] ${
-                            activePath === link.href
-                              ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
-                              : "p-2"
-                          }`}
-                        >
-                          <DescriptionIcon className="h-2 w-2 mr-2" />
-                          {link.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-            <div className={`${styles.filters} p-5`} >
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-          Search Type (By Date Of Joining):
-            <select className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
-              <option value="period">Period</option>
-                            
-            </select>
-          </label>
-          <label className={styles.label}>
-          Status:
-            <select  className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`} >
-              <option value="">Select</option>
-              <option value="1">Active</option>
-              <option value="2">Disabled</option>
-            </select>
-          </label>
-          <label className={styles.label}>
-          Role:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="1">Admin</option>
-            </select>
-          </label>
-          <label className={styles.label}>
-          Designation:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="1">Principal</option>
-              
-    
-            </select>
-          </label>
-         
-          <div className={styles.searchGroup}>
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
+      <div className="col-md-12">
+        <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+          <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+            <h3 className="box-title text-gray-800 flex items-center !font-[Satoshi] !text-[1.25rem] text-2xl !font-semibold font-semibold !leading-[1.75rem]">
+              <i className="fa fa-search mr-2 text-blue-600"></i> Human Resource
+              Report
+            </h3>
+          </div>
+          <div className="p-5">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              {reportLinks.map((link) => (
+                <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
+                  <a
+                    href={link.href}
+                    className={`flex items-center hover:text-[#0070f3] ${
+                      activePath === link.href
+                        ? "rounded-md bg-blue-100 p-2 dark:bg-blue-800"
+                        : "p-2"
+                    }`}
+                  >
+                    <DescriptionIcon className="mr-2 h-2 w-2" />
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-   
       </div>
-      {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={" Human Resource Report List "}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-            }}
-          />
-        </ThemeProvider>
-      )}
+
+      <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className={`${styles.filters} p-5`}>
+          <div className={styles.filterGroup}>
+            <label className={styles.label}>
+              Search Type (By Date Of Joining):
+              <select
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="today">Today</option>
+                <option value="this_week">This Week</option>
+                <option value="last_week">Last Week</option>
+                <option value="this_month">This Month</option>
+                <option value="last_month">Last Month</option>
+                <option value="last_3_month">Last 3 Months</option>
+                <option value="last_6_month">Last 6 Months</option>
+                <option value="last_12_month">Last 12 Months</option>
+                <option value="this_year">This Year</option>
+                <option value="last_year">Last Year</option>
+                <option value="period">Period</option>
+              </select>
+            </label>
+            <label className={styles.label}>
+              Status:
+              <select
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="1">Active</option>
+                <option value="2">Disabled</option>
+              </select>
+            </label>
+            <label className={styles.label}>
+              Role:
+              <select
+                value={selectedClass || ""}
+                onChange={handleClassChange}
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="1">Admin</option>
+              </select>
+            </label>
+            <label className={styles.label}>
+              Designation:
+              <select
+                value={selectedClass || ""}
+                onChange={handleClassChange}
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="1">Principal</option>
+              </select>
+            </label>
+
+            <div className={styles.searchGroup}>
+              <button onClick={handleSearch} className={styles.searchButton}>
+                Search
+              </button>
+              <button onClick={handleRefresh} className={styles.searchButton}>
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={" Human Resource Report List "}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+              }}
+            />
+          </ThemeProvider>
+        )}
       </div>
     </DefaultLayout>
   );

@@ -30,7 +30,9 @@ const ItemStore = () => {
   const [categoryData, setCategoryData] = useState<Array<any>>([]);
   const [ItemData, setItemData] = useState<Array<any>>([]);
   const [SupplyData, setSupplyData] = useState<Array<any>>([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null,
+  );
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
@@ -46,9 +48,7 @@ const ItemStore = () => {
 
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
@@ -91,29 +91,23 @@ const ItemStore = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-  
+
     setFormData({
       item_store: subject?.item_store || "",
       code: subject?.code || "",
       description: subject?.description || "",
-   
     });
-    
   };
-  
 
   const handleCancel = () => {
     setFormData({
       item_store: "",
       code: "",
       description: "",
-     
     });
     setIsEditing(false);
     setEditCategoryId(null);
   };
-
-
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
@@ -147,7 +141,7 @@ const ItemStore = () => {
       // Use this value in your logic
     }
   }, []);
-  
+
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
@@ -164,7 +158,6 @@ const ItemStore = () => {
           item_store: "",
           code: "",
           description: "",
-       
         });
 
         setSelectedClass("");
@@ -182,7 +175,6 @@ const ItemStore = () => {
         item_store: "",
         code: "",
         description: "",
-      
       });
 
       setIsEditing(false);
@@ -217,7 +209,6 @@ const ItemStore = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -230,12 +221,7 @@ const ItemStore = () => {
     }));
   };
 
-
-  const columns = [
-    "Item Store Name",
-    "Item Stock Code",
-    "Action",
-];
+  const columns = ["Item Store Name", "Item Stock Code", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -272,7 +258,7 @@ const ItemStore = () => {
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Item Store Name <span className="required">*</span>
+                    Item Store Name <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -281,10 +267,10 @@ const ItemStore = () => {
                     value={formData.item_store}
                     onChange={handleInputChange}
                   />
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Item Stock Code <span className="required">*</span>
+                    Item Stock Code <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -293,21 +279,19 @@ const ItemStore = () => {
                     value={formData.code}
                     onChange={handleInputChange}
                   />
-                  </div>
-        
-              
-            <div>       
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Description
-            </label>
-            <textarea
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-            ></textarea>
-          </div>
+                </div>
 
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Description
+                  </label>
+                  <textarea
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
 
                 <div className="flex gap-2">
                   <button

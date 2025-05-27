@@ -32,7 +32,10 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
-import { fetchAlloatedLeaveTypeData, fetchLeaveTypeData } from "@/services/leaveTypeService";
+import {
+  fetchAlloatedLeaveTypeData,
+  fetchLeaveTypeData,
+} from "@/services/leaveTypeService";
 import { useLoginDetails } from "@/store/logoStore";
 
 const columns = [
@@ -48,8 +51,8 @@ const columns = [
 const options = {
   filterType: false,
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "none",
   filter: false,
   viewColumns: false,
@@ -64,9 +67,7 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -81,7 +82,7 @@ const StudentDetails = () => {
   );
   const [keyword, setKeyword] = useState<string>("");
   const [colorMode, setColorMode] = useColorMode();
-   const getUserId = useLoginDetails((state) => state.userId);
+  const getUserId = useLoginDetails((state) => state.userId);
   const [formData, setFormData] = useState({
     date: null as Date | null,
     leave_type_id: "",
@@ -170,10 +171,7 @@ const StudentDetails = () => {
     setCurrentLeaveId(id);
 
     try {
-      
-      const result = await fetchAlloatedLeaveTypeData(
-        getUserId
-      );
+      const result = await fetchAlloatedLeaveTypeData(getUserId);
 
       setFormData(result.data[0]);
       setSelectedRoleLeave(result.data[0].leave_type_id);
@@ -191,7 +189,7 @@ const StudentDetails = () => {
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      `${student.name || ''} ${student.surname || ''}`.trim() || "N/A",
+      `${student.name || ""} ${student.surname || ""}`.trim() || "N/A",
       student.type || "N/A",
       `${formatDate(student.leave_from)} - ${formatDate(student.leave_to) || "N/A"}`,
       student.leave_days || "N/A",
@@ -312,7 +310,6 @@ const StudentDetails = () => {
 
         setSelectedRoleLeave("");
         setSelectedStaff("");
-        
 
         setSelectedLeaveType("");
         setOpen(false); // Close the modal

@@ -81,9 +81,7 @@ const StudentDetails = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [studentName, setStudentName] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -477,7 +475,7 @@ const StudentDetails = () => {
       student.apply_date || "N/A",
       student.from_date || "N/A",
       student.to_date || "N/A",
-      
+
       parseInt(student.status) === 1
         ? "Approve"
         : parseInt(student.status) === 0

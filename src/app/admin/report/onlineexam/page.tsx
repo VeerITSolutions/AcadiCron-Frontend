@@ -46,9 +46,8 @@ import {
   AssignmentTurnedIn as AssignmentTurnedInIcon,
   Wc as WcIcon,
   Scale as ScaleIcon,
-} from '@mui/icons-material';
-import { usePathname } from "next/navigation"; 
-
+} from "@mui/icons-material";
+import { usePathname } from "next/navigation";
 
 const OnlineExaminationsReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -62,9 +61,7 @@ const OnlineExaminationsReport = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -80,10 +77,9 @@ const OnlineExaminationsReport = () => {
     "Student",
     "Questions",
     "Exam Publish",
-    "Result Publish"
+    "Result Publish",
   ];
-  
-  
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -239,7 +235,7 @@ const OnlineExaminationsReport = () => {
     setKeyword("");
   };
 
-  const pathname = usePathname(); 
+  const pathname = usePathname();
   const [activePath, setActivePath] = useState("");
 
   useEffect(() => {
@@ -259,11 +255,12 @@ const OnlineExaminationsReport = () => {
 
   return (
     <DefaultLayout>
-  <div className="col-md-12">
-        <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+      <div className="col-md-12">
+        <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
           <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-            <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-              <i className="fa fa-search mr-2 text-blue-600"></i> Online Examinations Report
+            <h3 className="box-title text-gray-800 flex items-center !font-[Satoshi] !text-[1.25rem] text-2xl !font-semibold font-semibold !leading-[1.75rem]">
+              <i className="fa fa-search mr-2 text-blue-600"></i> Online
+              Examinations Report
             </h3>
           </div>
           <div className="p-5">
@@ -274,11 +271,11 @@ const OnlineExaminationsReport = () => {
                     href={link.href}
                     className={`flex items-center hover:text-[#0070f3] ${
                       activePath === link.href
-                        ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
+                        ? "rounded-md bg-blue-100 p-2 dark:bg-blue-800"
                         : "p-2"
                     }`}
                   >
-                    <DescriptionIcon className="h-2 w-2 mr-2" />
+                    <DescriptionIcon className="mr-2 h-2 w-2" />
                     {link.label}
                   </a>
                 </li>
@@ -288,75 +285,72 @@ const OnlineExaminationsReport = () => {
         </div>
       </div>
 
+      <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className={`${styles.filters} p-5`}>
+          <div className={styles.filterGroup}>
+            <label className={styles.label}>
+              Search Type:
+              <select
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="today">Today</option>
+                <option value="this_week">This Week</option>
+                <option value="last_week">Last Week</option>
+                <option value="this_month">This Month</option>
+                <option value="last_month">Last Month</option>
+                <option value="last_3_month">Last 3 Months</option>
+                <option value="last_6_month">Last 6 Months</option>
+                <option value="last_12_month">Last 12 Months</option>
+                <option value="this_year">This Year</option>
+                <option value="last_year">Last Year</option>
+                <option value="period">Period</option>
+              </select>
+            </label>
 
-<div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-      <div className={`${styles.filters} p-5`} >
-        <div className={styles.filterGroup}>
-        
-          <label className={styles.label}>
-          Search Type:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
-              <option value="period">Period</option>
-            </select>
-          </label>
-         
-          <label className={styles.label}>
-          Date Type:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="exam_from_date">Exam From Date</option>
-              <option value="exam_to_date">Exam To Date</option>
-            </select>
-          </label>
- 
-         
-          <div className={styles.searchGroup}>
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
+            <label className={styles.label}>
+              Date Type:
+              <select
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="exam_from_date">Exam From Date</option>
+                <option value="exam_to_date">Exam To Date</option>
+              </select>
+            </label>
+
+            <div className={styles.searchGroup}>
+              <button onClick={handleSearch} className={styles.searchButton}>
+                Search
+              </button>
+              <button onClick={handleRefresh} className={styles.searchButton}>
+                Reset
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={""}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              onRowsDelete: handleDelete,
-            }}
-          />
-        </ThemeProvider>
-      )}
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={""}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+                onRowSelectionChange: handleRowSelectionChange, // Handle row selection
+                onRowsDelete: handleDelete,
+              }}
+            />
+          </ThemeProvider>
+        )}
       </div>
     </DefaultLayout>
   );

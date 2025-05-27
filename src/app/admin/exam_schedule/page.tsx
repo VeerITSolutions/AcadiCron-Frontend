@@ -53,9 +53,8 @@ const options = {
   filter: false,
   viewColumns: false,
   tableBodyMaxHeight: "500px",
-  selectableRows: false,  
+  selectableRows: false,
 };
-
 
 const ExamShedule = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -69,9 +68,7 @@ const ExamShedule = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -219,7 +216,7 @@ const ExamShedule = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-          Exam Group:
+            Exam Group:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
@@ -227,16 +224,16 @@ const ExamShedule = () => {
             </select>
           </label>
           <label className={styles.label}>
-          Exam:
+            Exam:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
             </select>
           </label>
-         
+
           <div className={styles.searchGroup}>
-          <input
+            <input
               type="text"
               placeholder="Search By Keyword"
               value={keyword}

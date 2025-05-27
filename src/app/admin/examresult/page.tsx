@@ -35,21 +35,15 @@ import {
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 
-const columns = [
-  "Exam Group",
-  "Exam",
-  "Session",
-  "Class",
-  "Section",
-];
+const columns = ["Exam Group", "Exam", "Session", "Class", "Section"];
 
 const options = {
   filterType: "checkbox",
   serverSide: true,
   responsive: "standard",
   search: false,
-  selectableRows: "none", 
-  filter: false, 
+  selectableRows: "none",
+  filter: false,
   viewColumns: false,
 };
 
@@ -65,9 +59,7 @@ const ExamResult = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -109,11 +101,10 @@ const ExamResult = () => {
     return students.map((student: any) => [
       student.id,
       student.exam_group || "N/A",
-      student.exam  || "N/A",
+      student.exam || "N/A",
       student.session || "N/A",
       student.class || "N/A",
       student.section || "N/A",
-
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -214,7 +205,7 @@ const ExamResult = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-          Exam Group:
+            Exam Group:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
@@ -222,7 +213,7 @@ const ExamResult = () => {
             </select>
           </label>
           <label className={styles.label}>
-          Exam:
+            Exam:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
@@ -230,7 +221,7 @@ const ExamResult = () => {
             </select>
           </label>
           <label className={styles.label}>
-          Session:
+            Session:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
@@ -238,7 +229,7 @@ const ExamResult = () => {
             </select>
           </label>
           <label className={styles.label}>
-          Class:
+            Class:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
@@ -246,14 +237,14 @@ const ExamResult = () => {
             </select>
           </label>
           <label className={styles.label}>
-          Section:
+            Section:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
               <option value="">Select</option>
             </select>
           </label>
-         
+
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
               Search

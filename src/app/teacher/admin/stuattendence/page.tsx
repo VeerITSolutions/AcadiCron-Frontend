@@ -48,9 +48,7 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
 
   const [selectedSection, setSelectedSection] = useState<string | undefined>(

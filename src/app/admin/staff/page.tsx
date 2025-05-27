@@ -65,9 +65,7 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
@@ -87,8 +85,7 @@ const StudentDetails = () => {
       student.designation || "N/A",
       student.contact_no,
       <div key={student.id} className="flex">
-        <IconButton onClick={() => handleAddFees(student.id)}
-           aria-label="Show">
+        <IconButton onClick={() => handleAddFees(student.id)} aria-label="Show">
           <Visibility />
         </IconButton>
         <IconButton onClick={() => handleEdit(student.id)} aria-label="Edit">
@@ -233,7 +230,6 @@ const StudentDetails = () => {
             <PersonAdd className="text-white" />
             <span>Add Staff</span>
           </button>
-
         </div>
 
         {loading ? (

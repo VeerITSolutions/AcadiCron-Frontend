@@ -44,9 +44,7 @@ const FeesMaster = () => {
   const [loaderSubject, setLoaderSubject] = useState(false);
   const [loaderSubjectGroup, setLoaderSubjectGroup] = useState(false);
 
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );

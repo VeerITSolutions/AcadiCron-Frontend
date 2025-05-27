@@ -13,8 +13,8 @@ import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import { Search, AddCircleOutline } from "@mui/icons-material";
-import { Description as DescriptionIcon} from '@mui/icons-material';
-import { usePathname } from "next/navigation"; 
+import { Description as DescriptionIcon } from "@mui/icons-material";
+import { usePathname } from "next/navigation";
 
 import {
   Edit,
@@ -57,7 +57,6 @@ const options = {
   selectableRows: "none",
 };
 
-
 const StudentDetails = () => {
   const [activeTab, setActiveTab] = useState("list"); // "list" or "card"
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -69,9 +68,7 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedRole, setSelectedRole] = useState<string | undefined>(
     undefined,
   );
@@ -167,7 +164,6 @@ const StudentDetails = () => {
     console.log("selectedRole", selectedRole);
   };
 
-
   const handleSearch = () => {
     setPage(0); // Reset to first page on search
     fetchData(page, rowsPerPage, selectedClass, selectedSection, keyword);
@@ -177,7 +173,7 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
-  const pathname = usePathname(); 
+  const pathname = usePathname();
   const [activePath, setActivePath] = useState("");
 
   useEffect(() => {
@@ -187,10 +183,22 @@ const StudentDetails = () => {
   }, [pathname]);
 
   const reportLinks = [
-    { href: "/admin/student_attendance/classattendencereport", label: "Attendance Report" },
-    { href: "/admin/report/attendancereport", label: "Student Attendance Type Report" },
-    { href: "/admin/staffattendance/attendancereport", label: "Staff Attendance Report" },
-    { href: "/admin/report/daily_attendance_report", label: "Daily Attendance Report" },
+    {
+      href: "/admin/student_attendance/classattendencereport",
+      label: "Attendance Report",
+    },
+    {
+      href: "/admin/report/attendancereport",
+      label: "Student Attendance Type Report",
+    },
+    {
+      href: "/admin/staffattendance/attendancereport",
+      label: "Staff Attendance Report",
+    },
+    {
+      href: "/admin/report/daily_attendance_report",
+      label: "Daily Attendance Report",
+    },
   ];
 
   /* if (loading) return <Loader />; */
@@ -199,94 +207,94 @@ const StudentDetails = () => {
   return (
     <DefaultLayout>
       <div className="col-md-12">
-      <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-        <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-          <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
-            <i className="fa fa-search mr-2 text-blue-600"></i> Attendance Report
-          </h3>
-        </div>
-        <div className="p-5">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {reportLinks.map((link) => (
-              <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
-                <a
-                  href={link.href}
-                  className={`flex items-center hover:text-[#0070f3] ${
-                    activePath === link.href
-                      ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
-                      : "p-2"
-                  }`}
-                >
-                  <DescriptionIcon className="h-2 w-2 mr-2" />
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      </div>
-      
-      <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-      <div className={`${styles.filters} p-5`} >
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Role:
-            <select
-              value={selectedRole || ""}
-              onChange={handleRoleChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              {roledata.map((cls: any) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.name}
-                </option>
+        <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+          <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+            <h3 className="box-title text-gray-800 flex items-center !font-[Satoshi] !text-[1.25rem] text-2xl !font-semibold font-semibold !leading-[1.75rem]">
+              <i className="fa fa-search mr-2 text-blue-600"></i> Attendance
+              Report
+            </h3>
+          </div>
+          <div className="p-5">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              {reportLinks.map((link) => (
+                <li key={link.href} className="col-lg-4 col-md-4 col-sm-6">
+                  <a
+                    href={link.href}
+                    className={`flex items-center hover:text-[#0070f3] ${
+                      activePath === link.href
+                        ? "rounded-md bg-blue-100 p-2 dark:bg-blue-800"
+                        : "p-2"
+                    }`}
+                  >
+                    <DescriptionIcon className="mr-2 h-2 w-2" />
+                    {link.label}
+                  </a>
+                </li>
               ))}
-            </select>
-          </label>
-          <label className={styles.label}>
-          Month:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="January">January</option>
-              <option value="February">February</option>
-              <option value="March">March</option>
-              <option value="April">April</option>
-              <option value="May">May</option>
-              <option value="June">June</option>
-              <option value="July">July</option>
-              <option value="August">August</option>
-              <option value="September">September</option>
-              <option value="October">October</option>
-              <option value="November">November</option>
-              <option value="December">December</option>
-            </select>
-          </label>
-          <label className={styles.label}>
-          Year:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-            </select>
-          </label>
-
-          <div className={styles.searchGroup}>
-          
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
+            </ul>
           </div>
         </div>
       </div>
+
+      <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        <div className={`${styles.filters} p-5`}>
+          <div className={styles.filterGroup}>
+            <label className={styles.label}>
+              Role:
+              <select
+                value={selectedRole || ""}
+                onChange={handleRoleChange}
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                {roledata.map((cls: any) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.label}>
+              Month:
+              <select
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+            </label>
+            <label className={styles.label}>
+              Year:
+              <select
+                className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              >
+                <option value="">Select</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+              </select>
+            </label>
+
+            <div className={styles.searchGroup}>
+              <button onClick={handleSearch} className={styles.searchButton}>
+                Search
+              </button>
+              <button onClick={handleRefresh} className={styles.searchButton}>
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
 
         {loading ? (
           <Loader />
@@ -307,7 +315,6 @@ const StudentDetails = () => {
             />
           </ThemeProvider>
         )}
-    
       </div>
     </DefaultLayout>
   );

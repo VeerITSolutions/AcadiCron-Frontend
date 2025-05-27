@@ -53,10 +53,8 @@ const options = {
   filter: false,
   viewColumns: false,
   tableBodyMaxHeight: "500px",
-  selectableRows: false,  
+  selectableRows: false,
 };
-
-
 
 const ReportsAudit = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -70,9 +68,7 @@ const ReportsAudit = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -113,14 +109,13 @@ const ReportsAudit = () => {
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
       student.id,
-      student. message || "N/A",
+      student.message || "N/A",
       student.users || "N/A",
       student.ip_address || "N/A",
       student.action || "N/A",
       student.platform || "N/A",
       student.agent || "N/A",
       student.date_time,
-     
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -233,7 +228,7 @@ const ReportsAudit = () => {
               rowsPerPage: rowsPerPage,
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, 
+              onRowSelectionChange: handleRowSelectionChange,
               onRowsDelete: handleDelete,
             }}
           />

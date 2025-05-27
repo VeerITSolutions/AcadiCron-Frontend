@@ -23,11 +23,7 @@ import {
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import {
-  fetchContentData,
-  deleteContentData,
-} from "@/services/ContentService";
-
+import { fetchContentData, deleteContentData } from "@/services/ContentService";
 
 const StudentDetails = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -37,9 +33,7 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -50,13 +44,13 @@ const StudentDetails = () => {
   const columns = ["Content Title", "Type", "Date", "Avaliable For", "Action"];
 
   const options = {
-  filterType: false,
-  serverSide: true,
-  responsive: "standard",
-  search: false,
-  selectableRows: "none", // Disable row selection
-  filter: false, // Disable filter,
-  viewColumns: false, // Disable view columns button
+    filterType: false,
+    serverSide: true,
+    responsive: "standard",
+    search: false,
+    selectableRows: "none", // Disable row selection
+    filter: false, // Disable filter,
+    viewColumns: false, // Disable view columns button
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -129,7 +123,7 @@ const StudentDetails = () => {
       console.error("Delete failed", error);
     }
   };
-  
+
   useEffect(() => {
     fetchData(page, rowsPerPage);
   }, [page, rowsPerPage]);

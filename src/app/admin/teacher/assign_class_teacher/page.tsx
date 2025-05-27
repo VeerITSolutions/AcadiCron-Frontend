@@ -5,15 +5,14 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import { fetchsectionData } from "@/services/sectionsService"; // Import your section API service
-import { fetchClassAssingTeacherData,
+import {
+  fetchClassAssingTeacherData,
   editClassAssignTeacher,
   deleteClassAssignTeacher,
-  createClassAssignTeacher
- } from "@/services/classesAssingTeacherService"; // Import your section API service
+  createClassAssignTeacher,
+} from "@/services/classesAssingTeacherService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your section API service
-import {
-  getStaffbyrole,
-} from "@/services/staffService";
+import { getStaffbyrole } from "@/services/staffService";
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
@@ -37,9 +36,7 @@ const AssignClassTeacher = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -52,8 +49,7 @@ const AssignClassTeacher = () => {
     class_id: "",
     staff_id: "",
     section_id: "",
-    session_id:"",
-
+    session_id: "",
   });
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
@@ -89,11 +85,9 @@ const AssignClassTeacher = () => {
       setError(error.message);
       setLoading(false);
     }
-
-   
   };
 
-  const handleDelete = async (class_id : any , section_id: any) => {
+  const handleDelete = async (class_id: any, section_id: any) => {
     try {
       await deleteClassAssignTeacher(class_id, section_id);
       toast.success("Delete successful");
@@ -106,39 +100,40 @@ const AssignClassTeacher = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-  
+
     setSelectedClass(subject.class_id);
     setSelectedSection(subject.section_id);
     console.log(subject.staff_data);
     const map_data = JSON.parse(subject.staff_data);
-    const selectedTeachers =  subject.staff_data
-    ? map_data.map((teacher: any) => teacher.id) // Fetch the teacher IDs
-    : [];
-    console.log('selectedTeachers', selectedTeachers);
-    if(selectedTeachers.length > 0){
-      setSelectedTeachers(selectedTeachers); 
-    }else{
+    const selectedTeachers = subject.staff_data
+      ? map_data.map((teacher: any) => teacher.id) // Fetch the teacher IDs
+      : [];
+    console.log("selectedTeachers", selectedTeachers);
+    if (selectedTeachers.length > 0) {
+      setSelectedTeachers(selectedTeachers);
+    } else {
       setSelectedTeachers([]);
     }
-    
-    
   };
-  
-
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => {
       // Handle staff_data and safely parse it
-      const staffData = student.staff_data ? JSON.parse(student.staff_data) : [];
+      const staffData = student.staff_data
+        ? JSON.parse(student.staff_data)
+        : [];
       const staffNames = staffData
-        .map((staff: any) => `${staff.name || "N/A"} ${staff.surname || "N/A"} ( ${staff.id || "N/A"})`)
-        .map((name : any, index : any) => (
+        .map(
+          (staff: any) =>
+            `${staff.name || "N/A"} ${staff.surname || "N/A"} ( ${staff.id || "N/A"})`,
+        )
+        .map((name: any, index: any) => (
           <React.Fragment key={index}>
-            {name} 
+            {name}
             <br />
           </React.Fragment>
         ));
-  
+
       return [
         student.class,
         student.section || "N/A", // Default to "N/A" if section is not provided
@@ -156,12 +151,10 @@ const AssignClassTeacher = () => {
           >
             <Delete />
           </IconButton>
-        </div>
+        </div>,
       ];
     });
   };
-  
- 
 
   useEffect(() => {
     fetchData(page, rowsPerPage);
@@ -181,58 +174,55 @@ const AssignClassTeacher = () => {
     }
   };
 
-
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
 
+  const handleSubmit = async () => {
+    try {
+      const data = {
+        class_id: selectedClass,
+        section_id: selectedSection,
+        staff_id: selectedTeachers,
+        session_id: getselectedSessionId,
+      };
 
- const handleSubmit = async () => {
-  try {
-    const data = {
-      class_id: selectedClass,
-      section_id: selectedSection,
-      staff_id: selectedTeachers,
-      session_id: getselectedSessionId,
-    };
+      if (isEditing && editCategoryId !== null) {
+        // Editing existing record
+        const result = await editClassAssignTeacher(editCategoryId, data);
+        if (result.success) {
+          toast.success("Updated successfully");
+        } else {
+          toast.error("Failed to update");
+        }
+      } else {
+        // Creating a new record
+        const result = await createClassAssignTeacher(data);
+        if (result.success) {
+          toast.success("Created successfully");
+        } else {
+          toast.error("Failed to create expenses");
+        }
+      }
 
-    if (isEditing && editCategoryId !== null) {
-      // Editing existing record
-      const result = await editClassAssignTeacher(editCategoryId, data);
-      if (result.success) {
-        toast.success("Updated successfully");
-      } else {
-        toast.error("Failed to update");
-      }
-    } else {
-      // Creating a new record
-      const result = await createClassAssignTeacher(data);
-      if (result.success) {
-        toast.success("Created successfully");
-      } else {
-        toast.error("Failed to create expenses");
-      }
+      // Reset form after successful action
+      setFormData({
+        class_id: "",
+        staff_id: "",
+        section_id: "",
+        session_id: "",
+      });
+
+      setIsEditing(false);
+      setEditCategoryId(null);
+      setSelectedClass("");
+      setSelectedSection("");
+      setSelectedTeachers([]);
+      fetchData(page, rowsPerPage);
+    } catch (error) {
+      console.error("An error occurred", error);
     }
-
-    // Reset form after successful action
-    setFormData({
-      class_id: "",
-      staff_id: "",
-      section_id: "",
-      session_id: "",
-    });
-
-    setIsEditing(false);
-    setEditCategoryId(null);
-    setSelectedClass("");
-    setSelectedSection("");
-    setSelectedTeachers([]);  
-    fetchData(page, rowsPerPage); 
-  } catch (error) {
-    console.error("An error occurred", error);
-  }
-};
-
+  };
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -245,15 +235,11 @@ const AssignClassTeacher = () => {
 
   const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass(event.target.value);
-    
   };
 
   const handleSectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSection(event.target.value);
-    
   };
-
-  
 
   const fetchClassesAndSections = async () => {
     try {
@@ -301,11 +287,10 @@ const AssignClassTeacher = () => {
     });
     setIsEditing(false);
     setEditCategoryId(null);
-    setSelectedClass('');
-    setSelectedSection('');
+    setSelectedClass("");
+    setSelectedSection("");
     setSelectedTeachers([]);
-  };  
-
+  };
 
   return (
     <DefaultLayout>
@@ -387,7 +372,7 @@ const AssignClassTeacher = () => {
                   type="submit"
                   className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
                   onClick={(e) => {
-                    e.preventDefault(); 
+                    e.preventDefault();
                     handleSubmit();
                   }}
                 >

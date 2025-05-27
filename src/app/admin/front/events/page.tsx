@@ -19,11 +19,9 @@ import {
 } from "@/services/frontEventService";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
-
 const Income = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
-
 
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
@@ -39,32 +37,28 @@ const Income = () => {
 
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-
     event_title: "",
-        event_description: "",
-        start_date: "",
-        end_date: "",
-        event_type: "",
-        event_color: "",
-        event_for: "",
-        role_id: "",
+    event_description: "",
+    start_date: "",
+    end_date: "",
+    event_type: "",
+    event_color: "",
+    event_for: "",
+    role_id: "",
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchEventData(currentPage + 1, rowsPerPage);
-  
+
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-     
 
       setLoading(false);
     } catch (error: any) {
@@ -101,7 +95,6 @@ const Income = () => {
     setEditCategoryId(id);
 
     setFormData({
-  
       event_title: subject.event_title,
       event_description: subject.event_description,
       start_date: subject.start_date,
@@ -288,7 +281,6 @@ const Income = () => {
               </h3>
             </div>
             <div className="flex flex-col gap-5.5 p-6.5">
-             
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Title
@@ -296,14 +288,14 @@ const Income = () => {
                 <input
                   name="name"
                   type="text"
-                  value={formData. event_title}
+                  value={formData.event_title}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Venue
+                  Venue
                 </label>
                 <input
                   name="Venue"
@@ -342,11 +334,9 @@ const Income = () => {
                 />
               </div>
 
-              
-
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Add Media
+                  Add Media
                 </label>
                 <input
                   name="documents"
@@ -363,14 +353,14 @@ const Income = () => {
                 <input
                   name="note"
                   type="text"
-                  value={formData. event_for}
+                  value={formData.event_for}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
               <div>
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Featured Image
+                  Featured Image
                 </label>
                 <input
                   name="documents"

@@ -69,9 +69,7 @@ const StudentDetails = () => {
   const [allSession, setAllSession] = useState<Array<any>>([]);
 
   const [promotedsession, setPromotedSession] = useState<string>("");
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
 
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,

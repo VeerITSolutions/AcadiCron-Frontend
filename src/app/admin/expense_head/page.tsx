@@ -37,9 +37,7 @@ const Expense = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
@@ -76,8 +74,6 @@ const Expense = () => {
     }
   };
 
-
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
@@ -86,14 +82,12 @@ const Expense = () => {
       exp_category: subject.exp_category,
       description: subject.description,
     });
-
   };
 
   const handleCancel = () => {
     setFormData({
       exp_category: "",
       description: "",
-
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -131,32 +125,27 @@ const Expense = () => {
     }
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value, 
+      [name]: value,
     }));
   };
 
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editExpenseHead(
-          editCategoryId,
-          formData,
-     
-        );
+        const result = await editExpenseHead(editCategoryId, formData);
         if (result.success) {
           toast.success("Updated successfully");
         } else {
           toast.error("Failed to update");
         }
       } else {
-        const result = await createExpenseHead(
-          formData,
-       
-        );
+        const result = await createExpenseHead(formData);
 
         setFormData({
           exp_category: "",
@@ -250,11 +239,11 @@ const Expense = () => {
                     Description
                   </label>
                   <textarea
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                ></textarea>
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
                 </div>
 
                 <div className="flex gap-2">

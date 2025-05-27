@@ -26,9 +26,7 @@ import {
   editQuestionData,
 } from "@/services/questionService";
 
-import {
-  fetchSubjectData,
-} from "@/services/subjectsService";
+import { fetchSubjectData } from "@/services/subjectsService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -42,14 +40,11 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { Delete, Edit } from "@mui/icons-material";
-import { getClasses,
-  fetchclassesData,
-} from "@/services/classesService";
+import { getClasses, fetchclassesData } from "@/services/classesService";
 import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 import content from "mui-datatables";
-
 
 const columns = [
   "Q. ID",
@@ -98,9 +93,7 @@ const QuestionBank = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-   const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedClass1, setSelectedClass1] = useState<string | undefined>(
     undefined,
   );
@@ -110,17 +103,14 @@ const QuestionBank = () => {
   const [selectedType, setSelectedType] = useState<string | undefined>(
     undefined,
   );
-  
-  
+
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
 
- 
-   
-    const [selectedSection1, setSelectedSection1] = useState<string | undefined>(
-      undefined,
-    );
+  const [selectedSection1, setSelectedSection1] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedRoleLeave, setSelectedRoleLeave] = useState<
     string | undefined
   >(undefined);
@@ -135,9 +125,9 @@ const QuestionBank = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [formData, setFormData] = useState({
     subject_id: "",
-      class_id: "",
-      section_id: "",
-      Attach_file:"",
+    class_id: "",
+    section_id: "",
+    Attach_file: "",
   });
   const [formData1, setFormData1] = useState({
     subject_id: "",
@@ -147,16 +137,13 @@ const QuestionBank = () => {
     section_id: "",
   });
 
-  
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-   
       const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
       const resultSubjectData = await fetchSubjectData("", "");
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
       setSubjectData(resultSubjectData.data);
-   
 
       setLoading(false);
     } catch (error: any) {
@@ -164,7 +151,6 @@ const QuestionBank = () => {
       setLoading(false);
     }
   };
-
 
   const handleDelete = async (id: number) => {
     try {
@@ -197,7 +183,7 @@ const QuestionBank = () => {
       subject_id: subject.subject_id,
       class_id: subject.class_id,
       section_id: subject.section_id,
-      Attach_file:subject.Attach_file,
+      Attach_file: subject.Attach_file,
     });
 
     setFormData1({
@@ -214,7 +200,7 @@ const QuestionBank = () => {
       subject_id: "",
       class_id: "",
       section_id: "",
-      Attach_file:"",
+      Attach_file: "",
     });
     setIsEditing(false);
     setEditCategoryId(null);
@@ -233,10 +219,10 @@ const QuestionBank = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.subject_id|| "N/A",
-      subject.class_id|| "N/A",
-      subject.section_id|| "N/A",
-      subject.Attach_file|| "N/A",
+      subject.subject_id || "N/A",
+      subject.class_id || "N/A",
+      subject.section_id || "N/A",
+      subject.Attach_file || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -278,13 +264,8 @@ const QuestionBank = () => {
     ]);
   };
 
-  
- useEffect(() => {
-    fetchData(
-      page,
-      rowsPerPage,
-      
-    );
+  useEffect(() => {
+    fetchData(page, rowsPerPage);
   }, [
     page,
     rowsPerPage,
@@ -294,8 +275,8 @@ const QuestionBank = () => {
     keyword,
   ]);
   useEffect(() => {
-      fetchClassesAndSections(); // Fetch classes and sections on initial render
-    }, [selectedClass]);
+    fetchClassesAndSections(); // Fetch classes and sections on initial render
+  }, [selectedClass]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -323,99 +304,90 @@ const QuestionBank = () => {
     setPage(0);
   };
 
- 
-
-
-const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  setSelectedClass(event.target.value);
-  setPage(0);
-};
+  const handleClassChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(event.target.value);
+    setPage(0);
+  };
   const handleClassChange1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedClass1(event.target.value);
   };
-const handleClickOpen = () => {
-  setOpen(true);
-};
-const handleClickOpen1 = () => {
-  setOpen1(true);
-};
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClickOpen1 = () => {
+    setOpen1(true);
+  };
 
-const handleClose = () => {
-  setFormData({
-    subject_id: "",
+  const handleClose = () => {
+    setFormData({
+      subject_id: "",
       class_id: "",
       section_id: "",
-      Attach_file:"",
-  });
+      Attach_file: "",
+    });
 
-  setSelectedRoleLeave("");
-  setSelectedStaff("");
-  setSelectedLeaveselectedLeaveType("");
-  setOpen(false);
-  setEditing(false); // Reset editing state
-};
-const handleClose1 = () => {
-  setFormData1({
-    subject_id: "",
-    question_type: "",
-    level: "",
-    class_id: "",
-    section_id: "",
-  });
+    setSelectedRoleLeave("");
+    setSelectedStaff("");
+    setSelectedLeaveselectedLeaveType("");
+    setOpen(false);
+    setEditing(false); // Reset editing state
+  };
+  const handleClose1 = () => {
+    setFormData1({
+      subject_id: "",
+      question_type: "",
+      level: "",
+      class_id: "",
+      section_id: "",
+    });
 
+    setOpen1(false);
+    setEditing(false); // Reset editing state
+  };
 
+  const handleEditorChange = (content: any, editor: any) => {
+    try {
+      console.log("Content:", content);
+      // Perform additional logic
+    } catch (error) {
+      console.error("Error in handleEditorChange:", error);
+    }
+  };
 
-  setOpen1(false);
-  setEditing(false); // Reset editing state
-};
+  const fetchClassesAndSections = async () => {
+    try {
+      const classesResult = await getClasses();
+      setClassessData(classesResult.data);
 
-const handleEditorChange = (content: any, editor: any) => {
-  try {
-    console.log("Content:", content);
-    // Perform additional logic
-  } catch (error) {
-    console.error("Error in handleEditorChange:", error);
-  }
-};
-
-const fetchClassesAndSections = async () => {
-   try {
-     const classesResult = await getClasses();
-     setClassessData(classesResult.data);
-
-     // Fetch sections if a class is selected
-     if (selectedClass) {
-       const sectionsResult = await fetchsectionByClassData(selectedClass);
-       setSections(sectionsResult.data);
-     } else {
-       setSections([]); // Clear sections if no class is selected
-     }
-   } catch (error: any) {
-     setError(error.message);
-     setLoading(false);
-   }
- };
-
-   
+      // Fetch sections if a class is selected
+      if (selectedClass) {
+        const sectionsResult = await fetchsectionByClassData(selectedClass);
+        setSections(sectionsResult.data);
+      } else {
+        setSections([]); // Clear sections if no class is selected
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   const fetchQuestions = async (currentPage: number, rowsPerPage: number) => {
-     try {
-       const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
-       const resultSubjectData = await fetchSubjectData("", "");
-       setTotalCount(result.total);
-       setData(formatSubjectData(result.data));
-       setSubjectData(resultSubjectData.data);
- 
-       setLoading(false);
-     } catch (error: any) {
-       setError(error.message);
-       setLoading(false);
-     }
-   };
+    try {
+      const result = await fetchQuestionData(currentPage + 1, rowsPerPage);
+      const resultSubjectData = await fetchSubjectData("", "");
+      setTotalCount(result.total);
+      setData(formatSubjectData(result.data));
+      setSubjectData(resultSubjectData.data);
 
- 
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
- const handleSave = async () => {
+  const handleSave = async () => {
     try {
       let result;
       if (editing) {
@@ -431,9 +403,7 @@ const fetchClassesAndSections = async () => {
 
         fetchData(page, rowsPerPage);
       } else {
-        result = await createQuestionData(
-          selectedClass,
-        );
+        result = await createQuestionData(selectedClass);
         fetchData(page, rowsPerPage); // Refresh data after submit
       }
       if (result.success) {
@@ -443,10 +413,10 @@ const fetchClassesAndSections = async () => {
             : "Question applied successfully",
         );
         setFormData({
-        subject_id: "",
-        class_id: "",
-        section_id: "",
-        Attach_file:"",
+          subject_id: "",
+          class_id: "",
+          section_id: "",
+          Attach_file: "",
         });
         setSelectedClass("");
         setSelectedSection("");
@@ -476,13 +446,11 @@ const fetchClassesAndSections = async () => {
           formData1.level,
           formData.class_id,
           formData.section_id,
-      );
-      
+        );
+
         fetchData(page, rowsPerPage);
       } else {
-        result = await createQuestionData(
-          selectedClass,
-        );
+        result = await createQuestionData(selectedClass);
         fetchData(page, rowsPerPage); // Refresh data after submit
       }
       if (result.success) {
@@ -513,54 +481,54 @@ const fetchClassesAndSections = async () => {
     }
   };
 
-// const handleSubmit1 = async () => {
-//   try {
-//     if (isEditing && editCategoryId !== null) {
-//       const result = await editQuestionData(editCategoryId, formData);
-//       if (result.success) {
-//         toast.success("Subject group updated successfully");
-//       } else {
-//         toast.error("Failed to update subject group");
-//       }
-//     } else {
-//       const result = await createQuestionData(formData);
+  // const handleSubmit1 = async () => {
+  //   try {
+  //     if (isEditing && editCategoryId !== null) {
+  //       const result = await editQuestionData(editCategoryId, formData);
+  //       if (result.success) {
+  //         toast.success("Subject group updated successfully");
+  //       } else {
+  //         toast.error("Failed to update subject group");
+  //       }
+  //     } else {
+  //       const result = await createQuestionData(formData);
 
-//       setFormData1({
-//         subject_id: "",
-//         question_type: "",
-//         level: "",
-//         class_id: "",
-//         section_id: "",
-//       });
+  //       setFormData1({
+  //         subject_id: "",
+  //         question_type: "",
+  //         level: "",
+  //         class_id: "",
+  //         section_id: "",
+  //       });
 
-//       setSelectedClass("");
-//       setSelectedSection("");
-//       setSelectedSubject([]);
+  //       setSelectedClass("");
+  //       setSelectedSection("");
+  //       setSelectedSubject([]);
 
-//       if (result.success) {
-//         toast.success("Question created successfully");
-//       } else {
-//         toast.error("Failed to create Question");
-//       }
-//     }
-//     // Reset form after successful action
-//     setFormData1({
-//       subject_id: "",
-//       question_type: "",
-//       level: "",
-//       class_id: "",
-//       section_id: "",
-//     });
+  //       if (result.success) {
+  //         toast.success("Question created successfully");
+  //       } else {
+  //         toast.error("Failed to create Question");
+  //       }
+  //     }
+  //     // Reset form after successful action
+  //     setFormData1({
+  //       subject_id: "",
+  //       question_type: "",
+  //       level: "",
+  //       class_id: "",
+  //       section_id: "",
+  //     });
 
-//     setIsEditing(false);
-//     setEditCategoryId(null);
-//     fetchData(page, rowsPerPage); // Refresh data after submit
-//     setOpen(false);
-//     setOpen1(false);
-//   } catch (error) {
-//     console.error("An error occurred", error);
-//   }
-// };
+  //     setIsEditing(false);
+  //     setEditCategoryId(null);
+  //     fetchData(page, rowsPerPage); // Refresh data after submit
+  //     setOpen(false);
+  //     setOpen1(false);
+  //   } catch (error) {
+  //     console.error("An error occurred", error);
+  //   }
+  // };
 
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
@@ -642,13 +610,12 @@ const fetchClassesAndSections = async () => {
                     onChange={handleSelectChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
-                    
                     <option value="">Select</option>
-                  {subjectData.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.name}
-                    </option>
-                  ))}
+                    {subjectData.map((sec: any) => (
+                      <option key={sec.id} value={sec.id}>
+                        {sec.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -663,10 +630,10 @@ const fetchClassesAndSections = async () => {
                   >
                     <option value="">Select</option>
                     {Classes.map((cls) => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.class}
-                </option>
-              ))}
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -681,10 +648,10 @@ const fetchClassesAndSections = async () => {
                   >
                     <option value="">Select</option>
                     {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
-                  {sec.section_name}
-                </option>
-              ))}
+                      <option key={sec.section_id} value={sec.section_id}>
+                        {sec.section_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -750,13 +717,12 @@ const fetchClassesAndSections = async () => {
                     onChange={handleSelectChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
-                    
                     <option value="">Select</option>
-                  {subjectData.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.name}
-                    </option>
-                  ))}
+                    {subjectData.map((sec: any) => (
+                      <option key={sec.id} value={sec.id}>
+                        {sec.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -774,7 +740,6 @@ const fetchClassesAndSections = async () => {
                     <option value="">Multiple Choice</option>
                     <option value="">True/False</option>
                     <option value="">Descriptive</option>
-                   
                   </select>
                 </div>
                 <div className="field">
@@ -791,7 +756,6 @@ const fetchClassesAndSections = async () => {
                     <option value="">Low</option>
                     <option value="">Medium</option>
                     <option value="">High</option>
-                    
                   </select>
                 </div>
                 <div className="field">
@@ -804,12 +768,12 @@ const fetchClassesAndSections = async () => {
                     onChange={handleClassChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
-                      <option value="">Select</option>
-                      {Classes.map((cls) => (
-                  <option key={cls.id} value={cls.id}>
-                    {cls.class}
-                  </option>
-                ))}
+                    <option value="">Select</option>
+                    {Classes.map((cls) => (
+                      <option key={cls.id} value={cls.id}>
+                        {cls.class}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">
@@ -824,10 +788,10 @@ const fetchClassesAndSections = async () => {
                   >
                     <option value="">Select</option>
                     {section.map((sec) => (
-                <option key={sec.section_id} value={sec.section_id}>
-                  {sec.section_name}
-                </option>
-              ))}
+                      <option key={sec.section_id} value={sec.section_id}>
+                        {sec.section_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="field">

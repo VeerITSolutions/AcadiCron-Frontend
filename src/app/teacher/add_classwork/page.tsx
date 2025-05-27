@@ -103,9 +103,7 @@ const StudentDetails = () => {
   const [subjectGroup2, setSubjectGroup2] = useState<Array<any>>([]);
   const [subject2, setSubject2] = useState<Array<any>>([]);
 
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );

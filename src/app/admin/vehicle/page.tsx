@@ -39,9 +39,7 @@ const Vehicle = () => {
 
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
@@ -56,7 +54,7 @@ const Vehicle = () => {
     driver_contact: "",
     note: "",
   });
-  
+
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchVehiclesData(currentPage + 1, rowsPerPage);
@@ -84,13 +82,12 @@ const Vehicle = () => {
     }
   };
 
-
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      vehicle_no: subject.vehicle_no || "", 
+      vehicle_no: subject.vehicle_no || "",
       vehicle_model: subject.vehicle_model || "",
       manufacture_year: subject.manufacture_year || "",
       driver_name: subject.driver_name || "",
@@ -98,7 +95,6 @@ const Vehicle = () => {
       driver_contact: subject.driver_contact || "",
       note: subject.note || "",
     });
-    
 
     setSelectedSubject(subject.subjects.map((subject: any) => subject.id));
     setSelectedSection(
@@ -165,33 +161,27 @@ const Vehicle = () => {
     }
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value, 
+      [name]: value,
     }));
   };
-
 
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editVehiclesData(
-          editCategoryId,
-          formData,
-
-        );
+        const result = await editVehiclesData(editCategoryId, formData);
         if (result.success) {
           toast.success("Vehicle updated successfully");
         } else {
           toast.error("Failed to update vehicle");
         }
       } else {
-        const result = await createVehiclesData(
-          formData,
-    
-        );
+        const result = await createVehiclesData(formData);
 
         setFormData({
           vehicle_no: "",
@@ -287,7 +277,7 @@ const Vehicle = () => {
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Vehicle Number <span className="required">*</span>
+                    Vehicle Number <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -299,7 +289,7 @@ const Vehicle = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  Vehicle Model <span className="required">*</span>
+                    Vehicle Model <span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -310,7 +300,6 @@ const Vehicle = () => {
                   />
                 </div>
 
-                
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Year Made <span className="required">*</span>
@@ -359,7 +348,6 @@ const Vehicle = () => {
                     onChange={handleInputChange}
                   />
                 </div>
-              
 
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">

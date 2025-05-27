@@ -37,17 +37,13 @@ import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 
-const columns = [
-  "Title",
-  "Url",
-  "Action",
-];
+const columns = ["Title", "Url", "Action"];
 
 const options = {
   filterType: false,
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "none",
   filter: false,
   viewColumns: false,
@@ -68,9 +64,7 @@ const Banner = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
 
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -540,8 +534,6 @@ const Banner = () => {
                     id="file"
                   />
                 </div>
-
-                
 
                 <div className="col-span-full">
                   <button

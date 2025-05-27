@@ -38,17 +38,13 @@ import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 
-const columns = [
-  "Title",
-  "Url",
-  "Action",
-];
+const columns = ["Title", "Url", "Action"];
 
 const options = {
   filterType: false,
   serverSide: true,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   selectableRows: "none",
   filter: false,
   viewColumns: false,
@@ -69,9 +65,7 @@ const Gallery = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
 
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -461,11 +455,15 @@ const Gallery = () => {
           }}
         >
           <Link href="/admin/front/gallery/create">
-<button type="submit" className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]" onClick={handleClickOpen}>
-                  <i className="fa fa-plus mr-2" />
-                  Add
-                </button>
-                </Link>
+            <button
+              type="submit"
+              className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+              onClick={handleClickOpen}
+            >
+              <i className="fa fa-plus mr-2" />
+              Add
+            </button>
+          </Link>
         </div>
         {loading ? (
           <Loader />
@@ -487,7 +485,6 @@ const Gallery = () => {
             />
           </ThemeProvider>
         )}
-    
       </div>
     </DefaultLayout>
   );

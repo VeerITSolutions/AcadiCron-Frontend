@@ -35,20 +35,14 @@ import {
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 
-const columns = [
-  "Name",
-  "Invoice Number",
-  "Income Head",
-  "Date",
-  "	Amount (₹)",
-];
+const columns = ["Name", "Invoice Number", "Income Head", "Date", "	Amount (₹)"];
 
 const options = {
   filterType: "checkbox",
   serverSide: true,
   pagination: false,
- responsive: "standard",
-search: false,
+  responsive: "standard",
+  search: false,
   filter: false,
   viewColumns: false,
   tableBodyMaxHeight: "500px",
@@ -66,9 +60,7 @@ const Media = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -212,7 +204,7 @@ const Media = () => {
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>
-          Search Type:
+            Search Type:
             <select
               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
             >
@@ -228,13 +220,11 @@ const Media = () => {
               <option value="this_year">This Year</option>
               <option value="last_year">Last Year</option>
               <option value="period">Period</option>
-
-              
             </select>
           </label>
-         
+
           <div className={styles.searchGroup}>
-          <input
+            <input
               type="text"
               placeholder="Search By Keyword"
               value={keyword}

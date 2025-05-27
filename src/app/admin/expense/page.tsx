@@ -42,9 +42,7 @@ const Expense = () => {
 
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
@@ -100,7 +98,7 @@ const Expense = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-  
+
     setFormData({
       name: subject?.name || "",
       invoice_no: subject?.invoice_no || "",
@@ -111,7 +109,6 @@ const Expense = () => {
       documents: subject?.documents || "",
     });
   };
-  
 
   const handleCancel = () => {
     setFormData({
@@ -238,7 +235,6 @@ const Expense = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-
   const columns = [
     "Name",
     "Invoice Number",
@@ -297,16 +293,18 @@ const Expense = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Expense Head <span className="required">*</span>
                   </label>
-                  <select  name="exp_head_id"
-                  value={formData.exp_head_id}
-                  onChange={handleSelectChange} 
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                  <select
+                    name="exp_head_id"
+                    value={formData.exp_head_id}
+                    onChange={handleSelectChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
                     <option value="">Select</option>
                     {dataExpenseHead.map((sec: any) => (
-                    <option key={sec.id} value={sec.id}>
-                      {sec.exp_category}
-                    </option>
-                  ))}
+                      <option key={sec.id} value={sec.id}>
+                        {sec.exp_category}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -357,7 +355,6 @@ const Expense = () => {
                     name="amount"
                     value={formData.amount}
                     onChange={handleInputChange}
-                    
                   />
                 </div>
                 <div>
@@ -365,11 +362,11 @@ const Expense = () => {
                     Attach Document
                   </label>
                   <input
-                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                     type="file"
-                     accept="image/*"
-                     name="documents"
-                     onChange={handleFileChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    type="file"
+                    accept="image/*"
+                    name="documents"
+                    onChange={handleFileChange}
                   />
                 </div>
 
@@ -386,26 +383,26 @@ const Expense = () => {
                 </div>
 
                 <div className="flex gap-2">
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  onClick={(e) => {
-                    e.preventDefault(); // Prevent default form submission
-                    handleSubmit();
-                  }}
-                >
-                  {isEditing ? "Update" : "Save"}
-                </button>
-                {isEditing && (
                   <button
-                    type="button"
+                    type="submit"
                     className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                    onClick={handleCancel}
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default form submission
+                      handleSubmit();
+                    }}
                   >
-                    Cancel
+                    {isEditing ? "Update" : "Save"}
                   </button>
-                )}
-              </div>
+                  {isEditing && (
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </div>
             </form>
           </div>

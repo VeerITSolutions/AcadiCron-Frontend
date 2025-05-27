@@ -48,9 +48,7 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
 
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
@@ -89,7 +87,7 @@ const StudentDetails = () => {
             checked={holiday} // Handles both 0/1 or true/false
             onChange={handleHolidayChange}
           />
-          <div className="border-gray-400 flex h-4 w-4 items-center justify-center rounded border-2 peer-checked:border-[#1976D2] peer-checked:bg-[#1976D2] !m-0">
+          <div className="border-gray-400 !m-0 flex h-4 w-4 items-center justify-center rounded border-2 peer-checked:border-[#1976D2] peer-checked:bg-[#1976D2]">
             <svg
               className="hidden h-4 w-4 text-white peer-checked:block"
               xmlns="http://www.w3.org/2000/svg"

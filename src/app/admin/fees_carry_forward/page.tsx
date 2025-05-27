@@ -56,9 +56,7 @@ const StudentDetails = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -293,7 +291,7 @@ const StudentDetails = () => {
         <Loader />
       ) : (
         <>
-          <div className="text-right color-red-500">
+          <div className="color-red-500 text-right">
             {" "}
             {dataSetting ? `Due Date: ${dataSetting}` : ""}
           </div>

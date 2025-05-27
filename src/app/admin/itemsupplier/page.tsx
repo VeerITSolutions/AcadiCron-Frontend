@@ -29,7 +29,9 @@ const ItemSupplier = () => {
   const [categoryData, setCategoryData] = useState<Array<any>>([]);
   const [ItemData, setItemData] = useState<Array<any>>([]);
   const [SupplyData, setSupplyData] = useState<Array<any>>([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null,
+  );
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [dataSubject, setDataSubject] = useState<Array<any>>([]);
   const [createdata, setcreatedata] = useState<Array<any>>([]);
@@ -45,32 +47,30 @@ const ItemSupplier = () => {
 
   const [classes, setClasses] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
   const [savedSessionstate, setSavedSession] = useState("");
   const { themType, setThemType } = useGlobalState(); // A
 
   const [formData, setFormData] = useState({
-    item_supplier: '',
-    phone: '',
-    email: '',
-    address: '',
-    contact_person_name: '',
-    contact_person_phone: '',
-    contact_person_email: '',
-    description: '',
+    item_supplier: "",
+    phone: "",
+    email: "",
+    address: "",
+    contact_person_name: "",
+    contact_person_phone: "",
+    contact_person_email: "",
+    description: "",
   });
-  
+
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchItemSupplier(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
-     
+
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -92,40 +92,33 @@ const ItemSupplier = () => {
   const handleEdit = (id: number, subject: any) => {
     setIsEditing(true);
     setEditCategoryId(id);
-  
+
     setFormData({
-    
-      item_supplier: subject?.item_supplier || '',
-      phone: subject?.phone || '',
-      email: subject?.email || '',
-      address: subject?.address || '',
-      contact_person_name: subject?.contact_person_name || '',
-      contact_person_phone: subject?.contact_person_phone || '',
-      contact_person_email: subject?.contact_person_email || '',
-      description: subject?.description || '',
-   
+      item_supplier: subject?.item_supplier || "",
+      phone: subject?.phone || "",
+      email: subject?.email || "",
+      address: subject?.address || "",
+      contact_person_name: subject?.contact_person_name || "",
+      contact_person_phone: subject?.contact_person_phone || "",
+      contact_person_email: subject?.contact_person_email || "",
+      description: subject?.description || "",
     });
-    
   };
-  
 
   const handleCancel = () => {
     setFormData({
-      item_supplier: '',
-      phone: '',
-      email: '',
-      address: '',
-      contact_person_name: '',
-      contact_person_phone: '',
-      contact_person_email: '',
-      description: '',
-     
+      item_supplier: "",
+      phone: "",
+      email: "",
+      address: "",
+      contact_person_name: "",
+      contact_person_phone: "",
+      contact_person_email: "",
+      description: "",
     });
     setIsEditing(false);
     setEditCategoryId(null);
   };
-
-
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
@@ -174,15 +167,14 @@ const ItemSupplier = () => {
         const result = await createItemSupplier(formData);
 
         setFormData({
-          item_supplier: '',
-          phone: '',
-          email: '',
-          address: '',
-          contact_person_name: '',
-          contact_person_phone: '',
-          contact_person_email: '',
-          description: '',
-       
+          item_supplier: "",
+          phone: "",
+          email: "",
+          address: "",
+          contact_person_name: "",
+          contact_person_phone: "",
+          contact_person_email: "",
+          description: "",
         });
 
         setSelectedClass("");
@@ -197,15 +189,14 @@ const ItemSupplier = () => {
       }
       // Reset form after successful action
       setFormData({
-        item_supplier: '',
-        phone: '',
-        email: '',
-        address: '',
-        contact_person_name: '',
-        contact_person_phone: '',
-        contact_person_email: '',
-        description: '',
-      
+        item_supplier: "",
+        phone: "",
+        email: "",
+        address: "",
+        contact_person_name: "",
+        contact_person_phone: "",
+        contact_person_email: "",
+        description: "",
       });
 
       setIsEditing(false);
@@ -240,7 +231,6 @@ const ItemSupplier = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -253,18 +243,12 @@ const ItemSupplier = () => {
     }));
   };
 
-
-  const columns = [
-    "Item Supplier",
-    "Contact Person",
-    "Address",
-    "Action",
-];
+  const columns = ["Item Supplier", "Contact Person", "Address", "Action"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
-   responsive: "standard",
-search: false,
+    responsive: "standard",
+    search: false,
     count: totalCount,
     page,
     rowsPerPage,
@@ -296,7 +280,7 @@ search: false,
               <div className="flex flex-col gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Name<span className="required">*</span>
+                    Name<span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -305,10 +289,10 @@ search: false,
                     value={formData.item_supplier}
                     onChange={handleInputChange}
                   />
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Phone<span className="required">*</span>
+                    Phone<span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -317,10 +301,10 @@ search: false,
                     value={formData.phone}
                     onChange={handleInputChange}
                   />
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Email<span className="required">*</span>
+                    Email<span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -329,10 +313,10 @@ search: false,
                     value={formData.email}
                     onChange={handleInputChange}
                   />
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Address<span className="required">*</span>
+                    Address<span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -341,10 +325,10 @@ search: false,
                     value={formData.address}
                     onChange={handleInputChange}
                   />
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Contact Person Name<span className="required">*</span>
+                    Contact Person Name<span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -353,10 +337,10 @@ search: false,
                     value={formData.contact_person_name}
                     onChange={handleInputChange}
                   />
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Contact Person Phone<span className="required">*</span>
+                    Contact Person Phone<span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -365,10 +349,10 @@ search: false,
                     value={formData.contact_person_phone}
                     onChange={handleInputChange}
                   />
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                 Contact Person Email<span className="required">*</span>
+                    Contact Person Email<span className="required">*</span>
                   </label>
                   <input
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -377,20 +361,19 @@ search: false,
                     value={formData.contact_person_email}
                     onChange={handleInputChange}
                   />
-                  </div>
-        
-              <div>
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Description
-            </label>
-            <textarea
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-            ></textarea>
-          </div>
+                </div>
 
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Description
+                  </label>
+                  <textarea
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
 
                 <div className="flex gap-2">
                   <button

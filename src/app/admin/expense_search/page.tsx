@@ -67,13 +67,13 @@ const Expense = () => {
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
   const [selectedStartDate, setSelectedStartDate] = useState<string>(
-    new Date().toISOString().slice(0, 10) // This sets the default to today's date in YYYY-MM-DD format
+    new Date().toISOString().slice(0, 10), // This sets the default to today's date in YYYY-MM-DD format
   );
 
-  const [selectedEndDate, setSelectedEndDate] = useState<string>(new Date().toISOString().slice(0, 10));
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
+  const [selectedEndDate, setSelectedEndDate] = useState<string>(
+    new Date().toISOString().slice(0, 10),
   );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -134,22 +134,26 @@ const Expense = () => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
   const fetchData = async (
-  
     keyword?: string,
     setSelectedSearchType?: string,
   ) => {
     try {
-
       if (selectedSearchType == "period") {
-        const result = await fetchExpensesData(0, 0, selectedSearchType, selectedStartDate, selectedEndDate);
-        
+        const result = await fetchExpensesData(
+          0,
+          0,
+          selectedSearchType,
+          selectedStartDate,
+          selectedEndDate,
+        );
+
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
         setLoading(false);
         console.log("selectedStartDate", selectedStartDate);
         console.log("selectedEndDate", selectedEndDate);
-      }else{
+      } else {
         if (selectedSearchType) {
           const result = await fetchExpensesData(0, 0, selectedSearchType);
           setTotalCount(result.totalCount);
@@ -161,8 +165,6 @@ const Expense = () => {
           setLoading(false);
         }
       }
-  
-     
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
@@ -208,15 +210,18 @@ const Expense = () => {
     setKeyword(event.target.value);
   };
 
-  const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSearchTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     setSelectedSearchType(event.target.value);
   };
 
-
-  const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleStartDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setSelectedStartDate(event.target.value);
   };
-  
+
   const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedEndDate(event.target.value);
   };
@@ -258,34 +263,29 @@ const Expense = () => {
             </select>
           </label>
           {selectedSearchType === "period" && (
-          <div className={styles.searchGroup}>
-          <div>
-          <label className={styles.label}>
-          Start date:
-          </label>
-          <input
-              type="date"
-              value={selectedStartDate}
-              onChange={handleStartDateChange}
-               className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            />
+            <div className={styles.searchGroup}>
+              <div>
+                <label className={styles.label}>Start date:</label>
+                <input
+                  type="date"
+                  value={selectedStartDate}
+                  onChange={handleStartDateChange}
+                  className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                />
+              </div>
+              <div>
+                <label className={styles.label}>End date:</label>
+                <input
+                  type="date"
+                  value={selectedEndDate}
+                  onChange={handleEndDateChange}
+                  className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+                />
+              </div>
             </div>
-            <div>
-          <label className={styles.label}>
-          End date:
-          </label>  
-           <input
-              type="date"
-              value={selectedEndDate}
-              onChange={handleEndDateChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            />
-            </div>
-            </div>
-            )}
+          )}
 
           <div className={styles.searchGroup}>
-
             <input
               type="text"
               placeholder="Search By Keyword"
@@ -329,4 +329,3 @@ const Expense = () => {
 };
 
 export default Expense;
-

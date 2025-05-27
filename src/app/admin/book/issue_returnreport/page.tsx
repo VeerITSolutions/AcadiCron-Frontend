@@ -46,9 +46,8 @@ import {
   AssignmentTurnedIn as AssignmentTurnedInIcon,
   Wc as WcIcon,
   Scale as ScaleIcon,
-} from '@mui/icons-material';
-import { usePathname } from "next/navigation"; 
-
+} from "@mui/icons-material";
+import { usePathname } from "next/navigation";
 
 const StudentBookIssueReport = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -62,15 +61,13 @@ const StudentBookIssueReport = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
   const [keyword, setKeyword] = useState<string>("");
   const router = useRouter();
-  
+
   const columns = [
     "Book Title",
     "Book Number",
@@ -80,10 +77,9 @@ const StudentBookIssueReport = () => {
     "Library Card No",
     "Admission No",
     "Issue By",
-    "Member Type"
+    "Member Type",
   ];
-  
-  
+
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -239,7 +235,7 @@ const StudentBookIssueReport = () => {
     setKeyword("");
   };
 
-  const pathname = usePathname(); 
+  const pathname = usePathname();
   const [activePath, setActivePath] = useState("");
 
   useEffect(() => {
@@ -249,20 +245,26 @@ const StudentBookIssueReport = () => {
   }, [pathname]);
 
   const reportLinks = [
-    { href: "/admin/report/studentbookissuereport", label: "Book Issue Report" },
+    {
+      href: "/admin/report/studentbookissuereport",
+      label: "Book Issue Report",
+    },
     { href: "/admin/report/bookduereport", label: "Book Due Report" },
     { href: "/admin/report/bookinventory", label: "Book Inventory Report" },
-    { href: "/admin/book/issue_returnreport", label: "Book Issue Return Report" },
+    {
+      href: "/admin/book/issue_returnreport",
+      label: "Book Issue Return Report",
+    },
   ];
 
   if (error) return <p>{error}</p>;
 
   return (
     <DefaultLayout>
-  <div className="col-md-12">
-        <div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
+      <div className="col-md-12">
+        <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
           <div className="box-header border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-            <h3 className="box-title text-2xl font-semibold text-gray-800 flex items-center !text-[1.25rem] !leading-[1.75rem] !font-[Satoshi] !font-semibold">
+            <h3 className="box-title text-gray-800 flex items-center !font-[Satoshi] !text-[1.25rem] text-2xl !font-semibold font-semibold !leading-[1.75rem]">
               <i className="fa fa-search mr-2 text-blue-600"></i> Library Report
             </h3>
           </div>
@@ -274,11 +276,11 @@ const StudentBookIssueReport = () => {
                     href={link.href}
                     className={`flex items-center hover:text-[#0070f3] ${
                       activePath === link.href
-                        ? "bg-blue-100 dark:bg-blue-800 rounded-md p-2"
+                        ? "rounded-md bg-blue-100 p-2 dark:bg-blue-800"
                         : "p-2"
                     }`}
                   >
-                    <DescriptionIcon className="h-2 w-2 mr-2" />
+                    <DescriptionIcon className="mr-2 h-2 w-2" />
                     {link.label}
                   </a>
                 </li>
@@ -288,30 +290,28 @@ const StudentBookIssueReport = () => {
         </div>
       </div>
 
-
-<div className="box box-primary border-0 mb-8 bg-white shadow-md rounded-lg dark:bg-boxdark dark:drop-shadow-none dark:border-strokedark dark:text-white">
-    
-      {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={""}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              onRowsDelete: handleDelete,
-            }}
-          />
-        </ThemeProvider>
-      )}
+      <div className="box box-primary mb-8 rounded-lg border-0 bg-white shadow-md dark:border-strokedark dark:bg-boxdark dark:text-white dark:drop-shadow-none">
+        {loading ? (
+          <Loader />
+        ) : (
+          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+            <MUIDataTable
+              title={""}
+              data={data}
+              columns={columns}
+              options={{
+                ...options,
+                count: totalCount,
+                page: page,
+                rowsPerPage: rowsPerPage,
+                onChangePage: handlePageChange,
+                onChangeRowsPerPage: handleRowsPerPageChange,
+                onRowSelectionChange: handleRowSelectionChange, // Handle row selection
+                onRowsDelete: handleDelete,
+              }}
+            />
+          </ThemeProvider>
+        )}
       </div>
     </DefaultLayout>
   );
