@@ -1,10 +1,10 @@
-import { create } from 'zustand';
-import { useEffect } from 'react';
+import { create } from "zustand";
+import { useEffect } from "react";
 
-// Define the state types for LogoStore and UserDetails
+// Define the state types
 interface LogoState {
-  logoUrl: string; // Current logo URL
-  setLogoUrl: (url: string) => void; // Function to update logo URL
+  logoUrl: string;
+  setLogoUrl: (url: string) => void;
 }
 
 interface UserDetails {
@@ -18,19 +18,19 @@ interface UserDetails {
   selectedSessionId: string | null;
   selectedSessionName: string | null;
   setRoleId: (roleId: string) => void;
-  setUserDetails: (userDetails: UserDetails) => void; // Function to update all user details
+  setUserDetails: (userDetails: Partial<UserDetails>) => void;
 }
 
-// Create Zustand store for the logo URL
+// Zustand store for logo
 export const useLogoStore = create<LogoState>((set) => ({
-  logoUrl: '/images/logo/logo2.png', // Default logo path
+  logoUrl: "/images/logo/logo2.png",
   setLogoUrl: (url: string) => set({ logoUrl: url }),
 }));
 
-// Create Zustand store for user login details
+// Zustand store for user login details
 export const useLoginDetails = create<UserDetails>((set) => ({
-  roleId: '', // Initial empty value for roleId
-  userId: '',
+  roleId: "",
+  userId: "",
   userData: {},
   username: null,
   surname: null,
@@ -39,63 +39,55 @@ export const useLoginDetails = create<UserDetails>((set) => ({
   selectedSessionId: null,
   selectedSessionName: null,
   setRoleId: (roleId: string) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('role_id', roleId); // Store the roleId in localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("role_id", roleId);
     }
-    set({ roleId }); // Update the store with the new roleId
+    set({ roleId });
   },
-  setUserDetails: (userDetails: UserDetails) => {
-    set({
-      roleId: userDetails.roleId,
-      userId: userDetails.userId,
-      userData: userDetails.userData,
-      username: userDetails.username,
-      surname: userDetails.surname,
-      roleName: userDetails.roleName,
-      isSuperAdmin: userDetails.isSuperAdmin,
-      selectedSessionId: userDetails.selectedSessionId,
-    });
-  }, // Set all user details in the store
+  setUserDetails: (userDetails: Partial<UserDetails>) => {
+    set((prev) => ({ ...prev, ...userDetails }));
+  },
 }));
 
-// Custom hook to initialize login details from localStorage (only on the client side)
+// Custom hook to initialize login details from localStorage
 export function useInitializeLoginDetails() {
   const setUserDetails = useLoginDetails((state) => state.setUserDetails);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Get user details from localStorage
-      const roleIdFromStorage = localStorage.getItem('role_id') || '';
-      const userIdFromStorage = localStorage.getItem('user_id') || '';
-      const usernameFromStorage = localStorage.getItem('username') || '';
-      const surnameFromStorage = localStorage.getItem('surname') || '';
-      const roleNameFromStorage = localStorage.getItem('role_name') || '';
-      const isSuperAdminFromStorage = localStorage.getItem('is_superadmin') || '';
-      const selectedSessionIdFromStorage = localStorage.getItem('selectedSessionId') || '';
-      const selectedSessionYearFromStorage = localStorage.getItem('selectedSessionYear') || '';
-      const selectedUserDataFromStorage = localStorage.getItem('user_data') || null;
-      let parsedUserData = '';
-      if(selectedUserDataFromStorage == 'undefined'){
-         parsedUserData = '';
-      }else{
-         parsedUserData = selectedUserDataFromStorage ? JSON.parse(selectedUserDataFromStorage) : '';
+    if (typeof window !== "undefined") {
+      const roleId = localStorage.getItem("role_id") || "";
+      const userId = localStorage.getItem("user_id") || "";
+      const username = localStorage.getItem("username") || "";
+      const surname = localStorage.getItem("surname") || "";
+      const roleName = localStorage.getItem("role_name") || "";
+      const isSuperAdmin = localStorage.getItem("is_superadmin") || "";
+      const selectedSessionId = localStorage.getItem("selectedSessionId") || "";
+      const selectedSessionName =
+        localStorage.getItem("selectedSessionYear") || "";
+      const rawUserData = localStorage.getItem("user_data");
+
+      let parsedUserData: any = {};
+      try {
+        parsedUserData =
+          rawUserData && rawUserData !== "undefined"
+            ? JSON.parse(rawUserData)
+            : {};
+      } catch {
+        parsedUserData = {};
       }
 
-
-      // Set all values into the Zustand store using setUserDetails
+      // Set into Zustand store
       setUserDetails({
-        roleId: roleIdFromStorage,
-        userId: userIdFromStorage,
+        roleId,
+        userId,
+        username,
+        surname,
+        roleName,
+        isSuperAdmin,
+        selectedSessionId,
+        selectedSessionName,
         userData: parsedUserData,
-        username: usernameFromStorage,
-        surname: surnameFromStorage,
-        roleName: roleNameFromStorage,
-        isSuperAdmin: isSuperAdminFromStorage,
-        selectedSessionId: selectedSessionIdFromStorage,
-        selectedSessionName: selectedSessionYearFromStorage,
-        setRoleId: () => {}, // Optional: add empty function for `setRoleId` if you don't need to use it in this context
-        setUserDetails: () => {}, // Optional: add empty function for `setUserDetails` if you don't need to use it in this context
       });
     }
-  }, [setUserDetails]); // Only runs once after the component mounts (on client side)
+  }, [setUserDetails]);
 }
