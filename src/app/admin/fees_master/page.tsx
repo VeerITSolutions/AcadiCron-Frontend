@@ -25,12 +25,14 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { useInitializeLoginDetails, useLoginDetails } from "@/store/logoStore";
+import FeeGroupSelect from "@/components/FeeGroupSelect";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
   const [datafeesgroupdata, setFessGroupData] = useState<Array<Array<any>>>([]);
   const [datafesstypedata, setFessTypeData] = useState<Array<Array<any>>>([]);
+  const [selectedFeeGroup, setSelectedFeeGroup] = useState<any>(null);
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -325,19 +327,13 @@ const FeesMaster = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Fees Group *
                   </label>
-                  <select
-                    name="fees_group"
-                    value={formData.fees_group}
-                    onChange={handleInputChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {datafeesgroupdata.map((group: any) => (
-                      <option key={group.id} value={group.id}>
-                        {group.fees_group_name}
-                      </option>
-                    ))}
-                  </select>
+                  <FeeGroupSelect
+                    value={selectedFeeGroup}
+                    onChange={(option) => {
+                      setSelectedFeeGroup(option);
+                      // optionally set: formData.fees_group = option?.value;
+                    }}
+                  />
                 </div>
 
                 <div className="field">
