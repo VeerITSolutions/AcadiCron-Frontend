@@ -43,7 +43,7 @@ const FeesMaster = () => {
     fees_type: "",
     due_date: "",
     amount: "",
-    fine_type: "",
+    fine_type: "none",
     percentage: "",
     description: "",
     fine_amount: "",
@@ -220,7 +220,7 @@ const FeesMaster = () => {
         fees_type: "",
         due_date: "",
         amount: "",
-        fine_type: "",
+        fine_type: "none",
         percentage: "",
         description: "",
         fine_amount: "",
@@ -243,6 +243,38 @@ const FeesMaster = () => {
     setPage(0);
   };
 
+  /* new  */
+
+  useEffect(() => {
+    calculateFine();
+  }, [formData.amount, formData.percentage, formData.amount]);
+
+  const calculateFine = () => {
+    const amt = parseFloat(formData.amount);
+    const perc = parseFloat(formData.fine_amount);
+
+    if (formData.fine_type === "percentage") {
+      if (!isNaN(amt) && !isNaN(perc)) {
+        const fine = ((amt * perc) / 100).toFixed(2);
+        setFormData({
+          ...formData,
+          fine_amount: formData.fine_amount,
+        });
+      }
+    } else if (formData.fine_type === "fix") {
+      setFormData({
+        ...formData,
+        fine_amount: formData.fine_amount,
+      });
+      // Let user input manually
+    } else {
+      setFormData({
+        ...formData,
+        fine_amount: formData.fine_amount,
+      });
+    }
+  };
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -263,7 +295,7 @@ const FeesMaster = () => {
       fees_type: "",
       due_date: "",
       amount: "",
-      fine_type: "",
+      fine_type: "none",
       percentage: "",
       description: "",
       fine_amount: "",
@@ -362,19 +394,14 @@ const FeesMaster = () => {
                   </label>
                   <div className="flex gap-5">
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="account_type" value="none" />{" "}
-                      None
+                      <input type="radio" name="fine_type" value="none" /> None
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input
-                        type="radio"
-                        name="account_type"
-                        value="percentage"
-                      />{" "}
+                      <input type="radio" name="fine_type" value="percentage" />{" "}
                       Percentage
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="account_type" value="fix" /> Fix
+                      <input type="radio" name="fine_type" value="fix" /> Fix
                       Amount
                     </label>
                   </div>
@@ -399,7 +426,7 @@ const FeesMaster = () => {
                   </label>
                   <input
                     name="fine_amount"
-                    type="number"
+                    type="string"
                     value={formData.fine_amount}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
