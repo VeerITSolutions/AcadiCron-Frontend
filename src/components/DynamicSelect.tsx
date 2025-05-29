@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AsyncPaginate } from "react-select-async-paginate";
 import apiClient from "@/services/apiClient";
 
@@ -10,22 +10,44 @@ type OptionType = {
 };
 
 type Props = {
-  name: string; // important for handleInputChange
+  name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  apiEndpoint?: string; // optional prop to allow dynamic endpoint
-  isDark?: boolean; // optional prop to allow dynamic endpoint
+  apiEndpoint?: string;
+  isDark?: boolean;
 };
+
 import { StylesConfig } from "react-select";
 
 const DynamicSelect: React.FC<Props> = ({
   name,
   value,
   onChange,
-  apiEndpoint = "/fees-group", // default value if not passed
+  apiEndpoint = "/fees-group",
   isDark = false,
 }) => {
   const [inputValue, setInputValue] = useState("");
+  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
+
+  // Fetch label for initial value (if value is set)
+  useEffect(() => {
+    const fetchInitialLabel = async () => {
+      if (value && !selectedOption) {
+        try {
+          const res = await apiClient.get(`${apiEndpoint}/${value}`);
+          const item = res.data;
+          const option: OptionType = {
+            value: item.id,
+            label: item.name || item.label,
+          };
+          setSelectedOption(option);
+        } catch (error) {
+          console.error("Failed to fetch label for selected value", error);
+        }
+      }
+    };
+    fetchInitialLabel();
+  }, [value, apiEndpoint]);
 
   const customStyles: StylesConfig<OptionType, false> = {
     control: (base, state) => ({
@@ -63,6 +85,7 @@ const DynamicSelect: React.FC<Props> = ({
       cursor: "pointer",
     }),
   };
+
   const loadOptions = async (
     search: string,
     loadedOptions: any,
@@ -93,23 +116,22 @@ const DynamicSelect: React.FC<Props> = ({
   };
 
   const handleSelectChange = (option: OptionType | null) => {
+    setSelectedOption(option);
+
     const syntheticEvent = {
       target: {
         name,
         value: option?.value || "",
       },
     } as React.ChangeEvent<HTMLSelectElement>;
+
     onChange(syntheticEvent);
   };
 
   return (
     <div className="mb-4">
       <AsyncPaginate
-        value={
-          value
-            ? { value, label: value } // fallback label
-            : null
-        }
+        value={selectedOption}
         loadOptions={loadOptions}
         onInputChange={setInputValue}
         onChange={handleSelectChange}
