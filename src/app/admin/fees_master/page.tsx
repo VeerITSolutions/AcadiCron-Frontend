@@ -62,10 +62,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesSeesionGroupData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchStudentFeesSeesionGroupData();
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -75,10 +72,7 @@ const FeesMaster = () => {
     }
 
     try {
-      const result = await fetchStudentFeesSeesionGroupData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchStudentFeesSeesionGroupData();
 
       setFessGroupData(result.data);
       console.log("datafeesgroupdata", datafeesgroupdata);
@@ -88,10 +82,7 @@ const FeesMaster = () => {
     }
 
     try {
-      const result = await fetchStudentFeesTypeData(
-        currentPage + 1,
-        rowsPerPage,
-      );
+      const result = await fetchStudentFeesTypeData();
 
       setFessTypeData(result.data);
     } catch (error: any) {
