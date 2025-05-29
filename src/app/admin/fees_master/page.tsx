@@ -349,7 +349,7 @@ const FeesMaster = () => {
                   </label>
                   <input
                     name="amount"
-                    type="text"
+                    type="number"
                     value={formData.amount}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -362,18 +362,19 @@ const FeesMaster = () => {
                   </label>
                   <div className="flex gap-5">
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="none" value="none" /> None
+                      <input type="radio" name="account_type" value="none" />{" "}
+                      None
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
                       <input
                         type="radio"
-                        name="percentage"
+                        name="account_type"
                         value="percentage"
                       />{" "}
                       Percentage
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="fix_amount" value="fix" /> Fix
+                      <input type="radio" name="account_type" value="fix" /> Fix
                       Amount
                     </label>
                   </div>
@@ -385,7 +386,7 @@ const FeesMaster = () => {
                   </label>
                   <input
                     name="percentage"
-                    type="text"
+                    type="number"
                     value={formData.percentage}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -398,7 +399,7 @@ const FeesMaster = () => {
                   </label>
                   <input
                     name="fine_amount"
-                    type="text"
+                    type="number"
                     value={formData.fine_amount}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
