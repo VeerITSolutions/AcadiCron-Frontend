@@ -17,7 +17,10 @@ import {
 import { fetchStudentFeesGroupData } from "@/services/studentFeesGroupService";
 
 import { fetchStudentFeesTypeData } from "@/services/studentFeesTypeService";
-import { fetchStudentFeesSeesionGroupData } from "@/services/studentFeesSessionGroupService";
+import {
+  fetchStudentFeesSeesionByGroupData,
+  fetchStudentFeesSeesionGroupData,
+} from "@/services/studentFeesSessionGroupService";
 
 import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
@@ -27,6 +30,7 @@ import styles from "./User.module.css";
 import { useInitializeLoginDetails, useLoginDetails } from "@/store/logoStore";
 import FeeGroupSelect from "@/components/DynamicSelect";
 import DynamicSelect from "@/components/DynamicSelect";
+import { count } from "console";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -65,7 +69,7 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesSeesionGroupData();
+      const result = await fetchStudentFeesSeesionByGroupData();
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -132,8 +136,8 @@ const FeesMaster = () => {
 
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
-      student.fees_group_name,
-      student.fees_group_name || "N/A",
+      student.group_name,
+      student.group_name || "N/A",
 
       <div key={student.id} className="flex items-center space-x-2">
         <IconButton
@@ -256,6 +260,7 @@ const FeesMaster = () => {
     serverSide: true,
     responsive: "standard",
     search: false,
+    count: totalCount,
     selectableRows: "none", // Disable row selection
     filter: false, // Disable filter,
     viewColumns: false, // Disable view columns button
