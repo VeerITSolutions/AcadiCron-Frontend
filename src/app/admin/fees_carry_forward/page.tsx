@@ -291,9 +291,13 @@ const StudentDetails = () => {
         <Loader />
       ) : (
         <>
-          <div className="color-red-500 text-right">
-            {" "}
-            {dataSetting ? `Due Date: ${dataSetting}` : ""}
+          <div className="text-right">
+            {dataSetting && (
+              <>
+                <span style={{ color: "#a94442" }}>Due Date:</span>{" "}
+                {dataSetting}
+              </>
+            )}
           </div>
 
           <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
