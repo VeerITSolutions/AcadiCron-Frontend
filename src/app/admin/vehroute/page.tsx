@@ -21,6 +21,7 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { useLoginDetails } from "@/store/logoStore";
 
 const VehicleRoutes = () => {
   const [error, setError] = useState<string | null>(null);
@@ -44,14 +45,17 @@ const VehicleRoutes = () => {
   const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
-  const [savedSessionstate, setSavedSession] = useState("");
+
   const { themType, setThemType } = useGlobalState(); // A
   const [selectedVehicles, setSelectedVehicles] = useState<number[]>([]);
   const [formData, setFormData] = useState({
     route_id: "",
     vehicle_id: selectedVehicles,
   });
-
+  const getselectedSessionYear = useLoginDetails(
+    (state) => state.selectedSessionName,
+  );
+  const [savedSessionstate, setSavedSession] = useState(getselectedSessionYear);
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchVehicleRoutes(currentPage + 1, rowsPerPage);
@@ -249,7 +253,7 @@ const VehicleRoutes = () => {
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 {isEditing
-                  ? "Edit Add Fees Master : 2024-25"
+                  ? "Edit Add Fees Master : " + savedSessionstate
                   : "Assign Vehicle On Route"}
               </h3>
             </div>

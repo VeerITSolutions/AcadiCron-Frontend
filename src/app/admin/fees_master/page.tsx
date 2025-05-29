@@ -24,6 +24,7 @@ import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
+import { useLoginDetails } from "@/store/logoStore";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -37,6 +38,11 @@ const FeesMaster = () => {
 
   const [totalCount, setTotalCount] = useState(0);
   const [colorMode, setColorMode] = useColorMode();
+
+  const getselectedSessionYear = useLoginDetails(
+    (state) => state.selectedSessionName,
+  );
+  const [savedSessionstate, setSavedSession] = useState(getselectedSessionYear);
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -310,8 +316,8 @@ const FeesMaster = () => {
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 {isEditing
-                  ? "Edit Add Fees Master : 2024-25"
-                  : "Add Fees Master : 2024-25"}
+                  ? `Edit Add Fees Master : ${savedSessionstate}`
+                  : `Add Fees Master : ${savedSessionstate}`}
               </h3>
             </div>
 
@@ -489,7 +495,7 @@ const FeesMaster = () => {
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
               <MUIDataTable
-                title={"Add Fees Master : 2024-25"}
+                title={`Add Fees Master : ${savedSessionstate}`}
                 data={data}
                 columns={columns}
                 options={options}
