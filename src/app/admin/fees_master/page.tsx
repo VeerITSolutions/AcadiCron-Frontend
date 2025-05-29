@@ -316,7 +316,7 @@ const FeesMaster = () => {
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 {isEditing
-                  ? `Edit Add Fees Master : ${savedSessionstate}`
+                  ? `Edit Fees Master : ${savedSessionstate}`
                   : `Add Fees Master : ${savedSessionstate}`}
               </h3>
             </div>
@@ -495,7 +495,7 @@ const FeesMaster = () => {
           ) : (
             <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
               <MUIDataTable
-                title={`Add Fees Master : ${savedSessionstate}`}
+                title={`Fees Master List : ${savedSessionstate}`}
                 data={data}
                 columns={columns}
                 options={options}

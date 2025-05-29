@@ -253,7 +253,7 @@ const VehicleRoutes = () => {
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 {isEditing
-                  ? "Edit Add Fees Master : " + savedSessionstate
+                  ? "Edit Fees Master : " + savedSessionstate
                   : "Assign Vehicle On Route"}
               </h3>
             </div>
