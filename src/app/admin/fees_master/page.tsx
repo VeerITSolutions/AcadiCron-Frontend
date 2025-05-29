@@ -333,7 +333,7 @@ const FeesMaster = () => {
                     value={formData.fees_group}
                     onChange={handleInputChange}
                     apiEndpoint="/fees-group"
-                    isDark={false} // or false for light theme
+                    isDark={themType === "dark" ? true : false} // or false for light theme
                   />
                 </div>
 
