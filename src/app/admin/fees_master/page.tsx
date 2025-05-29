@@ -245,36 +245,6 @@ const FeesMaster = () => {
 
   /* new  */
 
-  useEffect(() => {
-    calculateFine();
-  }, [formData.amount, formData.percentage, formData.amount]);
-
-  const calculateFine = () => {
-    const amt = parseFloat(formData.amount);
-    const perc = parseFloat(formData.fine_amount);
-
-    if (formData.fine_type === "percentage") {
-      if (!isNaN(amt) && !isNaN(perc)) {
-        const fine = ((amt * perc) / 100).toFixed(2);
-        setFormData({
-          ...formData,
-          fine_amount: formData.fine_amount,
-        });
-      }
-    } else if (formData.fine_type === "fix") {
-      setFormData({
-        ...formData,
-        fine_amount: formData.fine_amount,
-      });
-      // Let user input manually
-    } else {
-      setFormData({
-        ...formData,
-        fine_amount: formData.fine_amount,
-      });
-    }
-  };
-
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -302,6 +272,34 @@ const FeesMaster = () => {
     });
     setIsEditing(false);
     setEditCategoryId(null);
+  };
+
+  useEffect(() => {
+    calculateFine();
+  }, [formData.amount, formData.percentage, formData.amount]);
+
+  const calculateFine = () => {
+    const amt = parseFloat(formData.amount);
+    const perc = parseFloat(formData.percentage);
+
+    if (formData.fine_type === "percentage") {
+      if (!isNaN(amt) && !isNaN(perc)) {
+        const fine = ((amt * perc) / 100).toFixed(2);
+        setFormData((prev) => ({
+          ...prev,
+          fine_amount: fine,
+        }));
+      }
+    } else if (formData.fine_type === "fix") {
+      // Leave fine_amount as it is; user inputs manually
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        fine_amount: "",
+      }));
+    }
+
+    console.log("fine_amount updated:", formData.fine_amount); // Note: this logs old value
   };
 
   return (
@@ -394,15 +392,34 @@ const FeesMaster = () => {
                   </label>
                   <div className="flex gap-5">
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="fine_type" value="none" /> None
+                      <input
+                        type="radio"
+                        name="fine_type"
+                        value="none"
+                        checked={formData.fine_type === "none"}
+                        onChange={handleInputChange}
+                      />{" "}
+                      None
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="fine_type" value="percentage" />{" "}
+                      <input
+                        type="radio"
+                        name="fine_type"
+                        value="percentage"
+                        checked={formData.fine_type === "percentage"}
+                        onChange={handleInputChange}
+                      />{" "}
                       Percentage
                     </label>
                     <label className="radio-inline mb-3 block text-sm font-medium text-black dark:text-white">
-                      <input type="radio" name="fine_type" value="fix" /> Fix
-                      Amount
+                      <input
+                        type="radio"
+                        name="fine_type"
+                        value="fix"
+                        checked={formData.fine_type === "fix"}
+                        onChange={handleInputChange}
+                      />{" "}
+                      Fix Amount
                     </label>
                   </div>
                 </div>
@@ -416,20 +433,31 @@ const FeesMaster = () => {
                     type="number"
                     value={formData.percentage}
                     onChange={handleInputChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    disabled={formData.fine_type !== "percentage"} // 🔒 Disable when not percentage
+                    className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                      formData.fine_type !== "percentage"
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    }`}
                   />
                 </div>
 
+                {/* Fine Amount Input: Only enabled when fine_type is "fix" */}
                 <div className="">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Fine Amount *
                   </label>
                   <input
                     name="fine_amount"
-                    type="string"
+                    type="number"
                     value={formData.fine_amount}
                     onChange={handleInputChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    disabled={formData.fine_type === "percentage"} // 🔒 Disable when auto-calculated
+                    className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+                      formData.fine_type === "percentage"
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    }`}
                   />
                 </div>
 
