@@ -25,7 +25,8 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./User.module.css";
 import { useInitializeLoginDetails, useLoginDetails } from "@/store/logoStore";
-import FeeGroupSelect from "@/components/FeeGroupSelect";
+import FeeGroupSelect from "@/components/DynamicSelect";
+import DynamicSelect from "@/components/DynamicSelect";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -327,12 +328,11 @@ const FeesMaster = () => {
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Fees Group *
                   </label>
-                  <FeeGroupSelect
-                    value={selectedFeeGroup}
-                    onChange={(option) => {
-                      setSelectedFeeGroup(option);
-                      // optionally set: formData.fees_group = option?.value;
-                    }}
+                  <DynamicSelect
+                    name="fees_group"
+                    value={formData.fees_group}
+                    onChange={handleInputChange}
+                    apiEndpoint="/fees-group"
                   />
                 </div>
 
