@@ -31,6 +31,10 @@ import { useInitializeLoginDetails, useLoginDetails } from "@/store/logoStore";
 import FeeGroupSelect from "@/components/DynamicSelect";
 import DynamicSelect from "@/components/DynamicSelect";
 import { count } from "console";
+import {
+  createFeeGroupsFeeTypeData,
+  editFeeGroupsFeeTypeData,
+} from "@/services/studentFeeGroupsFeeType";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -209,32 +213,33 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editFeesMasterData(
+        const result = await editFeeGroupsFeeTypeData(
           editCategoryId,
 
           formData.description,
           formData.description,
         );
         if (result.success) {
-          toast.success("Student House updated successfully");
+          toast.success("updated successfully");
         } else {
-          toast.error("Failed to update Student House");
+          toast.error("Failed to update ");
         }
       } else {
-        const result = await createFeesMasterData(
+        const result = await createFeeGroupsFeeTypeData(
           formData.fees_group,
           formData.fees_type,
           formData.due_date,
           formData.amount,
           formData.fine_type,
           formData.percentage,
+          '',
           formData.fine_amount,
         );
 
         if (result.success) {
-          toast.success("Student House saved successfully");
+          toast.success(" saved successfully");
         } else {
-          toast.error("Failed to save Student House");
+          toast.error("Failed to save ");
         }
       }
 
