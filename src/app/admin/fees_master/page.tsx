@@ -48,10 +48,11 @@ const FeesMaster = () => {
   useInitializeLoginDetails();
 
   const sessionName = useLoginDetails((state) => state.selectedSessionName);
+  const selectedSessionId = useLoginDetails((state) => state.selectedSessionId);
 
   useEffect(() => {
     console.log("Session:", sessionName);
-  }, [sessionName]);
+  }, [sessionName, selectedSessionId]);
 
   const [formData, setFormData] = useState({
     fees_group: "",
@@ -72,6 +73,8 @@ const FeesMaster = () => {
       const result = await fetchStudentFeesSeesionByGroupData(
         currentPage + 1,
         rowsPerPage,
+        "",
+        selectedSessionId,
       );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
@@ -140,9 +143,20 @@ const FeesMaster = () => {
   const formatStudentCategoryData = (students: any[]) => {
     return students.map((student: any) => [
       student.group_name,
-      student.group_name || "N/A",
 
-      <div key={student.id} className="flex items-center space-x-2">
+      // Render feetypes_html safely inside a <ul>
+
+      <div
+        key={`feetypes-${student.id}`}
+        dangerouslySetInnerHTML={{ __html: student.feetypes_html }}
+        className="ml-4 list-disc"
+      />,
+
+      // Action buttons
+      <div
+        key={`actions-${student.id}`}
+        className="flex items-center space-x-2"
+      >
         <IconButton
           onClick={() =>
             handleEdit(

@@ -19,13 +19,14 @@ export const fetchStudentFeesSeesionByGroupData = async (
   page?: number,
   perPage?: number,
   selectedClass?: string,
-  selectedSection?: string,
+  selectedSection?: any,
   keyword?: string,
 ) => {
   const response = await apiClient.get(`/fees-session-by-group`, {
     params: {
       page,
       perPage,
+      selectedSection
     },
   });
   return response.data;
