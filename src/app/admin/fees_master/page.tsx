@@ -69,7 +69,10 @@ const FeesMaster = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchStudentFeesSeesionByGroupData();
+      const result = await fetchStudentFeesSeesionByGroupData(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setData(formatStudentCategoryData(result.data));
       setLoading(false);
@@ -264,6 +267,9 @@ const FeesMaster = () => {
     selectableRows: "none", // Disable row selection
     filter: false, // Disable filter,
     viewColumns: false, // Disable view columns button
+
+    onChangePage: handlePageChange,
+    onChangeRowsPerPage: handleRowsPerPageChange,
   };
 
   const handleCancel = () => {
