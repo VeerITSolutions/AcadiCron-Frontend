@@ -36,6 +36,7 @@ import {
   deleteFeeGroupsFeeTypeData,
   editFeeGroupsFeeTypeData,
 } from "@/services/studentFeeGroupsFeeType";
+import { useRouter } from "next/navigation";
 const FeesMaster = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<Array<any>>>([]);
@@ -108,7 +109,7 @@ const FeesMaster = () => {
       setLoading(false);
     }
   };
-
+  const router = useRouter();
   const handleDelete = async (id: number) => {
     try {
       await deleteFeeGroupsFeeTypeData(id);
@@ -117,6 +118,11 @@ const FeesMaster = () => {
     } catch (error) {
       console.error("Delete failed", error);
     }
+  };
+
+  const handleAssign = async (id: number) => {
+    //want to redisng to assing page
+    router.push(`/admin/fees_master/assign/${id}`);
   };
 
   const handleEdit = (
@@ -179,6 +185,13 @@ const FeesMaster = () => {
         >
           <Edit />
         </IconButton>
+        <IconButton
+          onClick={() => handleAssign(student.id)}
+          aria-label="delete"
+        >
+          <Delete />
+        </IconButton>
+
         <IconButton
           onClick={() => handleDelete(student.id)}
           aria-label="delete"
