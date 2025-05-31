@@ -68,7 +68,6 @@ const StudentDetails = () => {
   console.log(getselectedSessionId);
 
   const columns = [
-    "All",
     "Admission No",
     "Student Name",
     "Class",
@@ -125,15 +124,15 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.class_name,
-      student.section_name,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
-      student.father_name || "N/A",
-      student.dob || "N/A",
+      student.class_name || "N/A",
 
-      student.mobileno,
-      <div key={student.id} className="flex items-center space-x-2">
+      student.father_name || "N/A",
+      student.category_name || "N/A",
+
+      student.gender,
+      /*  <div key={student.id} className="flex items-center space-x-2">
         <button
           onClick={() => handleAddFees(student.id)}
           aria-label="Add Fee"
@@ -141,7 +140,7 @@ const StudentDetails = () => {
         >
           Collect Fees
         </button>
-      </div>,
+      </div>, */
     ]);
   };
 
