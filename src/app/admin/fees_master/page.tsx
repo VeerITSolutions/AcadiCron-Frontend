@@ -14,7 +14,7 @@ import {
   fetchStudentFeesSeesionGroupData,
 } from "@/services/studentFeesSessionGroupService";
 
-import { Edit, Delete } from "@mui/icons-material";
+import { Edit, Delete, AssignmentInd, HowToReg } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
@@ -198,12 +198,13 @@ const FeesMaster = () => {
         >
           <Edit />
         </IconButton>
-        <IconButton
+        <HowToReg
+          className="hover:cursor-pointer"
           onClick={() => handleAssign(student.id)}
-          aria-label="delete"
+          aria-label="assign"
         >
           <Delete />
-        </IconButton>
+        </HowToReg>
 
         <IconButton
           onClick={() => handleDelete(student.id)}
