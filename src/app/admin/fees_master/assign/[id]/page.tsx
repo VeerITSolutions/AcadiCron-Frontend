@@ -23,6 +23,10 @@ import { useLoginDetails } from "@/store/logoStore";
 import { fetchSchSetting } from "@/services/schSetting";
 import router from "next/router";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
+import {
+  fetchStudentFeesSeesionByGroupData,
+  fetchStudentFeesSeesionByGroupSingleData,
+} from "@/services/studentFeesSessionGroupService";
 
 const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -37,6 +41,9 @@ const StudentDetails = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [feessessionbygroupiddata, setFeesSessionByGroupIdData] = useState<
+    Array<any>
+  >([]);
   const [category, setCategory] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
@@ -162,7 +169,11 @@ const StudentDetails = () => {
 
         const resultSetting = await fetchSchSetting();
 
+        const resultFetchSessionData =
+          await fetchStudentFeesSeesionByGroupSingleData("258");
+
         setTotalCount(result.totalCount);
+        setFeesSessionByGroupIdData(resultFetchSessionData.data);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
 
@@ -277,6 +288,28 @@ const StudentDetails = () => {
 
   return (
     <DefaultLayout>
+      <div>
+        {feessessionbygroupiddata.length > 0 && (
+          <div className={styles.sessionInfo}>
+            <p>Fees Group: {feessessionbygroupiddata[0].group_name || "N/A"}</p>
+            <p>{feessessionbygroupiddata[0].feetype_name || "N/A"}</p>
+            <p>
+              Due Date:{" "}
+              {feessessionbygroupiddata[0].due_date
+                ? feessessionbygroupiddata[0].due_date
+                : "N/A"}
+            </p>
+            <p>
+              Amount : ₹{" "}
+              {feessessionbygroupiddata[0].amount
+                ? feessessionbygroupiddata[0].amount
+                : "N/A"}
+            </p>
+          </div>
+        )}
+      </div>
+      <hr />
+      <br />
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
           <label className={styles.label}>

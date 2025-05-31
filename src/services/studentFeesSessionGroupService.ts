@@ -16,17 +16,29 @@ export const fetchStudentFeesSeesionGroupData = async (
   return response.data;
 };
 export const fetchStudentFeesSeesionByGroupData = async (
-  page?: number,
-  perPage?: number,
-  selectedClass?: string,
+  page?: any,
+  perPage?: any,
+  selectedClass?: any,
   selectedSection?: any,
   keyword?: string,
+  id?: string,
 ) => {
   const response = await apiClient.get(`/fees-session-by-group`, {
     params: {
       page,
       perPage,
-      selectedSection
+      selectedSection,
+      keyword,
+      id,
+    },
+  });
+  return response.data;
+};
+
+export const fetchStudentFeesSeesionByGroupSingleData = async (id?: any) => {
+  const response = await apiClient.get(`/fees-session-by-group`, {
+    params: {
+      id,
     },
   });
   return response.data;
