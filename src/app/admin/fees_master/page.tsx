@@ -56,10 +56,6 @@ const FeesMaster = () => {
   const sessionName = useLoginDetails((state) => state.selectedSessionName);
   const selectedSessionId = useLoginDetails((state) => state.selectedSessionId);
 
-  useEffect(() => {
-    console.log("Session:", sessionName);
-  }, [sessionName, selectedSessionId]);
-
   const [formData, setFormData] = useState({
     fees_group: "",
     fees_type: "",
