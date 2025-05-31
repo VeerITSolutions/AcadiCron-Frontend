@@ -1,20 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-
-import {
-  createFeesMasterData,
-  deleteFeesMasterData,
-  editFeesMasterData,
-  fetchStudentFeesMasterData,
-} from "@/services/studentFeesMasterService";
-import { fetchStudentFeesGroupData } from "@/services/studentFeesGroupService";
 
 import { fetchStudentFeesTypeData } from "@/services/studentFeesTypeService";
 import {
@@ -26,11 +18,11 @@ import { Edit, Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
-import styles from "./User.module.css";
+
 import { useInitializeLoginDetails, useLoginDetails } from "@/store/logoStore";
-import FeeGroupSelect from "@/components/DynamicSelect";
+
 import DynamicSelect from "@/components/DynamicSelect";
-import { count } from "console";
+
 import {
   createFeeGroupsFeeTypeData,
   deleteFeeGroupsFeeTypeData,
@@ -43,19 +35,16 @@ const FeesMaster = () => {
   const { themType, setThemType } = useGlobalState();
   const [datafeesgroupdata, setFessGroupData] = useState<Array<Array<any>>>([]);
   const [datafesstypedata, setFessTypeData] = useState<Array<Array<any>>>([]);
-  const [selectedFeeGroup, setSelectedFeeGroup] = useState<any>(null);
 
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [totalCount, setTotalCount] = useState(0);
-  const [colorMode, setColorMode] = useColorMode();
-  useInitializeLoginDetails();
 
   const sessionName = useLoginDetails((state) => state.selectedSessionName);
   const selectedSessionId = useLoginDetails((state) => state.selectedSessionId);
-
+  const router = useRouter();
   const [formData, setFormData] = useState({
     fees_group: "",
     fees_type: "",
@@ -105,7 +94,35 @@ const FeesMaster = () => {
       setLoading(false);
     }
   };
-  const router = useRouter();
+  const calculateFine = useCallback(() => {
+    const amt = parseFloat(formData.amount);
+    const perc = parseFloat(formData.percentage);
+
+    if (formData.fine_type === "percentage") {
+      if (!isNaN(amt) && !isNaN(perc)) {
+        const fine = ((amt * perc) / 100).toFixed(2);
+        setFormData((prev) => ({
+          ...prev,
+          fine_amount: fine,
+        }));
+      }
+    } else if (formData.fine_type === "fix") {
+      // Leave it as is
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        fine_amount: "",
+      }));
+    }
+  }, [formData.amount, formData.percentage, formData.fine_type]);
+  useEffect(() => {
+    calculateFine();
+  }, [calculateFine]);
+
+  useEffect(() => {
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage]);
+
   const handleDelete = async (id: number) => {
     try {
       await deleteFeeGroupsFeeTypeData(id);
@@ -205,9 +222,6 @@ const FeesMaster = () => {
       [name]: value,
     }));
   };
-  useEffect(() => {
-    fetchData(page, rowsPerPage);
-  }, [page, rowsPerPage]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -325,32 +339,6 @@ const FeesMaster = () => {
     });
     setIsEditing(false);
     setEditCategoryId(null);
-  };
-
-  useEffect(() => {
-    calculateFine();
-  }, [formData.amount, formData.percentage, formData.amount]);
-
-  const calculateFine = () => {
-    const amt = parseFloat(formData.amount);
-    const perc = parseFloat(formData.percentage);
-
-    if (formData.fine_type === "percentage") {
-      if (!isNaN(amt) && !isNaN(perc)) {
-        const fine = ((amt * perc) / 100).toFixed(2);
-        setFormData((prev) => ({
-          ...prev,
-          fine_amount: fine,
-        }));
-      }
-    } else if (formData.fine_type === "fix") {
-      // Leave fine_amount as it is; user inputs manually
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        fine_amount: "",
-      }));
-    }
   };
 
   return (
