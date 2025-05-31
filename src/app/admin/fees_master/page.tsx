@@ -232,8 +232,9 @@ const FeesMaster = () => {
           formData.amount,
           formData.fine_type,
           formData.percentage,
-          '',
+          "",
           formData.fine_amount,
+          selectedSessionId,
         );
 
         if (result.success) {

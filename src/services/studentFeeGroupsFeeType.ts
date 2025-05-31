@@ -22,6 +22,7 @@ export const createFeeGroupsFeeTypeData = async (
   percentage?: any,
   descriptiond?: any,
   fine_amount?: string,
+  session_id?: any,
 ): Promise<any> => {
   try {
     const response = await apiClient.post("/fee-groups-feetype", {
@@ -33,6 +34,7 @@ export const createFeeGroupsFeeTypeData = async (
       percentage,
 
       fine_amount,
+      session_id,
     });
     return response.data;
   } catch (error) {
