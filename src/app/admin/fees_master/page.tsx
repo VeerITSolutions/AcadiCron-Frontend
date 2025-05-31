@@ -120,14 +120,14 @@ const FeesMaster = () => {
 
   const handleEdit = (
     id: number,
-    fees_group_value: string,
-    fees_type_value: string,
-    due_date_value: string,
-    amount_value: string,
-    fine_type_value: string,
-    percentage_value: string,
-    description_value: string,
-    fine_amount_value: string,
+    fees_group_value: any,
+    fees_type_value: any,
+    due_date_value: any,
+    amount_value: any,
+    fine_type_value: any,
+    percentage_value: any,
+
+    fine_amount_value: any,
   ) => {
     setIsEditing(true);
     setEditCategoryId(id);
@@ -139,9 +139,10 @@ const FeesMaster = () => {
       amount: amount_value,
       fine_type: fine_type_value,
       percentage: percentage_value,
-      description: description_value,
+      description: "",
       fine_amount: fine_amount_value,
     });
+    console.log("Edit formData:", formData);
   };
 
   const formatStudentCategoryData = (students: any[]) => {
@@ -149,7 +150,7 @@ const FeesMaster = () => {
       student.group_name,
 
       // Render feetypes_html safely inside a <ul>
-      
+
       <div
         key={`feetypes-${student.id}`}
         dangerouslySetInnerHTML={{ __html: student.feetypes_html }}
@@ -165,13 +166,13 @@ const FeesMaster = () => {
           onClick={() =>
             handleEdit(
               student.id,
-              student.fees_group,
-              student.fees_type,
+              student.fee_groups_id,
+              student.feetype_id,
               student.due_date,
               student.amount,
               student.fine_type,
-              student.percentage,
-              student.description,
+              student.fine_percentage,
+
               student.fine_amount,
             )
           }
@@ -331,8 +332,6 @@ const FeesMaster = () => {
         fine_amount: "",
       }));
     }
-
-    console.log("fine_amount updated:", formData.fine_amount); // Note: this logs old value
   };
 
   return (
