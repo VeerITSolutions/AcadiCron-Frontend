@@ -149,7 +149,7 @@ const FeesMaster = () => {
       student.group_name,
 
       // Render feetypes_html safely inside a <ul>
-
+      
       <div
         key={`feetypes-${student.id}`}
         dangerouslySetInnerHTML={{ __html: student.feetypes_html }}
