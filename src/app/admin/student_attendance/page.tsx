@@ -11,32 +11,11 @@ import Loader from "@/components/common/Loader";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
+
 import { toast } from "react-toastify";
-import { Span } from "next/dist/trace";
-import { fetchRoleData } from "@/services/roleService";
-import { fetchStaffData } from "@/services/staffService";
-import {
-  createStafftAttendencData,
-  createStudentAttendencData,
-} from "@/services/staffAttendence";
-import { json } from "stream/consumers";
-import { set } from "date-fns";
+
+import { createStudentAttendencData } from "@/services/staffAttendence";
+
 import { getClasses } from "@/services/classesService";
 import { fetchsectionByClassData } from "@/services/sectionsService";
 
@@ -49,7 +28,7 @@ const StudentDetails = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
-  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
+  
 
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
