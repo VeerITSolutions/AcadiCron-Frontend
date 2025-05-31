@@ -22,6 +22,7 @@ import { darkTheme, lightTheme } from "@/components/theme/theme";
 import { useLoginDetails } from "@/store/logoStore";
 import { fetchSchSetting } from "@/services/schSetting";
 import router from "next/router";
+import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 
 const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -36,10 +37,18 @@ const StudentDetails = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
+  const [category, setCategory] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedGender, setSelectedGender] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedRTE, setSelectedRTE] = useState<string | undefined>(undefined);
   const [keyword, setKeyword] = useState<string>("");
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
@@ -186,6 +195,9 @@ const StudentDetails = () => {
       if (selectedClass) {
         const sectionsResult = await fetchsectionByClassData(selectedClass);
         setSections(sectionsResult.data);
+
+        const resultCategory = await fetchStudentCategoryData();
+        setCategory(resultCategory.data);
       } else {
         setSections([]);
       }
@@ -222,6 +234,20 @@ const StudentDetails = () => {
     setPage(0);
   };
 
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleGenderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGender(event.target.value);
+  };
+
+  const handleRTEChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRTE(event.target.value);
+  };
+
   const handleSearch = () => {
     setPage(0);
     fetchData(selectedClass, selectedSection, keyword);
@@ -229,6 +255,9 @@ const StudentDetails = () => {
   const handleRefresh = () => {
     setSelectedClass("");
     setSelectedSection("");
+    setSelectedCategory("");
+    setSelectedGender("");
+    setSelectedRTE("");
     setKeyword("");
   };
 
@@ -282,6 +311,45 @@ const StudentDetails = () => {
               ))}
             </select>
           </label>
+          <label className={styles.label}>
+            Category:
+            <select
+              value={selectedCategory || ""}
+              onChange={handleCategoryChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              <option value="">Select</option>
+              {category.map((sec: any) => (
+                <option key={sec.id} value={sec.id}>
+                  {sec.category}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+            Gender:
+            <select
+              value={selectedGender || ""}
+              onChange={handleGenderChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </label>
+          <label className={styles.label}>
+            RTE
+            <select
+              value={selectedRTE || ""}
+              onChange={handleRTEChange}
+              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+            >
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </label>
           <div className={styles.searchGroup}>
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
@@ -299,7 +367,7 @@ const StudentDetails = () => {
         <>
           <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
             <MUIDataTable
-              title={"Student List"}
+              title={"Assign Fees Group"}
               data={data}
               columns={columns}
               options={{
