@@ -30,22 +30,27 @@ const DynamicSelect: React.FC<Props> = ({
   const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
 
   // Fetch label for initial value (if value is set)
+
   useEffect(() => {
     const fetchInitialLabel = async () => {
-      if (value && !selectedOption) {
+      if (value) {
         try {
           const res = await apiClient.get(`${apiEndpoint}/${value}`);
           const item = res.data;
           const option: OptionType = {
-            value: item.id,
+            value: item.id.toString(),
             label: item.name || item.label,
           };
           setSelectedOption(option);
         } catch (error) {
           console.error("Failed to fetch label for selected value", error);
+          setSelectedOption(null); // Optional: reset if failed
         }
+      } else {
+        setSelectedOption(null); // Clear when value is empty
       }
     };
+
     fetchInitialLabel();
   }, [value, apiEndpoint]);
 

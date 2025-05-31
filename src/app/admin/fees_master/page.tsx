@@ -120,21 +120,20 @@ const FeesMaster = () => {
 
   const handleEdit = (
     id: number,
-    fees_group_value: any,
-    fees_type_value: any,
+    fees_group_id: number,
+    fees_type_id: number,
     due_date_value: any,
     amount_value: any,
     fine_type_value: any,
     percentage_value: any,
-
     fine_amount_value: any,
   ) => {
     setIsEditing(true);
     setEditCategoryId(id);
 
     setFormData({
-      fees_group: fees_group_value,
-      fees_type: fees_type_value,
+      fees_group: String(fees_group_id), // ✅ Only set the ID as a string
+      fees_type: String(fees_type_id),
       due_date: due_date_value,
       amount: amount_value,
       fine_type: fine_type_value,
@@ -142,7 +141,6 @@ const FeesMaster = () => {
       description: "",
       fine_amount: fine_amount_value,
     });
-    console.log("Edit formData:", formData);
   };
 
   const formatStudentCategoryData = (students: any[]) => {
