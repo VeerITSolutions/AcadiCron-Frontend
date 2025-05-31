@@ -78,17 +78,27 @@ export const deleteFeeGroupsFeeTypeData = async (id: number) => {
 // Edit a student category by ID
 export const editFeeGroupsFeeTypeData = async (
   id: number,
-  name: string,
-  description?: string,
-  fees_type?: string,
-  due_date?: string,
-  amount?: string,
-  fine_type?: string,
-  percentage?: string,
-
-  fine_amount?: string,
+  fees_group?: any,
+  fees_type?: any,
+  due_date?: any,
+  amount?: any,
+  fine_type?: any,
+  percentage?: any,
+  description?: any,
+  fine_amount?: any,
+  selectedSessionId?: any,
 ) => {
-  const data = { name, description }; // Create an object with the name field
+  const data = {
+    fees_group,
+    fees_type,
+    due_date,
+    amount,
+    fine_type,
+    percentage,
+    description,
+    fine_amount,
+    selectedSessionId,
+  }; // Create an object with the name field
   const response = await apiClient.post(`/fee-groups-feetype/${id}`, data);
   return response.data;
 };

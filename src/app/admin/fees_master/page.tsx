@@ -215,8 +215,15 @@ const FeesMaster = () => {
         const result = await editFeeGroupsFeeTypeData(
           editCategoryId,
 
-          formData.description,
-          formData.description,
+          formData.fees_group,
+          formData.fees_type,
+          formData.due_date,
+          formData.amount,
+          formData.fine_type,
+          formData.percentage,
+          "",
+          formData.fine_amount,
+          selectedSessionId,
         );
         if (result.success) {
           toast.success("updated successfully");
