@@ -33,6 +33,7 @@ import DynamicSelect from "@/components/DynamicSelect";
 import { count } from "console";
 import {
   createFeeGroupsFeeTypeData,
+  deleteFeeGroupsFeeTypeData,
   editFeeGroupsFeeTypeData,
 } from "@/services/studentFeeGroupsFeeType";
 const FeesMaster = () => {
@@ -110,7 +111,7 @@ const FeesMaster = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteFeesMasterData(id);
+      await deleteFeeGroupsFeeTypeData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
