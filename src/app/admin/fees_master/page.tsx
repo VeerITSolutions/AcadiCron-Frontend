@@ -212,6 +212,10 @@ const FeesMaster = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
+        if (formData.fine_amount === "" && formData.fine_type !== "none") {
+          toast.error("Fine amount is required when fine type is not 'none'");
+          return;
+        }
         const result = await editFeeGroupsFeeTypeData(
           editCategoryId,
 
