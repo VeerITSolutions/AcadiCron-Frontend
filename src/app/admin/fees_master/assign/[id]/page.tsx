@@ -61,14 +61,13 @@ const StudentDetails = () => {
   console.log(getselectedSessionId);
 
   const columns = [
-    "Class",
-    "Section",
+    "All",
     "Admission No",
     "Student Name",
+    "Class",
     "Father Name",
-    "Date Of Birth",
-    "Phone",
-    "Action",
+    "Category",
+    "Gender",
   ];
 
   const options = {
