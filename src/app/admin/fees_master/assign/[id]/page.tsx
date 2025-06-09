@@ -38,14 +38,12 @@ import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 import { fetchSchSetting } from "@/services/schSetting";
 import { fetchStudentFeesSeesionByGroupSingleData } from "@/services/studentFeesSessionGroupService";
 const columns = [
-  "Student Id",
   "Admission No",
   "Student Name",
   "Class",
-  "Date Of Birth",
-  "Gender",
+  "Father Name",
   "Category",
-  "Mobile Number",
+  "Gender",
 ];
 
 const options = {
@@ -123,14 +121,23 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
-      student.id,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class_name || "N/A",
-      student.dob || "N/A",
-      student.gender || "N/A",
-      student.category_id,
-      student.mobileno,
+
+      student.father_name || "N/A",
+      student.category_name || "N/A",
+
+      student.gender,
+      /*  <div key={student.id} className="flex items-center space-x-2">
+        <button
+          onClick={() => handleAddFees(student.id)}
+          aria-label="Add Fee"
+          className="flex flex-nowrap items-center gap-2 whitespace-nowrap rounded bg-[#0070f3] px-2 py-2 font-medium text-white hover:bg-[#005bb5]"
+        >
+          Collect Fees
+        </button>
+      </div>, */
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -147,6 +154,9 @@ const StudentDetails = () => {
     selectedClass?: string,
     selectedSection?: string,
     keyword?: string,
+    selectedCategory?: string,
+    selectedGender?: string,
+    selectedRTE?: string,
   ) => {
     try {
       setLoading(true);
@@ -160,6 +170,9 @@ const StudentDetails = () => {
           selectedSection,
           keyword,
           selectedSessionId,
+          selectedCategory,
+          selectedGender,
+          selectedRTE,
         );
 
         const resultSetting = await fetchSchSetting();
@@ -217,8 +230,22 @@ const StudentDetails = () => {
   }, [selectedClass]);
 
   useEffect(() => {
-    fetchData(selectedClass, selectedSection, keyword);
-  }, [selectedClass, selectedSection, keyword]);
+    fetchData(
+      selectedClass,
+      selectedSection,
+      keyword,
+      selectedCategory,
+      selectedGender,
+      selectedRTE,
+    );
+  }, [
+    selectedClass,
+    selectedSection,
+    keyword,
+    selectedCategory,
+    selectedGender,
+    selectedRTE,
+  ]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
