@@ -5,34 +5,71 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import {
-  deleteStudentBluk,
-  fetchStudentCalculateData,
-  fetchStudentData,
-} from "@/services/studentService";
+import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
-import { format } from "date-fns";
-import { fetchsectionByClassData } from "@/services/sectionsService"; // Import your section API service
+import {
+  fetchsectionByClassData,
+  fetchsectionData,
+} from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-
-import { useLoginDetails } from "@/store/logoStore";
-import { fetchSchSetting } from "@/services/schSetting";
-import router from "next/router";
-import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 import {
-  fetchStudentFeesSeesionByGroupData,
-  fetchStudentFeesSeesionByGroupSingleData,
-} from "@/services/studentFeesSessionGroupService";
+  Edit,
+  Delete,
+  Visibility,
+  TextFields,
+  AttachMoney,
+} from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from "@mui/material";
+import { toast } from "react-toastify";
+import { useLoginDetails } from "@/store/logoStore";
+import { fetchStudentCategoryData } from "@/services/studentCategoryService";
+import { fetchSchSetting } from "@/services/schSetting";
+import { fetchStudentFeesSeesionByGroupSingleData } from "@/services/studentFeesSessionGroupService";
+const columns = [
+  "Student Id",
+  "Admission No",
+  "Student Name",
+  "Class",
+  "Date Of Birth",
+  "Gender",
+  "Category",
+  "Mobile Number",
+];
+
+const options = {
+  filterType: "checkbox",
+  serverSide: true,
+  pagination: false,
+  responsive: "standard",
+  search: false,
+  filter: false,
+  viewColumns: false,
+  tableBodyMaxHeight: "500px",
+};
 
 const StudentDetails = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
-  const [dataSetting, setDataSetting] = useState<string | undefined>(undefined);
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedGender, setSelectedGender] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedRTE, setSelectedRTE] = useState<string | undefined>(undefined);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,52 +78,17 @@ const StudentDetails = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [classes, setClassessData] = useState<Array<any>>([]);
   const [section, setSections] = useState<Array<any>>([]);
-  const [feessessionbygroupiddata, setFeesSessionByGroupIdData] = useState<
-    Array<any>
-  >([]);
-  const [category, setCategory] = useState<Array<any>>([]);
   const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedGender, setSelectedGender] = useState<string | undefined>(
-    undefined,
-  );
-  const [selectedRTE, setSelectedRTE] = useState<string | undefined>(undefined);
   const [keyword, setKeyword] = useState<string>("");
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
-  const [editedData, setEditedData] = useState(data);
-
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
-  console.log(getselectedSessionId);
-
-  const columns = [
-    "Admission No",
-    "Student Name",
-    "Class",
-    "Father Name",
-    "Category",
-    "Gender",
-  ];
-
-  const options = {
-    filterType: "checkbox",
-    serverSide: true,
-    pagination: false,
-    responsive: "standard",
-    search: false,
-    selectableRows: "none", // Disable row selection
-    filter: false,
-    viewColumns: false,
-    tableBodyMaxHeight: "500px",
-  };
+  const router = useRouter();
+  const [category, setCategory] = useState<Array<any>>([]);
+  const [feessessionbygroupiddata, setFeesSessionByGroupIdData] = useState<
+    Array<any>
+  >([]);
+  const [dataSetting, setDataSetting] = useState<string | undefined>(undefined);
 
   const handleDelete = async () => {
     try {
@@ -111,7 +113,7 @@ const StudentDetails = () => {
       alert("Failed to delete selected data.");
     }
   };
-  const router = useRouter();
+
   const handleRowSelectionChange = (
     curRowSelected: { dataIndex: number; index: number }[],
     allRowsSelected: { dataIndex: number; index: number }[],
@@ -119,31 +121,25 @@ const StudentDetails = () => {
   ) => {
     setSelectedRows(rowsSelected); // Update selected rows
   };
-  const handleAddFees = (id: number) => {
-    router.push(`/admin/student/fees/${id}`);
-  };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
+      student.id,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class_name || "N/A",
-
-      student.father_name || "N/A",
-      student.category_name || "N/A",
-
-      student.gender,
-      /*  <div key={student.id} className="flex items-center space-x-2">
-        <button
-          onClick={() => handleAddFees(student.id)}
-          aria-label="Add Fee"
-          className="flex flex-nowrap items-center gap-2 whitespace-nowrap rounded bg-[#0070f3] px-2 py-2 font-medium text-white hover:bg-[#005bb5]"
-        >
-          Collect Fees
-        </button>
-      </div>, */
+      student.dob || "N/A",
+      student.gender || "N/A",
+      student.category_id,
+      student.mobileno,
     ]);
   };
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   useEffect(() => {
     setSelectedSessionId(getselectedSessionId);
   }, []);
@@ -243,20 +239,6 @@ const StudentDetails = () => {
     setPage(0);
   };
 
-  const handleCategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSelectedCategory(event.target.value);
-  };
-
-  const handleGenderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedGender(event.target.value);
-  };
-
-  const handleRTEChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedRTE(event.target.value);
-  };
-
   const handleSearch = () => {
     setPage(0);
     fetchData(selectedClass, selectedSection, keyword);
@@ -270,16 +252,18 @@ const StudentDetails = () => {
     setKeyword("");
   };
 
-  // Save changes to API
-  const handleSave = async () => {
-    try {
-      // const response = await axios.post(apiEndpoint, editedData);
-      // console.log("Saved successfully:", response.data);
-      alert("Changes saved successfully!");
-    } catch (error) {
-      console.error("Error saving data:", error);
-      alert("Failed to save changes.");
-    }
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleGenderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGender(event.target.value);
+  };
+
+  const handleRTEChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRTE(event.target.value);
   };
 
   /* if (loading) return <Loader />; */
@@ -395,25 +379,24 @@ const StudentDetails = () => {
       {loading ? (
         <Loader />
       ) : (
-        <>
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title={"Assign Fees Group"}
-              data={data}
-              columns={columns}
-              options={{
-                ...options,
-                count: totalCount,
-
-                onChangePage: handlePageChange,
-                onChangeRowsPerPage: handleRowsPerPageChange,
-                onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-
-                onRowsDelete: handleDelete,
-              }}
-            />
-          </ThemeProvider>
-        </>
+        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
+          <MUIDataTable
+            title={"Assign Fees Group"}
+            data={data}
+            columns={columns}
+            options={{
+              ...options,
+              count: totalCount,
+              page: page,
+              rowsPerPage: rowsPerPage,
+              onChangePage: handlePageChange,
+              onChangeRowsPerPage: handleRowsPerPageChange,
+              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
+              selectableRows: "multiple", // Allow multiple selection
+              onRowsDelete: handleDelete,
+            }}
+          />
+        </ThemeProvider>
       )}
     </DefaultLayout>
   );
