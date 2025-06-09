@@ -261,7 +261,14 @@ const StudentDetails = () => {
 
   const handleSearch = () => {
     setPage(0);
-    fetchData(selectedClass, selectedSection, keyword);
+    fetchData(
+      selectedClass,
+      selectedSection,
+      keyword,
+      selectedCategory,
+      selectedGender,
+      selectedRTE,
+    );
   };
   const handleRefresh = () => {
     setSelectedClass("");
@@ -271,7 +278,6 @@ const StudentDetails = () => {
     setSelectedRTE("");
     setKeyword("");
     setSelectedRows([]);
-    
   };
 
   const handleCategoryChange = (
