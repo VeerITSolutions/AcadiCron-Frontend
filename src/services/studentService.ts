@@ -34,6 +34,41 @@ export const fetchStudentData = async (
   });
   return response.data;
 };
+
+export const fetchStudentFeeListData = async (
+  page?: any,
+  perPage?: any,
+  selectedClass?: any,
+  selectedSection?: any,
+  keyword?: any,
+  selectedSessionId?: any,
+  bulkDelete?: any,
+  attendance?: any,
+  attendance_date?: any,
+  selectedCategory?: any,
+  selectedGender?: any,
+  selectedRTE?: any,
+  selectedFeesGroup?: any,
+) => {
+  const response = await apiClient.get(`/admin/feesStudentList`, {
+    params: {
+      page,
+      perPage,
+      selectedClass,
+      selectedSection,
+      keyword,
+      selectedSessionId,
+      bulkDelete,
+      attendance,
+      attendance_date,
+      selectedCategory,
+      selectedGender,
+      selectedRTE,
+      selectedFeesGroup,
+    },
+  });
+  return response.data;
+};
 export const fetchStudentHomeworkData = async (id?: any) => {
   const response = await apiClient.post(`/get-students-homework`, {
     id: id,

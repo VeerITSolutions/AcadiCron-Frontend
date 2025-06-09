@@ -5,7 +5,10 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { fetchStudentData } from "@/services/studentService";
+import {
+  fetchStudentData,
+  fetchStudentFeeListData,
+} from "@/services/studentService";
 import { fetchStudentFeesSeesionGroupData } from "@/services/studentFeesSessionGroupService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
@@ -71,7 +74,7 @@ const StudentDetails = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
+  const [selectedClass, setSelectedClass] = useState<string | undefined>("");
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
@@ -106,28 +109,31 @@ const StudentDetails = () => {
     selectedSection?: string,
     keyword?: string,
   ) => {
-    try {
-      const result = await fetchStudentData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        selectedSessionId,
-        "",
-        "",
-        "",
-        "",
-        "",
-        formData.fees_group,
-      );
-      setTotalCount(result.totalCount);
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
+    if (selectedClass && selectedSection) {
+      try {
+        const result = await fetchStudentFeeListData(
+          currentPage + 1,
+          rowsPerPage,
+          selectedClass,
+          selectedSection,
+          keyword,
+          selectedSessionId,
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          formData.fees_group,
+        );
+        setTotalCount(result.totalCount);
+        const formattedData = formatStudentData(result.data);
+        setData(formattedData);
+        setLoading(false);
+      } catch (error: any) {
+        setError(error.message);
+        setLoading(false);
+      }
     }
 
     try {
