@@ -23,7 +23,7 @@ const DynamicSelectForSearch: React.FC<Props> = ({
   name,
   value,
   onChange,
-  apiEndpoint = "/fees-group",
+  apiEndpoint = "/fees-session-by-group",
   isDark = false,
 }) => {
   const [inputValue, setInputValue] = useState("");
@@ -39,7 +39,7 @@ const DynamicSelectForSearch: React.FC<Props> = ({
           const item = res.data;
           const option: OptionType = {
             value: item.id.toString(),
-            label: item.name || item.label,
+            label: `${item.group_name} ${item.feetype_code}`,
           };
           setSelectedOption(option);
         } catch (error) {
@@ -129,7 +129,7 @@ const DynamicSelectForSearch: React.FC<Props> = ({
 
     const options: OptionType[] = data.data.map((item: any) => ({
       value: item.id,
-      label: item.name || item.label,
+      label: `${item.group_name} ${item.feetype_code}`,
     }));
 
     return {

@@ -240,7 +240,7 @@ const StudentDetails = () => {
                   name="fees_group"
                   value={formData.fees_group}
                   onChange={handleInputChange}
-                  apiEndpoint="/fees-group"
+                  apiEndpoint="/fees-session-by-group"
                   isDark={themType === "dark"}
                 />
               </div>
