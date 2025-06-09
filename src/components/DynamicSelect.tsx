@@ -72,6 +72,10 @@ const DynamicSelect: React.FC<Props> = ({
       ...base,
       color: isDark ? "#ffffff" : "#000000",
     }),
+    input: (base) => ({
+      ...base,
+      color: isDark ? "#ffffff" : "#000000",
+    }),
     menu: (base) => ({
       ...base,
       backgroundColor: isDark ? "#1e293b" : "#fff",
