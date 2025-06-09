@@ -129,15 +129,6 @@ const StudentDetails = () => {
       student.category_name || "N/A",
 
       student.gender,
-      /*  <div key={student.id} className="flex items-center space-x-2">
-        <button
-          onClick={() => handleAddFees(student.id)}
-          aria-label="Add Fee"
-          className="flex flex-nowrap items-center gap-2 whitespace-nowrap rounded bg-[#0070f3] px-2 py-2 font-medium text-white hover:bg-[#005bb5]"
-        >
-          Collect Fees
-        </button>
-      </div>, */
     ]);
   };
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -279,6 +270,8 @@ const StudentDetails = () => {
     setSelectedGender("");
     setSelectedRTE("");
     setKeyword("");
+    setSelectedRows([]);
+    
   };
 
   const handleCategoryChange = (
