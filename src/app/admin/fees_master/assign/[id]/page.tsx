@@ -120,14 +120,18 @@ const StudentDetails = () => {
           );
 
           const response = await assignStudentBluk(formData);
+          if (response.status === 200) {
+            toast.success("Selected data assigned successfully.");
+          }
         } catch (error) {
           console.error("Error assign data:", error);
+          toast.error("Failed to assign selected data.");
           alert("Failed to assign selected data.");
         }
       }
     } catch (error) {
       console.error("Error assign data:", error);
-      alert("Failed to assign selected data.");
+      toast.error("Failed to assign selected data.");
     }
   };
 
