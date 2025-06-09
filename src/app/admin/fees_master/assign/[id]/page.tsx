@@ -123,6 +123,14 @@ const StudentDetails = () => {
           if (response.status === 200) {
             toast.success("Selected data assigned successfully.");
           }
+          fetchData(
+            selectedClass,
+            selectedSection,
+            keyword,
+            selectedCategory,
+            selectedGender,
+            selectedRTE,
+          );
         } catch (error) {
           console.error("Error assign data:", error);
           toast.error("Failed to assign selected data.");
