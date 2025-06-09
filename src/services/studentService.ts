@@ -13,6 +13,7 @@ export const fetchStudentData = async (
   selectedCategory?: any,
   selectedGender?: any,
   selectedRTE?: any,
+  selectedFeesGroup?: any,
 ) => {
   const response = await apiClient.get(`/admin/dtstudentlist`, {
     params: {
@@ -28,6 +29,7 @@ export const fetchStudentData = async (
       selectedCategory,
       selectedGender,
       selectedRTE,
+      selectedFeesGroup,
     },
   });
   return response.data;

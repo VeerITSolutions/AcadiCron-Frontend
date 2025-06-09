@@ -114,6 +114,12 @@ const StudentDetails = () => {
         selectedSection,
         keyword,
         selectedSessionId,
+        "",
+        "",
+        "",
+        "",
+        "",
+        formData.fees_group,
       );
       setTotalCount(result.totalCount);
       const formattedData = formatStudentData(result.data);
