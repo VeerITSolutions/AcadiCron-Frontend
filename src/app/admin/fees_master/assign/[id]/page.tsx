@@ -5,7 +5,11 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
+import {
+  assignStudentBluk,
+  deleteStudentBluk,
+  fetchStudentData,
+} from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
 import {
@@ -38,6 +42,7 @@ import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 import { fetchSchSetting } from "@/services/schSetting";
 import { fetchStudentFeesSeesionByGroupSingleData } from "@/services/studentFeesSessionGroupService";
 const columns = [
+  "Studnet Session Id",
   "Admission No",
   "Student Name",
   "Class",
@@ -88,7 +93,7 @@ const StudentDetails = () => {
   >([]);
   const [dataSetting, setDataSetting] = useState<string | undefined>(undefined);
 
-  const handleDelete = async () => {
+  const handleAssign = async () => {
     try {
       const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
 
@@ -97,18 +102,32 @@ const StudentDetails = () => {
       console.log(idsToDelete); // Handle response
 
       if (
-        window.confirm("Are you sure you want to delete the selected items?")
+        window.confirm("Are you sure you want to assign the selected items?")
       ) {
         try {
-          const response = await deleteStudentBluk(idsToDelete);
+          const formData = new FormData();
+          idsToDelete.forEach((id) => {
+            formData.append("student_ids[]", id);
+          });
+
+          formData.append(
+            "fee_session_group_id",
+            feessessionbygroupiddata[0].fee_session_group_id,
+          );
+          formData.append(
+            "fee_groups_id",
+            feessessionbygroupiddata[0].fee_groups_id,
+          );
+
+          const response = await assignStudentBluk(formData);
         } catch (error) {
-          console.error("Error deleting data:", error);
-          alert("Failed to delete selected data.");
+          console.error("Error assign data:", error);
+          alert("Failed to assign selected data.");
         }
       }
     } catch (error) {
-      console.error("Error deleting data:", error);
-      alert("Failed to delete selected data.");
+      console.error("Error assign data:", error);
+      alert("Failed to assign selected data.");
     }
   };
 
@@ -121,6 +140,7 @@ const StudentDetails = () => {
   };
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
+      student.student_session_id,
       student.admission_no,
       `${student.firstname.trim()} ${student.lastname.trim()}`,
       student.class_name || "N/A",
@@ -174,6 +194,7 @@ const StudentDetails = () => {
           await fetchStudentFeesSeesionByGroupSingleData("258");
 
         setTotalCount(result.totalCount);
+
         setFeesSessionByGroupIdData(resultFetchSessionData.data);
         const formattedData = formatStudentData(result.data);
         setData(formattedData);
@@ -421,7 +442,7 @@ const StudentDetails = () => {
               onChangeRowsPerPage: handleRowsPerPageChange,
               onRowSelectionChange: handleRowSelectionChange, // Handle row selection
               selectableRows: "multiple", // Allow multiple selection
-              onRowsDelete: handleDelete,
+              onRowsDelete: handleAssign,
             }}
           />
         </ThemeProvider>
