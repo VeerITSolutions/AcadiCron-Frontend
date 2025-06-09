@@ -231,22 +231,21 @@ const StudentDetails = () => {
   return (
     <DefaultLayout>
       <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Fees Group:
-            <div className={styles.fixedSelectWrapper}>
-              <div style={{ width: "200px" }}>
-                <DynamicSelectForSearch
-                  name="fees_group"
-                  value={formData.fees_group}
-                  onChange={handleInputChange}
-                  apiEndpoint="/fees-session-by-group"
-                  isDark={themType === "dark"}
-                />
-              </div>
+        <label className={styles.label}>
+          Fees Group:
+          <div className={styles.fixedSelectWrapper}>
+            <div style={{ width: "200px" }}>
+              <DynamicSelectForSearch
+                name="fees_group"
+                value={formData.fees_group}
+                onChange={handleInputChange}
+                apiEndpoint="/fees-session-by-group"
+                isDark={themType === "dark"}
+              />
             </div>
-          </label>
-
+          </div>
+        </label>
+        <div className={styles.filterGroup}>
           <label className={styles.label}>
             Class:
             <select
