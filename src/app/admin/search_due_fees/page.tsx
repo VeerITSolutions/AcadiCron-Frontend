@@ -33,6 +33,8 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
+import DynamicSelect from "@/components/DynamicSelect";
+import DynamicSelectForSearch from "@/components/DynamicSelectForSearch";
 const columns = [
   "Admission No",
   "Roll Number",
@@ -181,6 +183,7 @@ const StudentDetails = () => {
   };
 
   const handleRefresh = () => {
+    setFormData({ fees_group: "" });
     setSelectedClass("");
     setSelectedSection("");
     setKeyword("");
@@ -208,6 +211,20 @@ const StudentDetails = () => {
     }
   };
 
+  const [formData, setFormData] = useState({
+    fees_group: "",
+  });
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
@@ -217,19 +234,17 @@ const StudentDetails = () => {
         <div className={styles.filterGroup}>
           <label className={styles.label}>
             Fees Group:
-            <select
-              value={selectedClass || ""}
-              onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-
-              {feessessiongroupdata.map((section: any) => (
-                <option key={section.id} value={section.id}>
-                  {section.fees_group_name}
-                </option>
-              ))}
-            </select>
+            <div className={styles.fixedSelectWrapper}>
+              <div style={{ width: "200px" }}>
+                <DynamicSelectForSearch
+                  name="fees_group"
+                  value={formData.fees_group}
+                  onChange={handleInputChange}
+                  apiEndpoint="/fees-group"
+                  isDark={themType === "dark"}
+                />
+              </div>
+            </div>
           </label>
 
           <label className={styles.label}>
@@ -237,7 +252,7 @@ const StudentDetails = () => {
             <select
               value={selectedClass || ""}
               onChange={handleClassChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+              className={styles.select}
             >
               <option value="">Select</option>
               {classes.map((cls) => (
@@ -253,8 +268,8 @@ const StudentDetails = () => {
             <select
               value={selectedSection || ""}
               onChange={handleSectionChange}
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-              disabled={!selectedClass} // Disable section dropdown if no class is selected
+              className={styles.select}
+              disabled={!selectedClass}
             >
               <option value="">Select</option>
               {section.map((sec) => (
@@ -269,14 +284,11 @@ const StudentDetails = () => {
             <button onClick={handleSearch} className={styles.searchButton}>
               Search
             </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
+            <button onClick={handleRefresh} className={styles.resetButton}>
               Reset
             </button>
           </div>
         </div>
-        {/*  <div className={styles.searchGroup}>
-
-        </div> */}
       </div>
       {loading ? (
         <Loader />

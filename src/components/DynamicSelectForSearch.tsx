@@ -19,7 +19,7 @@ type Props = {
 
 import { StylesConfig } from "react-select";
 
-const DynamicSelect: React.FC<Props> = ({
+const DynamicSelectForSearch: React.FC<Props> = ({
   name,
   value,
   onChange,
@@ -57,10 +57,13 @@ const DynamicSelect: React.FC<Props> = ({
   const customStyles: StylesConfig<OptionType, false> = {
     control: (base, state) => ({
       ...base,
+      width: "200px", // Fixed width
+      maxWidth: "200px",
+      minWidth: "200px",
       backgroundColor: isDark ? "transparent" : "#fff",
       borderColor: isDark ? "#334155" : "#ccc",
       color: isDark ? "#ffffff" : "#000000",
-      padding: "0.75rem",
+      padding: "0.3rem 0.5rem",
       boxShadow: state.isFocused
         ? `0 0 0 1px ${isDark ? "#3b82f6" : "#2563eb"}`
         : base.boxShadow,
@@ -68,14 +71,30 @@ const DynamicSelect: React.FC<Props> = ({
         borderColor: isDark ? "#3b82f6" : "#2563eb",
       },
     }),
-    singleValue: (base) => ({
-      ...base,
-      color: isDark ? "#ffffff" : "#000000",
-    }),
     menu: (base) => ({
       ...base,
       backgroundColor: isDark ? "#1e293b" : "#fff",
       zIndex: 9999,
+      width: "200px",
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: isDark ? "#ffffff" : "#000000",
+      maxWidth: "180px",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+    }),
+    input: (base) => ({
+      ...base,
+      color: isDark ? "#ffffff" : "#000000",
+      maxWidth: "160px",
     }),
     option: (base, { isFocused }) => ({
       ...base,
@@ -150,4 +169,4 @@ const DynamicSelect: React.FC<Props> = ({
   );
 };
 
-export default DynamicSelect;
+export default DynamicSelectForSearch;
