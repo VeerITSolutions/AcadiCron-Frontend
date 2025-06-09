@@ -165,11 +165,13 @@ const StudentDetails = () => {
         const result = await fetchStudentData(
           "",
           "",
-
           selectedClass,
           selectedSection,
           keyword,
           selectedSessionId,
+          "",
+          "",
+          "",
           selectedCategory,
           selectedGender,
           selectedRTE,
