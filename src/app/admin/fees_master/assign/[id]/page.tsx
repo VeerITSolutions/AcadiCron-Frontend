@@ -41,6 +41,7 @@ import { useLoginDetails } from "@/store/logoStore";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
 import { fetchSchSetting } from "@/services/schSetting";
 import { fetchStudentFeesSeesionByGroupSingleData } from "@/services/studentFeesSessionGroupService";
+import SaveIcon from "@mui/icons-material/Save";
 const columns = [
   "Studnet Session Id",
   "Admission No",
@@ -452,9 +453,78 @@ const StudentDetails = () => {
               rowsPerPage: rowsPerPage,
               onChangePage: handlePageChange,
               onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              selectableRows: "multiple", // Allow multiple selection
-              onRowsDelete: handleAssign,
+              onRowSelectionChange: handleRowSelectionChange,
+              selectableRows: "multiple",
+
+              customToolbarSelect: (
+                selectedRows: any,
+                displayData: any,
+                setSelectedRows: any,
+              ) => {
+                const selectedIndexes = selectedRows.data.map(
+                  (d: any) => d.dataIndex,
+                );
+                const selectedStudentData = selectedIndexes.map(
+                  (index: any) => data[index],
+                );
+
+                const handleCustomAssign = async () => {
+                  const idsToDelete = selectedStudentData.map(
+                    (row: any) => row[0],
+                  ); // Assuming student ID is at index 0
+
+                  if (
+                    window.confirm(
+                      "Are you sure you want to assign the selected items?",
+                    )
+                  ) {
+                    const formData = new FormData();
+                    idsToDelete.forEach((id: any) => {
+                      formData.append("student_ids[]", id);
+                    });
+
+                    formData.append(
+                      "fee_session_group_id",
+                      feessessionbygroupiddata[0].fee_session_group_id,
+                    );
+                    formData.append(
+                      "fee_groups_id",
+                      feessessionbygroupiddata[0].fee_groups_id,
+                    );
+
+                    try {
+                      const response = await assignStudentBluk(formData);
+                      if (response.status === 200) {
+                        toast.success("Selected data assigned successfully.");
+                        fetchData(
+                          selectedClass,
+                          selectedSection,
+                          keyword,
+                          selectedCategory,
+                          selectedGender,
+                          selectedRTE,
+                        );
+                        setSelectedRows([]); // clear selection
+                      }
+                    } catch (err) {
+                      toast.error("Failed to assign selected data.");
+                      console.error("Assign error:", err);
+                    }
+                  }
+                };
+
+                return (
+                  <SaveIcon
+                    onClick={handleCustomAssign}
+                    style={{
+                      cursor: "pointer",
+                      color: "#2563eb",
+                      marginRight: "16px",
+                    }}
+                    titleAccess="Assign Selected"
+                  />
+                );
+              },
             }}
           />
         </ThemeProvider>
