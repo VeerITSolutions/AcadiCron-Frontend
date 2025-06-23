@@ -41,6 +41,7 @@ import LoaderSpiner from "@/components/common/LoaderSpiner";
 import { set } from "date-fns";
 import Loader from "@/components/common/Loader";
 import { useLoginDetails } from "@/store/logoStore";
+import FeeDetailsTable from "@/components/FeeDetailsTable";
 
 interface FeeData {
   fees_group: string;
@@ -225,7 +226,10 @@ const StudentDetails = () => {
               try {
                 setLoading(true);
                 const data = await fetchStudentSingleData(id);
-                const data2 = await fetchStudentFeesData(id);
+                const data2 = await fetchStudentFeesData(
+                  id,
+                  getselectedUserData.studentSessionId,
+                );
                 const datatimeline = await fetchStudentTimelineData(id);
                 const datadocument = await fetchStudentdocData(id);
 
@@ -350,7 +354,10 @@ const StudentDetails = () => {
               try {
                 setLoading(true);
                 const data = await fetchStudentSingleData(id);
-                const data2 = await fetchStudentFeesData(id);
+                const data2 = await fetchStudentFeesData(
+                  id,
+                  getselectedUserData.studentSessionId,
+                );
                 const datatimeline = await fetchStudentTimelineData(id);
                 const datadocument = await fetchStudentdocData(id);
 
@@ -562,7 +569,10 @@ const StudentDetails = () => {
           try {
             setLoading(true);
             const data = await fetchStudentSingleData(id);
-            const data2 = await fetchStudentFeesData(id);
+            const data2 = await fetchStudentFeesData(
+              id,
+              getselectedUserData.studentSessionId,
+            );
             const datatimeline = await fetchStudentTimelineData(id);
             const datadocument = await fetchStudentdocData(id);
 
@@ -1473,115 +1483,11 @@ const StudentDetails = () => {
 
               {activeTab === "fee" && (
                 <div className="fees-container">
-                  {student_due_fees?.length === 0 &&
-                  student_discount_fees?.length === 0 ? (
-                    <div className="alert alert-danger">No record found</div>
-                  ) : (
-                    <div className="table-responsive">
-                      <table className="table-hover table-striped table">
-                        {/* <thead>
-                        <tr>
-                          <th>Fees Group</th>
-                          <th>Fees Code</th>
-                          <th>Due Date</th>
-                          <th>Status</th>
-                          <th>Amount ({currency_symbol})</th>
-                          <th>Payment ID</th>
-                          <th>Mode</th>
-                          <th>Date</th>
-                          <th>Discount ({currency_symbol})</th>
-                          <th>Fine ({currency_symbol})</th>
-                          <th>Paid ({currency_symbol})</th>
-                          <th>Balance</th>
-                        </tr>
-                      </thead> */}
-                        <tbody>
-                          {/*  {student_due_fees?.map((fee: any, index: any) => (
-                          <tr
-                            key={index}
-                            className={
-                              fee.balance > 0 &&
-                              new Date(fee.due_date) < new Date()
-                                ? "danger"
-                                : ""
-                            }
-                          >
-                            <td>{fee.fees_group}</td>
-                            <td>{fee.fees_code}</td>
-                            <td>{fee.due_date || "N/A"}</td>
-                            <td>
-                              {fee.balance === 0 ? (
-                                <span className="label label-success">
-                                  Paid
-                                </span>
-                              ) : fee.paid > 0 ? (
-                                <span className="label label-warning">
-                                  Partial
-                                </span>
-                              ) : (
-                                <span className="label label-danger">
-                                  Unpaid
-                                </span>
-                              )}
-                            </td>
-                            <td>{fee.amount?.toFixed(2) || "0.00"}</td>
-                            <td>{fee.payment_id || "N/A"}</td>
-                            <td>{fee.mode || "N/A"}</td>
-                            <td>{fee.date || "N/A"}</td>
-                            <td>{fee.discount?.toFixed(2) || "0.00"}</td>
-                            <td>{fee.fine?.toFixed(2) || "0.00"}</td>
-                            <td>{fee.paid?.toFixed(2) || "0.00"}</td>
-                            <td>{fee.balance?.toFixed(2) || "0.00"}</td>
-                          </tr>
-                        ))}
-
-                        {student_discount_fees?.map(
-                          (discount: any, index: any) => (
-                            <tr
-                              key={`discount-${index}`}
-                              className="dark-light"
-                            >
-                              <td>Discount</td>
-                              <td>{discount.code}</td>
-                              <td colSpan={3}></td>
-                              <td>{discount.status}</td>
-                              <td colSpan={5}>
-                                {discount.description || "N/A"}
-                              </td>
-                            </tr>
-                          ),
-                        )}
-
-                        <tr className="total-bg">
-                          <td colSpan={4} className="text-right">
-                            Totals
-                          </td>
-                          <td>
-                            {currency_symbol}
-                            {totals?.amount?.toFixed(2) || "0.00"}
-                          </td>
-                          <td colSpan={3}></td>
-                          <td>
-                            {currency_symbol}
-                            {totals?.discount?.toFixed(2) || "0.00"}
-                          </td>
-                          <td>
-                            {currency_symbol}
-                            {totals?.fine?.toFixed(2) || "0.00"}
-                          </td>
-                          <td>
-                            {currency_symbol}
-                            {totals?.paid?.toFixed(2) || "0.00"}
-                          </td>
-                          <td>
-                            {currency_symbol}
-                            {totals?.balance?.toFixed(2) || "0.00"}
-                          </td>
-                        </tr> */}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
+                  <FeeDetailsTable
+                    student_due_fees={feeData.student_due_fees}
+                    student_discount_fees={feeData.student_discount_fees}
+                    currency_symbol={feeData.currency_symbol}
+                  />
                 </div>
               )}
 

@@ -245,7 +245,10 @@ const StudentDetails = () => {
           try {
             setLoading(true);
             const data = await fetchStudentSingleData(id);
-            const data2 = await fetchStudentFeesData(id);
+            const data2 = await fetchStudentFeesData(
+              id,
+              data.data.studentSessionId, // Pass the student
+            );
             const datatimeline = await fetchStudentTimelineData(id);
             const datadocument = await fetchStudentdocData(id);
 
