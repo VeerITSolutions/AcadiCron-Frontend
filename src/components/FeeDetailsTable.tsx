@@ -175,27 +175,6 @@ const FeeDetailsTable: React.FC<Props> = ({
             }),
           )}
 
-          {student_discount_fees.map((discount, dIndex) => (
-            <tr key={`discount-${dIndex}`} className="bg-slate-100">
-              <td className="p-2">Discount</td>
-              <td className="p-2">{discount.code}</td>
-              <td></td>
-              <td className="p-2" colSpan={9}>
-                {discount.status === "applied" ? (
-                  <>
-                    Discount of {currency_symbol}
-                    {Number(discount.amount)} applied: {discount.payment_id}
-                  </>
-                ) : (
-                  `Discount of ${currency_symbol}${Number(
-                    discount.amount,
-                  )} ${discount.status}`
-                )}
-              </td>
-            </tr>
-          ))}
-
-          {/* Totals */}
           <tr className="bg-gray-200 text-sm font-semibold">
             <td colSpan={4} className="p-2 text-right">
               Totals
