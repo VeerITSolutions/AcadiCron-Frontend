@@ -40,7 +40,7 @@ export default function RootLayout({
     const { token } = parseCookies();
 
     if (!token) {
-      router.push("/login"); // Redirect to login if no token found
+      router.push("/"); // Redirect to login if no token found
     } else {
       setLoading(false);
     }
