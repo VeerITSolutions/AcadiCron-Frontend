@@ -17,7 +17,7 @@ import { getClasses } from "@/services/classesService"; // Import your classes A
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-
+import { useSearchParams } from "next/navigation";
 import {
   Edit,
   Delete,
@@ -58,6 +58,8 @@ const options = {
 };
 
 const StudentDetails = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [colorMode, setColorMode] = useColorMode();
   const [data, setData] = useState<Array<Array<string>>>([]);
   const { themType, setThemType } = useGlobalState(); //
@@ -72,8 +74,8 @@ const StudentDetails = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
-  const [keyword, setKeyword] = useState<string>("");
-  const router = useRouter();
+  const initialKeyword = searchParams?.get("s") || "";
+  const [keyword, setKeyword] = useState<string>(initialKeyword);
 
   const formatStudentData = (students: any[]) => {
     return students.map((student: any) => [
@@ -102,7 +104,28 @@ const StudentDetails = () => {
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const searchKeyword = searchParams.get("s");
+    if (searchKeyword) {
+      setKeyword(searchKeyword);
+    }
+  }, []);
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const searchKeyword = searchParams.get("s");
+    if (searchKeyword) {
+      setKeyword(searchKeyword);
+      fetchData(
+        page,
+        rowsPerPage,
+        selectedClass,
+        selectedSection,
+        searchKeyword,
+      );
+    }
+  }, []);
   const getselectedSessionId = useLoginDetails(
     (state) => state.selectedSessionId,
   );
@@ -120,6 +143,21 @@ const StudentDetails = () => {
       // Pass selectedClass and selectedSection as parameters to filter data
 
       if (selectedClass) {
+        const result = await fetchStudentData(
+          currentPage + 1,
+          rowsPerPage,
+          selectedClass,
+          selectedSection,
+          keyword,
+          selectedSessionId,
+        );
+        setTotalCount(result.totalCount);
+        const formattedData = formatStudentData(result.data);
+        setData(formattedData);
+        setLoading(false);
+      }
+
+      if (keyword && keyword.trim() !== "" && !selectedClass) {
         const result = await fetchStudentData(
           currentPage + 1,
           rowsPerPage,
