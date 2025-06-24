@@ -1,5 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
+
 interface FeeDeposit {
   amount: number;
   amount_discount: number;
@@ -16,7 +17,7 @@ interface FeeItem {
   code: string;
   name: string;
   fine_amount: number;
-  amount_detail: string; // JSON string
+  amount_detail: string;
   student_fees_deposite_id?: number;
 }
 
@@ -56,7 +57,7 @@ const FeeDetailsTable: React.FC<Props> = ({
 
   return (
     <div className="table-responsive mt-4">
-      <table className="table-striped table-hover border-gray-200 table w-full border text-sm">
+      <table className="table-striped table-hover border-gray-300 table w-full border text-sm">
         <thead className="bg-gray-100">
           <tr>
             <th className="p-2 text-left">Fees Group</th>
@@ -98,8 +99,8 @@ const FeeDetailsTable: React.FC<Props> = ({
                 0,
               );
               const balance = (fee.amount || 0) - (total_paid + total_discount);
-              const isOverdue =
-                fee.due_date && new Date(fee.due_date) < new Date();
+
+              const isUnpaid = balance > 0 && deposits.length === 0;
 
               // Totals
               totalAmount += fee.amount || 0;
@@ -112,7 +113,7 @@ const FeeDetailsTable: React.FC<Props> = ({
                 <React.Fragment key={`${index}-${i}`}>
                   <tr
                     className={`${
-                      isOverdue && balance > 0 ? "bg-red-50" : "bg-white"
+                      isUnpaid ? "bg-red-100 text-red-900" : "bg-white"
                     }`}
                   >
                     <td className="p-2">{fee.name}</td>
@@ -124,23 +125,22 @@ const FeeDetailsTable: React.FC<Props> = ({
                     </td>
                     <td className="p-2">
                       {balance === 0 ? (
-                        <span className="font-medium text-green-600">Paid</span>
+                        <span className="rounded bg-green-100 px-2 py-1 text-xs font-semibold text-green-600">
+                          Paid
+                        </span>
                       ) : deposits.length > 0 ? (
-                        <span className="font-medium text-yellow-600">
+                        <span className="rounded bg-yellow-100 px-2 py-1 text-xs font-semibold text-yellow-700">
                           Partial
                         </span>
                       ) : (
-                        <span className="text-red-600 font-medium">Unpaid</span>
+                        <span className="text-red-600 bg-red-200 rounded px-2 py-1 text-xs font-semibold">
+                          Unpaid
+                        </span>
                       )}
                     </td>
                     <td className="p-2 text-right">
-                      {Number(fee.amount || 0)}
-                      {fee.fine_amount > 0 && (
-                        <span className="text-red-500">
-                          {" "}
-                          + {Number(fee.fine_amount)}
-                        </span>
-                      )}
+                      {fee.amount}{" "}
+                      <span className="text-red-500">+ {fee.fine_amount}</span>
                     </td>
                     <td className="p-2"></td>
                     <td className="p-2"></td>
@@ -177,7 +177,7 @@ const FeeDetailsTable: React.FC<Props> = ({
             }),
           )}
 
-          <tr className="bg-gray-200 text-sm font-semibold">
+          <tr className="bg-gray-200 border-gray-400 border-t text-sm font-bold">
             <td colSpan={4} className="p-2 text-right">
               Totals
             </td>
