@@ -1,5 +1,5 @@
 import React from "react";
-
+import dayjs from "dayjs";
 interface FeeDeposit {
   amount: number;
   amount_discount: number;
@@ -118,7 +118,9 @@ const FeeDetailsTable: React.FC<Props> = ({
                     <td className="p-2">{fee.name}</td>
                     <td className="p-2">{fee.code}</td>
                     <td className="whitespace-nowrap p-2">
-                      {fee.due_date || "-"}
+                      {fee.due_date
+                        ? dayjs(fee.due_date).format("DD-MM-YYYY")
+                        : "-"}
                     </td>
                     <td className="p-2">
                       {balance === 0 ? (
