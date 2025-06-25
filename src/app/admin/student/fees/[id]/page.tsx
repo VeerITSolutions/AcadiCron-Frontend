@@ -518,19 +518,6 @@ const StudentFess = () => {
             </div>
           </div>
 
-          <div className="pb-4 pl-4 pt-4 text-right dark:bg-boxdark dark:drop-shadow-none">
-            <div className="flex space-x-4">
-              <button className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]">
-                Print Selected
-              </button>
-              <button
-                className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-                onClick={handleClickOpen}
-              >
-                {editing ? "Edit Leave" : "Collect Selected"}
-              </button>
-            </div>
-          </div>
           {feeData?.student_due_fees?.length > 0 ? (
             <div className="fees-container">
               <FeeDetailsTable2

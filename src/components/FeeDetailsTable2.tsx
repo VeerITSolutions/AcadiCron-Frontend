@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 
 interface FeeDeposit {
@@ -45,6 +45,97 @@ const FeeDetailsTable2: React.FC<Props> = ({
   student_discount_fees,
   currency_symbol,
 }) => {
+  // State to manage selected fee row ids
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [selectAll, setSelectAll] = useState(false);
+
+  // Helper to get a unique id for each fee row
+  const getFeeRowId = (groupIdx: number, feeIdx: number) =>
+    `${groupIdx}-${feeIdx}`;
+
+  // Handle select all checkbox
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setSelectAll(checked);
+
+    if (checked) {
+      // Select all fee rows
+      const allIds = new Set<string>();
+      student_due_fees.forEach((group, groupIdx) => {
+        group.fees.forEach((fee, feeIdx) => {
+          allIds.add(getFeeRowId(groupIdx, feeIdx));
+        });
+      });
+      setSelectedIds(allIds);
+    } else {
+      setSelectedIds(new Set());
+    }
+  };
+
+  // Handle individual row checkbox
+  const handleSelectRow = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    rowId: string,
+  ) => {
+    const checked = e.target.checked;
+    setSelectedIds((prev) => {
+      const newSet = new Set(prev);
+      if (checked) {
+        newSet.add(rowId);
+      } else {
+        newSet.delete(rowId);
+      }
+      // If not all are checked, uncheck selectAll
+      if (newSet.size !== getTotalFeeRows()) {
+        setSelectAll(false);
+      } else {
+        setSelectAll(true);
+      }
+      return newSet;
+    });
+  };
+
+  // Helper to get total number of fee rows
+  const getTotalFeeRows = () => {
+    let count = 0;
+    student_due_fees.forEach((group) => {
+      count += group.fees.length;
+    });
+    return count;
+  };
+
+  // Print Selected handler
+  const handlePrintSelected = () => {
+    if (selectedIds.size === 0) {
+      alert("Please select at least one fee row to print.");
+      return;
+    }
+    // For demo, just alert the selected row ids
+    alert(
+      "Print selected fee rows: " +
+        Array.from(selectedIds)
+          .map((id) => id)
+          .join(", "),
+    );
+    // Here you would implement actual print logic
+  };
+
+  // Collect Selected handler
+  const handleCollectSelected = () => {
+    if (selectedIds.size === 0) {
+      alert("Please select at least one fee row to collect fees.");
+      return;
+    }
+    // For demo, just alert the selected row ids
+    alert(
+      "Collect fees for selected rows: " +
+        Array.from(selectedIds)
+          .map((id) => id)
+          .join(", "),
+    );
+    // Here you would implement actual collect logic
+  };
+
   if (student_due_fees.length === 0 && student_discount_fees.length === 0) {
     return <div className="alert alert-danger">No record found</div>;
   }
@@ -57,9 +148,33 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
   return (
     <div className="table-responsive mt-4">
+      {/* Action buttons */}
+      <div className="mb-2 flex gap-2">
+        <button
+          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+          onClick={handlePrintSelected}
+        >
+          Print Selected
+        </button>
+        <button
+          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+          onClick={handleCollectSelected}
+        >
+          Collect Selected
+        </button>
+      </div>
       <table className="table-striped table-hover border-gray-300 table w-full border text-sm">
         <thead className="bg-gray-100">
           <tr>
+            <th className="p-2 text-left">
+              <input
+                name="ids"
+                type="checkbox"
+                checked={selectAll}
+                onChange={handleSelectAll}
+                aria-label="Select all"
+              />{" "}
+            </th>
             <th className="p-2 text-left">Fees Group</th>
             <th className="p-2 text-left">Fees Code</th>
             <th className="p-2 text-left">Due Date</th>
@@ -72,6 +187,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
             <th className="p-2 text-right">Fine</th>
             <th className="p-2 text-right">Paid</th>
             <th className="p-2 text-right">Balance</th>
+            <th className="p-2 text-right">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -110,6 +226,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
               totalFine += total_fine;
               totalBalance += balance;
 
+              const rowId = getFeeRowId(index, i);
+
               return (
                 <React.Fragment key={`${index}-${i}`}>
                   <tr
@@ -131,6 +249,15 @@ const FeeDetailsTable2: React.FC<Props> = ({
                             : "#991b1b", // red-900
                     }}
                   >
+                    <td className="p-2">
+                      <input
+                        name="ids"
+                        type="checkbox"
+                        checked={selectedIds.has(rowId)}
+                        onChange={(e) => handleSelectRow(e, rowId)}
+                        aria-label={`Select fee row ${fee.name} ${fee.code}`}
+                      />{" "}
+                    </td>
                     <td className="p-2">{fee.name}</td>
                     <td className="p-2">{fee.code}</td>
                     <td className="whitespace-nowrap p-2">
@@ -172,6 +299,68 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     <td className="p-2 text-right">{total_fine}</td>
                     <td className="p-2 text-right">{total_paid}</td>
                     <td className="p-2 text-right">{balance}</td>
+                    <td width="100">
+                      <div className="btn-group">
+                        <div className="pull-right flex gap-1">
+                          <button
+                            type="button"
+                            className="btn btn-xs btn-default myCollectFeeBtn flex items-center gap-1"
+                            title="Add Fees"
+                            onClick={() => {
+                              if (!selectedIds.has(rowId)) {
+                                setSelectedIds((prev) => {
+                                  const newSet = new Set(prev);
+                                  newSet.add(rowId);
+                                  return newSet;
+                                });
+                              }
+                              alert(
+                                `Collect fee for: ${fee.name} (${fee.code}) [rowId: ${rowId}]`,
+                              );
+                              // Here you would open your collect fee modal or logic
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedIds.has(rowId)}
+                              onChange={(e) => handleSelectRow(e, rowId)}
+                              className="mr-1"
+                              aria-label={`Select for Add Fees ${fee.name} ${fee.code}`}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                            <i className="fa fa-plus"></i>
+                          </button>
+
+                          <button
+                            className="btn btn-xs btn-default printInv flex items-center gap-1"
+                            title="Print"
+                            onClick={() => {
+                              if (!selectedIds.has(rowId)) {
+                                setSelectedIds((prev) => {
+                                  const newSet = new Set(prev);
+                                  newSet.add(rowId);
+                                  return newSet;
+                                });
+                              }
+                              alert(
+                                `Print for: ${fee.name} (${fee.code}) [rowId: ${rowId}]`,
+                              );
+                              // Here you would implement print logic for this row
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedIds.has(rowId)}
+                              onChange={(e) => handleSelectRow(e, rowId)}
+                              className="mr-1"
+                              aria-label={`Select for Print ${fee.name} ${fee.code}`}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                            <i className="fa fa-print"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
 
                   {deposits.map((d, j) => (
@@ -202,7 +391,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
           <tr className="bg-gray-200 border-gray-400 border-t text-sm font-bold">
             <td colSpan={4} className="p-2 text-right font-bold">
-              Totals
+              Grant Total
             </td>
             <td className="p-2 text-right font-bold">
               {Number(totalAmount).toLocaleString("en-IN", {
