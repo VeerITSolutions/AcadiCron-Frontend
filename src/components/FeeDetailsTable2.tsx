@@ -10,6 +10,7 @@ import {
 } from "@mui/icons-material";
 import apiClient from "@/services/apiClient";
 import axios from "axios";
+import { fetchPrintFeesByGroupData } from "@/services/studentFeesMasterService";
 interface FeeDeposit {
   amount: number;
   amount_discount: number;
@@ -57,7 +58,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
   // State to manage selected fee row ids
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [selectAll, setSelectAll] = useState(false);
-
+  const [data, setData] = useState("");
   // Helper to get a unique id for each fee row
   const getFeeRowId = (groupIdx: number, feeIdx: number) =>
     `${groupIdx}-${feeIdx}`;
@@ -120,26 +121,19 @@ const FeeDetailsTable2: React.FC<Props> = ({
   ) => {
     try {
       // Use POST request with data in the body, not query params
-      const postData = {
-        fee_groups_feetype_id: dataFeeGroupsFeeTypeId,
-        fee_master_id: dataFeeMasterId,
-        fee_session_group_id: dataFeeSessionGroupId,
-      };
 
-      const response = await axios.post(
-        `https://erp.erabesa.co.in/studentfee/printFeesByGroup`,
-        postData,
-        {
-          headers: {
-            Accept: "text/html", // Make sure your backend sends HTML
-          },
-        },
+      const result = await fetchPrintFeesByGroupData(
+        dataFeeMasterId,
+        dataFeeSessionGroupId,
+        dataFeeGroupsFeeTypeId,
       );
+
+      setData(result.data);
 
       const popupWindow = window.open("", "_blank", "width=800,height=600");
       if (popupWindow) {
         popupWindow.document.open();
-        popupWindow.document.write(response.data); // Assuming response.data is HTML string
+        popupWindow.document.write(result.data); // Assuming response.data is HTML string
         popupWindow.document.close();
 
         popupWindow.focus();

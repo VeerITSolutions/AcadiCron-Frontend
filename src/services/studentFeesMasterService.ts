@@ -10,6 +10,19 @@ export const fetchStudentFeesMasterData = async (page?: number, perPage?: number
   return response.data;
 };
 
+export const fetchPrintFeesByGroupData = async (
+  dataFeeMasterId: any,
+  dataFeeGroupsFeeTypeId: any,
+  dataFeeSessionGroupId: any
+) => {
+  const response = await apiClient.post(`/student-fees-print-by-group`, {
+    dataFeeMasterId,
+    dataFeeGroupsFeeTypeId,
+    dataFeeSessionGroupId,
+  });
+  return response.data;
+};
+
 
 export const createFeesMasterData = async (
 fees_group?:any,
