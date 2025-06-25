@@ -232,11 +232,7 @@ const StudentDetails = () => {
                   id,
                   getselectedSessionId,
                 );
-                const data2 = await fetchStudentFeesData(
-                  id,
-                  getselectedUserData.studentSessionId,
-                  getselectedSessionId,
-                );
+                const data2 = await fetchStudentFeesData(id);
                 const datatimeline = await fetchStudentTimelineData(id);
                 const datadocument = await fetchStudentdocData(id);
 
@@ -571,10 +567,11 @@ const StudentDetails = () => {
         const getData = async () => {
           try {
             setLoading(true);
-            const data = await fetchStudentSingleData(id);
+            const data = await fetchStudentSingleData(id, getselectedSessionId);
             const data2 = await fetchStudentFeesData(
               id,
               getselectedUserData.studentSessionId,
+              getselectedSessionId,
             );
             const datatimeline = await fetchStudentTimelineData(id);
             const datadocument = await fetchStudentdocData(id);
