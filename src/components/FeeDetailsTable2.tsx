@@ -390,10 +390,13 @@ const FeeDetailsTable2: React.FC<Props> = ({
           )}
 
           <tr className="bg-gray-200 border-gray-400 border-t text-sm font-bold">
+            <td></td>
+
             <td colSpan={4} className="p-2 text-right font-bold">
               Grant Total
             </td>
             <td className="p-2 text-right font-bold">
+              {currency_symbol}
               {Number(totalAmount).toLocaleString("en-IN", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -401,24 +404,28 @@ const FeeDetailsTable2: React.FC<Props> = ({
             </td>
             <td colSpan={3}></td>
             <td className="p-2 text-right font-bold">
+              {currency_symbol}
               {Number(totalDiscount).toLocaleString("en-IN", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}
             </td>
             <td className="p-2 text-right font-bold">
+              {currency_symbol}
               {Number(totalFine).toLocaleString("en-IN", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}
             </td>
             <td className="p-2 text-right font-bold">
+              {currency_symbol}
               {Number(totalPaid).toLocaleString("en-IN", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}
             </td>
             <td className="p-2 text-right font-bold">
+              {currency_symbol}
               {Number(totalBalance).toLocaleString("en-IN", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
