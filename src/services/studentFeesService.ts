@@ -14,7 +14,7 @@ export const fetchStudentFeesData = async (
 ) => {
   /* const response = await apiClient.get(`/studentfees/${studentSessionId}`); */
 
-  const response = await apiClient.get(`/studentfees/${id}?selectedSessionId=${selectedSessionId}`);
+  const response = await apiClient.get(`/studentfees/${studentSessionId}?selectedSessionId=${selectedSessionId}`);
   return response.data;
 };
 

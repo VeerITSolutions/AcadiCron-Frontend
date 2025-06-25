@@ -571,11 +571,27 @@ const StudentDetails = () => {
           try {
             setLoading(true);
             const data = await fetchStudentSingleData(id, getselectedSessionId);
-            const data2 = await fetchStudentFeesData(
-              id,
-              getselectedUserData.studentSessionId,
-              getselectedSessionId,
-            );
+            console.log("data", data);
+            // Debug: Check why request for fetchStudentFeesData not going
+            if (data) {
+              console.log("Calling fetchStudentFeesData with:", {
+                id,
+                student_session_id: data.data.student_session_id,
+                selectedSessionId: getselectedSessionId,
+              });
+              try {
+                const data2 = await fetchStudentFeesData(
+                  id,
+                  data.data.student_session_id,
+                  getselectedSessionId,
+                );
+                console.log("fetchStudentFeesData response:", data2);
+                setFeeData(data2);
+              } catch (err) {
+                console.error("Error in fetchStudentFeesData:", err);
+              }
+            }
+
             const datatimeline = await fetchStudentTimelineData(id);
             const datadocument = await fetchStudentdocData(id);
 
@@ -585,8 +601,6 @@ const StudentDetails = () => {
             setgetId(data.data.id);
             setDataDocument(datadocument.data);
             setDataExamResult(getdataexamresult.data);
-
-            setFeeData(data2);
 
             setFormData({
               class_name: data.data.class_name,
