@@ -201,7 +201,7 @@ const Sidebar = memo(({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 label: "Search Fees Payment",
                 route: "/admin/search_fees_payment",
               },
-              { label: "Search Due Fees", route: "/admin/search_due_fees" },
+              /*  { label: "Search Due Fees", route: "/admin/search_due_fees" }, */
               { label: "Fees Master", route: "/admin/fees_master" },
               { label: "Fees Group", route: "/admin/fees_group" },
               { label: "Fees Type", route: "/admin/fees_type" },
