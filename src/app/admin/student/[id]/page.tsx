@@ -125,7 +125,9 @@ const StudentDetails = () => {
       }
     });
   };
-
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
   const handleDisableStudentModel = () => {
     setFormDataDisable({
       id: getId,
@@ -225,10 +227,15 @@ const StudentDetails = () => {
             const getData = async () => {
               try {
                 setLoading(true);
-                const data = await fetchStudentSingleData(id);
+                console.log("getselectedSessionId", getselectedSessionId);
+                const data = await fetchStudentSingleData(
+                  id,
+                  getselectedSessionId,
+                );
                 const data2 = await fetchStudentFeesData(
                   id,
                   getselectedUserData.studentSessionId,
+                  getselectedSessionId,
                 );
                 const datatimeline = await fetchStudentTimelineData(id);
                 const datadocument = await fetchStudentdocData(id);
@@ -239,9 +246,7 @@ const StudentDetails = () => {
                 setgetId(data.data.id);
                 setDataDocument(datadocument.data);
                 setDataExamResult(getdataexamresult.data);
-                console.log("dataexamresult", dataexamresult);
 
-                console.log("datadocument.data", datadocument.data);
                 setFeeData(data2);
 
                 setFormData({
@@ -367,9 +372,7 @@ const StudentDetails = () => {
                 setgetId(data.data.id);
                 setDataDocument(datadocument.data);
                 setDataExamResult(getdataexamresult.data);
-                console.log("dataexamresult", dataexamresult);
 
-                console.log("datadocument.data", datadocument.data);
                 setFeeData(data2);
 
                 setFormData({
@@ -582,9 +585,7 @@ const StudentDetails = () => {
             setgetId(data.data.id);
             setDataDocument(datadocument.data);
             setDataExamResult(getdataexamresult.data);
-            console.log("dataexamresult", dataexamresult);
 
-            console.log("datadocument.data", datadocument.data);
             setFeeData(data2);
 
             setFormData({

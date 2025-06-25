@@ -10,10 +10,11 @@ import apiClient from "./apiClient";
 export const fetchStudentFeesData = async (
   id?: string,
   studentSessionId?: any,
+  selectedSessionId?: any,
 ) => {
   /* const response = await apiClient.get(`/studentfees/${studentSessionId}`); */
 
-  const response = await apiClient.get(`/studentfees/1960`);
+  const response = await apiClient.get(`/studentfees/${studentSessionId}?selectedSessionId=${selectedSessionId}`);
   return response.data;
 };
 

@@ -92,10 +92,11 @@ export const fetchStudentCalculateData = async (
   });
   return response.data;
 };
-export const fetchStudentSingleData = async (id: string) => {
+export const fetchStudentSingleData = async (id: string, selectedSessionId?: any) => {
   const response = await apiClient.get(`/admin/dtstudentlist`, {
     params: {
       id,
+      selectedSessionId: selectedSessionId,
     },
   });
   return response.data;
