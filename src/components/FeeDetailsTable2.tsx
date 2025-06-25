@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
 import IconButton from "@mui/material/IconButton";
-import { Edit, LocalPrintshop, NoteAdd, Visibility } from "@mui/icons-material";
+import {
+  Edit,
+  LocalPrintshop,
+  NoteAdd,
+  SettingsBackupRestore,
+  Visibility,
+} from "@mui/icons-material";
 interface FeeDeposit {
   amount: number;
   amount_discount: number;
@@ -308,9 +314,9 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     <td className="p-2 text-right">{total_fine}</td>
                     <td className="p-2 text-right">{total_paid}</td>
                     <td className="p-2 text-right">{balance}</td>
-                    <td width="100">
-                      <div className="btn-group">
-                        <div className="pull-right flex gap-1">
+                    <td width="">
+                      <div className="">
+                        <div className="pull-right flex ">
                           {/* <button
                             type="button"
                             className="btn btn-xs btn-default myCollectFeeBtn flex items-center gap-1"
@@ -367,9 +373,21 @@ const FeeDetailsTable2: React.FC<Props> = ({
                             />
                             <i className="fa fa-print"></i>
                           </button> */}
-                          <IconButton onClick={() => handleEdit(1)}>
-                            <NoteAdd />
-                          </IconButton>
+
+                          {balance === 0 ? (
+                            <IconButton onClick={() => handleEdit(1)}>
+                              <SettingsBackupRestore />
+                            </IconButton>
+                          ) : deposits.length > 0 ? (
+                            <IconButton onClick={() => handleEdit(1)}>
+                              <NoteAdd />
+                            </IconButton>
+                          ) : (
+                            <IconButton onClick={() => handleEdit(1)}>
+                              <NoteAdd />
+                            </IconButton>
+                          )}
+
                           <IconButton
                             onClick={() => handleView(1)}
                             aria-label="Show"
