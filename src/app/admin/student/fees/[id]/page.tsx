@@ -36,6 +36,9 @@ import "flatpickr/dist/flatpickr.css"; // You can use other themes too
 import LoaderSpiner from "@/components/common/LoaderSpiner";
 import Image from "next/image";
 import { useLoginDetails } from "@/store/logoStore";
+import FeeDetailsTable from "@/components/FeeDetailsTable";
+import FeeDetailsCollectTable from "@/components/FeeDetailsTable2";
+import FeeDetailsTable2 from "@/components/FeeDetailsTable2";
 
 const StudentFess = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -49,6 +52,8 @@ const StudentFess = () => {
   const [selectedSection, setSelectedSection] = useState<string | undefined>(
     undefined,
   );
+  const [feeData, setFeeData] = useState<any>([]);
+
   const [colorMode, setColorMode] = useColorMode();
   const [keyword, setKeyword] = useState<string>("");
   const columns = [
@@ -219,8 +224,25 @@ const StudentFess = () => {
         const getData = async () => {
           try {
             const data = await fetchStudentSingleData(id, getselectedSessionId);
-            const formattedData2 = await fetchStudentFeesData(id);
-            /* setData(formattedData2); */
+
+            if (data) {
+              console.log("Calling fetchStudentFeesData with:", {
+                id,
+                student_session_id: data.data.student_session_id,
+                selectedSessionId: getselectedSessionId,
+              });
+              try {
+                const data2 = await fetchStudentFeesData(
+                  id,
+                  data.data.student_session_id,
+                  getselectedSessionId,
+                );
+                console.log("fetchStudentFeesData response:", data2);
+                setFeeData(data2);
+              } catch (err) {
+                console.error("Error in fetchStudentFeesData:", err);
+              }
+            }
             setFormData({
               class_name: data.data.class_name,
 
@@ -509,26 +531,16 @@ const StudentFess = () => {
               </button>
             </div>
           </div>
-          {loading ? (
-            <Loader />
-          ) : (
-            <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-              <MUIDataTable
-                title={""}
-                data={data}
-                className={`${styles["miui-box-shadow"]}`}
-                columns={columns}
-                options={{
-                  ...options,
-                  count: totalCount,
-                  page: page,
-                  rowsPerPage: rowsPerPage,
-                  onChangePage: handlePageChange,
-                  onChangeRowsPerPage: handleRowsPerPageChange,
-                }}
+          {feeData?.student_due_fees?.length > 0 ? (
+            <div className="fees-container">
+              <FeeDetailsTable2
+                student_due_fees={feeData.student_due_fees}
+                student_discount_fees={feeData.student_discount_fees}
+                currency_symbol={feeData.currency_symbol}
               />
-            </ThemeProvider>
-          )}
+            </div>
+          ) : null}
+
           <Dialog open={open} onClose={handleClose}>
             <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
               <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
