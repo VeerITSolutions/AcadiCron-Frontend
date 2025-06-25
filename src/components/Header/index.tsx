@@ -67,7 +67,7 @@ const Header = (props: {
         </div>
 
         <div className="hidden sm:block">
-          <form action="/admin/student_details" method="GET">
+          <form action="/admin/student_details_search" method="GET">
             <div className="relative">
               <button className="absolute left-0 top-1/2 -translate-y-1/2">
                 <svg
