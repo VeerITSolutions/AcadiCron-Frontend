@@ -115,6 +115,20 @@ const FeeDetailsTable: React.FC<Props> = ({
                     className={`${
                       isUnpaid ? "bg-red-100 text-red-900" : "bg-white"
                     }`}
+                    style={{
+                      backgroundColor:
+                        balance === 0
+                          ? "#f0fdf4" // green-50
+                          : deposits.length > 0
+                            ? "#fefce8" // yellow-50
+                            : "#fee2e2", // red-100
+                      color:
+                        balance === 0
+                          ? "#15803d" // green-700
+                          : deposits.length > 0
+                            ? "#854d0e" // yellow-800
+                            : "#991b1b", // red-900
+                    }}
                   >
                     <td className="p-2">{fee.name}</td>
                     <td className="p-2">{fee.code}</td>
