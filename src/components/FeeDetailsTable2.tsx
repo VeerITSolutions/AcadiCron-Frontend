@@ -408,6 +408,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                       <td className="p-2"></td>
                       <td className="p-2"></td>
                       <td className="p-2"></td>
+                      <td className="p-2"></td>
                       <td className="p-2 text-right">→</td>
                       <td className="p-2">
                         {fee.student_fees_deposite_id || "--"}/{d.inv_no}
