@@ -123,17 +123,25 @@ const FeeDetailsTable: React.FC<Props> = ({
                         ? dayjs(fee.due_date).format("DD-MM-YYYY")
                         : "-"}
                     </td>
-                    <td className="p-2">
+                    <td
+                      className={
+                        balance === 0
+                          ? "bg-green-50 p-2 text-green-700"
+                          : deposits.length > 0
+                            ? "bg-yellow-50 p-2 text-yellow-800"
+                            : "bg-red-100 text-red-900 p-2"
+                      }
+                    >
                       {balance === 0 ? (
-                        <span className="rounded bg-green-100 px-2 py-1 text-xs font-semibold text-green-600">
+                        <span className="rounded bg-green-200 px-2 py-1 text-xs font-semibold text-green-800">
                           Paid
                         </span>
                       ) : deposits.length > 0 ? (
-                        <span className="rounded bg-yellow-100 px-2 py-1 text-xs font-semibold text-yellow-700">
+                        <span className="rounded bg-yellow-200 px-2 py-1 text-xs font-semibold text-yellow-900">
                           Partial
                         </span>
                       ) : (
-                        <span className="text-red-600 bg-red-200 rounded px-2 py-1 text-xs font-semibold">
+                        <span className="bg-red-200 text-red-800 rounded px-2 py-1 text-xs font-semibold">
                           Unpaid
                         </span>
                       )}
@@ -178,15 +186,40 @@ const FeeDetailsTable: React.FC<Props> = ({
           )}
 
           <tr className="bg-gray-200 border-gray-400 border-t text-sm font-bold">
-            <td colSpan={4} className="p-2 text-right">
+            <td colSpan={4} className="p-2 text-right font-bold">
               Totals
             </td>
-            <td className="p-2 text-right">{totalAmount}</td>
+            <td className="p-2 text-right font-bold">
+              {Number(totalAmount).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </td>
             <td colSpan={3}></td>
-            <td className="p-2 text-right">{totalDiscount}</td>
-            <td className="p-2 text-right">{totalFine}</td>
-            <td className="p-2 text-right">{totalPaid}</td>
-            <td className="p-2 text-right">{totalBalance}</td>
+            <td className="p-2 text-right font-bold">
+              {Number(totalDiscount).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </td>
+            <td className="p-2 text-right font-bold">
+              {Number(totalFine).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </td>
+            <td className="p-2 text-right font-bold">
+              {Number(totalPaid).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </td>
+            <td className="p-2 text-right font-bold">
+              {Number(totalBalance).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </td>
           </tr>
         </tbody>
       </table>
