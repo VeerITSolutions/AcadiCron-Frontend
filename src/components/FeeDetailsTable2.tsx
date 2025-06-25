@@ -8,6 +8,8 @@ import {
   SettingsBackupRestore,
   Visibility,
 } from "@mui/icons-material";
+import apiClient from "@/services/apiClient";
+import axios from "axios";
 interface FeeDeposit {
   amount: number;
   amount_discount: number;
@@ -110,6 +112,45 @@ const FeeDetailsTable2: React.FC<Props> = ({
     });
   };
 
+  const handleSelectRowPrint = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    dataFeeMasterId: string,
+    dataFeeSessionGroupId: string,
+    dataFeeGroupsFeeTypeId: string,
+  ) => {
+    try {
+      // Use POST request with data in the body, not query params
+      const postData = {
+        fee_groups_feetype_id: dataFeeGroupsFeeTypeId,
+        fee_master_id: dataFeeMasterId,
+        fee_session_group_id: dataFeeSessionGroupId,
+      };
+
+      const response = await axios.post(
+        `https://erp.erabesa.co.in/studentfee/printFeesByGroup`,
+        postData,
+        {
+          headers: {
+            Accept: "text/html", // Make sure your backend sends HTML
+          },
+        },
+      );
+
+      const popupWindow = window.open("", "_blank", "width=800,height=600");
+      if (popupWindow) {
+        popupWindow.document.open();
+        popupWindow.document.write(response.data); // Assuming response.data is HTML string
+        popupWindow.document.close();
+
+        popupWindow.focus();
+        popupWindow.print();
+      } else {
+        console.error("Popup blocked!");
+      }
+    } catch (error) {
+      console.error("Failed to fetch printable content:", error);
+    }
+  };
   // Helper to get total number of fee rows
   const getTotalFeeRows = () => {
     let count = 0;
@@ -379,7 +420,9 @@ const FeeDetailsTable2: React.FC<Props> = ({
                               <SettingsBackupRestore />
                             </IconButton>
                           ) : deposits.length > 0 ? (
-                            <IconButton onClick={() => handleEdit(1)}>
+                            <IconButton
+                              onClick={(e: any) => handleSelectRow(e, rowId)}
+                            >
                               <NoteAdd />
                             </IconButton>
                           ) : (
@@ -389,7 +432,14 @@ const FeeDetailsTable2: React.FC<Props> = ({
                           )}
 
                           <IconButton
-                            onClick={() => handleView(1)}
+                            onClick={(e: any) =>
+                              handleSelectRowPrint(
+                                e,
+                                fee.id,
+                                fee.fee_session_group_id,
+                                fee.fee_groups_feetype_id,
+                              )
+                            }
                             aria-label="Show"
                           >
                             <LocalPrintshop />
