@@ -35,6 +35,7 @@ import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
 import "flatpickr/dist/flatpickr.css"; // You can use other themes too
 import LoaderSpiner from "@/components/common/LoaderSpiner";
 import Image from "next/image";
+import { useLoginDetails } from "@/store/logoStore";
 
 const StudentFess = () => {
   const [data, setData] = useState<Array<Array<string>>>([]);
@@ -82,6 +83,10 @@ const StudentFess = () => {
   const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+
+  const getselectedSessionId = useLoginDetails(
+    (state) => state.selectedSessionId,
+  );
 
   const handleDelete = async (id: number) => {
     try {
@@ -213,7 +218,7 @@ const StudentFess = () => {
         setLoading(true);
         const getData = async () => {
           try {
-            const data = await fetchStudentSingleData(id);
+            const data = await fetchStudentSingleData(id, getselectedSessionId);
             const formattedData2 = await fetchStudentFeesData(id);
             /* setData(formattedData2); */
             setFormData({
