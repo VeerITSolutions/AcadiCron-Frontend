@@ -128,12 +128,12 @@ const FeeDetailsTable2: React.FC<Props> = ({
         dataFeeGroupsFeeTypeId,
       );
 
-      setData(result.data);
+      setData(result);
 
-      const popupWindow = window.open("", "_blank", "width=800,height=600");
+      const popupWindow = window.open("", "_blank", "");
       if (popupWindow) {
         popupWindow.document.open();
-        popupWindow.document.write(result.data); // Assuming response.data is HTML string
+        popupWindow.document.write(result); // Assuming response.data is HTML string
         popupWindow.document.close();
 
         popupWindow.focus();
