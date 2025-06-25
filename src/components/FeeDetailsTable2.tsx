@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-
+import IconButton from "@mui/material/IconButton";
+import { Edit, LocalPrintshop, NoteAdd, Visibility } from "@mui/icons-material";
 interface FeeDeposit {
   amount: number;
   amount_discount: number;
@@ -70,6 +71,14 @@ const FeeDetailsTable2: React.FC<Props> = ({
     } else {
       setSelectedIds(new Set());
     }
+  };
+  const handleView = async (id: number) => {
+    // Assuming id is the student_id
+    /* router.push(`/admin/student/${id}`); */
+  };
+
+  const handleEdit = (id: number) => {
+    /* router.push(`/admin/student/edit/${id}`); */
   };
 
   // Handle individual row checkbox
@@ -302,7 +311,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     <td width="100">
                       <div className="btn-group">
                         <div className="pull-right flex gap-1">
-                          <button
+                          {/* <button
                             type="button"
                             className="btn btn-xs btn-default myCollectFeeBtn flex items-center gap-1"
                             title="Add Fees"
@@ -357,7 +366,16 @@ const FeeDetailsTable2: React.FC<Props> = ({
                               onClick={(e) => e.stopPropagation()}
                             />
                             <i className="fa fa-print"></i>
-                          </button>
+                          </button> */}
+                          <IconButton onClick={() => handleEdit(1)}>
+                            <NoteAdd />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleView(1)}
+                            aria-label="Show"
+                          >
+                            <LocalPrintshop />
+                          </IconButton>
                         </div>
                       </div>
                     </td>
