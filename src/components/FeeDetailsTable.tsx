@@ -103,7 +103,7 @@ const FeeDetailsTable: React.FC<Props> = ({
               const isUnpaid = balance > 0 && deposits.length === 0;
 
               // Totals
-              totalAmount += fee.amount || 0;
+              totalAmount += parseInt(fee.amount as any, 10) || 0;
               totalDiscount += total_discount;
               totalPaid += total_paid;
               totalFine += total_fine;
