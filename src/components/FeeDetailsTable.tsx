@@ -76,29 +76,30 @@ const FeeDetailsTable: React.FC<Props> = ({
         </thead>
         <tbody>
           {student_due_fees.map((group, index) =>
-            group.fees.map((fee, i) => {
+            group.fees.map((fee: any, i) => {
               let deposits: FeeDeposit[] = [];
 
               try {
-                const parsed = JSON.parse(fee.amount_detail || "[]");
-                deposits = Array.isArray(parsed) ? parsed : [];
+                const parsed = JSON.parse(fee.amount_detail || "{}");
+                deposits = Object.values(parsed); // Convert object to array
               } catch {
                 deposits = [];
               }
 
               const total_paid = deposits.reduce(
-                (sum, d) => sum + (d.amount || 0),
+                (sum, d: any) => sum + parseFloat(d.amount || 0),
                 0,
               );
               const total_discount = deposits.reduce(
-                (sum, d) => sum + (d.amount_discount || 0),
+                (sum, d: any) => sum + parseFloat(d.amount_discount || 0),
                 0,
               );
               const total_fine = deposits.reduce(
-                (sum, d) => sum + (d.amount_fine || 0),
+                (sum, d: any) => sum + parseFloat(d.amount_fine || 0),
                 0,
               );
-              const balance = (fee.amount || 0) - (total_paid + total_discount);
+              const balance =
+                parseFloat(fee.amount || 0) - (total_paid + total_discount);
 
               const isUnpaid = balance > 0 && deposits.length === 0;
 
