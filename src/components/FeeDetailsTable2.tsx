@@ -200,14 +200,14 @@ const FeeDetailsTable2: React.FC<Props> = ({
     <div className="table-responsive mt-4">
       {/* Action buttons */}
       <div className="mb-2 flex gap-2">
-        <button
+        {/* <button
           className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
           onClick={handlePrintSelected}
         >
           Print Selected
-        </button>
+        </button> */}
         <button
-          className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+          className="rounded bg-[#1976D2] p-2 px-4 py-2 text-white hover:bg-[#155ba0]"
           onClick={handleCollectSelected}
         >
           Collect Selected
