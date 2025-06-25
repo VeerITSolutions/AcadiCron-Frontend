@@ -138,6 +138,9 @@ const StudentDetails = () => {
     setIsDisableStudentModel(!setisdisablestudentmodel);
   };
   const getselectedUserData = useLoginDetails((state) => state.userData);
+  const selectedSessionName = useLoginDetails(
+    (state) => state.selectedSessionName,
+  );
 
   /* const handleEnableStudentModel = () => {
 
@@ -893,7 +896,8 @@ const StudentDetails = () => {
                 <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
                   <b>Class</b>{" "}
                   <span className="text-aqua">
-                    {formData.class_name} (2024-25)
+                    {formData.class_name}{" "}
+                    {selectedSessionName ? `(${selectedSessionName})` : ""}
                   </span>
                 </li>
                 <li className="flex justify-between border-b border-stroke py-3 dark:border-strokedark">
