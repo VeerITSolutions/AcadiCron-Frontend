@@ -113,38 +113,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
     });
   };
 
-  const handleSelectRowPrint = async (
-    e: React.MouseEvent<HTMLButtonElement>,
-    dataFeeMasterId: string,
-    dataFeeSessionGroupId: string,
-    dataFeeGroupsFeeTypeId: string,
-  ) => {
-    try {
-      // Use POST request with data in the body, not query params
-
-      const result = await fetchPrintFeesByGroupData(
-        dataFeeMasterId,
-        dataFeeSessionGroupId,
-        dataFeeGroupsFeeTypeId,
-      );
-
-      setData(result);
-
-      const popupWindow = window.open("", "_blank", "");
-      if (popupWindow) {
-        popupWindow.document.open();
-        popupWindow.document.write(result); // Assuming response.data is HTML string
-        popupWindow.document.close();
-
-        popupWindow.focus();
-        popupWindow.print();
-      } else {
-        console.error("Popup blocked!");
-      }
-    } catch (error) {
-      console.error("Failed to fetch printable content:", error);
-    }
-  };
   // Helper to get total number of fee rows
   const getTotalFeeRows = () => {
     let count = 0;
@@ -278,6 +246,57 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
               const rowId = getFeeRowId(index, i);
 
+              // INSERT_YOUR_CODE
+
+              // Function to handle print of a specific row's data by sending it to backend API
+
+              const handleSelectRowPrint = async (
+                e: React.MouseEvent<HTMLButtonElement>,
+                dataFeeMasterId: string,
+                dataFeeSessionGroupId: string,
+                dataFeeGroupsFeeTypeId: string,
+                rowData: any,
+              ) => {
+                try {
+                  // Use POST request with data in the body, not query params
+
+                  const payload = {
+                    name: rowData.name,
+                    code: rowData.code,
+                    due_date: rowData.due_date,
+                    amount: rowData.amount,
+                    discount: total_discount,
+                    fine: total_fine,
+                    paid: total_paid,
+                    balance: balance,
+                    // Add any other fields you want to send
+                  };
+
+                  const result = await fetchPrintFeesByGroupData(
+                    dataFeeMasterId,
+                    dataFeeSessionGroupId,
+                    dataFeeGroupsFeeTypeId,
+                    payload,
+                  );
+
+                  setData(result);
+
+                  const popupWindow = window.open("", "_blank", "");
+                  if (popupWindow) {
+                    popupWindow.document.open();
+                    popupWindow.document.write(result); // Assuming response.data is HTML string
+                    popupWindow.document.close();
+
+                    popupWindow.focus();
+                    popupWindow.print();
+                  } else {
+                    console.error("Popup blocked!");
+                  }
+                } catch (error) {
+                  console.error("Failed to fetch printable content:", error);
+                }
+              };
+
               return (
                 <React.Fragment key={`${index}-${i}`}>
                   <tr
@@ -352,63 +371,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     <td width="">
                       <div className="">
                         <div className="pull-right flex ">
-                          {/* <button
-                            type="button"
-                            className="btn btn-xs btn-default myCollectFeeBtn flex items-center gap-1"
-                            title="Add Fees"
-                            onClick={() => {
-                              if (!selectedIds.has(rowId)) {
-                                setSelectedIds((prev) => {
-                                  const newSet = new Set(prev);
-                                  newSet.add(rowId);
-                                  return newSet;
-                                });
-                              }
-                              alert(
-                                `Collect fee for: ${fee.name} (${fee.code}) [rowId: ${rowId}]`,
-                              );
-                              // Here you would open your collect fee modal or logic
-                            }}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedIds.has(rowId)}
-                              onChange={(e) => handleSelectRow(e, rowId)}
-                              className="mr-1"
-                              aria-label={`Select for Add Fees ${fee.name} ${fee.code}`}
-                              onClick={(e) => e.stopPropagation()}
-                            />
-                            <i className="fa fa-plus"></i>
-                          </button>
-
-                          <button
-                            className="btn btn-xs btn-default printInv flex items-center gap-1"
-                            title="Print"
-                            onClick={() => {
-                              if (!selectedIds.has(rowId)) {
-                                setSelectedIds((prev) => {
-                                  const newSet = new Set(prev);
-                                  newSet.add(rowId);
-                                  return newSet;
-                                });
-                              }
-                              alert(
-                                `Print for: ${fee.name} (${fee.code}) [rowId: ${rowId}]`,
-                              );
-                              // Here you would implement print logic for this row
-                            }}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedIds.has(rowId)}
-                              onChange={(e) => handleSelectRow(e, rowId)}
-                              className="mr-1"
-                              aria-label={`Select for Print ${fee.name} ${fee.code}`}
-                              onClick={(e) => e.stopPropagation()}
-                            />
-                            <i className="fa fa-print"></i>
-                          </button> */}
-
                           {balance === 0 ? (
                             <IconButton onClick={() => handleEdit(1)}>
                               <SettingsBackupRestore />
@@ -432,6 +394,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                                 fee.id,
                                 fee.fee_session_group_id,
                                 fee.fee_groups_feetype_id,
+                                fee,
                               )
                             }
                             aria-label="Show"
