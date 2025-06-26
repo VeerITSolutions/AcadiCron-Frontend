@@ -29,6 +29,18 @@ export const fetchPrintFeesByGroupData = async (
   return response.data;
 };
 
+export const fetchRestoreFeesByGroupData = async (
+  fees_id: any,
+  deposits_id: any,
+
+) => {
+  const response = await apiClient.post(`/student-fees-restore-by-group`, {
+    fees_id,
+    deposits_id
+  });
+  return response.data;
+};
+
 
 export const createFeesMasterData = async (
 fees_group?:any,

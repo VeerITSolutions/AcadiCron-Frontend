@@ -10,7 +10,10 @@ import {
 } from "@mui/icons-material";
 import apiClient from "@/services/apiClient";
 import axios from "axios";
-import { fetchPrintFeesByGroupData } from "@/services/studentFeesMasterService";
+import {
+  fetchPrintFeesByGroupData,
+  fetchRestoreFeesByGroupData,
+} from "@/services/studentFeesMasterService";
 interface FeeDeposit {
   amount: number;
   amount_discount: number;
@@ -167,56 +170,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
   };
 
   // Function to handle print of a specific row's data by sending it to backend API
-  const handleSelectRowPrint = async (
-    dataFeeMasterId: string,
-    dataFeeSessionGroupId: string,
-    dataFeeGroupsFeeTypeId: string,
-    rowData: any,
-    deposits: any,
-    total_discount: number,
-    total_fine: number,
-    total_paid: number,
-    balance: number,
-  ) => {
-    try {
-      // Use POST request with data in the body, not query params
-      const payload = {
-        name: rowData.name,
-        code: rowData.code,
-        due_date: rowData.due_date,
-        amount: rowData.amount,
-        discount: total_discount,
-        fine: total_fine,
-        paid: total_paid,
-        balance: balance,
-        // Add any other fields you want to send
-      };
-
-      const result = await fetchPrintFeesByGroupData(
-        dataFeeMasterId,
-        dataFeeSessionGroupId,
-        dataFeeGroupsFeeTypeId,
-        payload,
-        deposits,
-        student_details,
-      );
-
-      setData(result);
-
-      // Open a new popup window for printing, without reloading the main site
-      const printWindow = window.open("", "_blank", "width=900,height=700");
-      if (printWindow) {
-        printWindow.document.open();
-        printWindow.document.write(result);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-      } else {
-        alert("Popup blocked! Please allow popups for this site to print.");
-      }
-    } catch (error) {
-      console.error("Failed to fetch printable content:", error);
-    }
+  const handleSelectRowPrint = async (fees_id: any, deposits_id: any) => {
+    const result = await fetchRestoreFeesByGroupData(fees_id, deposits_id);
   };
 
   if (student_due_fees.length === 0 && student_discount_fees.length === 0) {
@@ -597,15 +552,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
                   setShowRestoreConfirm(false);
                   if (pendingRestoreData) {
                     await handleSelectRowPrint(
-                      pendingRestoreData.dataFeeMasterId,
-                      pendingRestoreData.dataFeeSessionGroupId,
-                      pendingRestoreData.dataFeeGroupsFeeTypeId,
-                      pendingRestoreData.rowData,
-                      pendingRestoreData.deposits,
-                      pendingRestoreData.total_discount,
-                      pendingRestoreData.total_fine,
-                      pendingRestoreData.total_paid,
-                      pendingRestoreData.balance,
+                      pendingRestoreData.fee_id,
+                      pendingRestoreData.deposits_id,
                     );
                   }
                   setPendingRestoreData(null);
