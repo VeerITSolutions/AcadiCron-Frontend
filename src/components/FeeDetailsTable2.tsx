@@ -327,6 +327,65 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 setShowRestoreConfirm(true);
               };
 
+              const handleSelectRowPrint2 = async (
+                e: React.MouseEvent<HTMLButtonElement>,
+                dataFeeMasterId: string,
+                dataFeeSessionGroupId: string,
+                dataFeeGroupsFeeTypeId: string,
+                rowData: any,
+                deposits: any,
+              ) => {
+                try {
+                  // Use POST request with data in the body, not query params
+                  console.log("deposits", deposits);
+                  const payload = {
+                    name: rowData.name,
+                    code: rowData.code,
+                    due_date: rowData.due_date,
+                    amount: rowData.amount,
+                    discount: total_discount,
+                    fine: total_fine,
+                    paid: total_paid,
+                    balance: balance,
+                    // Add any other fields you want to send
+                  };
+                  // const deposits = {
+
+                  // }
+
+                  const result = await fetchPrintFeesByGroupData(
+                    dataFeeMasterId,
+                    dataFeeSessionGroupId,
+                    dataFeeGroupsFeeTypeId,
+                    payload,
+                    deposits,
+                    student_details,
+                  );
+
+                  setData(result);
+
+                  // Open a new popup window for printing, without reloading the main site
+                  const printWindow = window.open(
+                    "",
+                    "_blank",
+                    "width=900,height=700",
+                  );
+                  if (printWindow) {
+                    printWindow.document.open();
+                    printWindow.document.write(result);
+                    printWindow.document.close();
+                    printWindow.focus();
+                    printWindow.print();
+                  } else {
+                    alert(
+                      "Popup blocked! Please allow popups for this site to print.",
+                    );
+                  }
+                } catch (error) {
+                  console.error("Failed to fetch printable content:", error);
+                }
+              };
+
               return (
                 <React.Fragment key={`${index}-${i}`}>
                   <tr
@@ -418,8 +477,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
                           )}
 
                           <IconButton
-                            onClick={() =>
-                              handleSelectRowPrint(
+                            onClick={(e: any) =>
+                              handleSelectRowPrint2(
                                 e,
                                 fee.id,
                                 fee.fee_session_group_id,
