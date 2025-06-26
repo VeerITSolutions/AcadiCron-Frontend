@@ -56,7 +56,7 @@ interface StudentDetails {
 }
 
 interface Props {
-  student_details: StudentDetails[];
+  student_details: any;
   student_due_fees: StudentDueFee[];
   student_discount_fees: Discount[];
   currency_symbol: string;
