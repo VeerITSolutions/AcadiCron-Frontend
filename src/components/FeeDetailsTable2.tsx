@@ -97,6 +97,10 @@ const FeeDetailsTable2: React.FC<Props> = ({
     setOpen(false);
     setEditing(false);
   };
+  const handleOpen = () => {
+    setOpen(true);
+    setEditing(true);
+  };
   // Handle select all checkbox
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
@@ -174,17 +178,19 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
   // Collect Selected handler
   const handleCollectSelected = () => {
-    if (selectedIds.size === 0) {
-      alert("Please select at least one fee row to collect fees.");
-      return;
-    }
-    // For demo, just alert the selected row ids
-    alert(
-      "Collect fees for selected rows: " +
-        Array.from(selectedIds)
-          .map((id) => id)
-          .join(", "),
-    );
+    // if (selectedIds.size === 0) {
+    //   alert("Please select at least one fee row to collect fees.");
+    //   return;
+    // }
+    // // For demo, just alert the selected row ids
+    // alert(
+    //   "Collect fees for selected rows: " +
+    //     Array.from(selectedIds)
+    //       .map((id) => id)
+    //       .join(", "),
+    // );
+    handleOpen();
+
     // Here you would implement actual collect logic
   };
 
