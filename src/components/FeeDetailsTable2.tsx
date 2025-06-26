@@ -16,7 +16,7 @@ import {
   fetchAddFeesByGroupData,
 } from "@/services/studentFeesMasterService";
 import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
+import "flatpickr/dist/themes/material_blue.css";
 import "flatpickr/dist/flatpickr.css";
 import {
   Dialog,
@@ -26,6 +26,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+
 interface FeeDeposit {
   amount: number;
   amount_discount: number;
@@ -37,6 +38,7 @@ interface FeeDeposit {
 }
 
 interface FeeItem {
+  id?: number;
   amount: number;
   due_date: string | null;
   code: string;
@@ -44,6 +46,8 @@ interface FeeItem {
   fine_amount: number;
   amount_detail: string;
   student_fees_deposite_id?: number;
+  fee_session_group_id?: number;
+  fee_groups_feetype_id?: number;
 }
 
 interface StudentDueFee {
@@ -80,7 +84,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
   student_discount_fees,
   currency_symbol,
 }) => {
-  // State to manage selected fee row ids
+  // State to manage selected fee row ids (rowId, e.g. "0-0", "1-0")
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [selectAll, setSelectAll] = useState(false);
   const [data, setData] = useState("");
@@ -98,17 +102,19 @@ const FeeDetailsTable2: React.FC<Props> = ({
     setOpen(false);
     setEditing(false);
   };
-  const handleOpen = () => {
+  // This function is used to open the dialog and set editing mode to true.
+  const handleOpen = (data: any) => {
     setOpen(true);
     setEditing(true);
   };
+
   // Handle select all checkbox
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
     setSelectAll(checked);
 
     if (checked) {
-      // Select all fee rows
+      // Select all fee rows (rowId: "groupIdx-feeIdx")
       const allIds = new Set<string>();
       student_due_fees.forEach((group, groupIdx) => {
         group.fees.forEach((fee, feeIdx) => {
@@ -120,8 +126,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
       setSelectedIds(new Set());
     }
   };
+
   const handleView = async (id: number) => {
-    // Assuming id is the student_id
     /* router.push(`/admin/student/${id}`); */
   };
 
@@ -177,24 +183,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
     // Here you would implement actual print logic
   };
 
-  // Collect Selected handler
-  const handleCollectSelected = () => {
-    // if (selectedIds.size === 0) {
-    //   alert("Please select at least one fee row to collect fees.");
-    //   return;
-    // }
-    // // For demo, just alert the selected row ids
-    // alert(
-    //   "Collect fees for selected rows: " +
-    //     Array.from(selectedIds)
-    //       .map((id) => id)
-    //       .join(", "),
-    // );
-    handleOpen();
-
-    // Here you would implement actual collect logic
-  };
-
   // Function to handle print of a specific row's data by sending it to backend API
   const handleSelectRowPrint = async (fees_id: any, deposits_id: any) => {
     const result = await fetchRestoreFeesByGroupData(fees_id, deposits_id);
@@ -210,6 +198,36 @@ const FeeDetailsTable2: React.FC<Props> = ({
   let totalFine = 0;
   let totalBalance = 0;
   const handleSubmit = async () => {};
+
+  // Helper: Map rowId ("groupIdx-feeIdx") to the actual fee object
+  const getSelectedFees = () => {
+    const selectedFees: FeeItem[] = [];
+    student_due_fees.forEach((group, groupIdx) => {
+      group.fees.forEach((fee, feeIdx) => {
+        const rowId = getFeeRowId(groupIdx, feeIdx);
+        if (selectedIds.has(rowId)) {
+          selectedFees.push({ ...fee, groupName: group.name });
+        }
+      });
+    });
+    return selectedFees;
+  };
+
+  // Helper: Get array of selected fee ids (for sending to backend)
+  const getSelectedFeeIds = () => {
+    // This will return an array of fee.id for selected checkboxes
+    const ids: (number | undefined)[] = [];
+    student_due_fees.forEach((group, groupIdx) => {
+      group.fees.forEach((fee, feeIdx) => {
+        const rowId = getFeeRowId(groupIdx, feeIdx);
+        if (selectedIds.has(rowId)) {
+          ids.push(fee.id);
+        }
+      });
+    });
+    return ids.filter(Boolean); // Remove undefined if any
+  };
+
   return (
     <div className="table-responsive mt-4">
       {/* Action buttons */}
@@ -222,7 +240,26 @@ const FeeDetailsTable2: React.FC<Props> = ({
         </button> */}
         <button
           className="m-2 rounded bg-[#1976D2] p-2 px-4 py-2 text-white hover:bg-[#155ba0]"
-          onClick={handleCollectSelected}
+          onClick={() => {
+            // Get selected fee objects and their ids
+            const selectedFees = getSelectedFees();
+            const selectedFeeIds = getSelectedFeeIds();
+            // For demonstration, log the selected fee ids
+            console.log("Selected rowIds:", Array.from(selectedIds));
+            console.log("Selected fee ids to send:", selectedFeeIds);
+
+            if (!selectedFees || selectedFees.length === 0) {
+              alert("Please select at least one fee row to collect fees.");
+              return;
+            }
+
+            // You can now send selectedFeeIds to your backend as needed
+            // For example:
+            // apiClient.post('/collect-fees', { fee_ids: selectedFeeIds })
+
+            // Here you can open the collect dialog and pass selectedFees as needed
+            handleOpen(selectedFees);
+          }}
         >
           Collect Selected
         </button>
@@ -261,7 +298,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
               try {
                 const parsed = JSON.parse(fee.amount_detail || "{}");
-                deposits = Object.values(parsed); // Convert object to array
+                deposits = Object.values(parsed);
               } catch {
                 deposits = [];
               }
@@ -294,7 +331,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
               // Handler for Restore (SettingsBackupRestore) icon click
               const handleRestoreClick = (fee: any, deposits: any) => {
-                console.log("deposits", deposits);
                 setPendingRestoreData({
                   fee_id: fee,
                   deposits_id: deposits,
@@ -311,8 +347,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 deposits: any,
               ) => {
                 try {
-                  // Use POST request with data in the body, not query params
-                  console.log("deposits", deposits);
                   const payload = {
                     name: rowData.name,
                     code: rowData.code,
@@ -322,11 +356,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     fine: total_fine,
                     paid: total_paid,
                     balance: balance,
-                    // Add any other fields you want to send
                   };
-                  // const deposits = {
-
-                  // }
 
                   const result = await fetchPrintFeesByGroupData(
                     dataFeeMasterId,
@@ -339,7 +369,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
                   setData(result);
 
-                  // Open a new popup window for printing, without reloading the main site
                   const printWindow = window.open(
                     "",
                     "_blank",
@@ -370,16 +399,16 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     style={{
                       backgroundColor:
                         balance === 0
-                          ? "#f0fdf4" // green-50
+                          ? "#f0fdf4"
                           : deposits.length > 0
-                            ? "#fefce8" // yellow-50
-                            : "#fee2e2", // red-100
+                          ? "#fefce8"
+                          : "#fee2e2",
                       color:
                         balance === 0
-                          ? "#15803d" // green-700
+                          ? "#15803d"
                           : deposits.length > 0
-                            ? "#854d0e" // yellow-800
-                            : "#991b1b", // red-900
+                          ? "#854d0e"
+                          : "#991b1b",
                     }}
                   >
                     <td className="p-2">
@@ -403,8 +432,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
                         balance === 0
                           ? "bg-green-50 p-2 text-green-700"
                           : deposits.length > 0
-                            ? "bg-yellow-50 p-2 text-yellow-800"
-                            : "bg-red-100 text-red-900 p-2"
+                          ? "bg-yellow-50 p-2 text-yellow-800"
+                          : "bg-red-100 text-red-900 p-2"
                       }
                     >
                       {balance === 0 ? (
@@ -440,7 +469,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                               onClick={() =>
                                 handleRestoreClick(
                                   fee.student_fees_deposite_id,
-                                  deposits[0].inv_no,
+                                  deposits[0]?.inv_no,
                                 )
                               }
                             >
