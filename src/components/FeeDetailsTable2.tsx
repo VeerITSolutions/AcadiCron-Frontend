@@ -185,7 +185,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
           Print Selected
         </button> */}
         <button
-          className="rounded bg-[#1976D2] p-2 px-4 py-2 text-white hover:bg-[#155ba0]"
+          className="m-2 rounded bg-[#1976D2] p-2 px-4 py-2 text-white hover:bg-[#155ba0]"
           onClick={handleCollectSelected}
         >
           Collect Selected
