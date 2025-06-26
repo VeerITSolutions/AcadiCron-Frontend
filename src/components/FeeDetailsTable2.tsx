@@ -44,13 +44,23 @@ interface Discount {
   student_fees_discount_description: string;
 }
 
+interface StudentDetails {
+  firstname: any;
+  lastname: any;
+  class_name: any;
+  section_name: any;
+  father_name: any;
+}
+
 interface Props {
+  student_details: StudentDetails[];
   student_due_fees: StudentDueFee[];
   student_discount_fees: Discount[];
   currency_symbol: string;
 }
 
 const FeeDetailsTable2: React.FC<Props> = ({
+  student_details,
   student_due_fees,
   student_discount_fees,
   currency_symbol,
@@ -256,10 +266,11 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 dataFeeSessionGroupId: string,
                 dataFeeGroupsFeeTypeId: string,
                 rowData: any,
+                deposits: any,
               ) => {
                 try {
                   // Use POST request with data in the body, not query params
-
+                  console.log("deposits", deposits);
                   const payload = {
                     name: rowData.name,
                     code: rowData.code,
@@ -271,17 +282,22 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     balance: balance,
                     // Add any other fields you want to send
                   };
+                  // const deposits = {
+
+                  // }
 
                   const result = await fetchPrintFeesByGroupData(
                     dataFeeMasterId,
                     dataFeeSessionGroupId,
                     dataFeeGroupsFeeTypeId,
                     payload,
+                    deposits,
+                    student_details
                   );
 
                   setData(result);
 
-                  const popupWindow = window.open("", "_blank", "");
+                  const popupWindow = window.open("", "", "");
                   if (popupWindow) {
                     popupWindow.document.open();
                     popupWindow.document.write(result); // Assuming response.data is HTML string
@@ -395,6 +411,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                                 fee.fee_session_group_id,
                                 fee.fee_groups_feetype_id,
                                 fee,
+                                deposits,
                               )
                             }
                             aria-label="Show"

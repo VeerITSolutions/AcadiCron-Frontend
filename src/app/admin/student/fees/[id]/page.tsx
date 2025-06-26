@@ -521,6 +521,7 @@ const StudentFess = () => {
           {feeData?.student_due_fees?.length > 0 ? (
             <div className="fees-container">
               <FeeDetailsTable2
+                student_details={formData}
                 student_due_fees={feeData.student_due_fees}
                 student_discount_fees={feeData.student_discount_fees}
                 currency_symbol={feeData.currency_symbol}
