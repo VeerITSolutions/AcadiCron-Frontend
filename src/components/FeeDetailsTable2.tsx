@@ -48,6 +48,7 @@ interface FeeItem {
   student_fees_deposite_id?: number;
   fee_session_group_id?: number;
   fee_groups_feetype_id?: number;
+  // groupName?: string; // We'll add this dynamically for modal display
 }
 
 interface StudentDueFee {
@@ -94,18 +95,32 @@ const FeeDetailsTable2: React.FC<Props> = ({
   const [showRestoreConfirm, setShowRestoreConfirm] = useState(false);
   const [pendingRestoreData, setPendingRestoreData] = useState<any>(null);
   const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
   const [editing, setEditing] = useState(false);
+
+  // Modal state for collecting all dynamic data
+  const [modalFees, setModalFees] = useState<FeeItem[]>([]);
+  const [modalDate, setModalDate] = useState<Date | null>(null);
+  const [modalPaymentMode, setModalPaymentMode] = useState<string>("");
+  const [modalNote, setModalNote] = useState<string>("");
+
+  // This function is used to open the dialog and set editing mode to true.
+  // It also sets the selected fees for the modal
+  const handleOpen = (fees: FeeItem[]) => {
+    setModalFees(fees);
+    setOpen(true);
+    setEditing(true);
+    setModalDate(new Date());
+    setModalPaymentMode("");
+    setModalNote("");
+  };
+
   const handleClose = () => {
     setOpen(false);
     setEditing(false);
-  };
-  // This function is used to open the dialog and set editing mode to true.
-  const handleOpen = (data: any) => {
-    setOpen(true);
-    setEditing(true);
+    setModalFees([]);
+    setModalDate(null);
+    setModalPaymentMode("");
+    setModalNote("");
   };
 
   // Handle select all checkbox
@@ -197,11 +212,10 @@ const FeeDetailsTable2: React.FC<Props> = ({
   let totalDiscount = 0;
   let totalFine = 0;
   let totalBalance = 0;
-  const handleSubmit = async () => {};
 
-  // Helper: Map rowId ("groupIdx-feeIdx") to the actual fee object
+  // Helper: Map rowId ("groupIdx-feeIdx") to the actual fee object, including group name
   const getSelectedFees = () => {
-    const selectedFees: FeeItem[] = [];
+    const selectedFees: (FeeItem & { groupName: string })[] = [];
     student_due_fees.forEach((group, groupIdx) => {
       group.fees.forEach((fee, feeIdx) => {
         const rowId = getFeeRowId(groupIdx, feeIdx);
@@ -228,6 +242,34 @@ const FeeDetailsTable2: React.FC<Props> = ({
     return ids.filter(Boolean); // Remove undefined if any
   };
 
+  // Handle submit for modal: send all modal data (fees, date, payment mode, note) to API
+  const handleSubmit = async () => {
+    // Compose the payload
+    const payload = {
+      date: modalDate,
+      payment_mode: modalPaymentMode,
+      note: modalNote,
+      fees: modalFees.map((fee) => ({
+        id: fee.id,
+        name: fee.name,
+        code: fee.code,
+        amount: fee.amount,
+        due_date: fee.due_date,
+        fine_amount: fee.fine_amount,
+        fee_session_group_id: fee.fee_session_group_id,
+        fee_groups_feetype_id: fee.fee_groups_feetype_id,
+        groupName: (fee as any).groupName, // for display
+      })),
+      student_details,
+    };
+    // You can now send this payload to your API
+    // Example:
+    // await apiClient.post('/api/collect-fees', payload);
+    console.log("Submitting fees collection payload:", payload);
+    // Optionally close modal after submit
+    handleClose();
+  };
+
   return (
     <div className="table-responsive mt-4">
       {/* Action buttons */}
@@ -252,10 +294,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
               alert("Please select at least one fee row to collect fees.");
               return;
             }
-
-            // You can now send selectedFeeIds to your backend as needed
-            // For example:
-            // apiClient.post('/collect-fees', { fee_ids: selectedFeeIds })
 
             // Here you can open the collect dialog and pass selectedFees as needed
             handleOpen(selectedFees);
@@ -621,7 +659,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
         </div>
       )}
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
           <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
             {/* Title */}
@@ -658,6 +696,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
                   options={{
                     dateFormat: "m/d/Y",
                   }}
+                  value={modalDate ? [modalDate] : []}
+                  onChange={(dates: Date[]) => setModalDate(dates[0] || null)}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   placeholder="mm/dd/yyyy"
                 />
@@ -682,113 +722,95 @@ const FeeDetailsTable2: React.FC<Props> = ({
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Payment Mode
               </label>
-              <label className="mr-4 inline-flex items-center">
-                <input
-                  type="radio"
-                  name="payment_mode_fee"
-                  value="Cash"
-                  className="form-radio dark:text-white"
-                />
-                <span className="ml-2 dark:text-white"> Cash</span>
-              </label>
-              <label className="mr-4 inline-flex items-center dark:text-white">
-                <input
-                  type="radio"
-                  name="payment_mode_fee"
-                  value="Cheque"
-                  className="form-radio dark:text-white"
-                />
-                <span className="ml-2">Cheque</span>
-              </label>
-              <label className="mr-4 inline-flex items-center dark:text-white">
-                <input
-                  type="radio"
-                  name="payment_mode_fee"
-                  value="DD"
-                  className="form-radio dark:text-white"
-                />
-                <span className="ml-2">DD</span>
-              </label>
-              <label className="mr-4 inline-flex items-center dark:text-white">
-                <input
-                  type="radio"
-                  name="payment_mode_fee"
-                  value="bank_transfer"
-                  className="form-radio dark:text-white"
-                />
-                <span className="ml-2">Bank Transfer</span>
-              </label>
-              <label className="mr-4 inline-flex items-center dark:text-white">
-                <input
-                  type="radio"
-                  name="payment_mode_fee"
-                  value="upi"
-                  className="form-radio"
-                />
-                <span className="ml-2 dark:text-white">UPI</span>
-              </label>
-              <label className="mr-4 inline-flex items-center dark:text-white">
-                <input
-                  type="radio"
-                  name="payment_mode_fee"
-                  value="card"
-                  className="form-radio dark:text-white"
-                />
-                <span className="ml-2 dark:text-white">Card</span>
-              </label>
+              {["Cash", "Cheque", "DD", "bank_transfer", "upi", "card"].map(
+                (mode) => (
+                  <label
+                    key={mode}
+                    className="mr-4 inline-flex items-center dark:text-white"
+                  >
+                    <input
+                      type="radio"
+                      name="payment_mode_fee"
+                      value={mode}
+                      className="form-radio dark:text-white"
+                      checked={modalPaymentMode === mode}
+                      onChange={() => setModalPaymentMode(mode)}
+                    />
+                    <span className="ml-2 dark:text-white">
+                      {mode === "bank_transfer"
+                        ? "Bank Transfer"
+                        : mode.charAt(0).toUpperCase() + mode.slice(1)}
+                    </span>
+                  </label>
+                ),
+              )}
             </div>
             <br />
 
             <ul className="fees-list fees-list-in-box">
-              <li className="item">
-                {/* Hidden inputs for static design, not functional */}
-                <input name="row_counter[]" type="hidden" value="1" readOnly />
-                <input
-                  name="student_fees_master_id_1"
-                  type="hidden"
-                  value="226"
-                  readOnly
-                />
-                <input
-                  name="fee_groups_feetype_id_1"
-                  type="hidden"
-                  value="8"
-                  readOnly
-                />
-                <input
-                  name="fee_groups_feetype_fine_amount_1"
-                  type="hidden"
-                  value="0"
-                  readOnly
-                />
-                <input
-                  name="fee_amount_1"
-                  type="hidden"
-                  value="10000.00"
-                  readOnly
-                />
-                <div className="product-info">
-                  <div className="flex items-center justify-between">
-                    <span className="product-title font-medium text-black dark:text-white">
-                      Class 3 - I Installment
-                    </span>
-                    <span className="pull-right font-semibold text-black dark:text-white">
-                      ₹10000.00
-                    </span>
-                  </div>
-                  <span className="product-description text-gray-600 dark:text-gray-300 mt-1 block text-sm">
-                    At the time of Admission
-                  </span>
-                  <div className="mt-2 flex items-center justify-between">
-                    <span className="product-title text font-medium text-danger">
-                      Fine
-                    </span>
-                    <span className="pull-right text-red-500 font-semibold">
-                      ₹0.00
-                    </span>
-                  </div>
-                </div>
-              </li>
+              {modalFees.length === 0 ? (
+                <li className="item text-gray-500">No fees selected.</li>
+              ) : (
+                modalFees.map((fee, idx) => (
+                  <li className="item" key={fee.id || idx}>
+                    <input
+                      name={`student_fees_master_id_${idx + 1}`}
+                      type="hidden"
+                      value={fee.id}
+                      readOnly
+                    />
+                    <input
+                      name={`fee_groups_feetype_id_${idx + 1}`}
+                      type="hidden"
+                      value={fee.fee_groups_feetype_id}
+                      readOnly
+                    />
+                    <input
+                      name={`fee_groups_feetype_fine_amount_${idx + 1}`}
+                      type="hidden"
+                      value={fee.fine_amount}
+                      readOnly
+                    />
+                    <input
+                      name={`fee_amount_${idx + 1}`}
+                      type="hidden"
+                      value={fee.amount}
+                      readOnly
+                    />
+                    <div className="product-info">
+                      <div className="flex items-center justify-between">
+                        <span className="product-title font-medium text-black dark:text-white">
+                          {(fee as any).groupName
+                            ? `${(fee as any).groupName} - ${fee.name}`
+                            : fee.name}
+                        </span>
+                        <span className="pull-right font-semibold text-black dark:text-white">
+                          ₹{Number(fee.amount).toLocaleString("en-IN", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </span>
+                      </div>
+                      <span className="product-description text-gray-600 dark:text-gray-300 mt-1 block text-sm">
+                        {fee.due_date
+                          ? `Due: ${dayjs(fee.due_date).format("DD-MM-YYYY")}`
+                          : ""}
+                      </span>
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="product-title text font-medium text-danger">
+                          Fine
+                        </span>
+                        <span className="pull-right text-red-500 font-semibold">
+                          ₹{Number(fee.fine_amount).toLocaleString("en-IN", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                ))
+              )}
             </ul>
             <br />
 
@@ -799,6 +821,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
               <input
                 name="reason"
                 type="text"
+                value={modalNote}
+                onChange={(e) => setModalNote(e.target.value)}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -807,6 +831,11 @@ const FeeDetailsTable2: React.FC<Props> = ({
               <button
                 onClick={handleSubmit}
                 className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+                disabled={
+                  !modalDate ||
+                  !modalPaymentMode ||
+                  modalFees.length === 0
+                }
               >
                 {editing ? "Update" : "Save"}
               </button>
