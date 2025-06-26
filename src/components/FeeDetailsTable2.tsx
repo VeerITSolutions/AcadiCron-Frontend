@@ -292,21 +292,27 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     dataFeeGroupsFeeTypeId,
                     payload,
                     deposits,
-                    student_details
+                    student_details,
                   );
 
                   setData(result);
 
-                  const popupWindow = window.open("", "", "");
-                  if (popupWindow) {
-                    popupWindow.document.open();
-                    popupWindow.document.write(result); // Assuming response.data is HTML string
-                    popupWindow.document.close();
-
-                    popupWindow.focus();
-                    popupWindow.print();
+                  // Open a new popup window for printing, without reloading the main site
+                  const printWindow = window.open(
+                    "",
+                    "_blank",
+                    "width=900,height=700",
+                  );
+                  if (printWindow) {
+                    printWindow.document.open();
+                    printWindow.document.write(result);
+                    printWindow.document.close();
+                    printWindow.focus();
+                    printWindow.print();
                   } else {
-                    console.error("Popup blocked!");
+                    alert(
+                      "Popup blocked! Please allow popups for this site to print.",
+                    );
                   }
                 } catch (error) {
                   console.error("Failed to fetch printable content:", error);
