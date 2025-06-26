@@ -312,17 +312,11 @@ const FeeDetailsTable2: React.FC<Props> = ({
               const rowId = getFeeRowId(index, i);
 
               // Handler for Restore (SettingsBackupRestore) icon click
-              const handleRestoreClick = () => {
+              const handleRestoreClick = (fee: any, deposits: any) => {
+                console.log("deposits", deposits);
                 setPendingRestoreData({
-                  dataFeeMasterId: fee.id,
-                  dataFeeSessionGroupId: fee.fee_session_group_id,
-                  dataFeeGroupsFeeTypeId: fee.fee_groups_feetype_id,
-                  rowData: fee,
-                  deposits: deposits,
-                  total_discount,
-                  total_fine,
-                  total_paid,
-                  balance,
+                  fee_id: fee,
+                  deposits_id: deposits,
                 });
                 setShowRestoreConfirm(true);
               };
@@ -461,7 +455,14 @@ const FeeDetailsTable2: React.FC<Props> = ({
                       <div className="">
                         <div className="pull-right flex ">
                           {balance === 0 ? (
-                            <IconButton onClick={handleRestoreClick}>
+                            <IconButton
+                              onClick={() =>
+                                handleRestoreClick(
+                                  fee.student_fees_deposite_id,
+                                  deposits[0].inv_no,
+                                )
+                              }
+                            >
                               <SettingsBackupRestore />
                             </IconButton>
                           ) : deposits.length > 0 ? (
@@ -576,9 +577,9 @@ const FeeDetailsTable2: React.FC<Props> = ({
             <p>
               Are you sure you want to restore and print receipt for{" "}
               <strong>
-                {pendingRestoreData?.deposits?.[0]?.payment_id || "N/A"}
+                {pendingRestoreData.fee_id || "N/A"} /
+                {pendingRestoreData.deposits_id || "N/A"}
               </strong>
-              ?
             </p>
             <div className="mt-6 flex justify-end gap-4">
               <button
