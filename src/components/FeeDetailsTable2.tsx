@@ -707,6 +707,60 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 <span className="ml-2 dark:text-white">Card</span>
               </label>
             </div>
+            <br />
+
+            <ul className="fees-list fees-list-in-box">
+              <li className="item">
+                {/* Hidden inputs for static design, not functional */}
+                <input name="row_counter[]" type="hidden" value="1" readOnly />
+                <input
+                  name="student_fees_master_id_1"
+                  type="hidden"
+                  value="226"
+                  readOnly
+                />
+                <input
+                  name="fee_groups_feetype_id_1"
+                  type="hidden"
+                  value="8"
+                  readOnly
+                />
+                <input
+                  name="fee_groups_feetype_fine_amount_1"
+                  type="hidden"
+                  value="0"
+                  readOnly
+                />
+                <input
+                  name="fee_amount_1"
+                  type="hidden"
+                  value="10000.00"
+                  readOnly
+                />
+                <div className="product-info">
+                  <div className="flex items-center justify-between">
+                    <span className="product-title font-medium text-black dark:text-white">
+                      Class 3 - I Installment
+                    </span>
+                    <span className="pull-right font-semibold text-black dark:text-white">
+                      ₹10000.00
+                    </span>
+                  </div>
+                  <span className="product-description text-gray-600 dark:text-gray-300 mt-1 block text-sm">
+                    At the time of Admission
+                  </span>
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="product-title text font-medium text-danger">
+                      Fine
+                    </span>
+                    <span className="pull-right text-red-500 font-semibold">
+                      ₹0.00
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <br />
 
             <div className="field">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
