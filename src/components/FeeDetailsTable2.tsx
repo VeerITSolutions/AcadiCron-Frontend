@@ -575,7 +575,10 @@ const FeeDetailsTable2: React.FC<Props> = ({
             <h2 className="mb-4 text-lg font-semibold">Confirm Restore</h2>
             <p>
               Are you sure you want to restore and print receipt for{" "}
-              <strong>{pendingRestoreData?.rowData.name}</strong>?
+              <strong>
+                {pendingRestoreData?.deposits?.[0]?.payment_id || "N/A"}
+              </strong>
+              ?
             </p>
             <div className="mt-6 flex justify-end gap-4">
               <button
