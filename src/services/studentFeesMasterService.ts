@@ -41,6 +41,16 @@ export const fetchRestoreFeesByGroupData = async (
   return response.data;
 };
 
+export const fetchAddFeesByGroupData = async (
+  data: any,
+
+) => {
+  const response = await apiClient.post(`/student-fees-add-grp`, {
+    data
+  });
+  return response.data;
+};
+
 
 export const createFeesMasterData = async (
 fees_group?:any,
