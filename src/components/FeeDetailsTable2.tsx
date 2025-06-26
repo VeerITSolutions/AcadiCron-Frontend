@@ -72,6 +72,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
   // Helper to get a unique id for each fee row
   const getFeeRowId = (groupIdx: number, feeIdx: number) =>
     `${groupIdx}-${feeIdx}`;
+  const [showRestoreConfirm, setShowRestoreConfirm] = useState(false);
+  const [pendingRestoreData, setPendingRestoreData] = useState<any>(null);
 
   // Handle select all checkbox
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,6 +164,59 @@ const FeeDetailsTable2: React.FC<Props> = ({
           .join(", "),
     );
     // Here you would implement actual collect logic
+  };
+
+  // Function to handle print of a specific row's data by sending it to backend API
+  const handleSelectRowPrint = async (
+    dataFeeMasterId: string,
+    dataFeeSessionGroupId: string,
+    dataFeeGroupsFeeTypeId: string,
+    rowData: any,
+    deposits: any,
+    total_discount: number,
+    total_fine: number,
+    total_paid: number,
+    balance: number,
+  ) => {
+    try {
+      // Use POST request with data in the body, not query params
+      const payload = {
+        name: rowData.name,
+        code: rowData.code,
+        due_date: rowData.due_date,
+        amount: rowData.amount,
+        discount: total_discount,
+        fine: total_fine,
+        paid: total_paid,
+        balance: balance,
+        // Add any other fields you want to send
+      };
+
+      const result = await fetchPrintFeesByGroupData(
+        dataFeeMasterId,
+        dataFeeSessionGroupId,
+        dataFeeGroupsFeeTypeId,
+        payload,
+        deposits,
+        student_details,
+      );
+
+      setData(result);
+
+      // Open a new popup window for printing, without reloading the main site
+      const printWindow = window.open("", "_blank", "width=900,height=700");
+      if (printWindow) {
+        printWindow.document.open();
+        printWindow.document.write(result);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+      } else {
+        alert("Popup blocked! Please allow popups for this site to print.");
+      }
+    } catch (error) {
+      console.error("Failed to fetch printable content:", error);
+    }
   };
 
   if (student_due_fees.length === 0 && student_discount_fees.length === 0) {
@@ -256,67 +311,20 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
               const rowId = getFeeRowId(index, i);
 
-              // INSERT_YOUR_CODE
-
-              // Function to handle print of a specific row's data by sending it to backend API
-
-              const handleSelectRowPrint = async (
-                e: React.MouseEvent<HTMLButtonElement>,
-                dataFeeMasterId: string,
-                dataFeeSessionGroupId: string,
-                dataFeeGroupsFeeTypeId: string,
-                rowData: any,
-                deposits: any,
-              ) => {
-                try {
-                  // Use POST request with data in the body, not query params
-                  console.log("deposits", deposits);
-                  const payload = {
-                    name: rowData.name,
-                    code: rowData.code,
-                    due_date: rowData.due_date,
-                    amount: rowData.amount,
-                    discount: total_discount,
-                    fine: total_fine,
-                    paid: total_paid,
-                    balance: balance,
-                    // Add any other fields you want to send
-                  };
-                  // const deposits = {
-
-                  // }
-
-                  const result = await fetchPrintFeesByGroupData(
-                    dataFeeMasterId,
-                    dataFeeSessionGroupId,
-                    dataFeeGroupsFeeTypeId,
-                    payload,
-                    deposits,
-                    student_details,
-                  );
-
-                  setData(result);
-
-                  // Open a new popup window for printing, without reloading the main site
-                  const printWindow = window.open(
-                    "",
-                    "_blank",
-                    "width=900,height=700",
-                  );
-                  if (printWindow) {
-                    printWindow.document.open();
-                    printWindow.document.write(result);
-                    printWindow.document.close();
-                    printWindow.focus();
-                    printWindow.print();
-                  } else {
-                    alert(
-                      "Popup blocked! Please allow popups for this site to print.",
-                    );
-                  }
-                } catch (error) {
-                  console.error("Failed to fetch printable content:", error);
-                }
+              // Handler for Restore (SettingsBackupRestore) icon click
+              const handleRestoreClick = () => {
+                setPendingRestoreData({
+                  dataFeeMasterId: fee.id,
+                  dataFeeSessionGroupId: fee.fee_session_group_id,
+                  dataFeeGroupsFeeTypeId: fee.fee_groups_feetype_id,
+                  rowData: fee,
+                  deposits: deposits,
+                  total_discount,
+                  total_fine,
+                  total_paid,
+                  balance,
+                });
+                setShowRestoreConfirm(true);
               };
 
               return (
@@ -394,7 +402,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                       <div className="">
                         <div className="pull-right flex ">
                           {balance === 0 ? (
-                            <IconButton onClick={() => handleEdit(1)}>
+                            <IconButton onClick={handleRestoreClick}>
                               <SettingsBackupRestore />
                             </IconButton>
                           ) : deposits.length > 0 ? (
@@ -410,7 +418,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                           )}
 
                           <IconButton
-                            onClick={(e: any) =>
+                            onClick={() =>
                               handleSelectRowPrint(
                                 e,
                                 fee.id,
@@ -501,6 +509,51 @@ const FeeDetailsTable2: React.FC<Props> = ({
           </tr>
         </tbody>
       </table>
+
+      {showRestoreConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-[90%] max-w-md rounded bg-white p-6 shadow-lg">
+            <h2 className="mb-4 text-lg font-semibold">Confirm Restore</h2>
+            <p>
+              Are you sure you want to restore and print receipt for{" "}
+              <strong>{pendingRestoreData?.rowData.name}</strong>?
+            </p>
+            <div className="mt-6 flex justify-end gap-4">
+              <button
+                className="bg-gray-300 rounded px-4 py-2"
+                onClick={() => {
+                  setShowRestoreConfirm(false);
+                  setPendingRestoreData(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="rounded bg-green-500 px-4 py-2 text-white"
+                onClick={async () => {
+                  setShowRestoreConfirm(false);
+                  if (pendingRestoreData) {
+                    await handleSelectRowPrint(
+                      pendingRestoreData.dataFeeMasterId,
+                      pendingRestoreData.dataFeeSessionGroupId,
+                      pendingRestoreData.dataFeeGroupsFeeTypeId,
+                      pendingRestoreData.rowData,
+                      pendingRestoreData.deposits,
+                      pendingRestoreData.total_discount,
+                      pendingRestoreData.total_fine,
+                      pendingRestoreData.total_paid,
+                      pendingRestoreData.balance,
+                    );
+                  }
+                  setPendingRestoreData(null);
+                }}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
