@@ -99,7 +99,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
   // Modal state for collecting all dynamic data
   const [modalFees, setModalFees] = useState<FeeItem[]>([]);
-  const [modalDate, setModalDate] = useState<Date | null>(null);
+  const [modalDate, setModalDate] = useState<Date | null>(new Date());
   const [modalPaymentMode, setModalPaymentMode] = useState<string>("");
   const [modalNote, setModalNote] = useState<string>("");
 
@@ -439,14 +439,14 @@ const FeeDetailsTable2: React.FC<Props> = ({
                         balance === 0
                           ? "#f0fdf4"
                           : deposits.length > 0
-                          ? "#fefce8"
-                          : "#fee2e2",
+                            ? "#fefce8"
+                            : "#fee2e2",
                       color:
                         balance === 0
                           ? "#15803d"
                           : deposits.length > 0
-                          ? "#854d0e"
-                          : "#991b1b",
+                            ? "#854d0e"
+                            : "#991b1b",
                     }}
                   >
                     <td className="p-2">
@@ -470,8 +470,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
                         balance === 0
                           ? "bg-green-50 p-2 text-green-700"
                           : deposits.length > 0
-                          ? "bg-yellow-50 p-2 text-yellow-800"
-                          : "bg-red-100 text-red-900 p-2"
+                            ? "bg-yellow-50 p-2 text-yellow-800"
+                            : "bg-red-100 text-red-900 p-2"
                       }
                     >
                       {balance === 0 ? (
@@ -664,7 +664,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
           <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
             {/* Title */}
             <h3 className="font-medium text-black dark:text-white">
-              {editing ? "Edit Leave" : "Collect Fees"}
+              {editing ? "Add" : "Collect Fees"}
             </h3>
             <svg
               onClick={handleClose}
@@ -696,7 +696,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                   options={{
                     dateFormat: "m/d/Y",
                   }}
-                  value={modalDate ? [modalDate] : []}
+                  value={modalDate}
                   onChange={(dates: Date[]) => setModalDate(dates[0] || null)}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   placeholder="mm/dd/yyyy"
@@ -785,7 +785,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
                             : fee.name}
                         </span>
                         <span className="pull-right font-semibold text-black dark:text-white">
-                          ₹{Number(fee.amount).toLocaleString("en-IN", {
+                          ₹
+                          {Number(fee.amount).toLocaleString("en-IN", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
@@ -801,7 +802,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
                           Fine
                         </span>
                         <span className="pull-right text-red-500 font-semibold">
-                          ₹{Number(fee.fine_amount).toLocaleString("en-IN", {
+                          ₹
+                          {Number(fee.fine_amount).toLocaleString("en-IN", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
@@ -832,9 +834,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 onClick={handleSubmit}
                 className="rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
                 disabled={
-                  !modalDate ||
-                  !modalPaymentMode ||
-                  modalFees.length === 0
+                  !modalDate || !modalPaymentMode || modalFees.length === 0
                 }
               >
                 {editing ? "Update" : "Save"}
