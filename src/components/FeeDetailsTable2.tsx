@@ -357,6 +357,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 parseFloat(fee.amount || 0) - (total_paid + total_discount);
 
               const isUnpaid = balance > 0 && deposits.length === 0;
+              const isPaid = balance === 0;
 
               // Totals
               totalAmount += parseInt(fee.amount as any, 10) || 0;
@@ -450,13 +451,15 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     }}
                   >
                     <td className="p-2">
-                      <input
-                        name="ids"
-                        type="checkbox"
-                        checked={selectedIds.has(rowId)}
-                        onChange={(e) => handleSelectRow(e, rowId)}
-                        aria-label={`Select fee row ${fee.name} ${fee.code}`}
-                      />{" "}
+                      {!isPaid && (
+                        <input
+                          name="ids"
+                          type="checkbox"
+                          checked={selectedIds.has(rowId)}
+                          onChange={(e) => handleSelectRow(e, rowId)}
+                          aria-label={`Select fee row ${fee.name} ${fee.code}`}
+                        />
+                      )}{" "}
                     </td>
                     <td className="p-2">{fee.name}</td>
                     <td className="p-2">{fee.code}</td>
@@ -815,31 +818,32 @@ const FeeDetailsTable2: React.FC<Props> = ({
               )}
             </ul>
             {/* Show total of all amount and fine below the list */}
-            {modalFees.length > 0 && (() => {
-              const totalAmount = modalFees.reduce(
-                (sum, fee) => sum + Number(fee.amount || 0),
-                0
-              );
-              const totalFine = modalFees.reduce(
-                (sum, fee) => sum + Number(fee.fine_amount || 0),
-                0
-              );
-              return (
-                <div className="mt-4 flex flex-col items-end">
-                  <button
-                    type="button"
-                    className="rounded bg-green-600 px-4 py-2 text-white font-semibold shadow hover:bg-green-700 focus:outline-none"
-                    disabled
-                  >
-                    Total Amount: ₹
-                    {(totalAmount + totalFine).toLocaleString("en-IN", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </button>
-                </div>
-              );
-            })()}
+            {modalFees.length > 0 &&
+              (() => {
+                const totalAmount = modalFees.reduce(
+                  (sum, fee) => sum + Number(fee.amount || 0),
+                  0,
+                );
+                const totalFine = modalFees.reduce(
+                  (sum, fee) => sum + Number(fee.fine_amount || 0),
+                  0,
+                );
+                return (
+                  <div className="mt-4 flex flex-col items-end">
+                    <button
+                      type="button"
+                      className="rounded bg-green-600 px-4 py-2 font-semibold text-white shadow hover:bg-green-700 focus:outline-none"
+                      disabled
+                    >
+                      Total Amount: ₹
+                      {(totalAmount + totalFine).toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </button>
+                  </div>
+                );
+              })()}
             <br />
 
             <div className="field">
