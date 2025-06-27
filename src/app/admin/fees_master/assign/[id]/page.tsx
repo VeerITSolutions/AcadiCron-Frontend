@@ -478,19 +478,40 @@ const StudentDetails = () => {
                       "Are you sure you want to assign the selected items?",
                     )
                   ) {
-                    const formData = new FormData();
-                    idsToDelete.forEach((id: any) => {
-                      formData.append("student_ids[]", id);
-                    });
+                    // const formData = new FormData();
+                    // idsToDelete.forEach((id: any) => {
+                    //   formData.append("student_ids[]", id);
+                    // });
 
-                    formData.append(
-                      "fee_session_group_id",
-                      feessessionbygroupiddata[0].fee_session_group_id,
-                    );
-                    formData.append(
-                      "fee_groups_id",
-                      feessessionbygroupiddata[0].fee_groups_id,
-                    );
+                    // formData.append(
+                    //   "fee_session_group_id",
+                    //   feessessionbygroupiddata[0].fee_session_group_id,
+                    // );
+                    // formData.append(
+                    //   "fee_groups_id",
+                    //   feessessionbygroupiddata[0].fee_groups_id,
+                    // );
+
+                    const formData = new FormData();
+
+                    // Common fee session group ID
+                    formData.append("fee_session_groups", "564");
+
+                    // Example list of student IDs
+                    const studentIds = [
+                      1948, 2460, 1954, 1955, 1958, 1960, 1964, 1965, 1967,
+                      1969, 1971, 1973, 1976, 1979, 2466, 2468, 2470, 2472,
+                      2475, 2482, 2483, 2484, 2486, 2488, 2489, 2617, 2654,
+                      2748,
+                    ];
+
+                    studentIds.forEach((id) => {
+                      // simulate that the fee master ID is 0 for all
+                      formData.append(`student_fees_master_id_${id}`, "0");
+
+                      // append student_ids[] array
+                      formData.append("student_ids[]", String(id));
+                    });
 
                     try {
                       const response = await assignStudentBluk(formData);
