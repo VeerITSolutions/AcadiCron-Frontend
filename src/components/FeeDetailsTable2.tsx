@@ -814,6 +814,32 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 ))
               )}
             </ul>
+            {/* Show total of all amount and fine below the list */}
+            {modalFees.length > 0 && (() => {
+              const totalAmount = modalFees.reduce(
+                (sum, fee) => sum + Number(fee.amount || 0),
+                0
+              );
+              const totalFine = modalFees.reduce(
+                (sum, fee) => sum + Number(fee.fine_amount || 0),
+                0
+              );
+              return (
+                <div className="mt-4 flex flex-col items-end">
+                  <button
+                    type="button"
+                    className="rounded bg-green-600 px-4 py-2 text-white font-semibold shadow hover:bg-green-700 focus:outline-none"
+                    disabled
+                  >
+                    Total Amount: ₹
+                    {(totalAmount + totalFine).toLocaleString("en-IN", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </button>
+                </div>
+              );
+            })()}
             <br />
 
             <div className="field">
