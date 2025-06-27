@@ -299,6 +299,9 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
     try {
       const result = await fetchAddFeesByGroupData(formData);
+      if (result) {
+        window.location.reload();
+      }
       console.log("result", result);
     } catch (err) {
       console.error("Error submitting fees:", err);
