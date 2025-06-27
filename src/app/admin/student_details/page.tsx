@@ -149,7 +149,7 @@ const StudentDetails = () => {
           selectedClass,
           selectedSection,
           keyword,
-          selectedSessionId,
+          getselectedSessionId,
         );
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
@@ -164,7 +164,7 @@ const StudentDetails = () => {
           selectedClass,
           selectedSection,
           keyword,
-          selectedSessionId,
+          getselectedSessionId,
         );
         setTotalCount(result.totalCount);
         const formattedData = formatStudentData(result.data);
