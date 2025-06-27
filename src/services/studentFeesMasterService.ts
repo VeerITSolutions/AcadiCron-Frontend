@@ -41,12 +41,11 @@ export const fetchRestoreFeesByGroupData = async (
   return response.data;
 };
 
-export const fetchAddFeesByGroupData = async (
-  data: any,
-
-) => {
-  const response = await apiClient.post(`/student-fees-add-grp`, {
-    data
+export const fetchAddFeesByGroupData = async (data: FormData) => {
+  const response = await apiClient.post(`/student-fees-add-grp`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data", // Important for FormData
+    },
   });
   return response.data;
 };

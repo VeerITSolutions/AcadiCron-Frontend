@@ -48,7 +48,6 @@ interface FeeItem {
   student_fees_deposite_id?: number;
   fee_session_group_id?: number;
   fee_groups_feetype_id?: number;
-  // groupName?: string; // We'll add this dynamically for modal display
 }
 
 interface StudentDueFee {
@@ -85,11 +84,9 @@ const FeeDetailsTable2: React.FC<Props> = ({
   student_discount_fees,
   currency_symbol,
 }) => {
-  // State to manage selected fee row ids (rowId, e.g. "0-0", "1-0")
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [selectAll, setSelectAll] = useState(false);
   const [data, setData] = useState("");
-  // Helper to get a unique id for each fee row
   const getFeeRowId = (groupIdx: number, feeIdx: number) =>
     `${groupIdx}-${feeIdx}`;
   const [showRestoreConfirm, setShowRestoreConfirm] = useState(false);
@@ -129,7 +126,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
     setSelectAll(checked);
 
     if (checked) {
-      // Select all fee rows (rowId: "groupIdx-feeIdx")
       const allIds = new Set<string>();
       student_due_fees.forEach((group, groupIdx) => {
         group.fees.forEach((fee, feeIdx) => {
@@ -163,7 +159,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
       } else {
         newSet.delete(rowId);
       }
-      // If not all are checked, uncheck selectAll
       if (newSet.size !== getTotalFeeRows()) {
         setSelectAll(false);
       } else {
@@ -188,14 +183,12 @@ const FeeDetailsTable2: React.FC<Props> = ({
       alert("Please select at least one fee row to print.");
       return;
     }
-    // For demo, just alert the selected row ids
     alert(
       "Print selected fee rows: " +
         Array.from(selectedIds)
           .map((id) => id)
           .join(", "),
     );
-    // Here you would implement actual print logic
   };
 
   // Function to handle print of a specific row's data by sending it to backend API
@@ -229,7 +222,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
   // Helper: Get array of selected fee ids (for sending to backend)
   const getSelectedFeeIds = () => {
-    // This will return an array of fee.id for selected checkboxes
     const ids: (number | undefined)[] = [];
     student_due_fees.forEach((group, groupIdx) => {
       group.fees.forEach((fee, feeIdx) => {
@@ -239,35 +231,78 @@ const FeeDetailsTable2: React.FC<Props> = ({
         }
       });
     });
-    return ids.filter(Boolean); // Remove undefined if any
+    return ids.filter(Boolean);
   };
 
-  // Handle submit for modal: send all modal data (fees, date, payment mode, note) to API
-  const handleSubmit = async () => {
-    // Compose the payload
-    const payload = {
-      date: modalDate,
-      payment_mode: modalPaymentMode,
-      note: modalNote,
-      fees: modalFees.map((fee) => ({
-        id: fee.id,
-        name: fee.name,
-        code: fee.code,
-        amount: fee.amount,
-        due_date: fee.due_date,
-        fine_amount: fee.fine_amount,
-        fee_session_group_id: fee.fee_session_group_id,
-        fee_groups_feetype_id: fee.fee_groups_feetype_id,
-        groupName: (fee as any).groupName, // for display
-      })),
-      student_details,
-    };
-    // You can now send this payload to your API
-    // Example:
-    // await apiClient.post('/api/collect-fees', payload);
-    console.log("Submitting fees collection payload:", payload);
-    // Optionally close modal after submit
-    handleClose();
+  const handleOpenFixed = (fees: FeeItem[]) => {
+    setModalFees(fees);
+    setOpen(true);
+    setEditing(true);
+    setModalDate(new Date());
+    setModalPaymentMode("Cash"); // Set default to "Cash"
+    setModalNote("");
+  };
+
+  const handleSubmit = async (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) e.preventDefault();
+
+    if (!modalDate || !modalPaymentMode || modalFees.length === 0) {
+      return;
+    }
+
+    const student_session_id =
+      student_details?.student_session_id ||
+      student_details?.student_session_id;
+    const guardian_phone =
+      student_details?.guardian_phone ||
+      student_details?.father_phone ||
+      student_details?.mother_phone ||
+      "";
+    const guardian_email =
+      student_details?.guardian_email || student_details?.email || "";
+    const parent_app_key = student_details?.parent_app_key || "";
+
+    const row_counter: number[] = [];
+    const rawFormData: Record<string, any> = {};
+
+    modalFees.forEach((fee, idx) => {
+      const row = idx + 1;
+      row_counter.push(row);
+      rawFormData[`student_fees_master_id_${row}`] = fee.id;
+      rawFormData[`fee_groups_feetype_id_${row}`] = fee.fee_groups_feetype_id;
+      rawFormData[`fee_groups_feetype_fine_amount_${row}`] = fee.fine_amount;
+      rawFormData[`fee_amount_${row}`] = fee.amount;
+    });
+
+    rawFormData["collected_date"] = dayjs(modalDate).format("YYYY-MM-DD");
+    rawFormData["payment_mode_fee"] = modalPaymentMode;
+    rawFormData["fee_gupcollected_note"] = modalNote;
+    rawFormData["guardian_phone"] = guardian_phone;
+    rawFormData["guardian_email"] = guardian_email;
+    rawFormData["parent_app_key"] = parent_app_key;
+    rawFormData["student_session_id"] = student_session_id;
+
+    // ✅ Create FormData and append all
+    const formData = new FormData();
+
+    // Append dynamic row data
+    Object.entries(rawFormData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    // Append row_counter[] as array
+    row_counter.forEach((row) => {
+      formData.append("row_counter[]", row.toString());
+    });
+
+    console.log("Submitting fees collection payload:", formData);
+
+    try {
+      const result = await fetchAddFeesByGroupData(formData);
+      console.log("result", result);
+    } catch (err) {
+      console.error("Error submitting fees:", err);
+    }
   };
 
   return (
@@ -283,10 +318,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
         <button
           className="m-2 rounded bg-[#1976D2] p-2 px-4 py-2 text-white hover:bg-[#155ba0]"
           onClick={() => {
-            // Get selected fee objects and their ids
             const selectedFees = getSelectedFees();
             const selectedFeeIds = getSelectedFeeIds();
-            // For demonstration, log the selected fee ids
             console.log("Selected rowIds:", Array.from(selectedIds));
             console.log("Selected fee ids to send:", selectedFeeIds);
 
@@ -295,8 +328,8 @@ const FeeDetailsTable2: React.FC<Props> = ({
               return;
             }
 
-            // Here you can open the collect dialog and pass selectedFees as needed
-            handleOpen(selectedFees);
+            // Use fixed handleOpen to set default payment mode
+            handleOpenFixed(selectedFees);
           }}
         >
           Collect Selected
@@ -359,7 +392,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
               const isUnpaid = balance > 0 && deposits.length === 0;
               const isPaid = balance === 0;
 
-              // Totals
               totalAmount += parseInt(fee.amount as any, 10) || 0;
               totalDiscount += total_discount;
               totalPaid += total_paid;
@@ -368,7 +400,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
 
               const rowId = getFeeRowId(index, i);
 
-              // Handler for Restore (SettingsBackupRestore) icon click
               const handleRestoreClick = (fee: any, deposits: any) => {
                 setPendingRestoreData({
                   fee_id: fee,
@@ -665,7 +696,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogContent className="dark:bg-boxdark dark:drop-shadow-none">
           <div className="flex items-center justify-between border-b border-stroke px-4.5 py-4 dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none">
-            {/* Title */}
             <h3 className="font-medium text-black dark:text-white">
               {editing ? "Add" : "Collect Fees"}
             </h3>
@@ -689,7 +719,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
           </div>
 
           <div className="grid gap-5.5 p-4.5 dark:bg-boxdark dark:drop-shadow-none">
-            {/* Date Picker, Payment Mode, Note */}
             <div className="field">
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Date
@@ -736,10 +765,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                       name="payment_mode_fee"
                       value={mode}
                       className="form-radio dark:text-white"
-                      checked={
-                        modalPaymentMode === mode ||
-                        (modalPaymentMode === "" && mode === "Cash")
-                      }
+                      checked={modalPaymentMode === mode}
                       onChange={() => setModalPaymentMode(mode)}
                     />
                     <span className="ml-2 dark:text-white">
@@ -833,7 +859,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 ))
               )}
             </ul>
-            {/* Show total of all amount and fine below the list */}
             {modalFees.length > 0 &&
               (() => {
                 const totalAmount = modalFees.reduce(
@@ -869,6 +894,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                 disabled={
                   !modalDate || !modalPaymentMode || modalFees.length === 0
                 }
+                type="button"
               >
                 {editing ? "Pay" : "Pay"}
               </button>
