@@ -543,6 +543,21 @@ const FeeDetailsTable2: React.FC<Props> = ({
                     <td width="">
                       <div className="">
                         <div className="pull-right flex ">
+                          <IconButton
+                            onClick={(e: any) =>
+                              handleSelectRowPrint2(
+                                e,
+                                fee.id,
+                                fee.fee_session_group_id,
+                                fee.fee_groups_feetype_id,
+                                fee,
+                                deposits,
+                              )
+                            }
+                            aria-label="Show"
+                          >
+                            <LocalPrintshop />
+                          </IconButton>
                           {balance === 0 ? (
                             <IconButton
                               onClick={() =>
@@ -561,26 +576,11 @@ const FeeDetailsTable2: React.FC<Props> = ({
                               <NoteAdd />
                             </IconButton>
                           ) : (
-                            <IconButton onClick={() => handleEdit(1)}>
+                            /*  <IconButton onClick={() => handleEdit(1)}>
                               <NoteAdd />
-                            </IconButton>
+                            </IconButton> */
+                            <></>
                           )}
-
-                          <IconButton
-                            onClick={(e: any) =>
-                              handleSelectRowPrint2(
-                                e,
-                                fee.id,
-                                fee.fee_session_group_id,
-                                fee.fee_groups_feetype_id,
-                                fee,
-                                deposits,
-                              )
-                            }
-                            aria-label="Show"
-                          >
-                            <LocalPrintshop />
-                          </IconButton>
                         </div>
                       </div>
                     </td>
