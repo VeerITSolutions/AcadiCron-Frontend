@@ -194,6 +194,10 @@ const FeeDetailsTable2: React.FC<Props> = ({
   // Function to handle print of a specific row's data by sending it to backend API
   const handleSelectRowPrint = async (fees_id: any, deposits_id: any) => {
     const result = await fetchRestoreFeesByGroupData(fees_id, deposits_id);
+
+    if (result) {
+      window.location.reload();
+    }
   };
 
   if (student_due_fees.length === 0 && student_discount_fees.length === 0) {
