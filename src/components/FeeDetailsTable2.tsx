@@ -306,13 +306,13 @@ const FeeDetailsTable2: React.FC<Props> = ({
         <thead className="bg-gray-100">
           <tr>
             <th className="p-2 text-left">
-              <input
+              {/*  <input
                 name="ids"
                 type="checkbox"
                 checked={selectAll}
                 onChange={handleSelectAll}
                 aria-label="Select all"
-              />{" "}
+              />{" "} */}
             </th>
             <th className="p-2 text-left">Fees Group</th>
             <th className="p-2 text-left">Fees Code</th>
@@ -736,7 +736,10 @@ const FeeDetailsTable2: React.FC<Props> = ({
                       name="payment_mode_fee"
                       value={mode}
                       className="form-radio dark:text-white"
-                      checked={modalPaymentMode === mode}
+                      checked={
+                        modalPaymentMode === mode ||
+                        (modalPaymentMode === "" && mode === "Cash")
+                      }
                       onChange={() => setModalPaymentMode(mode)}
                     />
                     <span className="ml-2 dark:text-white">
@@ -747,6 +750,19 @@ const FeeDetailsTable2: React.FC<Props> = ({
                   </label>
                 ),
               )}
+            </div>
+
+            <div className="field">
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                Note
+              </label>
+              <input
+                name="reason"
+                type="text"
+                value={modalNote}
+                onChange={(e) => setModalNote(e.target.value)}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              />
             </div>
             <br />
 
@@ -846,19 +862,6 @@ const FeeDetailsTable2: React.FC<Props> = ({
               })()}
             <br />
 
-            <div className="field">
-              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Note
-              </label>
-              <input
-                name="reason"
-                type="text"
-                value={modalNote}
-                onChange={(e) => setModalNote(e.target.value)}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-
             <div className="dark:bg-boxdark dark:drop-shadow-none">
               <button
                 onClick={handleSubmit}
@@ -867,7 +870,7 @@ const FeeDetailsTable2: React.FC<Props> = ({
                   !modalDate || !modalPaymentMode || modalFees.length === 0
                 }
               >
-                {editing ? "Update" : "Save"}
+                {editing ? "Pay" : "Pay"}
               </button>
             </div>
           </div>
