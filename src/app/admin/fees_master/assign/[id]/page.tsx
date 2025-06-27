@@ -496,14 +496,7 @@ const StudentDetails = () => {
                       const response = await assignStudentBluk(formData);
                       if (response.status === 200) {
                         toast.success("Selected data assigned successfully.");
-                        /* fetchData(
-                          selectedClass,
-                          selectedSection,
-                          keyword,
-                          selectedCategory,
-                          selectedGender,
-                          selectedRTE,
-                        ); */
+
                         setSelectedRows([]); // clear selection
                       }
                     } catch (err) {

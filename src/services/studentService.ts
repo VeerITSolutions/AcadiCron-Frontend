@@ -123,7 +123,7 @@ export const deleteStudentBluk = async (data: any) => {
 };
 
 export const assignStudentBluk = async (data: any) => {
-  const response = await apiClient.post(`/admin/assignstudentbulk`, data);
+  const response = await apiClient.post(`/student-fees-add-by-group`, data);
   return response.data;
 };
 
