@@ -469,55 +469,42 @@ const StudentDetails = () => {
                 );
 
                 const handleCustomAssign = async () => {
-                  const idsToDelete = selectedStudentData.map(
+                  // Dynamically get the selected student IDs
+                  const idsToAssign = selectedStudentData.map(
                     (row: any) => row[0],
-                  ); // Assuming student ID is at index 0
+                  ); // student_session_id is at index 0
 
                   if (
                     window.confirm(
                       "Are you sure you want to assign the selected items?",
                     )
                   ) {
-                    // const formData = new FormData();
-                    // idsToDelete.forEach((id: any) => {
-                    //   formData.append("student_ids[]", id);
-                    // });
-
-                    // formData.append(
-                    //   "fee_session_group_id",
-                    //   feessessionbygroupiddata[0].fee_session_group_id,
-                    // );
-                    // formData.append(
-                    //   "fee_groups_id",
-                    //   feessessionbygroupiddata[0].fee_groups_id,
-                    // );
-
                     const formData = new FormData();
 
-                    // Common fee session group ID
-                    formData.append("fee_session_groups", "564");
+                    // Use the actual fee_session_group_id and fee_groups_id from feessessionbygroupiddata
+                    if (
+                      feessessionbygroupiddata &&
+                      feessessionbygroupiddata.length > 0
+                    ) {
+                      formData.append(
+                        "fee_session_group_id",
+                        feessessionbygroupiddata[0].fee_session_group_id,
+                      );
+                      formData.append(
+                        "fee_groups_id",
+                        feessessionbygroupiddata[0].fee_groups_id,
+                      );
+                    }
 
-                    // Example list of student IDs
-                    const studentIds = [
-                      1948, 2460, 1954, 1955, 1958, 1960, 1964, 1965, 1967,
-                      1969, 1971, 1973, 1976, 1979, 2466, 2468, 2470, 2472,
-                      2475, 2482, 2483, 2484, 2486, 2488, 2489, 2617, 2654,
-                      2748,
-                    ];
-
-                    studentIds.forEach((id) => {
-                      // simulate that the fee master ID is 0 for all
-                      formData.append(`student_fees_master_id_${id}`, "0");
-
-                      // append student_ids[] array
-                      formData.append("student_ids[]", String(id));
+                    // Append all selected student IDs
+                    idsToAssign.forEach((id: string) => {
+                      formData.append("student_ids[]", id);
                     });
 
                     try {
                       const response = await assignStudentBluk(formData);
                       if (response.status === 200) {
                         toast.success("Selected data assigned successfully.");
-
                         setSelectedRows([]); // clear selection
                       }
                     } catch (err) {
