@@ -5,37 +5,15 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MUIDataTable from "mui-datatables";
 import { useGlobalState } from "@/context/GlobalContext";
-import {
-  assignStudentBluk,
-  deleteStudentBluk,
-  fetchStudentData,
-} from "@/services/studentService";
+import { assignStudentBluk, fetchStudentData } from "@/services/studentService";
 import styles from "./StudentDetails.module.css"; // Import CSS module
 import Loader from "@/components/common/Loader";
-import {
-  fetchsectionByClassData,
-  fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
+import { fetchsectionByClassData } from "@/services/sectionsService"; // Import your section API service
 import { getClasses } from "@/services/classesService"; // Import your classes API service
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
+
 import { toast } from "react-toastify";
 import { useLoginDetails } from "@/store/logoStore";
 import { fetchStudentCategoryData } from "@/services/studentCategoryService";
@@ -73,6 +51,7 @@ const StudentDetails = () => {
   const [selectedGender, setSelectedGender] = useState<string | undefined>(
     undefined,
   );
+
   const [selectedRTE, setSelectedRTE] = useState<string | undefined>(undefined);
   const { themType, setThemType } = useGlobalState(); //
   const [loading, setLoading] = useState(true);
@@ -202,9 +181,10 @@ const StudentDetails = () => {
         );
 
         const resultSetting = await fetchSchSetting();
+        const getid = window.location.pathname.split("/").pop();
 
         const resultFetchSessionData =
-          await fetchStudentFeesSeesionByGroupSingleData("258");
+          await fetchStudentFeesSeesionByGroupSingleData(getid);
 
         setTotalCount(result.totalCount);
 
