@@ -19,7 +19,8 @@ import {
 } from "@/services/frontEventService";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 
-const Income = () => {
+// Renamed component from "Income" to "Event" to avoid conflict with DOM Event
+const Event = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
 
@@ -123,11 +124,13 @@ const Income = () => {
 
   const formatSubjectData = (subjects: any[]) => {
     return subjects.map((subject: any) => [
-      subject.name || "N/A",
-      subject.invoice_no || "N/A",
-      subject.date || "N/A",
-      subject.Event_category || "N/A",
-      subject.amount || "N/A",
+      subject.event_title || "N/A",
+      subject.event_description || "N/A",
+      subject.start_date || "N/A",
+      subject.end_date || "N/A",
+      subject.event_type || "N/A",
+      subject.event_for || "N/A",
+      subject.is_active || "N/A",
       <div key={subject.id} className="flex">
         <IconButton
           onClick={() => handleEdit(subject.id, subject)}
@@ -235,11 +238,14 @@ const Income = () => {
   if (error) return <p>{error}</p>;
 
   const columns = [
-    "Name",
-    "Invoice Number",
-    "Date",
-    "Event Head",
-    "Amount",
+    "Event Name",
+    "Desc",
+    "Start Date",
+    "End Date",
+    "Event Type",
+    "Event For",
+    "Active",
+
     "Actions",
   ];
   const options = {
@@ -286,7 +292,7 @@ const Income = () => {
                   Title
                 </label>
                 <input
-                  name="name"
+                  name="event_title"
                   type="text"
                   value={formData.event_title}
                   onChange={handleInputChange}
@@ -298,7 +304,7 @@ const Income = () => {
                   Venue
                 </label>
                 <input
-                  name="Venue"
+                  name="event_description"
                   type="text"
                   value={formData.event_description}
                   onChange={handleInputChange}
@@ -311,8 +317,8 @@ const Income = () => {
                   Event Start
                 </label>
                 <input
-                  id="date"
-                  name="date"
+                  id="start_date"
+                  name="start_date"
                   type="date"
                   value={formData.start_date}
                   onChange={handleInputChange}
@@ -325,8 +331,8 @@ const Income = () => {
                   Event end
                 </label>
                 <input
-                  id="date"
-                  name="date"
+                  id="end_date"
+                  name="end_date"
                   type="date"
                   value={formData.end_date}
                   onChange={handleInputChange}
@@ -339,7 +345,7 @@ const Income = () => {
                   Add Media
                 </label>
                 <input
-                  name="documents"
+                  name="media"
                   type="file"
                   onChange={handleFileChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -351,7 +357,7 @@ const Income = () => {
                   Description
                 </label>
                 <input
-                  name="note"
+                  name="event_for"
                   type="text"
                   value={formData.event_for}
                   onChange={handleInputChange}
@@ -363,7 +369,7 @@ const Income = () => {
                   Featured Image
                 </label>
                 <input
-                  name="documents"
+                  name="featured_image"
                   type="file"
                   onChange={handleFileChange}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
