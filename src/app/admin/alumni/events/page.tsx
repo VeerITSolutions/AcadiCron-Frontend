@@ -30,7 +30,9 @@ import { toast } from "react-toastify";
 import Loader from "@/components/common/Loader";
 import styles from "./StudentDetails.module.css";
 import { fetchSession } from "@/services/session";
-
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 const Events = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Array<any>>([]);
@@ -385,12 +387,6 @@ const Events = () => {
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                Select Date
-              </h3>
-            </div>
-
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -398,25 +394,44 @@ const Events = () => {
               }}
             >
               <div className="flex flex-col gap-5.5 p-6.5">
-                <div className="field">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Date <span className="required">*</span>
-                  </label>
-                  <input
-                    id="date"
-                    name="date"
-                    type="date"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                <div className="calendar-container">
+                  <FullCalendar
+                    plugins={[dayGridPlugin, interactionPlugin]}
+                    initialView="dayGridMonth"
+                    events={data}
+                    height="auto"
+                    aspectRatio={1.5}
                   />
                 </div>
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
-                  >
-                    Save
-                  </button>
-                </div>
+                <style jsx>{`
+                  .calendar-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    height: 80vh;
+                    width: 100%;
+                    padding: 20px;
+                  }
+                  .legend {
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 10px;
+                  }
+                  .legend-item {
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    color: white;
+                    font-weight: bold;
+                  }
+                  :global(.fc) {
+                    max-width: 800px;
+                    width: 100%;
+                    background: white;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                    padding: 10px;
+                  }
+                `}</style>
               </div>
             </form>
           </div>
@@ -503,60 +518,7 @@ const Events = () => {
                     Class
                   </label>
                 </div>
-                <div className="field sessionlist">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Pass Out Session <span className="required">*</span>
-                  </label>
-                  <select
-                    name="session_id"
-                    value={selectedSession}
-                    onChange={handleSessionChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {allSession.map((cls: any) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.session}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field classlist">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Select Class <span className="required">*</span>
-                  </label>
-                  <select
-                    name="class_id"
-                    value={selectedClass || ""}
-                    onChange={handleClassChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {classes.map((cls) => (
-                      <option key={cls.id} value={cls.id}>
-                        {cls.class}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field sectionlist">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Section <span className="required">*</span>
-                  </label>
-                  <select
-                    name="section"
-                    value={selectedSection || ""}
-                    onChange={handleSectionChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select</option>
-                    {section.map((sec) => (
-                      <option key={sec.section_id} value={sec.section_id}>
-                        {sec.section_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+
                 <div className="field">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Event Title <span className="required">*</span>

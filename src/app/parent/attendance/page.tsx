@@ -81,26 +81,6 @@ const AttendaceDetails = () => {
             height="auto"
             aspectRatio={1.5}
           />
-          {/*  <div className="legend">
-              <span
-                className="legend-item"
-                style={{ backgroundColor: "green" }}
-              >
-                Present
-              </span>
-              <span className="legend-item" style={{ backgroundColor: "red" }}>
-                Absent
-              </span>
-              <span
-                className="legend-item"
-                style={{ backgroundColor: "orange" }}
-              >
-                Late
-              </span>
-              <span className="legend-item" style={{ backgroundColor: "blue" }}>
-                Representative
-              </span>
-            </div> */}
         </div>
         <style jsx>{`
           .calendar-container {
