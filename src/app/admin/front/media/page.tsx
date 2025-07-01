@@ -1,270 +1,203 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import React from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import styles from "./User.module.css"; // Assuming this has your styles
+import {
+  createNotification,
+  editNotificationData,
+  fetchNotificationData,
+  deleteNotificationData,
+} from "@/services/notificationService";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import MUIDataTable from "mui-datatables";
-import { useGlobalState } from "@/context/GlobalContext";
-import { deleteStudentBluk, fetchStudentData } from "@/services/studentService";
-import styles from "./StudentDetails.module.css"; // Import CSS module
-import Loader from "@/components/common/Loader";
-import {
-  fetchsectionByClassData,
-  fetchsectionData,
-} from "@/services/sectionsService"; // Import your section API service
-import { getClasses } from "@/services/classesService"; // Import your classes API service
-import { ThemeProvider } from "@mui/material/styles";
-import useColorMode from "@/hooks/useColorMode";
-import { darkTheme, lightTheme } from "@/components/theme/theme";
-import {
-  Edit,
-  Delete,
-  Visibility,
-  TextFields,
-  AttachMoney,
-} from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-} from "@mui/material";
-import { toast } from "react-toastify";
+import { IconButton } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
+import { useGlobalState } from "@/context/GlobalContext";
+import { Editor } from "@tinymce/tinymce-react";
+// Dynamic import for ReactQuill
 
-const columns = ["Name", "Invoice Number", "Income Head", "Date", "	Amount (₹)"];
+const FrontAdd = () => {
+  // Quill editor modules
 
-const options = {
-  filterType: "checkbox",
-  serverSide: true,
-  pagination: false,
-  responsive: "standard",
-  search: false,
-  filter: false,
-  viewColumns: false,
-  tableBodyMaxHeight: "500px",
-};
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<
+          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        >
+      | { target: { name: string; value: string } }, // Extend type to include Quill's custom events
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-const Media = () => {
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [colorMode, setColorMode] = useColorMode();
-  const [data, setData] = useState<Array<Array<string>>>([]);
-  const { themType, setThemType } = useGlobalState(); //
-  const [loading, setLoading] = useState(true);
+  // Function to handle file input changes
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+  const [content, setContent] = useState("");
+
+  const handleEditorChange = (newContent: any) => {
+    setContent(newContent);
+    console.log("Content was updated:", newContent);
+  };
+
   const [error, setError] = useState<string | null>(null);
+
+  const [roleId, setRoleId] = useState("");
+  const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [roleName, setRoleName] = useState("");
+
   const [totalCount, setTotalCount] = useState(0);
-  const [classes, setClassessData] = useState<Array<any>>([]);
-  const [section, setSections] = useState<Array<any>>([]);
-  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
-  );
-  const [keyword, setKeyword] = useState<string>("");
+  const [value, setValue] = useState<string>(""); // State for message content
+  const [formData, setFormData] = useState({
+    title: "",
+    file: "",
+    publish_date: "",
+    date: "",
+    message: "",
+    visible_student: "",
+    visible_staff: "",
+    visible_parent: "",
+    created_by: "",
+    created_id: "",
+    is_active: "",
+    created_at: "",
+    updated_at: "",
+    path: "",
+    class_id: "",
+    secid: "",
+  });
   const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
-  const handleDelete = async () => {
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const selectedData = selectedRows.map((rowIndex) => data[rowIndex]); // Map indices to data
-
-      const idsToDelete = selectedData.map((row) => row[0]);
-
-      console.log(idsToDelete); // Handle response
-
-      if (
-        window.confirm("Are you sure you want to delete the selected items?")
-      ) {
-        try {
-          const response = await deleteStudentBluk(idsToDelete);
-        } catch (error) {
-          console.error("Error deleting data:", error);
-          alert("Failed to delete selected data.");
-        }
-      }
-    } catch (error) {
-      console.error("Error deleting data:", error);
-      alert("Failed to delete selected data.");
-    }
-  };
-
-  const handleRowSelectionChange = (
-    curRowSelected: { dataIndex: number; index: number }[],
-    allRowsSelected: { dataIndex: number; index: number }[],
-    rowsSelected: [],
-  ) => {
-    setSelectedRows(rowsSelected); // Update selected rows
-  };
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      student.id,
-      student.name || "N/A",
-      student.dob || "N/A",
-      student.gender || "N/A",
-    ]);
-  };
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
-
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
-  useEffect(() => {
-    setSelectedSessionId(getselectedSessionId);
-  }, []);
-  const fetchData = async (
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
-  ) => {
-    try {
-      // Pass selectedClass and selectedSection as parameters to filter data
-      if (selectedClass && selectedSection) {
-        const result = await fetchStudentData(
-          0,
-          0,
-          selectedClass,
-          selectedSection,
-          keyword,
-          selectedSessionId,
-          1,
-        );
-        setTotalCount(result.totalCount);
-        const formattedData = formatStudentData(result.data);
-        setData(formattedData);
-        setLoading(false);
-      } else {
-        setData([]);
-        setLoading(false);
-      }
+      const result = await fetchNotificationData(currentPage + 1, rowsPerPage);
+      setTotalCount(result.totalCount);
+      setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
+  let roleIdget = useLoginDetails((state) => state.roleId);
+  let username = useLoginDetails((state) => state.username);
+  let surname = useLoginDetails((state) => state.surname);
+  let roleNameget = useLoginDetails((state) => state.roleName);
+  let isSuperAdmin = useLoginDetails((state) => state.isSuperAdmin);
+  let selectedSessionId = useLoginDetails((state) => state.selectedSessionId);
+  useEffect(() => {
+    if (roleNameget) {
+      setRoleName(roleNameget);
+    }
+    if (roleIdget) {
+      setRoleId(roleIdget);
+    }
 
-  const fetchClassesAndSections = async () => {
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage]);
+
+  const handleSave = async () => {
     try {
-      const classesResult = await getClasses();
-      setClassessData(classesResult.data);
+      setLoading(true);
+      const data = {
+        ...formData,
+        created_by: roleName,
+        created_id: roleId,
+      };
 
-      // Fetch sections if a class is selected
-      if (selectedClass) {
-        const sectionsResult = await fetchsectionByClassData(selectedClass);
-        setSections(sectionsResult.data);
+      const response = await createNotification(data);
+
+      if (response.status == 200) {
+        toast.success("Added successful");
+        router.push(`/admin/notic_board`);
       } else {
-        setSections([]);
+        toast.error("Error Edit data");
       }
     } catch (error: any) {
       setError(error.message);
+    } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchClassesAndSections();
-  }, [selectedClass]);
-
-  useEffect(() => {
-    fetchData(selectedClass, selectedSection, keyword);
-  }, [selectedClass, selectedSection, keyword]);
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-    setPage(0);
-  };
-
-  const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
-  const handleSearch = () => {
-    setPage(0);
-    fetchData(selectedClass, selectedSection, keyword);
-  };
-  const handleRefresh = () => {
-    setSelectedClass("");
-    setSelectedSection("");
-    setKeyword("");
-  };
-
-  /* if (loading) return <Loader />; */
-  if (error) return <p>{error}</p>;
 
   return (
     <DefaultLayout>
-      <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <label className={styles.label}>
-            Search Type:
-            <select
-              className={`${styles.select} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            >
-              <option value="">Select</option>
-              <option value="today">Today</option>
-              <option value="this_week">This Week</option>
-              <option value="last_week">Last Week</option>
-              <option value="this_month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="last_3_month">Last 3 Months</option>
-              <option value="last_6_month">Last 6 Months</option>
-              <option value="last_12_month">Last 12 Months</option>
-              <option value="this_year">This Year</option>
-              <option value="last_year">Last Year</option>
-              <option value="period">Period</option>
-            </select>
-          </label>
+      <div className="student_admission_form">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"></div>
+        <div className="flex flex-col gap-9">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Media Manager
+              </h3>
+            </div>
+            <div className="grid grid-cols-3 gap-6 pl-6 pr-6 pt-6">
+              {/* First Column */}
+              <div className="row col-span-2">
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Upload Your File
+                  </label>
+                  <input
+                    type="file"
+                    name="file"
+                    value={formData.file}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Upload Youtube Video <span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+              </div>
 
-          <div className={styles.searchGroup}>
-            <input
-              type="text"
-              placeholder="Search By Keyword"
-              value={keyword}
-              onChange={handleKeywordChange}
-              className={`${styles.searchInput} rounded-lg border-stroke outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
-            />
-            <button onClick={handleSearch} className={styles.searchButton}>
-              Search
-            </button>
-            <button onClick={handleRefresh} className={styles.searchButton}>
-              Reset
-            </button>
+              {/* Second Column */}
+            </div>
+
+            {/* image gallary */}
+
+            <div className="px-6.5 py-4">
+              <button
+                onClick={handleSave}
+                className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
-      {loading ? (
-        <Loader />
-      ) : (
-        <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-          <MUIDataTable
-            title={"Media List"}
-            data={data}
-            columns={columns}
-            options={{
-              ...options,
-              count: totalCount,
-              page: page,
-              rowsPerPage: rowsPerPage,
-              onChangePage: handlePageChange,
-              onChangeRowsPerPage: handleRowsPerPageChange,
-              onRowSelectionChange: handleRowSelectionChange, // Handle row selection
-              selectableRows: "multiple", // Allow multiple selection
-              onRowsDelete: handleDelete,
-            }}
-          />
-        </ThemeProvider>
-      )}
     </DefaultLayout>
   );
 };
 
-export default Media;
+export default FrontAdd;
