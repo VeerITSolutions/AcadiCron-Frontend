@@ -9,6 +9,7 @@ import {
   fetchNotificationData,
   deleteNotificationData,
 } from "@/services/notificationService";
+
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
@@ -69,7 +70,9 @@ const FrontAdd = () => {
   const [value, setValue] = useState<string>(""); // State for message content
   const [formData, setFormData] = useState({
     title: "",
-    publish_date: "",
+    page_type: "",
+    venue: "",
+    publish_date: new Date().toISOString().split("T")[0],
     date: "",
     message: "",
     visible_student: "",
@@ -83,6 +86,10 @@ const FrontAdd = () => {
     path: "",
     class_id: "",
     secid: "",
+    media_file: "",
+    meta_title: "",
+    meta_description: "",
+    meta_keywords: "",
   });
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -165,6 +172,52 @@ const FrontAdd = () => {
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Page Type <span className="required">*</span>
+                  </label>
+                  <input
+                    type="radio"
+                    name="page_type"
+                    value={formData.page_type}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  <input
+                    type="radio"
+                    name="page_type"
+                    value={formData.page_type}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  <input
+                    type="radio"
+                    name="page_type"
+                    value={formData.page_type}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                  <input
+                    type="radio"
+                    name="page_type"
+                    value={formData.page_type}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Media File <span className="required">*</span>
+                  </label>
+                  <input
+                    type="file"
+                    name="media_file"
+                    value={formData.media_file}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
 
                 <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -190,23 +243,16 @@ const FrontAdd = () => {
                     }}
                   />
                 </div>
-
-                <div className="field mb-6 pt-9">
-                  <label className="block text-sm font-medium text-black dark:text-white">
-                    Upload File
-                  </label>
-                  <input
-                    className="form-control mt-2 w-full"
-                    type="file"
-                    accept="image/*"
-                    name="path"
-                    onChange={handleFileChange}
-                  />
-                </div>
               </div>
 
               {/* Second Column */}
               <div className="col-span-1">
+                <div className="field mb-6 flex pt-9">
+                  <input type="checkbox" id="enableSwitch" className="gap-6" />
+                  <label className="position: relative; display: inline-block; width: 34px; height: 20px; ml-2 block text-sm font-medium text-black dark:text-white">
+                    Sidebar Setting
+                  </label>
+                </div>
                 <div className="field mb-6 pt-9">
                   <label className="block text-sm font-medium text-black dark:text-white">
                     Featured Image
@@ -217,6 +263,49 @@ const FrontAdd = () => {
                     accept="image/*"
                     name="path"
                     onChange={handleFileChange}
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Title
+                  </label>
+                  <input
+                    type="text"
+                    name="meta_title"
+                    value={formData.meta_title || ""}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Description
+                  </label>
+                  <textarea
+                    name="meta_description"
+                    value={formData.meta_description || ""}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  ></textarea>
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Keywords{" "}
+                    <span className="text-gray-500 text-xs">
+                      (Comma-separated)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="meta_keywords"
+                    value={formData.meta_keywords || ""}
+                    onChange={handleInputChange}
+                    placeholder="event,school,notice,announcement"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
               </div>
