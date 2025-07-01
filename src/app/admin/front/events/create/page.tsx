@@ -84,6 +84,9 @@ const FrontAdd = () => {
     path: "",
     class_id: "",
     secid: "",
+    meta_title: "",
+    meta_description: "",
+    meta_keywords: "",
   });
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -236,19 +239,6 @@ const FrontAdd = () => {
                     }}
                   />
                 </div>
-
-                <div className="field mb-6 pt-9">
-                  <label className="block text-sm font-medium text-black dark:text-white">
-                    Upload File
-                  </label>
-                  <input
-                    className="form-control mt-2 w-full"
-                    type="file"
-                    accept="image/*"
-                    name="path"
-                    onChange={handleFileChange}
-                  />
-                </div>
               </div>
 
               {/* Second Column */}
@@ -269,6 +259,49 @@ const FrontAdd = () => {
                     accept="image/*"
                     name="path"
                     onChange={handleFileChange}
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Title
+                  </label>
+                  <input
+                    type="text"
+                    name="meta_title"
+                    value={formData.meta_title || ""}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Description
+                  </label>
+                  <textarea
+                    name="meta_description"
+                    value={formData.meta_description || ""}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  ></textarea>
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Keywords{" "}
+                    <span className="text-gray-500 text-xs">
+                      (Comma-separated)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="meta_keywords"
+                    value={formData.meta_keywords || ""}
+                    onChange={handleInputChange}
+                    placeholder="event,school,notice,announcement"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
               </div>
