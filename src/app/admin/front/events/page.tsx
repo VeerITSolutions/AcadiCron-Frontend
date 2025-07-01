@@ -18,6 +18,7 @@ import {
   fetchEventData,
 } from "@/services/frontEventService";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
+import Link from "next/link";
 
 // Renamed component from "Income" to "Event" to avoid conflict with DOM Event
 const Event = () => {
@@ -237,13 +238,7 @@ const Event = () => {
   /* if (loading) return <Loader />; */
   if (error) return <p>{error}</p>;
 
-  const columns = [
-    "Title",
-    "Date",
-    "Venue",
-
-    "Actions",
-  ];
+  const columns = ["Title", "Date", "Venue", "Actions"];
   const options = {
     filterType: "checkbox",
     serverSide: true,
@@ -272,9 +267,33 @@ const Event = () => {
     }));
   };
 
+  const handleClickOpen = () => {
+    setIsEditing(true);
+    setEditCategoryId(null);
+  };
+
   return (
     <DefaultLayout>
       <div className="grid ">
+        <div
+          className="mb-4 pl-4 pt-4 text-right"
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <Link href="/admin/front/events/create">
+            <button
+              type="submit"
+              className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
+              onClick={handleClickOpen}
+            >
+              <i className="fa fa-plus mr-2" />
+              Add
+            </button>
+          </Link>
+        </div>
         <div className="">
           {loading ? (
             <Loader />
