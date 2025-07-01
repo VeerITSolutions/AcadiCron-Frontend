@@ -189,7 +189,7 @@ const FrontAdd = () => {
                   </label>
                   <Editor
                     apiKey={process.env.NEXT_PUBLIC_API_TINYMCE} // Replace with your TinyMCE API key
-                    initialValue="<p>Start typing...</p>"
+                    initialValue=""
                     value={content}
                     onEditorChange={handleEditorChange}
                     init={{

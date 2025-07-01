@@ -45,6 +45,7 @@ import { fetchLeaveTypeData } from "@/services/leaveTypeService";
 import { fetchStaffData } from "@/services/staffService";
 import { useLoginDetails } from "@/store/logoStore";
 import content from "mui-datatables";
+import { env } from "process";
 
 const columns = [
   "Q. ID",
@@ -800,8 +801,8 @@ const QuestionBank = () => {
                   </label>
                   <Editor
                     key={themType}
-                    apiKey="3gpvx3o0o5bmecnx6svljl3kl3kgvnz24v0jt4x1k242uey4" // Replace with your TinyMCE API key
-                    initialValue="<p>Start typing...</p>"
+                    apiKey={process.env.NEXT_PUBLIC_API_TINYMCE} // Replace with your TinyMCE API key
+                    initialValue=""
                     value={content}
                     onEditorChange={handleEditorChange}
                     init={{
