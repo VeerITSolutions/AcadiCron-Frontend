@@ -238,13 +238,9 @@ const Event = () => {
   if (error) return <p>{error}</p>;
 
   const columns = [
-    "Event Name",
-    "Desc",
-    "Start Date",
-    "End Date",
-    "Event Type",
-    "Event For",
-    "Active",
+    "Title",
+    "Date",
+    "Venue",
 
     "Actions",
   ];
