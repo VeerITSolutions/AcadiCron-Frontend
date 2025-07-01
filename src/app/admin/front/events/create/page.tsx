@@ -70,6 +70,7 @@ const FrontAdd = () => {
   const [value, setValue] = useState<string>(""); // State for message content
   const [formData, setFormData] = useState({
     title: "",
+    venue: "",
     publish_date: "",
     date: "",
     message: "",
@@ -178,7 +179,7 @@ const FrontAdd = () => {
                     <input
                       type="text"
                       name="title"
-                      value={formData.title}
+                      value={formData.venue}
                       onChange={handleInputChange}
                       className="mr-3 rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
