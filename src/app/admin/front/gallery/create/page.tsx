@@ -171,7 +171,7 @@ const FrontAdd = () => {
                     Description
                   </label>
                   <Editor
-                    apiKey="your-tinymce-api-key" // Replace with your TinyMCE API key
+                    apiKey={process.env.NEXT_PUBLIC_API_TINYMCE} // Replace with your TinyMCE API key
                     initialValue="<p>Start typing...</p>"
                     value={content}
                     onEditorChange={handleEditorChange}
@@ -191,8 +191,6 @@ const FrontAdd = () => {
                   />
                 </div>
 
-
-
                 <div className="field mb-6 pt-9">
                   <label className="block text-sm font-medium text-black dark:text-white">
                     Upload File
@@ -209,9 +207,9 @@ const FrontAdd = () => {
 
               {/* Second Column */}
               <div className="col-span-1">
-              <div className="field mb-6 pt-9">
+                <div className="field mb-6 pt-9">
                   <label className="block text-sm font-medium text-black dark:text-white">
-                   Featured Image
+                    Featured Image
                   </label>
                   <input
                     className="form-control mt-2 w-full"
