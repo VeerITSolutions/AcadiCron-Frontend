@@ -1,358 +1,42 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import React from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import styles from "./User.module.css"; // Assuming this has your styles
+import {
+  createNotification,
+  editNotificationData,
+  fetchNotificationData,
+  deleteNotificationData,
+} from "@/services/notificationService";
+
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import MUIDataTable from "mui-datatables";
-import { useGlobalState } from "@/context/GlobalContext";
-import { ThemeProvider } from "@mui/material/styles";
-import useColorMode from "@/hooks/useColorMode";
-import { darkTheme, lightTheme } from "@/components/theme/theme";
-import Close from "@mui/icons-material/Close"; // Import the Close icon
-import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/themes/material_blue.css"; // Import the Flatpickr theme
-import "flatpickr/dist/flatpickr.css"; // You can use other themes too
-import { fetchRoleData } from "@/services/roleService";
-import Link from "next/link";
-import {
-  fetchLeaveData,
-  createLeave,
-  deleteLeaveData,
-  editLeaveData,
-} from "@/services/leaveService";
-
-import styles from "./StudentDetails.module.css"; // Import CSS module
-import Loader from "@/components/common/Loader";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-  IconButton,
-} from "@mui/material";
-import { toast } from "react-toastify";
+import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { fetchLeaveTypeData } from "@/services/leaveTypeService";
-import { fetchStaffData } from "@/services/staffService";
+import { useRouter } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
+import { useGlobalState } from "@/context/GlobalContext";
+import { Editor } from "@tinymce/tinymce-react";
+// Dynamic import for ReactQuill
 
-const columns = ["Title", "Date", "Venue", "Action"];
-
-const options = {
-  filterType: false,
-  serverSide: true,
-  responsive: "standard",
-  search: false,
-  selectableRows: "none",
-  filter: false,
-  viewColumns: false,
-};
-
-const Events = () => {
-  const [data, setData] = useState<Array<Array<string>>>([]);
-  const { themType, setThemType } = useGlobalState(); //
-  const [dataleavetype, setLeaveTypeData] = useState<Array<any>>([]);
-  const [roledata, setRoleData] = useState<Array<Array<string>>>([]);
-
-  const [staffData, setStaffData] = useState<Array<Array<string>>>([]);
-
-  const [roleleavedata, setRoleLeaveData] = useState<Array<Array<string>>>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [totalCount, setTotalCount] = useState(0);
-
-  const [selectedClass, setSelectedClass] = useState<string | undefined>("1");
-  const [selectedSection, setSelectedSection] = useState<string | undefined>(
-    undefined,
-  );
-
-  const [selectedRoleLeave, setSelectedRoleLeave] = useState<
-    string | undefined
-  >(undefined);
-  const [selectedLeaveType, setSelectedLeaveselectedLeaveType] = useState<
-    string | undefined
-  >(undefined);
-  const [selectedStaff, setSelectedStaff] = useState<string | undefined>(
-    undefined,
-  );
-
-  const [keyword, setKeyword] = useState<string>("");
-  const [colorMode, setColorMode] = useColorMode();
-  const [formData, setFormData] = useState({
-    date: null as Date | null,
-    leave_type_id: "",
-    leave_from: null as Date | null,
-    leave_to: null as Date | null,
-    employee_remark: "",
-    admin_remark: "",
-    status: "",
-    document_file: null,
-  });
-  const [editing, setEditing] = useState(false); // Add state for editing
-  const [currentLeaveId, setCurrentLeaveId] = useState<number | null>(null); // ID of the leave being edited
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
-
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteLeaveData(id);
-      toast.success("Delete successful");
-      fetchData(page, rowsPerPage);
-    } catch (error) {
-      console.error("Delete failed", error);
-      toast.error("Delete failed");
-    }
-  };
-
-  const handleDateChange = (selectedDates: Date[], name: string) => {
-    if (selectedDates.length > 0) {
-      const formattedDate = selectedDates[0].toISOString().split("T")[0]; // Format to YYYY-MM-DD
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: formattedDate, // Update the specific field dynamically
-      }));
-    }
-  };
-
-  const handleEdit = async (id: number, leaveData: any) => {
-    setEditing(true);
-    setCurrentLeaveId(id);
-
-    try {
-      const result = await fetchLeaveData(
-        "",
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-        id,
-      );
-
-      setFormData(result.data[0]);
-      setSelectedRoleLeave(result.data[0].leave_type_id);
-      setSelectedStaff(result.data[0].staff_id);
-      setSelectedLeaveselectedLeaveType(result.data[0].leave_type_id);
-
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-
-    setOpen(true); // Open the modal
-  };
-  const formatDate = (dateString: any) => {
-    if (!dateString) return "N/A"; // Handle null/undefined dates
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "N/A"; // Handle invalid dates
-    return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
-      date,
-    );
-  };
-
-  const getStatusColor = (status: string | undefined) => {
-    switch (status?.toLowerCase()) {
-      case "pending":
-        return "orange";
-      case "approve":
-        return "green";
-      case "disapprove":
-        return "red";
-      default:
-        return "gray"; // Default for "N/A" or unknown statuses
-    }
-  };
-  const formatStudentData = (students: any[]) => {
-    return students.map((student: any) => [
-      `${student.name} ${student.surname}` || "N/A",
-      student.type || "N/A",
-      `${formatDate(student.leave_from)} - ${formatDate(student.leave_to) || "N/A"}`,
-      student.leave_days || "N/A",
-      formatDate(student.date) || "N/A",
-
-      <span
-        key={student.id}
-        style={{ color: getStatusColor(student.status), fontWeight: "bold" }}
-      >
-        {student.status || "N/A"}
-      </span>,
-      <div key={student.id} className="flex">
-        <IconButton
-          onClick={() => handleEdit(student.id, student)}
-          aria-label="edit"
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => handleDelete(student.id)}
-          aria-label="delete"
-        >
-          <Delete />
-        </IconButton>
-      </div>,
-    ]);
-  };
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null,
-  );
-
-  const getselectedSessionId = useLoginDetails(
-    (state) => state.selectedSessionId,
-  );
-  useEffect(() => {
-    setSelectedSessionId(getselectedSessionId);
-  }, []);
-  const fetchData = async (
-    currentPage: number,
-    rowsPerPage: number,
-    selectedClass?: string,
-    selectedSection?: string,
-    keyword?: string,
-    selectedRoleLeave?: string,
-  ) => {
-    try {
-      const resultStaffData = await fetchStaffData(
-        currentPage + 1,
-        rowsPerPage,
-        null,
-        selectedSection,
-        keyword,
-        selectedSessionId,
-        selectedRoleLeave,
-      );
-      setStaffData(resultStaffData.data);
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-
-    try {
-      const result = await fetchLeaveData(
-        currentPage + 1,
-        rowsPerPage,
-        selectedClass,
-        selectedSection,
-        keyword,
-      );
-
-      setTotalCount(result.totalCount);
-
-      const formattedData = formatStudentData(result.data);
-      setData(formattedData);
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-      setLoading(false);
-    }
-
-    try {
-      const result = await fetchLeaveTypeData();
-      setLeaveTypeData(result.data);
-
-      const roleresult = await fetchRoleData();
-      setRoleData(roleresult.data);
-
-      // const leaveresult = await fetchLeaveData();
-      // setRoleLeaveData(leaveresult.data);
-
-      setLoading(false);
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
-
-  const handleSave = async () => {
-    if (
-      !selectedRoleLeave &&
-      !selectedStaff &&
-      !formData.leave_from &&
-      !formData.leave_to &&
-      !formData.status
-    ) {
-      toast.error("Please fill all required fields before submitting.");
-      return;
-    }
-    try {
-      let result;
-      if (editing) {
-        result = await editLeaveData(
-          currentLeaveId,
-          selectedRoleLeave,
-          selectedStaff,
-          selectedLeaveType,
-          formData.date,
-          formData.leave_type_id,
-          formData.leave_from,
-          formData.leave_to,
-          formData.employee_remark,
-          formData.admin_remark,
-          formData.document_file,
-          formData.status,
-        );
-      } else {
-        result = await createLeave(
-          selectedRoleLeave,
-          selectedStaff,
-          selectedLeaveType,
-          formData.date,
-          formData.leave_type_id,
-          formData.leave_from,
-          formData.leave_to,
-          formData.employee_remark,
-          formData.admin_remark,
-          formData.document_file,
-          formData.status,
-        );
-      }
-
-      if (result.status == 200) {
-        toast.success(
-          editing ? "Leave updated successfully" : "Leave applied successfully",
-        );
-        setFormData({
-          date: null as Date | null,
-
-          leave_type_id: "",
-          leave_from: null as Date | null,
-          leave_to: null as Date | null,
-          employee_remark: "",
-          admin_remark: "",
-          status: "",
-          document_file: null,
-        });
-
-        setSelectedRoleLeave("");
-        setSelectedStaff("");
-        setSelectedLeaveselectedLeaveType("");
-        setOpen(false); // Close the modal
-        setEditing(false); // Reset editing state
-        fetchData(page, rowsPerPage); // Refresh data after submit
-      } else {
-        toast.error("Failed to save leave");
-      }
-    } catch (error) {
-      console.error("An error occurred", error);
-      toast.error("An error occurred while saving leave");
-    }
-  };
+const FrontAdd = () => {
+  // Quill editor modules
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    e:
+      | React.ChangeEvent<
+          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        >
+      | { target: { name: string; value: string } }, // Extend type to include Quill's custom events
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value, // For regular inputs like text or selects
+      [name]: value,
     }));
   };
 
+  // Function to handle file input changes
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     const file = files ? files[0] : null;
@@ -365,129 +49,247 @@ const Events = () => {
     }
   };
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+  const [content, setContent] = useState("");
+
+  const handleEditorChange = (newContent: any) => {
+    setContent(newContent);
+    console.log("Content was updated:", newContent);
   };
 
-  const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-    setPage(0);
-  };
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = () => {
-    setPage(0); // Reset to first page on search
-    fetchData(
-      page,
-      rowsPerPage,
-      selectedClass,
-      selectedSection,
-      keyword,
-      selectedRoleLeave,
-    );
-  };
+  const [roleId, setRoleId] = useState("");
+  const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [roleName, setRoleName] = useState("");
 
+  const [totalCount, setTotalCount] = useState(0);
+  const [value, setValue] = useState<string>(""); // State for message content
+  const [formData, setFormData] = useState({
+    title: "",
+    venue: "",
+    publish_date: new Date().toISOString().split("T")[0],
+    date: "",
+    message: "",
+    visible_student: "",
+    visible_staff: "",
+    visible_parent: "",
+    created_by: "",
+    created_id: "",
+    is_active: "",
+    created_at: "",
+    updated_at: "",
+    path: "",
+    class_id: "",
+    secid: "",
+    media_file: "",
+    meta_title: "",
+    meta_description: "",
+    meta_keywords: "",
+  });
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+
+  const fetchData = async (currentPage: number, rowsPerPage: number) => {
+    try {
+      const result = await fetchNotificationData(currentPage + 1, rowsPerPage);
+      setTotalCount(result.totalCount);
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+  let roleIdget = useLoginDetails((state) => state.roleId);
+  let username = useLoginDetails((state) => state.username);
+  let surname = useLoginDetails((state) => state.surname);
+  let roleNameget = useLoginDetails((state) => state.roleName);
+  let isSuperAdmin = useLoginDetails((state) => state.isSuperAdmin);
+  let selectedSessionId = useLoginDetails((state) => state.selectedSessionId);
   useEffect(() => {
-    fetchData(
-      page,
-      rowsPerPage,
-      selectedClass,
-      selectedSection,
-      keyword,
-      selectedRoleLeave,
-    );
-  }, [
-    page,
-    rowsPerPage,
-    selectedClass,
-    selectedSection,
-    keyword,
-    selectedRoleLeave,
-  ]);
+    if (roleNameget) {
+      setRoleName(roleNameget);
+    }
+    if (roleIdget) {
+      setRoleId(roleIdget);
+    }
 
-  const handleClickOpen = () => {
-    setOpen(true);
+    fetchData(page, rowsPerPage);
+  }, [page, rowsPerPage]);
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const data = {
+        ...formData,
+        created_by: roleName,
+        created_id: roleId,
+      };
+
+      const response = await createNotification(data);
+
+      if (response.status == 200) {
+        toast.success("Added successful");
+        router.push(`/admin/notic_board`);
+      } else {
+        toast.error("Error Edit data");
+      }
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const handleClose = () => {
-    setFormData({
-      date: null as Date | null,
-
-      leave_type_id: "",
-      leave_from: null as Date | null,
-      leave_to: null as Date | null,
-      employee_remark: "",
-      admin_remark: "",
-      status: "",
-      document_file: null,
-    });
-
-    setSelectedRoleLeave("");
-    setSelectedStaff("");
-    setSelectedLeaveselectedLeaveType("");
-    setOpen(false);
-    setEditing(false); // Reset editing state
-  };
-
-  const handleStaffChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedStaff(event.target.value);
-  };
-
-  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedRoleLeave(event.target.value);
-  };
-
-  const handleLeaveType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLeaveselectedLeaveType(event.target.value);
-  };
-
-  /* if (loading) return <Loader />; */
-  if (error) return <p>{error}</p>;
 
   return (
     <DefaultLayout>
-      <div className="MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 tss-11quiee-MUIDataTable-paper tss-1x5mjc5-MUIDataTable-root StudentDetails_miui-box-shadow__1DvBS css-11mde6h-MuiPaper-root rounded-sm border border-stroke bg-[#F8F8F8] shadow-default dark:border-strokedark dark:bg-boxdark dark:drop-shadow-none ">
-        <div
-          className="mb-4 pl-4 pt-4 text-right"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
-          <Link href="/admin/front/notice/create">
-            <button
-              type="submit"
-              className="mr-4 rounded bg-[#1976D2] px-4 py-2 text-white hover:bg-[#155ba0]"
-              onClick={handleClickOpen}
-            >
-              <i className="fa fa-plus mr-2" />
-              Add
-            </button>
-          </Link>
+      <div className="student_admission_form">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"></div>
+        <div className="flex flex-col gap-9">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Add News
+              </h3>
+            </div>
+            <div className="grid grid-cols-3 gap-6 pl-6 pr-6 pt-6">
+              {/* First Column */}
+              <div className="col-span-2">
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Title <span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Date <span className="required">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.publish_date}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Description
+                  </label>
+                  <Editor
+                    apiKey={process.env.NEXT_PUBLIC_API_TINYMCE} // Replace with your TinyMCE API key
+                    initialValue=""
+                    value={content}
+                    onEditorChange={handleEditorChange}
+                    init={{
+                      height: 300,
+                      menubar: false,
+                      plugins: [
+                        "advlist autolink lists link image charmap print preview anchor",
+                        "searchreplace visualblocks code fullscreen",
+                        "insertdatetime media table paste code help wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | formatselect | bold italic backcolor | \
+          alignleft aligncenter alignright alignjustify | \
+          bullist numlist outdent indent | removeformat | help",
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Second Column */}
+              <div className="col-span-1">
+                <div className="field mb-6 flex pt-9">
+                  <input type="checkbox" id="enableSwitch" className="gap-6" />
+                  <label className="position: relative; display: inline-block; width: 34px; height: 20px; ml-2 block text-sm font-medium text-black dark:text-white">
+                    Sidebar Setting
+                  </label>
+                </div>
+                <div className="field mb-6 pt-9">
+                  <label className="block text-sm font-medium text-black dark:text-white">
+                    Featured Image
+                  </label>
+                  <input
+                    className="form-control mt-2 w-full"
+                    type="file"
+                    accept="image/*"
+                    name="path"
+                    onChange={handleFileChange}
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Title
+                  </label>
+                  <input
+                    type="text"
+                    name="meta_title"
+                    value={formData.meta_title || ""}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Description
+                  </label>
+                  <textarea
+                    name="meta_description"
+                    value={formData.meta_description || ""}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  ></textarea>
+                </div>
+
+                <div className="field mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Meta Keywords{" "}
+                    <span className="text-gray-500 text-xs">
+                      (Comma-separated)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="meta_keywords"
+                    value={formData.meta_keywords || ""}
+                    onChange={handleInputChange}
+                    placeholder="event,school,notice,announcement"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="px-6.5 py-4">
+              <button
+                onClick={handleSave}
+                className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+              >
+                Save
+              </button>
+            </div>
+          </div>
         </div>
-        {loading ? (
-          <Loader />
-        ) : (
-          <ThemeProvider theme={themType === "dark" ? darkTheme : lightTheme}>
-            <MUIDataTable
-              title={"Events"}
-              data={data}
-              className={`rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${styles["miui-box-shadow"]}`}
-              columns={columns}
-              options={{
-                ...options,
-                count: totalCount,
-                page: page,
-                rowsPerPage: rowsPerPage,
-                onChangePage: handlePageChange,
-                onChangeRowsPerPage: handleRowsPerPageChange,
-              }}
-            />
-          </ThemeProvider>
-        )}
       </div>
     </DefaultLayout>
   );
 };
 
-export default Events;
+export default FrontAdd;
