@@ -11,7 +11,7 @@ import {
 } from "@/services/notificationService";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { IconButton } from "@mui/material";
+import { IconButton, Switch } from "@mui/material"; // Import Switch from MUI
 import { Delete, Edit } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
@@ -150,13 +150,13 @@ const FrontAdd = () => {
       <div className="student_admission_form">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"></div>
         <div className="flex flex-col gap-9">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-lg border border-stroke bg-white shadow-lg dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
+              <h3 className="text-lg font-semibold text-black dark:text-white">
                 Add Event
               </h3>
             </div>
-            <div className="grid grid-cols-3 gap-6 pl-6 pr-6 pt-6">
+            <div className="grid grid-cols-3 gap-6 p-6">
               {/* First Column */}
               <div className="col-span-2">
                 <div className="field mb-6">
@@ -178,7 +178,7 @@ const FrontAdd = () => {
                     </label>
                     <input
                       type="text"
-                      name="title"
+                      name="venue"
                       value={formData.venue}
                       onChange={handleInputChange}
                       className="mr-3 rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -197,7 +197,7 @@ const FrontAdd = () => {
                       }
                       onChange={handleInputChange}
                       type="date"
-                      className="mr-3 rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      className="mr-3 rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
                   <div className="field mb-6">
@@ -205,15 +205,14 @@ const FrontAdd = () => {
                       Event End
                     </label>
                     <input
-                      id="publish_date"
-                      name="publish_date"
+                      id="end_date"
+                      name="end_date"
                       value={
-                        formData.publish_date ||
-                        new Date().toISOString().split("T")[0]
+                        formData.date || new Date().toISOString().split("T")[0]
                       }
                       onChange={handleInputChange}
                       type="date"
-                      className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      className="rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
                 </div>
@@ -259,8 +258,8 @@ const FrontAdd = () => {
               {/* Second Column */}
               <div className="col-span-1">
                 <div className="field mb-6 flex pt-9">
-                  <input type="checkbox" id="enableSwitch" className="gap-6" />
-                  <label className="position: relative; display: inline-block; width: 34px; height: 20px; ml-2 block text-sm font-medium text-black dark:text-white">
+                  <Switch id="enableSwitch" className="gap-6" />
+                  <label className="ml-2 block text-sm font-medium text-black dark:text-white">
                     Sidebar Setting
                   </label>
                 </div>
@@ -303,22 +302,10 @@ const FrontAdd = () => {
                   ></textarea>
                 </div>
 
-                <div className="field mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Meta Keywords{" "}
-                    <span className="text-gray-500 text-xs">
-                      (Comma-separated)
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    name="meta_keywords"
-                    value={formData.meta_keywords || ""}
-                    onChange={handleInputChange}
-                    placeholder="event,school,notice,announcement"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
+                <MetaKeywordsInput
+                  metaKeywords={formData.meta_keywords}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
 
@@ -336,5 +323,22 @@ const FrontAdd = () => {
     </DefaultLayout>
   );
 };
+
+const MetaKeywordsInput = ({ metaKeywords, onChange }) => (
+  <div className="field mb-6">
+    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+      Meta Keywords{" "}
+      <span className="text-gray-500 text-xs">(Comma-separated)</span>
+    </label>
+    <input
+      type="text"
+      name="meta_keywords"
+      value={metaKeywords || ""}
+      onChange={onChange}
+      placeholder="event,school,notice,announcement"
+      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+    />
+  </div>
+);
 
 export default FrontAdd;
