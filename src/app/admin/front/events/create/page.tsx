@@ -37,7 +37,7 @@ const FrontAdd = () => {
 
     start_date: "",
     end_date: "",
-    description: "",
+    description: content,
     enableSwitch: false,
     feature_image: "",
     meta_title: "",
