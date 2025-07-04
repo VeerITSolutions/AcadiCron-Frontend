@@ -230,7 +230,7 @@ const FrontAdd = () => {
                     />
                   </div>
                 </div>
-                <div className="field mb-6 pt-9" style={{ marginTop: "10px"  }}>
+                <div className="field mb-6 pt-9" style={{ marginTop: "10px" }}>
                   <Button variant="outlined" onClick={openGallery}>
                     Open Gallery
                   </Button>
@@ -364,7 +364,7 @@ const FrontAdd = () => {
   );
 };
 
-const MetaKeywordsInput = ({ metaKeywords, onChange }) => (
+const MetaKeywordsInput = ({ metaKeywords, onChange }: any) => (
   <div className="field mb-6">
     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
       Meta Keywords{" "}
