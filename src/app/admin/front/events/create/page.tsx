@@ -34,7 +34,7 @@ const FrontAdd = () => {
   const [formData, setFormData] = useState({
     title: "",
     venue: "",
-    publish_date: "",
+
     start_date: "",
     end_date: "",
     description: "",
@@ -194,10 +194,10 @@ const FrontAdd = () => {
                       Event Start
                     </label>
                     <input
-                      id="publish_date"
-                      name="publish_date"
+                      id="start_date"
+                      name="start_date"
                       value={
-                        formData.publish_date ||
+                        formData.start_date ||
                         new Date().toISOString().split("T")[0]
                       }
                       onChange={handleInputChange}
@@ -213,7 +213,8 @@ const FrontAdd = () => {
                       id="end_date"
                       name="end_date"
                       value={
-                        formData.date || new Date().toISOString().split("T")[0]
+                        formData.end_date ||
+                        new Date().toISOString().split("T")[0]
                       }
                       onChange={handleInputChange}
                       type="date"
