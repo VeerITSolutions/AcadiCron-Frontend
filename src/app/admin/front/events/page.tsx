@@ -12,10 +12,10 @@ import styles from "./User.module.css";
 import { ThemeProvider } from "@mui/material/styles";
 import useColorMode from "@/hooks/useColorMode";
 import {
-  createEventData,
-  deleteEventData,
-  editEventData,
-  fetchEventData,
+  createFrontEventData,
+  deleteFrontEventData,
+  editFrontEventData,
+  fetchFrontEventData,
 } from "@/services/frontEventService";
 import { darkTheme, lightTheme } from "@/components/theme/theme";
 import Link from "next/link";
@@ -57,7 +57,7 @@ const Event = () => {
   });
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchEventData(currentPage + 1, rowsPerPage);
+      const result = await fetchFrontEventData(currentPage + 1, rowsPerPage);
 
       setTotalCount(result.total);
       setData(formatSubjectData(result.data));
@@ -71,7 +71,7 @@ const Event = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteEventData(id);
+      await deleteFrontEventData(id);
       toast.success("Delete successful");
       fetchData(page, rowsPerPage);
     } catch (error) {
@@ -164,14 +164,14 @@ const Event = () => {
   const handleSubmit = async () => {
     try {
       if (isEditing && editCategoryId !== null) {
-        const result = await editEventData(editCategoryId, formData);
+        const result = await editFrontEventData(editCategoryId, formData);
         if (result.success) {
           toast.success("Subject group updated successfully");
         } else {
           toast.error("Failed to update subject group");
         }
       } else {
-        const result = await createEventData(formData);
+        const result = await createFrontEventData(formData);
 
         setFormData({
           event_title: "",

@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-export const fetchEventData = async (page?: any, perPage?: any, type?: any, selectedSearchType?: any) => {
+export const fetchFrontEventData = async (page?: any, perPage?: any, type?: any, selectedSearchType?: any) => {
   const response = await apiClient.get(`/front-event`, {
     params: {
       page,
@@ -13,7 +13,7 @@ export const fetchEventData = async (page?: any, perPage?: any, type?: any, sele
 };
 
 
-export const createEventData = async (data: any): Promise<any> => {
+export const createFrontEventData = async (data: any): Promise<any> => {
   try {
     const response = await apiClient.post(`/front-event`, data);
     return response.data;
@@ -26,13 +26,13 @@ export const createEventData = async (data: any): Promise<any> => {
 
 
 // Delete a student category by ID
-export const deleteEventData = async (id: number) => {
+export const deleteFrontEventData = async (id: number) => {
   const response = await apiClient.delete(`/front-event/${id}`);
   return response.data;
 };
 
 // Edit a student category by ID
-export const editEventData = async (id: number, data: any) => {
+export const editFrontEventData = async (id: number, data: any) => {
   const response = await apiClient.post(`/front-event/${id}`, data);
   return response.data;
 };

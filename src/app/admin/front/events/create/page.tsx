@@ -3,12 +3,13 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "./User.module.css"; // Assuming this has your styles
+
 import {
-  createNotification,
-  editNotificationData,
-  fetchNotificationData,
-  deleteNotificationData,
-} from "@/services/notificationService";
+  createFrontEventData,
+  deleteFrontEventData,
+  editFrontEventData,
+  fetchFrontEventData,
+} from "@/services/frontEventService";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { IconButton, Switch } from "@mui/material"; // Import Switch from MUI
@@ -96,7 +97,7 @@ const FrontAdd = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchNotificationData(currentPage + 1, rowsPerPage);
+      const result = await fetchFrontEventData(currentPage + 1, rowsPerPage);
       setTotalCount(result.totalCount);
       setLoading(false);
     } catch (error: any) {
@@ -130,7 +131,7 @@ const FrontAdd = () => {
         created_id: roleId,
       };
 
-      const response = await createNotification(data);
+      const response = await createFrontEventData(data);
 
       if (response.status == 200) {
         toast.success("Added successful");
