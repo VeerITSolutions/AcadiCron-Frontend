@@ -35,20 +35,11 @@ const FrontAdd = () => {
     title: "",
     venue: "",
     publish_date: "",
-    date: "",
-    message: "",
-    visible_student: "",
-    visible_staff: "",
-    visible_parent: "",
-    created_by: "",
-    created_id: "",
-    is_active: "",
-    created_at: "",
-    updated_at: "",
-    path: "",
-    class_id: "",
-    secid: "",
-    media_file: "",
+    start_date: "",
+    end_date: "",
+    description: "",
+    enableSwitch: false,
+    feature_image: "",
     meta_title: "",
     meta_description: "",
     meta_keywords: "",
@@ -267,7 +258,17 @@ const FrontAdd = () => {
               {/* Second Column */}
               <div className="col-span-1">
                 <div className="field mb-6 flex pt-9">
-                  <Switch id="enableSwitch" className="gap-6" />
+                  <Switch
+                    id="enableSwitch"
+                    className="gap-6"
+                    checked={formData.enableSwitch || false}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        enableSwitch: event.target.checked,
+                      })
+                    }
+                  />
                   <label className="ml-2 block text-sm font-medium text-black dark:text-white">
                     Sidebar Setting
                   </label>
@@ -280,7 +281,7 @@ const FrontAdd = () => {
                     className="form-control mt-2 w-full"
                     type="file"
                     accept="image/*"
-                    name="path"
+                    name="feature_image"
                     onChange={handleFileChange}
                   />
                 </div>
