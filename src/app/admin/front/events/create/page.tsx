@@ -34,10 +34,10 @@ const FrontAdd = () => {
   const [formData, setFormData] = useState({
     title: "",
     venue: "",
-
-    start_date: "",
-    end_date: "",
-    description: content,
+    start_date: new Date().toISOString().split("T")[0],
+    end_date: new Date().toISOString().split("T")[0],
+    description: "",
+    event_type: "events", // Initialize description as an empty string
     enableSwitch: false,
     feature_image: "",
     meta_title: "",
@@ -78,6 +78,10 @@ const FrontAdd = () => {
 
   const handleEditorChange = (newContent: any) => {
     setContent(newContent);
+    setFormData((prevData) => ({
+      ...prevData,
+      description: newContent, // Update description in formData with editor content
+    }));
     console.log("Content was updated:", newContent);
   };
 
