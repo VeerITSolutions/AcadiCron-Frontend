@@ -12,53 +12,16 @@ import {
 } from "@/services/frontEventService";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { IconButton, Switch } from "@mui/material"; // Import Switch from MUI
+import { IconButton, Switch, Button, Modal, Box } from "@mui/material"; // Import Box for modal styling
 import { Delete, Edit } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
 import { useGlobalState } from "@/context/GlobalContext";
 import { Editor } from "@tinymce/tinymce-react";
-// Dynamic import for ReactQuill
 
 const FrontAdd = () => {
-  // Quill editor modules
-
-  const handleInputChange = (
-    e:
-      | React.ChangeEvent<
-          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-        >
-      | { target: { name: string; value: string } }, // Extend type to include Quill's custom events
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  // Function to handle file input changes
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    const file = files ? files[0] : null;
-
-    if (file && name) {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file, // Dynamically set the file in formData using the input's name attribute
-      }));
-    }
-  };
-
   const [content, setContent] = useState("");
-
-  const handleEditorChange = (newContent: any) => {
-    setContent(newContent);
-    console.log("Content was updated:", newContent);
-  };
-
   const [error, setError] = useState<string | null>(null);
-
   const [roleId, setRoleId] = useState("");
   const [data, setData] = useState<Array<Array<any>>>([]);
   const { themType, setThemType } = useGlobalState();
@@ -66,7 +29,6 @@ const FrontAdd = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [roleName, setRoleName] = useState("");
-
   const [totalCount, setTotalCount] = useState(0);
   const [value, setValue] = useState<string>(""); // State for message content
   const [formData, setFormData] = useState({
@@ -94,6 +56,39 @@ const FrontAdd = () => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<
+          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        >
+      | { target: { name: string; value: string } }, // Extend type to include Quill's custom events
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    const file = files ? files[0] : null;
+
+    if (file && name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file, // Dynamically set the file in formData using the input's name attribute
+      }));
+    }
+  };
+
+  const handleEditorChange = (newContent: any) => {
+    setContent(newContent);
+    console.log("Content was updated:", newContent);
+  };
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -105,12 +100,14 @@ const FrontAdd = () => {
       setLoading(false);
     }
   };
+
   let roleIdget = useLoginDetails((state) => state.roleId);
   let username = useLoginDetails((state) => state.username);
   let surname = useLoginDetails((state) => state.surname);
   let roleNameget = useLoginDetails((state) => state.roleName);
   let isSuperAdmin = useLoginDetails((state) => state.isSuperAdmin);
   let selectedSessionId = useLoginDetails((state) => state.selectedSessionId);
+
   useEffect(() => {
     if (roleNameget) {
       setRoleName(roleNameget);
@@ -144,6 +141,22 @@ const FrontAdd = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const openGallery = () => {
+    setGalleryOpen(true);
+  };
+
+  const closeGallery = () => {
+    setGalleryOpen(false);
+  };
+
+  const selectImage = (image: string) => {
+    setSelectedImage(image);
+    setContent(
+      (prevContent) => `${prevContent}<img src="${image}" alt="Selected" />`,
+    );
+    closeGallery();
   };
 
   return (
@@ -217,23 +230,16 @@ const FrontAdd = () => {
                     />
                   </div>
                 </div>
+                <Button variant="outlined" onClick={openGallery}>
+                  Open Gallery
+                </Button>
+                <br />
 
-                <div className="field mb-6 pt-9">
-                  <label className="block text-sm font-medium text-black dark:text-white">
-                    Media File
-                  </label>
-                  <input
-                    className="form-control mt-2 w-full"
-                    type="file"
-                    accept="image/*,video/*,audio/*,application/pdf"
-                    name="media_file"
-                    onChange={handleFileChange}
-                  />
-                </div>
                 <div className="field mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Description
                   </label>
+
                   <Editor
                     apiKey={process.env.NEXT_PUBLIC_API_TINYMCE} // Replace with your TinyMCE API key
                     initialValue=""
@@ -320,6 +326,37 @@ const FrontAdd = () => {
             </div>
           </div>
         </div>
+        <Modal open={galleryOpen} onClose={closeGallery}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 400,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <h2>Select an Image</h2>
+            {/* Placeholder for gallery images */}
+            <div className="gallery">
+              <img
+                src="https://erp.educron.com/uploads/gallery/media/board-361516_640.jpg"
+                alt="Placeholder"
+                onClick={() => {
+                  selectImage(
+                    "https://erp.educron.com/uploads/gallery/media/board-361516_640.jpg",
+                  );
+                  closeGallery();
+                }}
+              />
+              {/* Add more images as needed */}
+            </div>
+            <Button onClick={closeGallery}>Close</Button>
+          </Box>
+        </Modal>
       </div>
     </DefaultLayout>
   );
