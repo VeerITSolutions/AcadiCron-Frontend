@@ -16,6 +16,10 @@ import { useRouter } from "next/navigation";
 import { useLoginDetails } from "@/store/logoStore";
 import { useGlobalState } from "@/context/GlobalContext";
 import { Editor } from "@tinymce/tinymce-react";
+import {
+  createFrontMediaGalleryData,
+  fetchFrontMediaGalleryData,
+} from "@/services/FrontMediaGallery";
 // Dynamic import for ReactQuill
 
 const FrontAdd = () => {
@@ -91,7 +95,10 @@ const FrontAdd = () => {
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
-      const result = await fetchNotificationData(currentPage + 1, rowsPerPage);
+      const result = await fetchFrontMediaGalleryData(
+        currentPage + 1,
+        rowsPerPage,
+      );
       setTotalCount(result.totalCount);
       setLoading(false);
     } catch (error: any) {
@@ -125,7 +132,7 @@ const FrontAdd = () => {
         created_id: roleId,
       };
 
-      const response = await createNotification(data);
+      const response = await createFrontMediaGalleryData(data);
 
       if (response.status == 200) {
         toast.success("Added successful");
