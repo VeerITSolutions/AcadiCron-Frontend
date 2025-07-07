@@ -136,7 +136,7 @@ const FrontAdd = () => {
 
       if (response.status == 200) {
         toast.success("Added successful");
-        router.push(`/admin/notic_board`);
+        fetchData(page, rowsPerPage);
       } else {
         toast.error("Error Edit data");
       }
@@ -219,9 +219,10 @@ const FrontAdd = () => {
                   alt={item.id}
                   className="h-auto w-full"
                 />
+
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="bg-red-500 hover:bg-red-600 absolute right-2 top-2 rounded-full p-1 text-white"
+                  className="bg-red-500 hover:bg-red-600 absolute right-2 top-2 rounded-full p-1 text-red"
                 >
                   Delete
                 </button>
