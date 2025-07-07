@@ -25,6 +25,34 @@ import {
 const FrontAdd = () => {
   // Quill editor modules
 
+  const [content, setContent] = useState("");
+
+  const handleEditorChange = (newContent: any) => {
+    setContent(newContent);
+    console.log("Content was updated:", newContent);
+  };
+
+  const [error, setError] = useState<string | null>(null);
+
+  const [roleId, setRoleId] = useState("");
+  const [data, setData] = useState<Array<Array<any>>>([]);
+  const { themType, setThemType } = useGlobalState();
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [roleName, setRoleName] = useState("");
+
+  const [totalCount, setTotalCount] = useState(0);
+  const [value, setValue] = useState<string>(""); // State for message content
+  const [formData, setFormData] = useState({
+    video_url: "",
+    file: "",
+    created_by: "",
+  });
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
+
   const handleInputChange = (
     e:
       | React.ChangeEvent<
@@ -51,47 +79,6 @@ const FrontAdd = () => {
       }));
     }
   };
-
-  const [content, setContent] = useState("");
-
-  const handleEditorChange = (newContent: any) => {
-    setContent(newContent);
-    console.log("Content was updated:", newContent);
-  };
-
-  const [error, setError] = useState<string | null>(null);
-
-  const [roleId, setRoleId] = useState("");
-  const [data, setData] = useState<Array<Array<any>>>([]);
-  const { themType, setThemType } = useGlobalState();
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [roleName, setRoleName] = useState("");
-
-  const [totalCount, setTotalCount] = useState(0);
-  const [value, setValue] = useState<string>(""); // State for message content
-  const [formData, setFormData] = useState({
-    title: "",
-    file: "",
-    publish_date: "",
-    date: "",
-    message: "",
-    visible_student: "",
-    visible_staff: "",
-    visible_parent: "",
-    created_by: "",
-    created_id: "",
-    is_active: "",
-    created_at: "",
-    updated_at: "",
-    path: "",
-    class_id: "",
-    secid: "",
-  });
-  const router = useRouter();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editCategoryId, setEditCategoryId] = useState<number | null>(null);
 
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
@@ -166,11 +153,11 @@ const FrontAdd = () => {
                     Upload Your File
                   </label>
                   <input
+                    className="form-control mt-2 w-full"
                     type="file"
+                    accept="image/*"
                     name="file"
-                    value={formData.file}
-                    onChange={handleInputChange}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    onChange={handleFileChange}
                   />
                 </div>
                 <div className="field mb-6">
@@ -179,8 +166,8 @@ const FrontAdd = () => {
                   </label>
                   <input
                     type="text"
-                    name="title"
-                    value={formData.title}
+                    name="video_url"
+                    value={formData.video_url}
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
