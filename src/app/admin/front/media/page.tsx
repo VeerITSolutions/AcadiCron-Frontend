@@ -134,9 +134,9 @@ const FrontAdd = () => {
 
       const response = await createFrontMediaGalleryData(data);
 
-      if (response.status == 200) {
+      if (response.status) {
         toast.success("Added successful");
-        fetchData(page, rowsPerPage);
+        await fetchData(page, rowsPerPage); // Ensure data is fetched after save
       } else {
         toast.error("Error Edit data");
       }
