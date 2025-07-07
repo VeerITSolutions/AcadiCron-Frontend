@@ -134,8 +134,14 @@ const FrontAdd = () => {
 
       const response = await createFrontMediaGalleryData(data);
 
-      if (response.status) {
+      if (response) {
         toast.success("Added successful");
+        setFormData({
+          video_url: "",
+          file: "",
+          created_by: "",
+          type: "image",
+        });
         await fetchData(page, rowsPerPage); // Ensure data is fetched after save
       } else {
         toast.error("Error Edit data");
@@ -170,7 +176,11 @@ const FrontAdd = () => {
                     type="file"
                     accept="image/*"
                     name="file"
-                    onChange={handleFileChange}
+                    onChange={(e: any) => {
+                      handleFileChange(e);
+                      e.target.value = null;
+                      // Reset the file input after save
+                    }}
                   />
                 </div>
                 <div className="field mb-6">
@@ -204,9 +214,13 @@ const FrontAdd = () => {
         </div>
         {/* here i need to show the media gallery */}
         <div className="px-6.5 py-4">
-          <h3 className="font-medium text-black dark:text-white">
-            Media Gallery
-          </h3>
+          {data.length > 0 ? (
+            <h3 className="font-medium text-black dark:text-white">
+              Media Gallery
+            </h3>
+          ) : (
+            ""
+          )}
           <div className="grid grid-cols-3 gap-6">
             {data.map((item: any) => (
               <div key={item.id} className="relative">
