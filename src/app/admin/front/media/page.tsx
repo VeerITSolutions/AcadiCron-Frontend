@@ -48,6 +48,7 @@ const FrontAdd = () => {
     video_url: "",
     file: "",
     created_by: "",
+    type: "image",
   });
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -64,6 +65,7 @@ const FrontAdd = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+      type: name === "video_url" && value ? "video" : "image", // Set type based on video_url input
     }));
   };
 
