@@ -18,6 +18,7 @@ import { useGlobalState } from "@/context/GlobalContext";
 import { Editor } from "@tinymce/tinymce-react";
 import {
   createFrontMediaGalleryData,
+  deleteFrontMediaGalleryData,
   fetchFrontMediaGalleryData,
 } from "@/services/FrontMediaGallery";
 // Dynamic import for ReactQuill
@@ -82,6 +83,15 @@ const FrontAdd = () => {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteFrontMediaGalleryData(id);
+      fetchData(page, rowsPerPage);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
   const fetchData = async (currentPage: number, rowsPerPage: number) => {
     try {
       const result = await fetchFrontMediaGalleryData(
@@ -89,6 +99,7 @@ const FrontAdd = () => {
         rowsPerPage,
       );
       setTotalCount(result.totalCount);
+      setData(result.data);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -189,6 +200,33 @@ const FrontAdd = () => {
                 Save
               </button>
             </div>
+          </div>
+        </div>
+        {/* here i need to show the media gallery */}
+        <div className="px-6.5 py-4">
+          <h3 className="font-medium text-black dark:text-white">
+            Media Gallery
+          </h3>
+          <div className="grid grid-cols-3 gap-6">
+            {data.map((item: any) => (
+              <div key={item.id} className="relative">
+                <img
+                  src={
+                    item.image
+                      ? `${process.env.NEXT_PUBLIC_BASE_URL}uploads/gallery/media/${item.image}`
+                      : "/images/user/default_male.jpg"
+                  }
+                  alt={item.id}
+                  className="h-auto w-full"
+                />
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="bg-red-500 hover:bg-red-600 absolute right-2 top-2 rounded-full p-1 text-white"
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </div>
